@@ -4,39 +4,63 @@
   <!-- Comparison Section -->
   <section style="background-color: #f1f5f9; padding: 40px 0;">
     <div class="container">
-      <h2 class="section-title">Comparison with Traditional Pillows</h2>
-      <p class="section-subtitle">Why traditional U-shaped travel pillows are no longer sufficient</p>
+      <h2 class="section-title">{{ section.settings.title | default: "Comparison with Traditional Pillows" }}</h2>
+      <p class="section-subtitle">{{ section.settings.subtitle | default: "Why traditional U-shaped travel pillows are no longer sufficient" }}</p>
       
       <div class="comparison-wrapper">
         <table class="comparison-table">
           <thead>
             <tr>
               <th>Features</th>
-              <th class="our-product">Avemos® Pillow</th>
-              <th>Traditional U-Shape Pillows</th>
+              <th class="our-product">{{ section.settings.our_product | default: "Avemos® Pillow" }}</th>
+              <th>{{ section.settings.their_product | default: "Traditional U-Shape Pillows" }}</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Head Stabilization</td>
-              <td class="our-product"><span class="check-icon">✓</span> 360° support (no head drop)</td>
-              <td class="other-product"><span class="cross-icon">✗</span> Sides only (head falls forward)</td>
-            </tr>
-            <tr>
-              <td>Filling</td>
-              <td class="our-product"><span class="check-icon">✓</span> Premium orthopedic memory foam</td>
-              <td class="other-product"><span class="cross-icon">✗</span> Air or cheap low-density foam</td>
-            </tr>
-            <tr>
-              <td>Hygiene</td>
-              <td class="our-product"><span class="check-icon">✓</span> Machine-washable cover</td>
-              <td class="other-product"><span class="cross-icon">✗</span> Non-removable, hard to clean</td>
-            </tr>
-            <tr>
-              <td>Size Adjustment</td>
-              <td class="our-product"><span class="check-icon">✓</span> Adjustable Velcro strap</td>
-              <td class="other-product"><span class="cross-icon">✗</span> One size fits all (no adjustment)</td>
-            </tr>
+            {%- if section.blocks.size > 0 -%}
+              {%- for block in section.blocks -%}
+                <tr {{ block.shopify_attributes }}>
+                  <td>{{ block.settings.feature_name }}</td>
+                  <td class="our-product">
+                    {%- if block.settings.our_check -%}
+                      <span class="check-icon">✓</span>
+                    {%- else -%}
+                      <span class="cross-icon">✗</span>
+                    {%- endif -%}
+                    {{ block.settings.our_desc }}
+                  </td>
+                  <td class="other-product">
+                    {%- if block.settings.their_check -%}
+                      <span class="check-icon">✓</span>
+                    {%- else -%}
+                      <span class="cross-icon">✗</span>
+                    {%- endif -%}
+                    {{ block.settings.their_desc }}
+                  </td>
+                </tr>
+              {%- endfor -%}
+            {%- else -%}
+              <tr>
+                <td>Head Stabilization</td>
+                <td class="our-product"><span class="check-icon">✓</span> 360° support (no head drop)</td>
+                <td class="other-product"><span class="cross-icon">✗</span> Sides only (head falls forward)</td>
+              </tr>
+              <tr>
+                <td>Filling</td>
+                <td class="our-product"><span class="check-icon">✓</span> Premium orthopedic memory foam</td>
+                <td class="other-product"><span class="cross-icon">✗</span> Air or cheap low-density foam</td>
+              </tr>
+              <tr>
+                <td>Hygiene</td>
+                <td class="our-product"><span class="check-icon">✓</span> Machine-washable cover</td>
+                <td class="other-product"><span class="cross-icon">✗</span> Non-removable, hard to clean</td>
+              </tr>
+              <tr>
+                <td>Size Adjustment</td>
+                <td class="our-product"><span class="check-icon">✓</span> Adjustable Velcro strap</td>
+                <td class="other-product"><span class="cross-icon">✗</span> One size fits all (no adjustment)</td>
+              </tr>
+            {%- endif -%}
           </tbody>
         </table>
       </div>
@@ -47,10 +71,115 @@
 {% schema %}
 {
   "name": "Avemos Comparison",
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Comparison with Traditional Pillows"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "Why traditional U-shaped travel pillows are no longer sufficient"
+    },
+    {
+      "type": "text",
+      "id": "our_product",
+      "label": "Our Product Name",
+      "default": "Avemos® Pillow"
+    },
+    {
+      "type": "text",
+      "id": "their_product",
+      "label": "Traditional Product Name",
+      "default": "Traditional U-Shape Pillows"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "feature_name",
+          "label": "Feature Name",
+          "default": "Feature"
+        },
+        {
+          "type": "checkbox",
+          "id": "our_check",
+          "label": "Our Product Checked?",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "our_desc",
+          "label": "Our Product Description",
+          "default": "Yes"
+        },
+        {
+          "type": "checkbox",
+          "id": "their_check",
+          "label": "Traditional Product Checked?",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "their_desc",
+          "label": "Traditional Product Description",
+          "default": "No"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Avemos Comparison"
+      "name": "Avemos Comparison",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Head Stabilization",
+            "our_check": true,
+            "our_desc": "360° support (no head drop)",
+            "their_check": false,
+            "their_desc": "Sides only (head falls forward)"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Filling",
+            "our_check": true,
+            "our_desc": "Premium orthopedic memory foam",
+            "their_check": false,
+            "their_desc": "Air or cheap low-density foam"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Hygiene",
+            "our_check": true,
+            "our_desc": "Machine-washable cover",
+            "their_check": false,
+            "their_desc": "Non-removable, hard to clean"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Size Adjustment",
+            "our_check": true,
+            "our_desc": "Adjustable Velcro strap",
+            "their_check": false,
+            "their_desc": "One size fits all (no adjustment)"
+          }
+        }
+      ]
     }
   ]
 }

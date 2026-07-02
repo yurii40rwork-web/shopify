@@ -4,13 +4,13 @@
   <!-- Reviews Section -->
   <section style="background-color: var(--bg-secondary); border-top: 1px solid var(--border-color); padding: 80px 0;">
     <div class="container">
-      <h2 class="section-title">What Our Customers Say</h2>
-      <p class="section-subtitle">Real reviews from verified buyers</p>
+      <h2 class="section-title">{{ section.settings.title | default: "What Our Customers Say" }}</h2>
+      <p class="section-subtitle">{{ section.settings.subtitle | default: "Real reviews from verified buyers" }}</p>
       
       <!-- Rating Overview Block -->
       <div class="reviews-overview" style="display: flex; flex-wrap: wrap; gap: 40px; margin-bottom: 50px; background-color: var(--bg-primary); padding: 30px; border-radius: var(--radius-lg); border: 1px solid var(--border-light); align-items: center; justify-content: center;">
         <div class="rating-summary" style="text-align: center; flex: 1 1 250px;">
-          <div style="font-size: 3rem; font-weight: 700; color: var(--text-primary); line-height: 1;">4.9</div>
+          <div style="font-size: 3rem; font-weight: 700; color: var(--text-primary); line-height: 1;">{{ section.settings.rating_score | default: "4.9" }}</div>
           <div class="rating-stars" style="color: #facc15; font-size: 1.5rem; margin: 10px 0;">
             <i class="fa-solid fa-star"></i>
             <i class="fa-solid fa-star"></i>
@@ -18,148 +18,56 @@
             <i class="fa-solid fa-star"></i>
             <i class="fa-solid fa-star"></i>
           </div>
-          <div style="color: var(--text-light); font-size: 0.95rem;">Based on 1,248 reviews</div>
+          <div style="color: var(--text-light); font-size: 0.95rem;">Based on {{ section.settings.reviews_count | default: "1,248" }} reviews</div>
         </div>
         
         <div class="rating-bars" style="flex: 2 1 400px; display: flex; flex-direction: column; gap: 8px; width: 100%;">
+          {%- assign star_5 = section.settings.star_5_percent | default: 92 -%}
+          {%- assign star_4 = section.settings.star_4_percent | default: 6 -%}
+          {%- assign star_3 = section.settings.star_3_percent | default: 1 -%}
+          {%- assign star_2 = section.settings.star_2_percent | default: 0 -%}
+          {%- assign star_1 = section.settings.star_1_percent | default: 0 -%}
+          
           <div class="rating-bar-row" style="display: flex; align-items: center; gap: 12px;">
             <span style="font-size: 0.9rem; min-width: 50px; text-align: right; color: var(--text-secondary);">5 stars</span>
             <div class="progress-bar-bg" style="flex-grow: 1; height: 8px; background-color: var(--surface-container); border-radius: var(--radius-full); overflow: hidden;">
-              <div class="progress-bar-fill" style="width: 92%; height: 100%; background-color: #facc15; border-radius: var(--radius-full);"></div>
+              <div class="progress-bar-fill" style="width: {{ star_5 }}%; height: 100%; background-color: #facc15; border-radius: var(--radius-full);"></div>
             </div>
-            <span style="font-size: 0.9rem; min-width: 40px; color: var(--text-light);">92%</span>
+            <span style="font-size: 0.9rem; min-width: 40px; color: var(--text-light);">{{ star_5 }}%</span>
           </div>
           <div class="rating-bar-row" style="display: flex; align-items: center; gap: 12px;">
             <span style="font-size: 0.9rem; min-width: 50px; text-align: right; color: var(--text-secondary);">4 stars</span>
             <div class="progress-bar-bg" style="flex-grow: 1; height: 8px; background-color: var(--surface-container); border-radius: var(--radius-full); overflow: hidden;">
-              <div class="progress-bar-fill" style="width: 6%; height: 100%; background-color: #facc15; border-radius: var(--radius-full);"></div>
+              <div class="progress-bar-fill" style="width: {{ star_4 }}%; height: 100%; background-color: #facc15; border-radius: var(--radius-full);"></div>
             </div>
-            <span style="font-size: 0.9rem; min-width: 40px; color: var(--text-light);">6%</span>
+            <span style="font-size: 0.9rem; min-width: 40px; color: var(--text-light);">{{ star_4 }}%</span>
           </div>
           <div class="rating-bar-row" style="display: flex; align-items: center; gap: 12px;">
             <span style="font-size: 0.9rem; min-width: 50px; text-align: right; color: var(--text-secondary);">3 stars</span>
             <div class="progress-bar-bg" style="flex-grow: 1; height: 8px; background-color: var(--surface-container); border-radius: var(--radius-full); overflow: hidden;">
-              <div class="progress-bar-fill" style="width: 1%; height: 100%; background-color: #facc15; border-radius: var(--radius-full);"></div>
+              <div class="progress-bar-fill" style="width: {{ star_3 }}%; height: 100%; background-color: #facc15; border-radius: var(--radius-full);"></div>
             </div>
-            <span style="font-size: 0.9rem; min-width: 40px; color: var(--text-light);">1%</span>
+            <span style="font-size: 0.9rem; min-width: 40px; color: var(--text-light);">{{ star_3 }}%</span>
           </div>
           <div class="rating-bar-row" style="display: flex; align-items: center; gap: 12px;">
             <span style="font-size: 0.9rem; min-width: 50px; text-align: right; color: var(--text-secondary);">2 stars</span>
             <div class="progress-bar-bg" style="flex-grow: 1; height: 8px; background-color: var(--surface-container); border-radius: var(--radius-full); overflow: hidden;">
-              <div class="progress-bar-fill" style="width: 0.5%; height: 100%; background-color: #facc15; border-radius: var(--radius-full);"></div>
+              <div class="progress-bar-fill" style="width: {{ star_2 }}%; height: 100%; background-color: #facc15; border-radius: var(--radius-full);"></div>
             </div>
-            <span style="font-size: 0.9rem; min-width: 40px; color: var(--text-light);"><1%</span>
+            <span style="font-size: 0.9rem; min-width: 40px; color: var(--text-light);">{% if star_2 > 0 %}{{ star_2 }}%{% else %}&lt;1%{% endif %}</span>
           </div>
           <div class="rating-bar-row" style="display: flex; align-items: center; gap: 12px;">
             <span style="font-size: 0.9rem; min-width: 50px; text-align: right; color: var(--text-secondary);">1 star</span>
             <div class="progress-bar-bg" style="flex-grow: 1; height: 8px; background-color: var(--surface-container); border-radius: var(--radius-full); overflow: hidden;">
-              <div class="progress-bar-fill" style="width: 0.5%; height: 100%; background-color: #facc15; border-radius: var(--radius-full);"></div>
+              <div class="progress-bar-fill" style="width: {{ star_1 }}%; height: 100%; background-color: #facc15; border-radius: var(--radius-full);"></div>
             </div>
-            <span style="font-size: 0.9rem; min-width: 40px; color: var(--text-light);"><1%</span>
+            <span style="font-size: 0.9rem; min-width: 40px; color: var(--text-light);">{% if star_1 > 0 %}{{ star_1 }}%{% else %}&lt;1%{% endif %}</span>
           </div>
         </div>
       </div>
       
       <!-- Review Cards Grid -->
       <div class="reviews-grid">
-        <!-- Review 1 -->
-        <div class="review-card">
-          <div class="review-card-inner">
-            <div class="review-header">
-              <div class="reviewer-info">
-                <div class="reviewer-avatar">JD</div>
-                <div>
-                  <div class="reviewer-name">John D.</div>
-                  <div class="verified-badge">
-                    <i class="fa-solid fa-circle-check"></i> Verified Buyer
-                  </div>
-                </div>
-              </div>
-              <span class="review-date">2 days ago</span>
-            </div>
-            
-            <div class="stars">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-            </div>
-            
-            <h4 class="review-title">The ultimate travel companion!</h4>
-            <p class="review-text">
-              I've used many travel pillows before, but this one is on another level. The memory foam is incredibly supportive and the adjustable strap lets me lock in the perfect fit. Slept like a baby on my 10-hour flight!
-            </p>
-          </div>
-        </div>
-
-        <!-- Review 2 -->
-        <div class="review-card">
-          <div class="review-card-inner">
-            <div class="review-header">
-              <div class="reviewer-info">
-                <div class="reviewer-avatar">SM</div>
-                <div>
-                  <div class="reviewer-name">Sarah M.</div>
-                  <div class="verified-badge">
-                    <i class="fa-solid fa-circle-check"></i> Verified Buyer
-                  </div>
-                </div>
-              </div>
-              <span class="review-date">1 week ago</span>
-            </div>
-            
-            <div class="stars">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-            </div>
-            
-            <h4 class="review-title">Super compact & easy to wash</h4>
-            <p class="review-text">
-              I love that it rolls up into a tiny carrying bag so I can easily clip it to my backpack. The removable cover was super easy to zip off and wash after my trip. Definitely worth every penny!
-            </p>
-          </div>
-        </div>
-
-        <!-- Review 3 -->
-        <div class="review-card">
-          <div class="review-card-inner">
-            <div class="review-header">
-              <div class="reviewer-info">
-                <div class="reviewer-avatar">TH</div>
-                <div>
-                  <div class="reviewer-name">Thomas H.</div>
-                  <div class="verified-badge">
-                    <i class="fa-solid fa-circle-check"></i> Verified Buyer
-                  </div>
-                </div>
-              </div>
-              <span class="review-date">2 weeks ago</span>
-            </div>
-            
-            <div class="stars">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-            </div>
-            
-            <h4 class="review-title">No more neck pain!</h4>
-            <p class="review-text">
-              I always end up with a stiff neck when sleeping in cars or planes. I tried the Avemos pillow on a road trip last weekend and for the first time, woke up without any pain. The ergonomic support is real.
-            </p>
-          </div>
-        </div>
-
-        <!-- Review 4 -->
-        <div class="review-card">
-          <div class="review-card-inner">
-            <div class="review-header">
-              <div class="reviewer-info">
                 <div class="reviewer-avatar">EL</div>
                 <div>
                   <div class="reviewer-name">Emily L.</div>
@@ -367,10 +275,171 @@
 {% schema %}
 {
   "name": "Avemos Reviews",
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "Real reviews from verified buyers"
+    },
+    {
+      "type": "text",
+      "id": "rating_score",
+      "label": "Rating Score (e.g. 4.9)",
+      "default": "4.9"
+    },
+    {
+      "type": "text",
+      "id": "reviews_count",
+      "label": "Reviews Count (e.g. 1,248)",
+      "default": "1,248"
+    },
+    {
+      "type": "range",
+      "id": "star_5_percent",
+      "label": "5 Star Rating %",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 92
+    },
+    {
+      "type": "range",
+      "id": "star_4_percent",
+      "label": "4 Star Rating %",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "star_3_percent",
+      "label": "3 Star Rating %",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "star_2_percent",
+      "label": "2 Star Rating %",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "star_1_percent",
+      "label": "1 Star Rating %",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "author_initials",
+          "label": "Author Initials (e.g. JD)",
+          "default": "JD"
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author Name",
+          "default": "John D."
+        },
+        {
+          "type": "checkbox",
+          "id": "verified",
+          "label": "Verified Buyer?",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Review Date",
+          "default": "2 days ago"
+        },
+        {
+          "type": "range",
+          "id": "stars",
+          "label": "Rating (Stars)",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Review Title",
+          "default": "The ultimate travel companion!"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Review Description",
+          "default": "I've used many travel pillows before..."
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Avemos Reviews"
+      "name": "Avemos Reviews",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "author_initials": "JD",
+            "author_name": "John D.",
+            "verified": true,
+            "date": "2 days ago",
+            "stars": 5,
+            "title": "The ultimate travel companion!",
+            "text": "I've used many travel pillows before, but this one is on another level. The memory foam is incredibly supportive and the adjustable strap lets me lock in the perfect fit. Slept like a baby on my 10-hour flight!"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "author_initials": "SM",
+            "author_name": "Sarah M.",
+            "verified": true,
+            "date": "1 week ago",
+            "stars": 5,
+            "title": "Super compact & easy to wash",
+            "text": "I love that it rolls up into a tiny carrying bag so I can easily clip it to my backpack. The removable cover was super easy to zip off and wash after my trip. Definitely worth every penny!"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "author_initials": "TH",
+            "author_name": "Thomas H.",
+            "verified": true,
+            "date": "2 weeks ago",
+            "stars": 5,
+            "title": "No more neck pain!",
+            "text": "I always end up with a stiff neck when sleeping in cars or planes. I tried the Avemos pillow on a road trip last weekend and for the first time, woke up without any pain. The ergonomic support is real."
+          }
+        }
+      ]
     }
   ]
 }

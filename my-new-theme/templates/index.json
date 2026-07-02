@@ -8,30 +8,305 @@
       "type": "product",
       "settings": {
         "product": "premium-avemos™-travel-neck-pillow"
-      }
+      },
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "rating": {
+          "type": "rating",
+          "settings": {
+            "show_rating": true,
+            "rating_text": "4.9/5 (12,659 reviews)"
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "promo": {
+          "type": "promo",
+          "settings": {
+            "promo_text": "⏳ Final Hours: Claim Your 50% Discount & Free Shipping Before It’s Gone",
+            "promo_color": "#ba1a1a"
+          }
+        },
+        "bundles": {
+          "type": "bundles",
+          "settings": {
+            "bundle_1_title": "Buy 1",
+            "bundle_2_title": "Buy 2",
+            "bundle_2_subtitle": "Save extra $10",
+            "bundle_2_discount": 10
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "button_text": "Add to cart",
+            "disclaimer_text": "Elevate Your Travel Experience",
+            "show_payment_icons": true
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "rating",
+        "description",
+        "promo",
+        "bundles",
+        "buy_buttons"
+      ]
     },
     "as_seen_on": {
       "type": "avemos-as-seen-on",
+      "blocks": {
+        "brand_1": {
+          "type": "brand",
+          "settings": {
+            "name": "Forbes"
+          }
+        },
+        "brand_2": {
+          "type": "brand",
+          "settings": {
+            "name": "Travel + Leisure"
+          }
+        },
+        "brand_3": {
+          "type": "brand",
+          "settings": {
+            "name": "NY Times"
+          }
+        },
+        "brand_4": {
+          "type": "brand",
+          "settings": {
+            "name": "USA Today"
+          }
+        },
+        "brand_5": {
+          "type": "brand",
+          "settings": {
+            "name": "Bloomberg"
+          }
+        }
+      },
+      "block_order": [
+        "brand_1",
+        "brand_2",
+        "brand_3",
+        "brand_4",
+        "brand_5"
+      ],
       "settings": {}
     },
     "benefits": {
       "type": "avemos-benefits",
+      "blocks": {
+        "benefit_1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "fa-arrows-to-dot",
+            "title": "360° Neck Support",
+            "text": "Complete head stabilization at any angle. Prevents head drop and neck pain."
+          }
+        },
+        "benefit_2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "fa-brain",
+            "title": "Memory Foam Core",
+            "text": "Premium orthopedic memory foam adapts to the unique contours of your body."
+          }
+        },
+        "benefit_3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "fa-wind",
+            "title": "Breathable Hypoallergenic Fabric",
+            "text": "Material regulates body temperature, protects against sweat, and repels pet hair."
+          }
+        },
+        "benefit_4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "fa-compress",
+            "title": "Compact Design",
+            "text": "Easily compresses to 1/3 of its size. Includes a waterproof travel carry bag."
+          }
+        }
+      },
+      "block_order": [
+        "benefit_1",
+        "benefit_2",
+        "benefit_3",
+        "benefit_4"
+      ],
       "settings": {}
     },
     "comparison": {
       "type": "avemos-comparison",
+      "blocks": {
+        "feature_1": {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Head Stabilization",
+            "our_check": true,
+            "our_desc": "360° support (no head drop)",
+            "their_check": false,
+            "their_desc": "Sides only (head falls forward)"
+          }
+        },
+        "feature_2": {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Filling",
+            "our_check": true,
+            "our_desc": "Premium orthopedic memory foam",
+            "their_check": false,
+            "their_desc": "Air or cheap low-density foam"
+          }
+        },
+        "feature_3": {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Hygiene",
+            "our_check": true,
+            "our_desc": "Machine-washable cover",
+            "their_check": false,
+            "their_desc": "Non-removable, hard to clean"
+          }
+        },
+        "feature_4": {
+          "type": "feature",
+          "settings": {
+            "feature_name": "Size Adjustment",
+            "our_check": true,
+            "our_desc": "Adjustable Velcro strap",
+            "their_check": false,
+            "their_desc": "One size fits all (no adjustment)"
+          }
+        }
+      },
+      "block_order": [
+        "feature_1",
+        "feature_2",
+        "feature_3",
+        "feature_4"
+      ],
       "settings": {}
     },
     "how_it_works": {
       "type": "avemos-how-it-works",
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "title": "Place on Your Neck",
+            "text": "Wrap the U-shaped pillow around your neck so the elevated cushioned sides support your chin and cheeks."
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "title": "Adjust the Strap",
+            "text": "Tighten the adjustable strap to your desired level of support and head stabilization."
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "title": "Enjoy Deep Sleep",
+            "text": "Relax and sleep. The pillow holds your head in a natural, upright position throughout the journey."
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3"
+      ],
       "settings": {}
     },
     "faq": {
       "type": "avemos-faq",
+      "blocks": {
+        "faq_1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is this pillow suitable for people of different sizes?",
+            "answer": "Yes, thanks to the adjustable Velcro strap, you can easily control how snugly the pillow fits your neck. It is suitable for both teenagers and adults."
+          }
+        },
+        "faq_2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I care for and wash the pillow?",
+            "answer": "The outer fabric cover can be easily removed using the integrated zipper. It is machine-washable at 30°C (86°F). The inner memory foam core should not be washed; simply wipe it with a damp cloth if necessary."
+          }
+        },
+        "faq_3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What are the shipping times and guarantees?",
+            "answer": "We offer express shipping in 5-10 business days. You also receive a 70-day risk-free guarantee: if you are not fully satisfied, you can return it for a 100% refund."
+          }
+        }
+      },
+      "block_order": [
+        "faq_1",
+        "faq_2",
+        "faq_3"
+      ],
       "settings": {}
     },
     "reviews": {
       "type": "avemos-reviews",
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "author_initials": "JD",
+            "author_name": "John D.",
+            "verified": true,
+            "date": "2 days ago",
+            "stars": 5,
+            "title": "The ultimate travel companion!",
+            "text": "I've used many travel pillows before, but this one is on another level. The memory foam is incredibly supportive and the adjustable strap lets me lock in the perfect fit. Slept like a baby on my 10-hour flight!"
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "author_initials": "SM",
+            "author_name": "Sarah M.",
+            "verified": true,
+            "date": "1 week ago",
+            "stars": 5,
+            "title": "Super compact & easy to wash",
+            "text": "I love that it rolls up into a tiny carrying bag so I can easily clip it to my backpack. The removable cover was super easy to zip off and wash after my trip. Definitely worth every penny!"
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "author_initials": "TH",
+            "author_name": "Thomas H.",
+            "verified": true,
+            "date": "2 weeks ago",
+            "stars": 5,
+            "title": "No more neck pain!",
+            "text": "I always end up with a stiff neck when sleeping in cars or planes. I tried the Avemos pillow on a road trip last weekend and for the first time, woke up without any pain. The ergonomic support is real."
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3"
+      ],
       "settings": {}
     },
     "footer": {

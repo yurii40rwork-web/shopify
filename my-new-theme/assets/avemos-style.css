@@ -1354,17 +1354,13 @@
 }
 
 /* Custom Overrides for Bundle layout */
-.Avemos-landing-wrapper .bundle-card-content {
-  margin-top: 6px !important;
-  padding-top: 6px !important;
-  border-top: none !important;
-}
 .Avemos-landing-wrapper .bundle-color-row {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
-  gap: 12px !important;
+  gap: 10px !important;
   margin-left: 52px !important;
+  flex-wrap: wrap !important;
 }
 .Avemos-landing-wrapper .bundle-radio-checkmark {
   margin-left: 20px !important;

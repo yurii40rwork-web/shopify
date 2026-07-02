@@ -7,36 +7,50 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <h4 style="font-weight: 800;"><i class="fa-solid fa-plane-departure"></i> Avemos</h4>
-          <p>We create premium products for your comfort during travels all over the world.</p>
+          <h4 style="font-weight: 800;"><i class="fa-solid fa-plane-departure"></i> {{ section.settings.col_1_title | default: "Avemos" }}</h4>
+          <p>{{ section.settings.col_1_desc | default: "We create premium products for your comfort during travels all over the world." }}</p>
         </div>
         <div class="footer-col">
-          <h4>Contact Us</h4>
+          <h4>{{ section.settings.col_2_title | default: "Contact Us" }}</h4>
           <ul class="footer-links">
-            <li>Email: support@avemosstore.com</li>
-            <li>Phone: +380965347984</li>
-            <li>Address: Zelena St, 114, Lviv, Ukraine</li>
+            {%- if section.settings.email != blank -%}
+              <li>Email: {{ section.settings.email }}</li>
+            {%- endif -%}
+            {%- if section.settings.phone != blank -%}
+              <li>Phone: {{ section.settings.phone }}</li>
+            {%- endif -%}
+            {%- if section.settings.address != blank -%}
+              <li>Address: {{ section.settings.address }}</li>
+            {%- endif -%}
           </ul>
         </div>
         <div class="footer-col">
-          <h4>Legal Information</h4>
+          <h4>{{ section.settings.col_3_title | default: "Legal Information" }}</h4>
           <ul class="footer-links">
-            <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
-            <li><a href="/policies/terms-of-service">Terms of Service</a></li>
-            <li><a href="/policies/refund-policy">Refund Policy</a></li>
-            <li><a href="/policies/shipping-policy">Shipping Policy</a></li>
-            <li><a href="/policies/user-agreement">User Agreement</a></li>
+            {%- if section.settings.menu != blank -%}
+              {%- for link in section.settings.menu.links -%}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {%- endfor -%}
+            {%- else -%}
+              <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
+              <li><a href="/policies/terms-of-service">Terms of Service</a></li>
+              <li><a href="/policies/refund-policy">Refund Policy</a></li>
+              <li><a href="/policies/shipping-policy">Shipping Policy</a></li>
+              <li><a href="/policies/user-agreement">User Agreement</a></li>
+            {%- endif -%}
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 Avemos® Mock App. All rights reserved.</p>
-        <div class="mock-payments">
-          <span class="mock-payment-badge">Stripe</span>
-          <span class="mock-payment-badge">PayPal</span>
-          <span class="mock-payment-badge">Apple Pay</span>
-          <span class="mock-payment-badge">Google Pay</span>
-        </div>
+        <p>{{ section.settings.copyright_text | default: "&copy; 2026 Avemos® Mock App. All rights reserved." }}</p>
+        {%- if section.settings.show_payment_badges -%}
+          <div class="mock-payments">
+            <span class="mock-payment-badge">Stripe</span>
+            <span class="mock-payment-badge">PayPal</span>
+            <span class="mock-payment-badge">Apple Pay</span>
+            <span class="mock-payment-badge">Google Pay</span>
+          </div>
+        {%- endif -%}
       </div>
     </div>
   </footer>
@@ -45,7 +59,83 @@
 {% schema %}
 {
   "name": "Avemos Footer",
-  "settings": [],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Column 1: Brand Info"
+    },
+    {
+      "type": "text",
+      "id": "col_1_title",
+      "label": "Brand Title",
+      "default": "Avemos"
+    },
+    {
+      "type": "textarea",
+      "id": "col_1_desc",
+      "label": "Brand Description",
+      "default": "We create premium products for your comfort during travels all over the world."
+    },
+    {
+      "type": "header",
+      "content": "Column 2: Contact Info"
+    },
+    {
+      "type": "text",
+      "id": "col_2_title",
+      "label": "Contact Title",
+      "default": "Contact Us"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email Address",
+      "default": "support@avemosstore.com"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone Number",
+      "default": "+380965347984"
+    },
+    {
+      "type": "text",
+      "id": "address",
+      "label": "Physical Address",
+      "default": "Zelena St, 114, Lviv, Ukraine"
+    },
+    {
+      "type": "header",
+      "content": "Column 3: Legal Menu"
+    },
+    {
+      "type": "text",
+      "id": "col_3_title",
+      "label": "Legal Title",
+      "default": "Legal Information"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Legal Links Menu"
+    },
+    {
+      "type": "header",
+      "content": "Footer Bottom"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "&copy; 2026 Avemos® Mock App. All rights reserved."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_badges",
+      "label": "Show Payment Badges?",
+      "default": true
+    }
+  ],
   "presets": [
     {
       "name": "Avemos Footer"

@@ -23,14 +23,20 @@
           <div class="main-image-viewport">
             <!-- Slides Track -->
             <div class="slider-track-container">
+            {%- if product.media.size > 0 -%}
+              {%- for media in product.media -%}
+                <img class="gallery-slide-img{% if forloop.first %} active{% endif %}" src="{{ media | image_url: width: 1000 }}" alt="{{ media.alt | default: product.title | escape }}">
+              {%- endfor -%}
+            {%- else -%}
               <img class="gallery-slide-img active" src="{{ 'hero-product.png' | asset_url }}" alt="{{ product.title | escape }}">
               <img class="gallery-slide-img" src="{{ 'hero-product-2.png' | asset_url }}" alt="{{ product.title | escape }}">
-              <img class="gallery-slide-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO4D0JFh0aVI1GDWpQBW7uKkjwJl1ut0on6dx18zfM2mlGNsdmPot_hrBbzbdXxhwxA8toMmZwGtl9qsfrWpQ1N_SDGITGGSxiTTA8gEufTrh1iD7kIhUdV1uC1G0rKsRLNA7bKnEnHmqNcaKwyCyECJoO_pZtmbvIYtNOsHrT3Zt907bDyVduAzfSWfdl2mxDQiG9E4YafPGwdMGG1GyPblXZYosMbFMS70_VLw9GE5-2J6e35h0zXGkslS_88yxw2uj558FQyvk" alt="Fabric Detail">
-              <img class="gallery-slide-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEaiuSdNM-moDjvKgsJ-gaztF9xEmuaxOIkSGj559UglibDmqGf9KXvPVIADaG8M7gpUooFuV-S4GyGm-pWw1bY1v8IZLOmbi_vFP0pBhCpj_AorZI1NeLxqu-Vo9eJDNjq-lph65sLOr7sKfw13B2lHD3cFrJ2vcPgaiaBilppcj4Wj6V_07Dz9Q3YAb1NAeEbSGnxbfWxvwEIdcl_fT2dlbRsomNkdycWxCT4X7PD1zAbmR1v43BrQ0K-gzUcZ8gCA0Z4LrwOw4" alt="Pillow on Seat">
-            </div>
+            {%- endif -%}
+          </div>
 
             <!-- Best Seller Badge -->
-            <div class="best-seller-badge-overlay">Best Seller</div>
+            {%- if section.settings.show_badge and section.settings.badge_text != blank -%}
+              <div class="best-seller-badge-overlay">{{ section.settings.badge_text | escape }}</div>
+            {%- endif -%}
 
             <!-- Slider Arrows -->
             <button type="button" class="gallery-arrow-btn prev-arrow" aria-label="Previous image">
@@ -43,188 +49,493 @@
 
           <!-- Thumbnails Grid -->
           <div class="thumbnails-grid-container">
-            <div class="thumb-card active" data-index="0">
-              <img src="{{ 'hero-product.png' | asset_url }}" alt="Main product">
-            </div>
-            <div class="thumb-card" data-index="1">
-              <img src="{{ 'hero-product-2.png' | asset_url }}" alt="Top product view">
-            </div>
-            <div class="thumb-card" data-index="2">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO4D0JFh0aVI1GDWpQBW7uKkjwJl1ut0on6dx18zfM2mlGNsdmPot_hrBbzbdXxhwxA8toMmZwGtl9qsfrWpQ1N_SDGITGGSxiTTA8gEufTrh1iD7kIhUdV1uC1G0rKsRLNA7bKnEnHmqNcaKwyCyECJoO_pZtmbvIYtNOsHrT3Zt907bDyVduAzfSWfdl2mxDQiG9E4YafPGwdMGG1GyPblXZYosMbFMS70_VLw9GE5-2J6e35h0zXGkslS_88yxw2uj558FQyvk" alt="Fabric Detail">
-            </div>
-            <div class="thumb-card play-video-thumb" data-index="3">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEaiuSdNM-moDjvKgsJ-gaztF9xEmuaxOIkSGj559UglibDmqGf9KXvPVIADaG8M7gpUooFuV-S4GyGm-pWw1bY1v8IZLOmbi_vFP0pBhCpj_AorZI1NeLxqu-Vo9eJDNjq-lph65sLOr7sKfw13B2lHD3cFrJ2vcPgaiaBilppcj4Wj6V_07Dz9Q3YAb1NAeEbSGnxbfWxvwEIdcl_fT2dlbRsomNkdycWxCT4X7PD1zAbmR1v43BrQ0K-gzUcZ8gCA0Z4LrwOw4" alt="Pillow on Seat">
-              <div class="video-play-overlay">
-                <span class="material-symbols-outlined">play_circle</span>
+            {%- if product.media.size > 0 -%}
+              {%- for media in product.media -%}
+                <div class="thumb-card{% if forloop.first %} active{% endif %}" data-index="{{ forloop.index0 }}">
+                  <img src="{{ media | image_url: width: 200 }}" alt="{{ media.alt | default: product.title | escape }}">
+                  {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
+                    <div class="video-play-overlay">
+                      <span class="material-symbols-outlined">play_circle</span>
+                    </div>
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+            {%- else -%}
+              <div class="thumb-card active" data-index="0">
+                <img src="{{ 'hero-product.png' | asset_url }}" alt="Main product">
               </div>
-            </div>
+              <div class="thumb-card" data-index="1">
+                <img src="{{ 'hero-product-2.png' | asset_url }}" alt="Top product view">
+              </div>
+            {%- endif -%}
           </div>
         </div>
 
         <!-- Right Column: Product Details (5 cols equivalent) -->
         <div class="product-details-col">
-          <!-- Title & Rating -->
-          <div class="details-header-block" style="display: flex; flex-direction: column; gap: 4px;">
-            <span style="font-family: var(--font-body); font-size: 18.67px; font-weight: 850; text-transform: uppercase; letter-spacing: 0.05em; color: #a6a6a6; margin-bottom: 2px;">Comfort On The Move</span>
-            <h1 class="main-product-title" style="font-size: 32px; font-weight: 700; color: var(--text-primary); margin: 0; line-height: 1.2;">Avemos™ Travel Pillow</h1>
-            <div class="ratings-row" style="margin-top: 4px;">
-              <div class="stars-container" style="display: flex; align-items: center;">
-                <span class="material-symbols-outlined fill" style="color: #facc15; font-variation-settings: 'FILL' 1;">star</span>
-                <span class="material-symbols-outlined fill" style="color: #facc15; font-variation-settings: 'FILL' 1;">star</span>
-                <span class="material-symbols-outlined fill" style="color: #facc15; font-variation-settings: 'FILL' 1;">star</span>
-                <span class="material-symbols-outlined fill" style="color: #facc15; font-variation-settings: 'FILL' 1;">star</span>
-                <span class="material-symbols-outlined fill" style="color: #facc15; font-variation-settings: 'FILL' 1;">star</span>
-                <span class="reviews-count-text" style="font-family: var(--font-body); font-size: 17.5px; color: var(--text-secondary); margin-left: 8px;">4.9/5 (12,659 reviews)</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Description -->
-          <div class="product-info-description" style="font-family: var(--font-body); color: var(--text-secondary); font-size: 15px; line-height: 1.6; margin-top: -12px;">
-            <p style="font-size: 20px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; line-height: 1.3;">Tired of neck pain during long trips?</p>
-            <p style="font-size: 15px; line-height: 1.5;">Meet Avemos™ Travel Pillow — your ticket to painless, restful travel. Ultimate support, anywhere you go.</p>
-            
-            <ul style="list-style: none; padding: 0; margin: 16px 0 0 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px;">
-              <li style="display: flex; align-items: center; gap: 8px;">
-                <span class="material-symbols-outlined" style="color: var(--text-primary); font-size: 18px; font-weight: bold;">check_circle</span>
-                <span>Arrive refreshed, completely pain-free.</span>
-              </li>
-              <li style="display: flex; align-items: center; gap: 8px;">
-                <span class="material-symbols-outlined" style="color: var(--text-primary); font-size: 18px; font-weight: bold;">check_circle</span>
-                <span>Instant relief for tired shoulders and neck.</span>
-              </li>
-              <li style="display: flex; align-items: center; gap: 8px;">
-                <span class="material-symbols-outlined" style="color: var(--text-primary); font-size: 18px; font-weight: bold;">check_circle</span>
-                <span>Space-saving design, ready for any adventure.</span>
-              </li>
-              <li style="display: flex; align-items: center; gap: 8px;">
-                <span class="material-symbols-outlined" style="color: var(--text-primary); font-size: 18px; font-weight: bold;">check_circle</span>
-                <span>Love it or your money back. 30-Day Trial.</span>
-              </li>
-            </ul>
-          </div>
-
-          <div style="font-family: var(--font-body); font-weight: 800; color: #ba1a1a; display: flex; align-items: center; gap: 8px; margin-bottom: -16px; font-size: 20px; line-height: 1.3;">
-            ⏳ Final Hours: Claim Your 50% Discount & Free Shipping Before It’s Gone
-          </div>
-
-          <!-- Packages / Bundles Section -->
-          <div class="bundles-selection-section">
-            <!-- Package 1 (Buy 1) -->
-            <div class="bundle-card active" id="bundle-card-1">
-              <div class="bundle-card-header">
-                <label class="bundle-radio-container" style="display: flex !important; align-items: center !important; cursor: pointer !important; width: 100% !important; margin: 0 !important; position: relative !important;">
-                  <input type="radio" name="bundle_option" value="buy_1" checked style="position: absolute !important; opacity: 0 !important; width: 0 !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; pointer-events: none !important;">
-                  <span class="bundle-radio-checkmark" style="position: relative !important; display: inline-block !important; width: 20px !important; height: 20px !important; margin-left: 20px !important; margin-right: 12px !important; flex-shrink: 0 !important; box-sizing: border-box !important; border-radius: 50% !important;"></span>
-                  <div class="bundle-title-group">
-                    <span class="bundle-title">Buy 1</span>
-                    <span class="bundle-subtitle">You Save {{ current_variant.compare_at_price | minus: current_variant.price | money }}</span>
+          {%- if section.blocks.size > 0 -%}
+            {%- for block in section.blocks -%}
+              {%- case block.type -%}
+                {%- when '@app' -%}
+                  {% render block %}
+                {%- when 'title' -%}
+                  <!-- Title -->
+                  <div class="details-header-block" style="display: flex; flex-direction: column; gap: 4px;" {{ block.shopify_attributes }}>
+                    <span style="font-family: var(--font-body); font-size: 18.67px; font-weight: 850; text-transform: uppercase; letter-spacing: 0.05em; color: #a6a6a6; margin-bottom: 2px;">{{ product.vendor | default: 'Comfort On The Move' }}</span>
+                    <h1 class="main-product-title" style="font-size: 32px; font-weight: 700; color: var(--text-primary); margin: 0; line-height: 1.2;">{{ product.title }}</h1>
                   </div>
-                </label>
-                <div class="bundle-price-group">
-                  <span class="bundle-price">{{ current_variant.price | money }}</span>
-                  {%- if current_variant.compare_at_price > current_variant.price -%}
-                    <span class="bundle-compare-price">{{ current_variant.compare_at_price | money }}</span>
-                  {%- endif -%}
-                </div>
-              </div>
-              
-              <div class="bundle-card-content" style="padding-top: 24px;">
-                <div class="bundle-color-row">
-                  <span class="bundle-color-label" style="margin-bottom: 0; width: 58px;">Color:</span>
-                  <div class="bundle-select-wrapper" style="position: relative !important; width: 150px; flex-shrink: 0;">
-                    <select id="bundle-1-variant-select" class="bundle-color-dropdown" style="padding: 1px 24px 1px 12px !important; font-size: 17px !important;">
-                      {%- for variant in product.variants -%}
-                        {%- assign opt_color = '#9ca3af' -%}
-                        {%- assign v_title = variant.title | downcase -%}
-                        {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign opt_color = '#3b4857' -%}{%- endif -%}
-                        <option value="{{ variant.id }}" data-color-hex="{{ opt_color }}">{{ variant.title }}</option>
-                      {%- endfor -%}
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Package 2 (Buy 2, Save $10) -->
-            <div class="bundle-card" id="bundle-card-2">
-              <div class="bundle-card-header">
-                <label class="bundle-radio-container" style="display: flex !important; align-items: center !important; cursor: pointer !important; width: 100% !important; margin: 0 !important; position: relative !important;">
-                  <input type="radio" name="bundle_option" value="buy_2" style="position: absolute !important; opacity: 0 !important; width: 0 !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; pointer-events: none !important;">
-                  <span class="bundle-radio-checkmark" style="position: relative !important; display: inline-block !important; width: 20px !important; height: 20px !important; margin-left: 20px !important; margin-right: 12px !important; flex-shrink: 0 !important; box-sizing: border-box !important; border-radius: 50% !important;"></span>
-                  <div class="bundle-title-group">
-                    <span class="bundle-title">Buy 2</span>
-                    <span class="bundle-title">Save extra $10</span>
-                    <span class="bundle-subtitle">Best Deal: {{ current_variant.price | times: 2 | minus: 1000 | divided_by: 2 | money }} Each</span>
-                  </div>
-                </label>
-                <div class="bundle-price-group">
-                  <span class="bundle-price">{{ current_variant.price | times: 2 | minus: 1000 | money }}</span>
-                  {%- if current_variant.compare_at_price > current_variant.price -%}
-                    <span class="bundle-compare-price">{{ current_variant.compare_at_price | times: 2 | money }}</span>
-                  {%- endif -%}
-                </div>
-              </div>
-              
-              <div class="bundle-card-content" style="display: none; padding-top: 24px;">
-                <div class="bundle-color-row">
-                  <span class="bundle-color-label" style="margin-bottom: 0; width: 58px;">Colors:</span>
-                  <div class="bundle-selects-row" style="display: flex; gap: 16px; width: 255px; flex-shrink: 0;">
-                    <div class="bundle-select-wrapper" style="position: relative !important; flex: 1;">
-                      <span class="pillow-badge" style="position: absolute !important; top: 0 !important; left: 50% !important; transform: translate(-50%, -50%) !important; z-index: 10; border-radius: 9999px !important; padding: 1px 10px !important; font-size: 9px !important; white-space: nowrap !important;">Pillow 1</span>
-                      <select id="bundle-2-pillow-1-select" class="bundle-color-dropdown" style="padding: 1px 24px 1px 12px !important; font-size: 17px !important;">
-                        {%- for variant in product.variants -%}
-                          {%- assign opt_color = '#9ca3af' -%}
-                          {%- assign v_title = variant.title | downcase -%}
-                          {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign opt_color = '#3b4857' -%}{%- endif -%}
-                          <option value="{{ variant.id }}" data-color-hex="{{ opt_color }}">{{ variant.title }}</option>
-                        {%- endfor -%}
-                      </select>
+                {%- when 'rating' -%}
+                  <!-- Rating -->
+                  {%- if block.settings.show_rating -%}
+                    <div class="ratings-row" style="margin-top: 4px;" {{ block.shopify_attributes }}>
+                      <div class="stars-container" style="display: flex; align-items: center;">
+                        <span class="material-symbols-outlined fill" style="color: #facc15; font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined fill" style="color: #facc15; font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined fill" style="color: #facc15; font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined fill" style="color: #facc15; font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined fill" style="color: #facc15; font-variation-settings: 'FILL' 1;">star</span>
+                        {%- if block.settings.rating_text != blank -%}
+                          <span class="reviews-count-text" style="font-family: var(--font-body); font-size: 17.5px; color: var(--text-secondary); margin-left: 8px;">{{ block.settings.rating_text | escape }}</span>
+                        {%- endif -%}
+                      </div>
                     </div>
-                    <div class="bundle-select-wrapper" style="position: relative !important; flex: 1;">
-                      <span class="pillow-badge" style="position: absolute !important; top: 0 !important; left: 50% !important; transform: translate(-50%, -50%) !important; z-index: 10; border-radius: 9999px !important; padding: 1px 10px !important; font-size: 9px !important; white-space: nowrap !important;">Pillow 2</span>
-                      <select id="bundle-2-pillow-2-select" class="bundle-color-dropdown" style="padding: 1px 24px 1px 12px !important; font-size: 17px !important;">
-                        {%- for variant in product.variants -%}
-                          {%- assign opt_color = '#9ca3af' -%}
-                          {%- assign v_title = variant.title | downcase -%}
-                          {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign opt_color = '#3b4857' -%}{%- endif -%}
-                          <option value="{{ variant.id }}" data-color-hex="{{ opt_color }}">{{ variant.title }}</option>
-                        {%- endfor -%}
-                      </select>
+                  {%- endif -%}
+                {%- when 'description' -%}
+                  <!-- Description -->
+                  <div class="product-info-description" style="font-family: var(--font-body); color: var(--text-secondary); font-size: 15px; line-height: 1.6; margin-top: -12px;" {{ block.shopify_attributes }}>
+                    {%- if block.settings.description_override != blank -%}
+                      {{ block.settings.description_override }}
+                    {%- elsif product.description != blank -%}
+                      {{ product.description }}
+                    {%- else -%}
+                      <p style="font-size: 20px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; line-height: 1.3;">Tired of neck pain during long trips?</p>
+                      <p style="font-size: 15px; line-height: 1.5;">Meet Avemos™ Travel Pillow — your ticket to painless, restful travel. Ultimate support, anywhere you go.</p>
+                      
+                      <ul style="list-style: none; padding: 0; margin: 16px 0 0 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px;">
+                        <li style="display: flex; align-items: center; gap: 8px;">
+                          <span class="material-symbols-outlined" style="color: var(--text-primary); font-size: 18px; font-weight: bold;">check_circle</span>
+                          <span>Arrive refreshed, completely pain-free.</span>
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 8px;">
+                          <span class="material-symbols-outlined" style="color: var(--text-primary); font-size: 18px; font-weight: bold;">check_circle</span>
+                          <span>Instant relief for tired shoulders and neck.</span>
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 8px;">
+                          <span class="material-symbols-outlined" style="color: var(--text-primary); font-size: 18px; font-weight: bold;">check_circle</span>
+                          <span>Space-saving design, ready for any adventure.</span>
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 8px;">
+                          <span class="material-symbols-outlined" style="color: var(--text-primary); font-size: 18px; font-weight: bold;">check_circle</span>
+                          <span>Love it or your money back. 30-Day Trial.</span>
+                        </li>
+                      </ul>
+                    {%- endif -%}
+                  </div>
+                {%- when 'promo' -%}
+                  <!-- Promo -->
+                  {%- if block.settings.promo_text != blank -%}
+                    <div style="font-family: var(--font-body); font-weight: 800; color: {{ block.settings.promo_color }}; display: flex; align-items: center; gap: 8px; margin-bottom: -16px; font-size: 20px; line-height: 1.3;" {{ block.shopify_attributes }}>
+                      {{ block.settings.promo_text | escape }}
+                    </div>
+                  {%- endif -%}
+                {%- when 'bundles' -%}
+                  <!-- Packages / Bundles Section -->
+                  {%- assign block_bundle_2_discount_cents = block.settings.bundle_2_discount | times: 100 -%}
+                  <div class="bundles-selection-section" {{ block.shopify_attributes }}>
+                    <!-- Package 1 (Buy 1) -->
+                    <div class="bundle-card active" id="bundle-card-1">
+                      <div class="bundle-card-header">
+                        <label class="bundle-radio-container" style="display: flex !important; align-items: center !important; cursor: pointer !important; width: 100% !important; margin: 0 !important; position: relative !important;">
+                          <input type="radio" name="bundle_option" value="buy_1" checked style="position: absolute !important; opacity: 0 !important; width: 0 !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; pointer-events: none !important;">
+                          <span class="bundle-radio-checkmark" style="position: relative !important; display: inline-block !important; width: 20px !important; height: 20px !important; margin-left: 20px !important; margin-right: 12px !important; flex-shrink: 0 !important; box-sizing: border-box !important; border-radius: 50% !important;"></span>
+                          <div class="bundle-title-group">
+                            <span class="bundle-title">{{ block.settings.bundle_1_title | escape }}</span>
+                            <span class="bundle-subtitle">You Save {{ current_variant.compare_at_price | minus: current_variant.price | money }}</span>
+                          </div>
+                        </label>
+                        <div class="bundle-price-group">
+                          <span class="bundle-price">{{ current_variant.price | money }}</span>
+                          {%- if current_variant.compare_at_price > current_variant.price -%}
+                            <span class="bundle-compare-price">{{ current_variant.compare_at_price | money }}</span>
+                          {%- endif -%}
+                        </div>
+                      </div>
+                      
+                      <div class="bundle-card-content">
+                        <div class="bundle-color-row" style="display: flex; align-items: center; gap: 12px; margin-left: 20px;">
+                          <span class="bundle-color-label" style="font-weight: 700; color: var(--text-primary); margin-bottom: 0;">Color:</span>
+                          <div class="bundle-select-wrapper">
+                            <div class="custom-dropdown" id="bundle-1-variant-select" data-value="{{ product.variants.first.id }}">
+                              <div class="custom-dropdown-trigger">
+                                <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
+                                <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
+                                <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                              </div>
+                              <div class="custom-dropdown-options">
+                                {%- for variant in product.variants -%}
+                                  {%- assign swatch_color = '#9ca3af' -%}
+                                  {%- assign v_title = variant.title | downcase -%}
+                                  {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
+                                  {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
+                                  {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
+                                  {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
+                                  {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
+                                  {%- endif -%}
+                                  <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
+                                    <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
+                                    <span class="option-label">{{ variant.title }}</span>
+                                  </div>
+                                {%- endfor -%}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Package 2 (Buy 2) -->
+                    {%- assign block_bundle_2_price = current_variant.price | times: 2 | minus: block_bundle_2_discount_cents -%}
+                    <div class="bundle-card" id="bundle-card-2" data-discount-cents="{{ block_bundle_2_discount_cents }}">
+                      <div class="bundle-card-header">
+                        <label class="bundle-radio-container" style="display: flex !important; align-items: center !important; cursor: pointer !important; width: 100% !important; margin: 0 !important; position: relative !important;">
+                          <input type="radio" name="bundle_option" value="buy_2" style="position: absolute !important; opacity: 0 !important; width: 0 !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; pointer-events: none !important;">
+                          <span class="bundle-radio-checkmark" style="position: relative !important; display: inline-block !important; width: 20px !important; height: 20px !important; margin-left: 20px !important; margin-right: 12px !important; flex-shrink: 0 !important; box-sizing: border-box !important; border-radius: 50% !important;"></span>
+                          <div class="bundle-title-group">
+                            <span class="bundle-title">{{ block.settings.bundle_2_title | escape }}, {{ block.settings.bundle_2_subtitle | escape }}</span>
+                            <span class="bundle-subtitle">Best Deal: {{ block_bundle_2_price | divided_by: 2 | money }} Each</span>
+                          </div>
+                        </label>
+                        <div class="bundle-price-group">
+                          <span class="bundle-price">{{ block_bundle_2_price | money }}</span>
+                          {%- if current_variant.compare_at_price > current_variant.price -%}
+                            <span class="bundle-compare-price">{{ current_variant.compare_at_price | times: 2 | money }}</span>
+                          {%- endif -%}
+                        </div>
+                      </div>
+                      
+                      <div class="bundle-card-content">
+                        <div class="bundle-color-row" style="display: flex; align-items: center; gap: 12px; margin-left: 20px; flex-wrap: wrap;">
+                          <span class="bundle-color-label" style="font-weight: 700; color: var(--text-primary); margin-bottom: 0;">Colors:</span>
+                          <div class="bundle-select-wrapper">
+                            <span class="pillow-badge">Pillow 1</span>
+                            <div class="custom-dropdown" id="bundle-2-pillow-1-select" data-value="{{ product.variants.first.id }}">
+                              <div class="custom-dropdown-trigger">
+                                <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
+                                <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
+                                <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                              </div>
+                              <div class="custom-dropdown-options">
+                                {%- for variant in product.variants -%}
+                                  {%- assign swatch_color = '#9ca3af' -%}
+                                  {%- assign v_title = variant.title | downcase -%}
+                                  {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
+                                  {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
+                                  {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
+                                  {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
+                                  {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
+                                  {%- endif -%}
+                                  <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
+                                    <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
+                                    <span class="option-label">{{ variant.title }}</span>
+                                  </div>
+                                {%- endfor -%}
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="bundle-select-wrapper">
+                            <span class="pillow-badge">Pillow 2</span>
+                            <div class="custom-dropdown" id="bundle-2-pillow-2-select" data-value="{{ product.variants.first.id }}">
+                              <div class="custom-dropdown-trigger">
+                                <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
+                                <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
+                                <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                              </div>
+                              <div class="custom-dropdown-options">
+                                {%- for variant in product.variants -%}
+                                  {%- assign swatch_color = '#9ca3af' -%}
+                                  {%- assign v_title = variant.title | downcase -%}
+                                  {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
+                                  {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
+                                  {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
+                                  {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
+                                  {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
+                                  {%- endif -%}
+                                  <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
+                                    <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
+                                    <span class="option-label">{{ variant.title }}</span>
+                                  </div>
+                                {%- endfor -%}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {%- when 'buy_buttons' -%}
+                  <!-- Add to Cart Block -->
+                  <div class="checkout-form-wrapper" {{ block.shopify_attributes }}>
+                    {%- form 'product', product, id: 'bundle-add-to-cart-form' -%}
+                      <input type="hidden" name="return_to" value="/checkout">
+                      <input type="hidden" name="id" id="main-product-variant-id" value="{{ current_variant.id }}">
+                      <input type="hidden" name="quantity" id="qty-input-val" value="1">
+                      
+                      <!-- Main Add to Cart Button -->
+                      <button type="submit" class="premium-buy-btn larger-buy-btn">
+                        {{ block.settings.button_text | escape }}
+                      </button>
+
+                      {%- if block.settings.disclaimer_text != blank -%}
+                        <div class="quote-disclaimer" style="font-style: normal !important; font-weight: 750 !important; color: var(--text-primary) !important;">
+                          {{ block.settings.disclaimer_text | escape }}
+                        </div>
+                      {%- endif -%}
+
+                      <!-- Payment Icons Grid -->
+                      {%- if block.settings.show_payment_icons -%}
+                        {%- assign payment_icons = 'shopify_pay,paypal,google_pay,visa,master,american_express,discover,diners_club' | split: ',' -%}
+                        <div class="payment-icons-row-custom">
+                          {%- for type in payment_icons -%}
+                            <span class="payment-icon-wrapper-custom">
+                              {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+                            </span>
+                          {%- endfor -%}
+                        </div>
+                      {%- endif -%}
+                    {%- endform -%}
+                  </div>
+                {%- when 'collapsible_tab' -%}
+                  <!-- Accordion / Collapsible Tab -->
+                  <div class="details-accordions-group" {{ block.shopify_attributes }} style="margin-top: 0; margin-bottom: 0; border-top: none;">
+                    <details class="accordion-item" style="border-top: 1px solid var(--border-color); border-bottom: none; padding: 12px 0;">
+                      <summary class="accordion-summary">
+                        <span style="font-family: var(--font-body); font-weight: 600; font-size: 15px; color: var(--text-primary);">{{ block.settings.heading | escape }}</span>
+                        <div class="accordion-chevron">
+                          <span class="material-symbols-outlined">expand_more</span>
+                        </div>
+                      </summary>
+                      <div class="accordion-content" style="margin-top: 8px; font-size: 14.5px; line-height: 1.5; color: var(--text-secondary);">
+                        {{ block.settings.content }}
+                      </div>
+                    </details>
+                  </div>
+              {%- endcase -%}
+            {%- endfor -%}
+          {%- else -%}
+            {%- comment -%} Compatibility Fallback: Render default static block layout {%- endcomment -%}
+            <!-- Title & Rating -->
+            <div class="details-header-block" style="display: flex; flex-direction: column; gap: 4px;">
+              <span style="font-family: var(--font-body); font-size: 18.67px; font-weight: 850; text-transform: uppercase; letter-spacing: 0.05em; color: #a6a6a6; margin-bottom: 2px;">{{ product.vendor | default: 'Comfort On The Move' }}</span>
+              <h1 class="main-product-title" style="font-size: 32px; font-weight: 700; color: var(--text-primary); margin: 0; line-height: 1.2;">{{ product.title }}</h1>
+              
+              <div class="ratings-row" style="margin-top: 4px;">
+                <div class="stars-container" style="display: flex; align-items: center;">
+                  <span class="material-symbols-outlined fill" style="color: #facc15; font-variation-settings: 'FILL' 1;">star</span>
+                  <span class="material-symbols-outlined fill" style="color: #facc15; font-variation-settings: 'FILL' 1;">star</span>
+                  <span class="material-symbols-outlined fill" style="color: #facc15; font-variation-settings: 'FILL' 1;">star</span>
+                  <span class="material-symbols-outlined fill" style="color: #facc15; font-variation-settings: 'FILL' 1;">star</span>
+                  <span class="material-symbols-outlined fill" style="color: #facc15; font-variation-settings: 'FILL' 1;">star</span>
+                  <span class="reviews-count-text" style="font-family: var(--font-body); font-size: 17.5px; color: var(--text-secondary); margin-left: 8px;">4.9/5 (12,659 reviews)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="product-info-description" style="font-family: var(--font-body); color: var(--text-secondary); font-size: 15px; line-height: 1.6; margin-top: -12px;">
+              {%- if product.description != blank -%}
+                {{ product.description }}
+              {%- else -%}
+                <p style="font-size: 20px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; line-height: 1.3;">Tired of neck pain during long trips?</p>
+                <p style="font-size: 15px; line-height: 1.5;">Meet Avemos™ Travel Pillow — your ticket to painless, restful travel. Ultimate support, anywhere you go.</p>
+                
+                <ul style="list-style: none; padding: 0; margin: 16px 0 0 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px;">
+                  <li style="display: flex; align-items: center; gap: 8px;">
+                    <span class="material-symbols-outlined" style="color: var(--text-primary); font-size: 18px; font-weight: bold;">check_circle</span>
+                    <span>Arrive refreshed, completely pain-free.</span>
+                  </li>
+                  <li style="display: flex; align-items: center; gap: 8px;">
+                    <span class="material-symbols-outlined" style="color: var(--text-primary); font-size: 18px; font-weight: bold;">check_circle</span>
+                    <span>Instant relief for tired shoulders and neck.</span>
+                  </li>
+                  <li style="display: flex; align-items: center; gap: 8px;">
+                    <span class="material-symbols-outlined" style="color: var(--text-primary); font-size: 18px; font-weight: bold;">check_circle</span>
+                    <span>Space-saving design, ready for any adventure.</span>
+                  </li>
+                  <li style="display: flex; align-items: center; gap: 8px;">
+                    <span class="material-symbols-outlined" style="color: var(--text-primary); font-size: 18px; font-weight: bold;">check_circle</span>
+                    <span>Love it or your money back. 30-Day Trial.</span>
+                  </li>
+                </ul>
+              {%- endif -%}
+            </div>
+
+            <!-- Promo Banner -->
+            <div style="font-family: var(--font-body); font-weight: 800; color: #ba1a1a; display: flex; align-items: center; gap: 8px; margin-bottom: -16px; font-size: 20px; line-height: 1.3;">
+              ⏳ Final Hours: Claim Your 50% Discount & Free Shipping Before It’s Gone
+            </div>
+
+            <!-- Packages / Bundles Section -->
+            <div class="bundles-selection-section">
+              <!-- Package 1 (Buy 1) -->
+              <div class="bundle-card active" id="bundle-card-1">
+                <div class="bundle-card-header">
+                  <label class="bundle-radio-container" style="display: flex !important; align-items: center !important; cursor: pointer !important; width: 100% !important; margin: 0 !important; position: relative !important;">
+                    <input type="radio" name="bundle_option" value="buy_1" checked style="position: absolute !important; opacity: 0 !important; width: 0 !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; pointer-events: none !important;">
+                    <span class="bundle-radio-checkmark" style="position: relative !important; display: inline-block !important; width: 20px !important; height: 20px !important; margin-left: 20px !important; margin-right: 12px !important; flex-shrink: 0 !important; box-sizing: border-box !important; border-radius: 50% !important;"></span>
+                    <div class="bundle-title-group">
+                      <span class="bundle-title">Buy 1</span>
+                      <span class="bundle-subtitle">You Save {{ current_variant.compare_at_price | minus: current_variant.price | money }}</span>
+                    </div>
+                  </label>
+                  <div class="bundle-price-group">
+                    <span class="bundle-price">{{ current_variant.price | money }}</span>
+                    {%- if current_variant.compare_at_price > current_variant.price -%}
+                      <span class="bundle-compare-price">{{ current_variant.compare_at_price | money }}</span>
+                    {%- endif -%}
+                  </div>
+                </div>
+                
+                <div class="bundle-card-content">
+                  <div class="bundle-color-row" style="display: flex; align-items: center; gap: 12px; margin-left: 20px;">
+                    <span class="bundle-color-label" style="font-weight: 700; color: var(--text-primary); margin-bottom: 0;">Color:</span>
+                    <div class="bundle-select-wrapper">
+                      <div class="custom-dropdown" id="bundle-1-variant-select" data-value="{{ product.variants.first.id }}">
+                        <div class="custom-dropdown-trigger">
+                          <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
+                          <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
+                          <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                        </div>
+                        <div class="custom-dropdown-options">
+                          {%- for variant in product.variants -%}
+                            {%- assign swatch_color = '#9ca3af' -%}
+                            {%- assign v_title = variant.title | downcase -%}
+                            {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
+                            {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
+                            {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
+                            {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
+                            {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
+                            {%- endif -%}
+                            <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
+                              <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
+                              <span class="option-label">{{ variant.title }}</span>
+                            </div>
+                          {%- endfor -%}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Package 2 (Buy 2) -->
+              {%- assign fallback_bundle_2_price = current_variant.price | times: 2 | minus: 1000 -%}
+              <div class="bundle-card" id="bundle-card-2" data-discount-cents="1000">
+                <div class="bundle-card-header">
+                  <label class="bundle-radio-container" style="display: flex !important; align-items: center !important; cursor: pointer !important; width: 100% !important; margin: 0 !important; position: relative !important;">
+                    <input type="radio" name="bundle_option" value="buy_2" style="position: absolute !important; opacity: 0 !important; width: 0 !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; pointer-events: none !important;">
+                    <span class="bundle-radio-checkmark" style="position: relative !important; display: inline-block !important; width: 20px !important; height: 20px !important; margin-left: 20px !important; margin-right: 12px !important; flex-shrink: 0 !important; box-sizing: border-box !important; border-radius: 50% !important;"></span>
+                    <div class="bundle-title-group">
+                      <span class="bundle-title">Buy 2, Save $10</span>
+                      <span class="bundle-subtitle">Best Deal: {{ fallback_bundle_2_price | divided_by: 2 | money }} Each</span>
+                    </div>
+                  </label>
+                  <div class="bundle-price-group">
+                    <span class="bundle-price">{{ fallback_bundle_2_price | money }}</span>
+                    {%- if current_variant.compare_at_price > current_variant.price -%}
+                      <span class="bundle-compare-price">{{ current_variant.compare_at_price | times: 2 | money }}</span>
+                    {%- endif -%}
+                  </div>
+                </div>
+                
+                <div class="bundle-card-content">
+                  <div class="bundle-color-row" style="display: flex; align-items: center; gap: 12px; margin-left: 20px; flex-wrap: wrap;">
+                    <span class="bundle-color-label" style="font-weight: 700; color: var(--text-primary); margin-bottom: 0;">Colors:</span>
+                    <div class="bundle-select-wrapper">
+                      <span class="pillow-badge">Pillow 1</span>
+                      <div class="custom-dropdown" id="bundle-2-pillow-1-select" data-value="{{ product.variants.first.id }}">
+                        <div class="custom-dropdown-trigger">
+                          <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
+                          <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
+                          <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                        </div>
+                        <div class="custom-dropdown-options">
+                          {%- for variant in product.variants -%}
+                            {%- assign swatch_color = '#9ca3af' -%}
+                            {%- assign v_title = variant.title | downcase -%}
+                            {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
+                            {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
+                            {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
+                            {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
+                            {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
+                            {%- endif -%}
+                            <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
+                              <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
+                              <span class="option-label">{{ variant.title }}</span>
+                            </div>
+                          {%- endfor -%}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="bundle-select-wrapper">
+                      <span class="pillow-badge">Pillow 2</span>
+                      <div class="custom-dropdown" id="bundle-2-pillow-2-select" data-value="{{ product.variants.first.id }}">
+                        <div class="custom-dropdown-trigger">
+                          <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
+                          <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
+                          <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                        </div>
+                        <div class="custom-dropdown-options">
+                          {%- for variant in product.variants -%}
+                            {%- assign swatch_color = '#9ca3af' -%}
+                            {%- assign v_title = variant.title | downcase -%}
+                            {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
+                            {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
+                            {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
+                            {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
+                            {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
+                            {%- endif -%}
+                            <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
+                              <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
+                              <span class="option-label">{{ variant.title }}</span>
+                            </div>
+                          {%- endfor -%}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- Add to Cart Block -->
-          <div class="checkout-form-wrapper">
-            {%- form 'product', product, id: 'bundle-add-to-cart-form' -%}
-              <input type="hidden" name="return_to" value="/checkout">
-              <input type="hidden" name="id" id="main-product-variant-id" value="{{ current_variant.id }}">
-              <input type="hidden" name="quantity" id="qty-input-val" value="1">
-              
-              <!-- Main Add to Cart Button -->
-              <button type="submit" class="premium-buy-btn larger-buy-btn">
-                Add to cart
-              </button>
+            <!-- Add to Cart Form -->
+            <div class="checkout-form-wrapper">
+              {%- form 'product', product, id: 'bundle-add-to-cart-form' -%}
+                <input type="hidden" name="return_to" value="/checkout">
+                <input type="hidden" name="id" id="main-product-variant-id" value="{{ current_variant.id }}">
+                <input type="hidden" name="quantity" id="qty-input-val" value="1">
+                
+                <button type="submit" class="premium-buy-btn larger-buy-btn">
+                  Add to cart
+                </button>
 
-              <div class="quote-disclaimer" style="font-style: normal !important; font-weight: 750 !important; color: var(--text-primary) !important;">
-                Elevate Your Travel Experience
-              </div>
+                <div class="quote-disclaimer" style="font-style: normal !important; font-weight: 750 !important; color: var(--text-primary) !important;">
+                  Elevate Your Travel Experience
+                </div>
 
-              <!-- Payment Icons Grid -->
-              {%- assign payment_icons = 'shopify_pay,paypal,google_pay,visa,master,american_express,discover,diners_club' | split: ',' -%}
-              <div class="payment-icons-row-custom">
-                {%- for type in payment_icons -%}
-                  <span class="payment-icon-wrapper-custom">
-                    {{ type | payment_type_svg_tag: class: 'payment-icon' }}
-                  </span>
-                {%- endfor -%}
-              </div>
-            {%- endform -%}
-          </div>
+                <!-- Payment Icons Grid -->
+                {%- assign payment_icons = 'shopify_pay,paypal,google_pay,visa,master,american_express,discover,diners_club' | split: ',' -%}
+                <div class="payment-icons-row-custom">
+                  {%- for type in payment_icons -%}
+                    <span class="payment-icon-wrapper-custom">
+                      {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+                    </span>
+                  {%- endfor -%}
+                </div>
+              {%- endform -%}
+            </div>
+          {%- endif -%}
         </div>
 
       </div>
@@ -457,7 +768,7 @@
   }
   .bundle-card.active {
     border: 2px solid var(--text-primary);
-    background-color: #f5f2eb; /* Beige active background */
+    background-color: #f5f5f5;
     box-shadow: 0 6px 18px rgba(125, 139, 161, 0.1);
   }
   
@@ -494,7 +805,7 @@
   .bundle-title-group {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
   }
   .bundle-title {
     font-family: var(--font-heading);
@@ -530,10 +841,24 @@
     text-decoration: line-through;
   }
 
-  /* Bundle dropdown content styling */
-  .bundle-card-content {
-    margin-top: 6px;
-    padding-top: 6px;
+  /* Bundle dropdown content styling with collapse animation */
+  .bundle-card .bundle-card-content {
+    max-height: 0 !important;
+    opacity: 0 !important;
+    overflow: hidden !important;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.2s ease, 
+                padding-top 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .bundle-card.active .bundle-card-content {
+    max-height: 400px !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+    padding-top: 16px !important;
+    margin-top: 6px !important;
   }
   .bundle-color-row {
     display: flex;
@@ -557,45 +882,187 @@
   
   .pillow-badge {
     position: absolute;
-    top: -9px;
-    left: 12px;
-    background-color: var(--text-primary);
-    color: white;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #2a2d32;
+    color: #ffffff;
     font-size: 10px;
     font-family: var(--font-body);
-    font-weight: 600;
-    padding: 1px 8px;
-    border-radius: 4px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 9999px;
     z-index: 10;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    line-height: 1.4;
   }
 
-  .select-color-dot {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    pointer-events: none;
-    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+  .bundle-select-wrapper {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    width: auto;
+    min-width: 140px;
+    max-width: 185px;
+    margin-top: 10px;
   }
-  
-  .bundle-color-dropdown {
+
+  /* Custom dropdown component */
+  .custom-dropdown {
+    position: relative;
     width: 100%;
-    padding: 12px 12px 12px 34px;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    font-size: 14px;
-    font-family: var(--font-body);
-    outline: none;
+    user-select: none;
+  }
+  .custom-dropdown-trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 32px 9px 12px;
+    border-radius: 24px;
+    border: 1.5px solid #2a2a2a;
     background: white;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2344474c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 14px;
+    font-size: 13px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    color: #2a2a2a;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    position: relative;
+    min-height: 38px;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .custom-dropdown-trigger:hover {
+    border-color: var(--primary);
+  }
+  .custom-dropdown.open .custom-dropdown-trigger {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(79, 93, 113, 0.12);
+  }
+  .select-color-dot {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.1);
+    flex-shrink: 0;
+  }
+  .custom-dropdown-text {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.3;
+  }
+  .custom-dropdown-chevron {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    transition: transform 0.25s ease;
+    pointer-events: none;
+  }
+  .custom-dropdown.open .custom-dropdown-chevron {
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  /* Dropdown options panel */
+  .custom-dropdown-options {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+    z-index: 100;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px) scale(0.97);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    padding: 4px;
+  }
+  .custom-dropdown.open .custom-dropdown-options {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+  .custom-dropdown-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    border-radius: 12px;
+    font-size: 13px;
+    font-family: var(--font-body);
+    font-weight: 500;
+    color: #2a2a2a;
+    transition: background-color 0.15s ease;
+  }
+  .custom-dropdown-option:hover {
+    background-color: #f5f5f5;
+  }
+  .custom-dropdown-option.selected {
+    background-color: #eef0f3;
+    font-weight: 700;
+  }
+  .option-color-dot {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+    flex-shrink: 0;
+  }
+  .option-label {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Swatches styling */
+  .bundle-swatches-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .swatch-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid white;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.06);
+  }
+  .swatch-btn:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.25), 0 4px 10px rgba(0,0,0,0.15);
+  }
+  .swatch-btn.active {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 2px var(--bg-secondary), 0 0 0 4px var(--text-primary);
+  }
+  .selected-color-name {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-left: 4px;
+    text-transform: capitalize;
   }
 
   /* Checkout Form & Button */
@@ -820,12 +1287,11 @@
     // Bundle Radio click selection handler
     const bundleCards = document.querySelectorAll('.bundle-card');
     const variantIdInput = document.getElementById('main-product-variant-id');
-    const priceDisplay = document.getElementById('main-product-price');
 
     bundleCards.forEach(card => {
       card.addEventListener('click', (e) => {
-        // Prevent click trigger loop if clicking selectors or radios directly
-        if (e.target.closest('.bundle-color-dropdown') || e.target.tagName === 'OPTION') {
+        // Prevent click trigger loop if clicking custom dropdown elements
+        if (e.target.closest('.custom-dropdown')) {
           return;
         }
 
@@ -837,53 +1303,84 @@
         // Toggle active status UI
         bundleCards.forEach(c => {
           c.classList.remove('active');
-          const content = c.querySelector('.bundle-card-content');
-          if (content) content.style.display = 'none';
         });
 
         card.classList.add('active');
-        const content = card.querySelector('.bundle-card-content');
-        if (content) content.style.display = 'block';
 
         updatePriceAndVariant();
       });
     });
 
-    // Color dropdowns change handler
-    const colorDropdowns = document.querySelectorAll('.bundle-color-dropdown');
-    
-    colorDropdowns.forEach(dropdown => {
-      // Initialize dot colors
-      updateDotColor(dropdown);
+    // Custom dropdown logic
+    const customDropdowns = document.querySelectorAll('.custom-dropdown');
 
-      dropdown.addEventListener('change', () => {
-        updateDotColor(dropdown);
-        updatePriceAndVariant();
+    customDropdowns.forEach(dropdown => {
+      const trigger = dropdown.querySelector('.custom-dropdown-trigger');
+      const options = dropdown.querySelectorAll('.custom-dropdown-option');
+
+      // Toggle open/close on trigger click
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        // Close all other dropdowns first
+        customDropdowns.forEach(d => {
+          if (d !== dropdown) d.classList.remove('open');
+        });
+        dropdown.classList.toggle('open');
+      });
+
+      // Handle option selection
+      options.forEach(option => {
+        option.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const value = option.getAttribute('data-value');
+          const color = option.getAttribute('data-color');
+          const label = option.querySelector('.option-label').textContent;
+
+          // Update data-value on dropdown
+          dropdown.setAttribute('data-value', value);
+
+          // Update trigger display
+          const triggerDot = trigger.querySelector('.select-color-dot');
+          const triggerText = trigger.querySelector('.custom-dropdown-text');
+          if (triggerDot) triggerDot.style.backgroundColor = color;
+          if (triggerText) triggerText.textContent = label;
+
+          // Mark selected
+          options.forEach(o => o.classList.remove('selected'));
+          option.classList.add('selected');
+
+          // Close dropdown
+          dropdown.classList.remove('open');
+
+          updatePriceAndVariant();
+        });
       });
     });
 
-    function updateDotColor(dropdown) {
-      const selectedOpt = dropdown.options[dropdown.selectedIndex];
-      const colorHex = selectedOpt.getAttribute('data-color-hex') || '#9ca3af';
-      const wrapper = dropdown.closest('.bundle-select-wrapper');
-      if (wrapper) {
-        const dot = wrapper.querySelector('.select-color-dot');
-        if (dot) dot.style.backgroundColor = colorHex;
+    // Close dropdowns on outside click
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.custom-dropdown')) {
+        customDropdowns.forEach(d => d.classList.remove('open'));
       }
+    });
+
+    // Helper: get value from custom dropdown by ID
+    function getDropdownValue(id) {
+      const el = document.getElementById(id);
+      return el ? el.getAttribute('data-value') : null;
     }
 
     function updatePriceAndVariant() {
       const activeOption = document.querySelector('input[name="bundle_option"]:checked').value;
       if (activeOption === 'buy_1') {
-        const select1 = document.getElementById('bundle-1-variant-select');
-        if (select1 && variantIdInput) {
-          variantIdInput.value = select1.value;
+        const val = getDropdownValue('bundle-1-variant-select');
+        if (val && variantIdInput) {
+          variantIdInput.value = val;
         }
       } else {
-        // Buy 2 uses Pillow 1's variant ID for standard fallback, but cart additions use custom AJAX
-        const select2_1 = document.getElementById('bundle-2-pillow-1-select');
-        if (select2_1 && variantIdInput) {
-          variantIdInput.value = select2_1.value;
+        const val = getDropdownValue('bundle-2-pillow-1-select');
+        if (val && variantIdInput) {
+          variantIdInput.value = val;
         }
       }
     }
@@ -900,11 +1397,11 @@
         let items = [];
         
         if (activeOption === 'buy_1') {
-          const varId = document.getElementById('bundle-1-variant-select').value;
+          const varId = getDropdownValue('bundle-1-variant-select');
           items.push({ id: parseInt(varId), quantity: 1 * qtyMultiplier });
         } else {
-          const varId1 = document.getElementById('bundle-2-pillow-1-select').value;
-          const varId2 = document.getElementById('bundle-2-pillow-2-select').value;
+          const varId1 = getDropdownValue('bundle-2-pillow-1-select');
+          const varId2 = getDropdownValue('bundle-2-pillow-2-select');
           
           if (varId1 === varId2) {
             items.push({ id: parseInt(varId1), quantity: 2 * qtyMultiplier });
@@ -1006,6 +1503,157 @@
       "type": "product",
       "id": "product",
       "label": "Product"
+    },
+    {
+      "type": "header",
+      "content": "Badge Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show Badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "Best Seller"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "rating",
+      "name": "Rating",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_rating",
+          "label": "Show Rating",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "rating_text",
+          "label": "Rating Text",
+          "default": "4.9/5 (12,659 reviews)"
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "description_override",
+          "label": "Description Override",
+          "info": "Overrides default product description if provided."
+        }
+      ]
+    },
+    {
+      "type": "promo",
+      "name": "Promo Banner",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "promo_text",
+          "label": "Promo Text",
+          "default": "⏳ Final Hours: Claim Your 50% Discount & Free Shipping Before It’s Gone"
+        },
+        {
+          "type": "color",
+          "id": "promo_color",
+          "label": "Promo Text Color",
+          "default": "#ba1a1a"
+        }
+      ]
+    },
+    {
+      "type": "bundles",
+      "name": "Bundles Selection",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "bundle_1_title",
+          "label": "Bundle 1 Title",
+          "default": "Buy 1"
+        },
+        {
+          "type": "text",
+          "id": "bundle_2_title",
+          "label": "Bundle 2 Title",
+          "default": "Buy 2"
+        },
+        {
+          "type": "text",
+          "id": "bundle_2_subtitle",
+          "label": "Bundle 2 Subtitle",
+          "default": "Save extra $10"
+        },
+        {
+          "type": "range",
+          "id": "bundle_2_discount",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "$",
+          "label": "Bundle 2 Discount",
+          "default": 10
+        }
+      ]
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy Buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Add to cart"
+        },
+        {
+          "type": "text",
+          "id": "disclaimer_text",
+          "label": "Disclaimer Text",
+          "default": "Elevate Your Travel Experience"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_payment_icons",
+          "label": "Show Payment Icons",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "collapsible_tab",
+      "name": "Collapsible Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Collapsible Tab"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        }
+      ]
     }
   ],
   "disabled_on": {
@@ -1013,7 +1661,27 @@
   },
   "presets": [
     {
-      "name": "Product Section"
+      "name": "Product Section",
+      "blocks": [
+        {
+          "type": "title"
+        },
+        {
+          "type": "rating"
+        },
+        {
+          "type": "description"
+        },
+        {
+          "type": "promo"
+        },
+        {
+          "type": "bundles"
+        },
+        {
+          "type": "buy_buttons"
+        }
+      ]
     }
   ]
 }

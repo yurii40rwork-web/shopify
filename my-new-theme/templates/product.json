@@ -1,17 +1,57 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main": {
       "type": "product",
-      "settings": {}
+      "settings": {},
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "rating": {
+          "type": "rating",
+          "settings": {
+            "show_rating": true,
+            "rating_text": "4.9/5 (12,659 reviews)"
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "promo": {
+          "type": "promo",
+          "settings": {
+            "promo_text": "⏳ Final Hours: Claim Your 50% Discount & Free Shipping Before It’s Gone",
+            "promo_color": "#ba1a1a"
+          }
+        },
+        "bundles": {
+          "type": "bundles",
+          "settings": {
+            "bundle_1_title": "Buy 1",
+            "bundle_2_title": "Buy 2",
+            "bundle_2_subtitle": "Save extra $10",
+            "bundle_2_discount": 10
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "button_text": "Add to cart",
+            "disclaimer_text": "Elevate Your Travel Experience",
+            "show_payment_icons": true
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "rating",
+        "description",
+        "promo",
+        "bundles",
+        "buy_buttons"
+      ]
     }
   },
   "order": [

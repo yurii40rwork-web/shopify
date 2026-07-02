@@ -4,45 +4,61 @@
   <!-- FAQ Section -->
   <section style="background-color: #f8fafc; border-top: 1px solid var(--border-color); padding: 40px 0;">
     <div class="container">
-      <h2 class="section-title">Frequently Asked Questions (FAQ)</h2>
-      <p class="section-subtitle">Quick answers to common questions</p>
+      <h2 class="section-title">{{ section.settings.title | default: "Frequently Asked Questions (FAQ)" }}</h2>
+      <p class="section-subtitle">{{ section.settings.subtitle | default: "Quick answers to common questions" }}</p>
       
       <div class="faq-list">
-        <div class="faq-item">
-          <div class="faq-header">
-            <span>Is this pillow suitable for people of different sizes?</span>
-            <span class="faq-icon">+</span>
-          </div>
-          <div class="faq-body">
-            <div class="faq-content">
-              Yes, thanks to the adjustable Velcro strap, you can easily control how snugly the pillow fits your neck. It is suitable for both teenagers and adults.
+        {%- if section.blocks.size > 0 -%}
+          {%- for block in section.blocks -%}
+            <div class="faq-item" {{ block.shopify_attributes }}>
+              <div class="faq-header">
+                <span>{{ block.settings.question }}</span>
+                <span class="faq-icon">+</span>
+              </div>
+              <div class="faq-body">
+                <div class="faq-content">
+                  {{ block.settings.answer }}
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <div class="faq-item">
+            <div class="faq-header">
+              <span>Is this pillow suitable for people of different sizes?</span>
+              <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-body">
+              <div class="faq-content">
+                Yes, thanks to the adjustable Velcro strap, you can easily control how snugly the pillow fits your neck. It is suitable for both teenagers and adults.
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="faq-item">
-          <div class="faq-header">
-            <span>How do I care for and wash the pillow?</span>
-            <span class="faq-icon">+</span>
-          </div>
-          <div class="faq-body">
-            <div class="faq-content">
-              The outer fabric cover can be easily removed using the integrated zipper. It is machine-washable at 30°C (86°F). The inner memory foam core should not be washed; simply wipe it with a damp cloth if necessary.
+          <div class="faq-item">
+            <div class="faq-header">
+              <span>How do I care for and wash the pillow?</span>
+              <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-body">
+              <div class="faq-content">
+                The outer fabric cover can be easily removed using the integrated zipper. It is machine-washable at 30°C (86°F). The inner memory foam core should not be washed; simply wipe it with a damp cloth if necessary.
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="faq-item">
-          <div class="faq-header">
-            <span>What are the shipping times and guarantees?</span>
-            <span class="faq-icon">+</span>
-          </div>
-          <div class="faq-body">
-            <div class="faq-content">
-              We offer express shipping in 5-10 business days. You also receive a 70-day risk-free guarantee: if you are not fully satisfied, you can return it for a 100% refund.
+          <div class="faq-item">
+            <div class="faq-header">
+              <span>What are the shipping times and guarantees?</span>
+              <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-body">
+              <div class="faq-content">
+                We offer express shipping in 5-10 business days. You also receive a 70-day risk-free guarantee: if you are not fully satisfied, you can return it for a 100% refund.
+              </div>
             </div>
           </div>
-        </div>
+        {%- endif -%}
       </div>
     </div>
   </section>
@@ -79,10 +95,66 @@
 {% schema %}
 {
   "name": "Avemos FAQ",
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Frequently Asked Questions (FAQ)"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "Quick answers to common questions"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Question text"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "Answer text"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Avemos FAQ"
+      "name": "Avemos FAQ",
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is this pillow suitable for people of different sizes?",
+            "answer": "Yes, thanks to the adjustable Velcro strap, you can easily control how snugly the pillow fits your neck. It is suitable for both teenagers and adults."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I care for and wash the pillow?",
+            "answer": "The outer fabric cover can be easily removed using the integrated zipper. It is machine-washable at 30°C (86°F). The inner memory foam core should not be washed; simply wipe it with a damp cloth if necessary."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What are the shipping times and guarantees?",
+            "answer": "We offer express shipping in 5-10 business days. You also receive a 70-day risk-free guarantee: if you are not fully satisfied, you can return it for a 100% refund."
+          }
+        }
+      ]
     }
   ]
 }

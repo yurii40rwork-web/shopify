@@ -2,8 +2,8 @@
 
 <!-- Announcement Bar -->
 <div class="announcement-bar">
-  <span>🔥 SPECIAL DEAL: 50% OFF TODAY ONLY!</span>
-  <span class="highlight">Free Express Shipping on orders over $50</span>
+  <span>{{ section.settings.announcement_1 | default: "🔥 SPECIAL DEAL: 50% OFF TODAY ONLY!" }}</span>
+  <span class="highlight">{{ section.settings.announcement_2 | default: "Free Express Shipping on orders over $50" }}</span>
 </div>
 
 <!-- Header -->
@@ -16,16 +16,26 @@
 
     <!-- Logo -->
     <a href="/" class="logo">
-      <img src="{{ 'logo-color.png' | asset_url }}" alt="Avemos Logo" height="{{ logo_height }}" style="height: {{ logo_height }}px; width: auto; vertical-align: middle;">
+      {%- if section.settings.logo != blank -%}
+        <img src="{{ section.settings.logo | image_url: width: 300 }}" alt="{{ section.settings.logo.alt | default: 'Avemos Logo' }}" height="{{ logo_height }}" style="height: {{ logo_height }}px; width: auto; vertical-align: middle;">
+      {%- else -%}
+        <img src="{{ 'logo-color.png' | asset_url }}" alt="Avemos Logo" height="{{ logo_height }}" style="height: {{ logo_height }}px; width: auto; vertical-align: middle;">
+      {%- endif -%}
     </a>
     
     <!-- Navigation Menu (Desktop only) -->
     <nav class="header-nav">
-      <a href="/" class="header-nav-link">Home</a>
-      <a href="/#reviews" class="header-nav-link">Reviews</a>
-      <a href="/pages/about-us" class="header-nav-link">About Us</a>
-      <a href="/pages/contact-us" class="header-nav-link">Contact Us</a>
-      <a href="/apps/track123" class="header-nav-link">Track Order</a>
+      {%- if section.settings.menu != blank -%}
+        {%- for link in section.settings.menu.links -%}
+          <a href="{{ link.url }}" class="header-nav-link">{{ link.title }}</a>
+        {%- endfor -%}
+      {%- else -%}
+        <a href="/" class="header-nav-link">Home</a>
+        <a href="/#reviews" class="header-nav-link">Reviews</a>
+        <a href="/pages/about-us" class="header-nav-link">About Us</a>
+        <a href="/pages/contact-us" class="header-nav-link">Contact Us</a>
+        <a href="/apps/track123" class="header-nav-link">Track Order</a>
+      {%- endif -%}
     </nav>
 
     <!-- Cart Button -->
@@ -40,7 +50,7 @@
 <div class="mobile-nav-drawer" id="mobileNavDrawer">
   <!-- Announcement Bar inside Drawer -->
   <div class="announcement-bar">
-    <span>🌸 Memorial Day Sale | 50% Off</span>
+    <span>{{ section.settings.mobile_announcement | default: "🌸 Memorial Day Sale | 50% Off" }}</span>
   </div>
   
   <div class="drawer-header">
@@ -51,7 +61,11 @@
     
     <!-- Logo in Drawer -->
     <a href="/" class="logo drawer-logo">
-      <img src="{{ 'logo-color.png' | asset_url }}" alt="Avemos Logo" height="{{ logo_height }}" style="height: {{ logo_height }}px; width: auto; vertical-align: middle;">
+      {%- if section.settings.logo != blank -%}
+        <img src="{{ section.settings.logo | image_url: width: 300 }}" alt="{{ section.settings.logo.alt | default: 'Avemos Logo' }}" height="{{ logo_height }}" style="height: {{ logo_height }}px; width: auto; vertical-align: middle;">
+      {%- else -%}
+        <img src="{{ 'logo-color.png' | asset_url }}" alt="Avemos Logo" height="{{ logo_height }}" style="height: {{ logo_height }}px; width: auto; vertical-align: middle;">
+      {%- endif -%}
     </a>
     
     <!-- Cart in Drawer -->
@@ -63,11 +77,17 @@
   
   <!-- Drawer Links -->
   <nav class="drawer-nav">
-    <a href="/" class="drawer-nav-link">Home</a>
-    <a href="/#reviews" class="drawer-nav-link">Reviews</a>
-    <a href="/pages/about-us" class="drawer-nav-link">About Us</a>
-    <a href="/pages/contact-us" class="drawer-nav-link">Contact Us</a>
-    <a href="/apps/track123" class="drawer-nav-link">Track Order</a>
+    {%- if section.settings.menu != blank -%}
+      {%- for link in section.settings.menu.links -%}
+        <a href="{{ link.url }}" class="drawer-nav-link">{{ link.title }}</a>
+      {%- endfor -%}
+    {%- else -%}
+      <a href="/" class="drawer-nav-link">Home</a>
+      <a href="/#reviews" class="drawer-nav-link">Reviews</a>
+      <a href="/pages/about-us" class="drawer-nav-link">About Us</a>
+      <a href="/pages/contact-us" class="drawer-nav-link">Contact Us</a>
+      <a href="/apps/track123" class="drawer-nav-link">Track Order</a>
+    {%- endif -%}
   </nav>
 </div>
 
