@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    {% # Inlined CSS Variables %}
+    {% render 'css-variables' %}
+
+    {% comment %}
+      Font preloading:
+      1. Preconnect to font CDN for faster connection
+      2. Preload only the critical font variant (base weight)
+      3. Additional variants load on-demand via @font-face
+    {% endcomment %}
+    {% unless settings.type_primary_font.system? %}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+
+      {% comment %} Preload the base font variant for initial page render {% endcomment %}
+      {{ settings.type_primary_font | font_url | preload_tag: as: 'font', crossorigin: 'anonymous' }}
+    {% endunless %}
+
+    {% # Load and preload the critical CSS %}
+    {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
+
+    {% # Social, title, etc. %}
+    {% render 'meta-tags' %}
+
+    <link rel="icon" type="image/png" href="{{ 'favicon.png' | asset_url }}">
+    <link rel="shortcut icon" type="image/png" href="{{ 'favicon.png' | asset_url }}">
+
+    {{ content_for_header }}
+  </head>
+
+  <body>
+    {% unless template == 'index' or template == 'policy' or template == '404' or request.path == '/pages/about-us' or request.path == '/pages/contact-us' %}
+      {% sections 'header-group' %}
+    {% endunless %}
+
+    {{ content_for_layout }}
+
+    {% unless template == 'index' or template == 'policy' or template == '404' or request.path == '/pages/about-us' or request.path == '/pages/contact-us' %}
+      {% sections 'footer-group' %}
+    {% endunless %}
+  </body>
+</html>

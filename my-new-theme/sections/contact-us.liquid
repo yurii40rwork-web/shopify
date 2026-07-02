@@ -1,0 +1,10 @@
+{% if request.path == '/pages/contact-us' or template.suffix == 'contact' %}
+  {% render 'contact-us-content' %}
+{% endif %}
+
+{% schema %}
+{
+  "name": "Contact Us Content",
+  "settings": []
+}
+{% endschema %}

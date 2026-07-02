@@ -1,0 +1,142 @@
+{{ 'avemos-style.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<div class="Avemos-landing-wrapper">
+  <!-- Announcement Bar -->
+  <div class="announcement-bar">
+    <span>🔥 SPECIAL DEAL: 50% OFF TODAY ONLY!</span>
+    <span class="highlight">Free Express Shipping on orders over $50</span>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <a href="/" class="logo">
+        <img src="{{ 'logo-color.png' | asset_url }}" alt="Avemos Logo" height="50" style="height: 50px; width: auto; vertical-align: middle;">
+      </a>
+      
+      <!-- Navigation Menu -->
+      <nav class="header-nav">
+        <a href="/" class="header-nav-link">Home</a>
+        <a href="/pages/about-us" class="header-nav-link">About Us</a>
+        <a href="/pages/contact-us" class="header-nav-link">Contact Us</a>
+      </nav>
+
+      <a href="/cart" class="cart-icon-btn" aria-label="Open Cart">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span class="cart-badge" id="cart-count">{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </header>
+
+  <div style="background-color: var(--bg-secondary); padding: 60px 0; min-height: 70vh;">
+    <div class="container" style="max-width: 800px;">
+      <h1 style="font-size: 2.5rem; font-weight: 800; text-align: center; margin-bottom: 36px;">{{ policy.title }}</h1>
+      
+      <div class="policy-content" style="
+        font-size: 1.05rem;
+        color: var(--text-secondary);
+        line-height: 1.8;
+        background-color: var(--bg-primary);
+        padding: 40px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-color);
+      ">
+        {{ policy.body }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4 style="font-weight: 800;"><i class="fa-solid fa-plane-departure"></i> Avemos</h4>
+          <p>We create premium products for your comfort during travels all over the world.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Contact Us</h4>
+          <ul class="footer-links">
+            <li>Email: support@avemosstore.com</li>
+            <li>Phone: +380965347984</li>
+            <li>Address: Zelena St, 114, Lviv, Ukraine</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal Information</h4>
+          <ul class="footer-links">
+            <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/policies/terms-of-service">Terms of Service</a></li>
+            <li><a href="/policies/refund-policy">Refund Policy</a></li>
+            <li><a href="/policies/shipping-policy">Shipping Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Avemos® All rights reserved.</p>
+        <div class="mock-payments">
+          <span class="mock-payment-badge">Stripe</span>
+          <span class="mock-payment-badge">PayPal</span>
+          <span class="mock-payment-badge">Apple Pay</span>
+          <span class="mock-payment-badge">Google Pay</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<style>
+  .policy-content h1,
+  .policy-content h2,
+  .policy-content h3,
+  .policy-content h4 {
+    color: var(--text-primary);
+    font-weight: 700;
+    margin-top: 28px;
+    margin-bottom: 12px;
+  }
+  .policy-content h2 {
+    font-size: 1.5rem;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--primary);
+    width: fit-content;
+  }
+  .policy-content h3 {
+    font-size: 1.2rem;
+  }
+  .policy-content p {
+    margin-bottom: 14px;
+  }
+  .policy-content ul,
+  .policy-content ol {
+    padding-left: 24px;
+    margin-bottom: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .policy-content a {
+    color: var(--primary);
+    text-decoration: underline;
+  }
+  .policy-content a:hover {
+    opacity: 0.8;
+  }
+  .policy-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+  }
+  .policy-content table th,
+  .policy-content table td {
+    border: 1px solid var(--border-color);
+    padding: 10px 14px;
+    text-align: left;
+  }
+  .policy-content table th {
+    background-color: var(--bg-secondary);
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+</style>

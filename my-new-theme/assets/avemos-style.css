@@ -1,0 +1,1422 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --font-heading: 'Quicksand', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --font-family: 'Plus Jakarta Sans', sans-serif;
+  
+  /* Cloud Drift Color Palette */
+  --bg-primary: #f8f9ff;
+  --bg-secondary: #ffffff;
+  --surface-container-low: #f1f4fb;
+  --surface-container: #ebeef5;
+  --text-primary: #181c21;
+  --text-secondary: #44474c;
+  --text-light: #75777d;
+  
+  --primary: #4f5d71;           /* Steel Blue-Grey */
+  --primary-hover: #3a485b;
+  --primary-container: #68758b;
+  --accent: #515f74;            /* Surface Tint — muted steel */
+  --accent-hover: #3a485b;
+  --accent-light: #d5e3fc;      /* Primary Fixed */
+  --secondary: #52606f;
+  --secondary-container: #d3e1f3;
+  
+  --success: #22c55e;
+  --error: #ba1a1a;
+  --border-color: #c5c6cd;      /* Outline Variant */
+  --border-light: rgba(197, 198, 205, 0.2);
+  
+  --card-shadow: 0 10px 30px rgba(125, 139, 161, 0.1);
+  --card-shadow-hover: 0 15px 40px rgba(125, 139, 161, 0.15);
+  --drawer-shadow: -10px 0 30px rgba(125, 139, 161, 0.2);
+  
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+}
+
+/* Base styles for embedding inside Shopify theme */
+.Avemos-landing-wrapper {
+  font-family: var(--font-family);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.Avemos-landing-wrapper * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.Avemos-landing-wrapper a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.Avemos-landing-wrapper .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.Avemos-landing-wrapper section {
+  padding: 80px 0;
+}
+
+/* Heading Typography */
+.Avemos-landing-wrapper h1,
+.Avemos-landing-wrapper h2,
+.Avemos-landing-wrapper h3,
+.Avemos-landing-wrapper h4,
+.Avemos-landing-wrapper h5,
+.Avemos-landing-wrapper h6,
+.Avemos-landing-wrapper .section-title,
+.Avemos-landing-wrapper .product-title,
+.Avemos-landing-wrapper .logo,
+.Avemos-landing-wrapper .faq-header,
+.Avemos-landing-wrapper .checkout-form-section h3 {
+  font-family: var(--font-heading);
+}
+
+.Avemos-landing-wrapper .section-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.Avemos-landing-wrapper .section-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+/* Announcement Bar */
+.Avemos-landing-wrapper .announcement-bar {
+  background-color: var(--primary);
+  color: white;
+  text-align: center;
+  padding: 10px 24px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.Avemos-landing-wrapper .announcement-bar .highlight {
+  color: var(--accent-light);
+  font-weight: 700;
+}
+
+/* Header */
+.Avemos-landing-wrapper .header {
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 18px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.Avemos-landing-wrapper .header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Avemos-landing-wrapper .logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.Avemos-landing-wrapper .logo span {
+  color: var(--primary);
+}
+
+.Avemos-landing-wrapper .cart-icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  position: relative;
+  color: var(--text-primary);
+  transition: transform var(--transition-fast);
+}
+
+.Avemos-landing-wrapper .cart-icon-btn:hover {
+  transform: scale(1.05);
+}
+
+.Avemos-landing-wrapper .cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background-color: var(--accent);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hero Section */
+.Avemos-landing-wrapper .hero-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* Media Gallery (Left Side) */
+.Avemos-landing-wrapper .media-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.Avemos-landing-wrapper .main-media-placeholder {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+  border-radius: var(--radius-md);
+  border: 2px dashed var(--text-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+}
+
+.Avemos-landing-wrapper .main-media-placeholder i {
+  font-size: 3.5rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.Avemos-landing-wrapper .main-media-placeholder h3 {
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+
+.Avemos-landing-wrapper .main-media-placeholder p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.Avemos-landing-wrapper .media-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background-color: rgba(15, 23, 42, 0.85);
+  color: white;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(4px);
+}
+
+.Avemos-landing-wrapper .media-thumbnails {
+  display: flex;
+  gap: 12px;
+}
+
+.Avemos-landing-wrapper .thumbnail-placeholder {
+  flex: 1;
+  aspect-ratio: 1 / 1;
+  background: #e2e8f0;
+  border-radius: var(--radius-sm);
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 4px;
+  transition: all var(--transition-fast);
+}
+
+.Avemos-landing-wrapper .thumbnail-placeholder.active {
+  border-color: var(--primary);
+  background-color: var(--accent-light);
+}
+
+.Avemos-landing-wrapper .product-details {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  min-width: 0;
+}
+
+.Avemos-landing-wrapper .product-tag {
+  display: inline-block;
+  background-color: var(--accent-light);
+  color: var(--accent-hover);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.Avemos-landing-wrapper .rating-stars {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.Avemos-landing-wrapper .rating-stars span {
+  color: #fbbf24; /* Yellow gold */
+  font-size: 1.2rem;
+}
+
+.Avemos-landing-wrapper .rating-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-left: 8px;
+}
+
+.Avemos-landing-wrapper .product-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.Avemos-landing-wrapper .product-price-box {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.Avemos-landing-wrapper .current-price {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.Avemos-landing-wrapper .compare-price {
+  font-size: 1.3rem;
+  color: var(--text-light);
+  text-decoration: line-through;
+}
+
+.Avemos-landing-wrapper .discount-badge {
+  background-color: #fca5a5;
+  color: #b91c1c;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: var(--radius-sm);
+}
+
+.Avemos-landing-wrapper .option-group {
+  margin-bottom: 20px;
+}
+
+.Avemos-landing-wrapper .option-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Avemos-landing-wrapper .option-title span.selected-value {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.Avemos-landing-wrapper .color-options {
+  display: flex;
+  gap: 12px;
+}
+
+.Avemos-landing-wrapper .color-option-btn {
+  border: 1px solid var(--border-color);
+  background: white;
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all var(--transition-fast);
+}
+
+.Avemos-landing-wrapper .color-option-btn.active {
+  border-color: var(--primary);
+  background-color: var(--accent-light);
+  color: var(--primary);
+  box-shadow: 0 0 0 1px var(--primary);
+}
+
+.Avemos-landing-wrapper .color-circle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.Avemos-landing-wrapper .color-circle.navy { background-color: #1e3a8a; }
+.Avemos-landing-wrapper .color-circle.gray { background-color: #64748b; }
+
+.Avemos-landing-wrapper .qty-selector {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  width: fit-content;
+  overflow: hidden;
+}
+
+.Avemos-landing-wrapper .qty-btn {
+  background: none;
+  border: none;
+  width: 40px;
+  height: 40px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast);
+}
+
+.Avemos-landing-wrapper .qty-btn:hover {
+  background-color: var(--bg-primary);
+}
+
+.Avemos-landing-wrapper .qty-input {
+  width: 40px;
+  text-align: center;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+  background: none;
+  outline: none;
+}
+
+.Avemos-landing-wrapper .cta-btn {
+  width: 100%;
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 18px 24px;
+  border-radius: var(--radius-full);
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 14px rgba(81, 95, 116, 0.2);
+  transition: all var(--transition-fast);
+  margin-top: 16px;
+}
+
+.Avemos-landing-wrapper .cta-btn:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(81, 95, 116, 0.35);
+}
+
+.Avemos-landing-wrapper .checkout-badges {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px solid var(--border-color);
+  padding-top: 20px;
+}
+
+.Avemos-landing-wrapper .badge-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.Avemos-landing-wrapper .badge-item i {
+  color: var(--success);
+  font-size: 1.1rem;
+}
+
+/* As Seen On Section */
+.Avemos-landing-wrapper .as-seen-on {
+  background-color: var(--surface-container-low);
+  padding: 36px 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.Avemos-landing-wrapper .brand-logos {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.Avemos-landing-wrapper .brand-logo-placeholder {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-light);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+/* Benefits Grid Section */
+.Avemos-landing-wrapper .benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+  gap: 24px;
+}
+
+.Avemos-landing-wrapper .benefit-card {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: 32px;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  transition: transform var(--transition-normal);
+}
+
+.Avemos-landing-wrapper .benefit-card:hover {
+  transform: translateY(-5px);
+}
+
+.Avemos-landing-wrapper .benefit-icon-placeholder {
+  width: 70px;
+  height: 70px;
+  background-color: var(--accent-light);
+  color: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin: 0 auto 20px;
+  border: 1px solid var(--border-color);
+}
+
+.Avemos-landing-wrapper .benefit-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.Avemos-landing-wrapper .benefit-card p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+/* Comparison Table */
+.Avemos-landing-wrapper .comparison-wrapper {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  overflow-x: auto;
+}
+
+.Avemos-landing-wrapper .comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.Avemos-landing-wrapper th, .Avemos-landing-wrapper td {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.Avemos-landing-wrapper th {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.Avemos-landing-wrapper td {
+  font-size: 0.95rem;
+}
+
+.Avemos-landing-wrapper th:first-child, .Avemos-landing-wrapper td:first-child {
+  width: 40%;
+}
+
+.Avemos-landing-wrapper th.our-product, .Avemos-landing-wrapper td.our-product {
+  background-color: var(--surface-container-low);
+  font-weight: 600;
+  color: var(--primary);
+  text-align: center;
+}
+
+.Avemos-landing-wrapper td.other-product {
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.Avemos-landing-wrapper .check-icon { color: var(--success); font-weight: 700; font-size: 1.2rem; }
+.Avemos-landing-wrapper .cross-icon { color: #ef4444; font-weight: 700; font-size: 1.2rem; }
+
+/* How It Works Section */
+.Avemos-landing-wrapper .steps-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 32px;
+}
+
+.Avemos-landing-wrapper .step-card {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.Avemos-landing-wrapper .step-image-placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 16px;
+  text-align: center;
+}
+
+.Avemos-landing-wrapper .step-content {
+  padding: 24px;
+}
+
+.Avemos-landing-wrapper .step-number {
+  display: inline-block;
+  background-color: var(--primary);
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 28px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+
+.Avemos-landing-wrapper .step-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
+.Avemos-landing-wrapper .step-card p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+/* FAQ Section */
+.Avemos-landing-wrapper .faq-list {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.Avemos-landing-wrapper .faq-item {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.Avemos-landing-wrapper .faq-header {
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.05rem;
+  user-select: none;
+  transition: background var(--transition-fast);
+}
+
+.Avemos-landing-wrapper .faq-header:hover {
+  background-color: var(--surface-container-low);
+}
+
+.Avemos-landing-wrapper .faq-icon {
+  font-size: 1.2rem;
+  transition: transform var(--transition-normal);
+  display: inline-block;
+  color: var(--text-secondary);
+}
+
+.Avemos-landing-wrapper .faq-item.active .faq-icon {
+  transform: rotate(45deg);
+}
+
+.Avemos-landing-wrapper .faq-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-normal);
+}
+
+.Avemos-landing-wrapper .faq-content {
+  padding: 0 24px 24px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  border-top: 1px solid transparent;
+}
+
+.Avemos-landing-wrapper .faq-item.active .faq-content {
+  border-top-color: var(--border-color);
+}
+
+/* Footer */
+.Avemos-landing-wrapper .footer {
+  background-color: var(--surface-container-low);
+  color: var(--text-secondary);
+  padding: 60px 0 30px;
+  font-size: 0.95rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.Avemos-landing-wrapper .footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.Avemos-landing-wrapper .footer-col h4 {
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+}
+
+.Avemos-landing-wrapper .footer-links {
+  list-style: none;
+}
+
+.Avemos-landing-wrapper .footer-links li {
+  margin-bottom: 12px;
+}
+
+.Avemos-landing-wrapper .footer-links a:hover {
+  color: var(--primary);
+}
+
+.Avemos-landing-wrapper .footer-bottom {
+  border-top: 1px solid var(--border-color);
+  padding-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.Avemos-landing-wrapper .mock-payments {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.Avemos-landing-wrapper .mock-payment-badge {
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+
+/* Sliding Cart Drawer / Checkout */
+.Avemos-landing-wrapper .cart-drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 23, 42, 0.6);
+  z-index: 200;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-normal), visibility var(--transition-normal);
+  backdrop-filter: blur(4px);
+}
+
+.Avemos-landing-wrapper .cart-drawer-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.Avemos-landing-wrapper .cart-drawer {
+  position: fixed;
+  top: 0;
+  right: -480px;
+  width: 100%;
+  max-width: 480px;
+  height: 100vh;
+  background-color: var(--bg-secondary);
+  z-index: 201;
+  box-shadow: var(--drawer-shadow);
+  display: flex;
+  flex-direction: column;
+  transition: right var(--transition-normal);
+}
+
+.Avemos-landing-wrapper .cart-drawer-overlay.open + .cart-drawer,
+.Avemos-landing-wrapper .cart-drawer.open {
+  right: 0;
+}
+
+.Avemos-landing-wrapper .drawer-header {
+  padding: 24px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Avemos-landing-wrapper .drawer-header h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.Avemos-landing-wrapper .close-drawer-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Avemos-landing-wrapper .drawer-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+/* Cart Item Mockup */
+.Avemos-landing-wrapper .cart-items-list {
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 24px;
+}
+
+.Avemos-landing-wrapper .cart-item {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.Avemos-landing-wrapper .cart-item-image-placeholder {
+  width: 80px;
+  height: 80px;
+  background-color: var(--surface-container);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 4px;
+}
+
+.Avemos-landing-wrapper .cart-item-info h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.Avemos-landing-wrapper .cart-item-info p {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+.Avemos-landing-wrapper .cart-item-price {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* Payment Form Styling (Stripe-like) */
+.Avemos-landing-wrapper .checkout-form-section {
+  margin-top: 12px;
+}
+
+.Avemos-landing-wrapper .checkout-form-section h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.Avemos-landing-wrapper .form-group {
+  margin-bottom: 16px;
+}
+
+.Avemos-landing-wrapper .form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text-secondary);
+}
+
+.Avemos-landing-wrapper .form-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.Avemos-landing-wrapper .form-input:focus {
+  border-color: var(--primary);
+}
+
+.Avemos-landing-wrapper .stripe-card-container {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  background-color: var(--surface-container-low);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.Avemos-landing-wrapper .card-fields-row {
+  display: flex;
+  gap: 12px;
+}
+
+.Avemos-landing-wrapper .order-summary {
+  background-color: var(--surface-container-low);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.Avemos-landing-wrapper .summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+}
+
+.Avemos-landing-wrapper .summary-row.total {
+  border-top: 1px solid var(--border-color);
+  padding-top: 12px;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  margin-bottom: 0;
+}
+
+.Avemos-landing-wrapper .drawer-footer {
+  padding: 24px;
+  border-top: 1px solid var(--border-color);
+}
+
+.Avemos-landing-wrapper .submit-payment-btn {
+  width: 100%;
+  background-color: var(--success);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+  transition: all var(--transition-fast);
+}
+
+.Avemos-landing-wrapper .submit-payment-btn:hover {
+  background-color: #16a34a;
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.4);
+}
+
+/* Success Modal */
+.Avemos-landing-wrapper .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 23, 42, 0.6);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-normal), visibility var(--transition-normal);
+  backdrop-filter: blur(4px);
+}
+
+.Avemos-landing-wrapper .modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.Avemos-landing-wrapper .modal {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  max-width: 420px;
+  width: 90%;
+  padding: 40px 32px;
+  text-align: center;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--border-color);
+  transform: translateY(20px);
+  transition: transform var(--transition-normal);
+}
+
+.Avemos-landing-wrapper .modal-overlay.open .modal {
+  transform: translateY(0);
+}
+
+.Avemos-landing-wrapper .success-icon-box {
+  width: 80px;
+  height: 80px;
+  background-color: #dcfce7;
+  color: var(--success);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  margin: 0 auto 24px;
+}
+
+.Avemos-landing-wrapper .modal h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.Avemos-landing-wrapper .modal p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: 28px;
+}
+
+.Avemos-landing-wrapper .modal-btn {
+  background-color: var(--text-primary);
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.Avemos-landing-wrapper .modal-btn:hover {
+  background-color: var(--primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .Avemos-landing-wrapper .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .Avemos-landing-wrapper section {
+    padding: 50px 0;
+  }
+  .Avemos-landing-wrapper .section-title {
+    font-size: 1.8rem;
+  }
+  .Avemos-landing-wrapper .product-title {
+    font-size: 1.8rem;
+  }
+  .Avemos-landing-wrapper .drawer-header {
+    padding: 16px 20px;
+  }
+  .Avemos-landing-wrapper .drawer-content {
+    padding: 20px;
+  }
+}
+
+/* Styled Page Content for Default Pages */
+.Avemos-landing-wrapper .styled-page-content {
+  font-family: var(--font-family);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.Avemos-landing-wrapper .styled-page-content h1,
+.Avemos-landing-wrapper .styled-page-content h2,
+.Avemos-landing-wrapper .styled-page-content h3,
+.Avemos-landing-wrapper .styled-page-content h4 {
+  color: var(--text-primary);
+  font-weight: 700;
+  margin-top: 32px;
+  margin-bottom: 16px;
+  font-family: var(--font-family);
+}
+
+.Avemos-landing-wrapper .styled-page-content h1 {
+  font-size: 2.2rem;
+  margin-top: 16px;
+}
+
+.Avemos-landing-wrapper .styled-page-content h2 {
+  font-size: 1.7rem;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 8px;
+}
+
+.Avemos-landing-wrapper .styled-page-content h3 {
+  font-size: 1.35rem;
+}
+
+.Avemos-landing-wrapper .styled-page-content p {
+  margin-bottom: 20px;
+}
+
+.Avemos-landing-wrapper .styled-page-content ul,
+.Avemos-landing-wrapper .styled-page-content ol {
+  margin-bottom: 24px;
+  padding-left: 24px;
+}
+
+.Avemos-landing-wrapper .styled-page-content li {
+  margin-bottom: 10px;
+}
+
+.Avemos-landing-wrapper .styled-page-content strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.Avemos-landing-wrapper .styled-page-content a {
+  color: var(--primary);
+  text-decoration: underline;
+  transition: color var(--transition-fast);
+}
+
+.Avemos-landing-wrapper .styled-page-content a:hover {
+  color: var(--primary-hover);
+}
+
+.Avemos-landing-wrapper .styled-page-content blockquote {
+  border-left: 4px solid var(--primary);
+  padding: 12px 24px;
+  background-color: var(--bg-primary);
+  margin: 24px 0;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-style: italic;
+}
+
+/* Header Navigation Menu */
+.Avemos-landing-wrapper .header-nav {
+  display: flex;
+  gap: 48px;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.Avemos-landing-wrapper .header-nav-link {
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  transition: color var(--transition-fast);
+  letter-spacing: 0.03em;
+}
+
+.Avemos-landing-wrapper .header-nav-link:hover {
+  color: var(--primary);
+}
+
+@media (max-width: 768px) {
+  .Avemos-landing-wrapper .header-nav {
+    gap: 24px;
+  }
+  .Avemos-landing-wrapper .header-nav-link {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .Avemos-landing-wrapper .header-nav {
+    gap: 16px;
+  }
+  .Avemos-landing-wrapper .header-nav-link {
+    font-size: 1rem;
+  }
+}
+
+/* --- Mobile Menu Drawer --- */
+.Avemos-landing-wrapper .header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.Avemos-landing-wrapper .mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 8px;
+  outline: none;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+}
+
+.Avemos-landing-wrapper .mobile-menu-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 8px;
+  outline: none;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Avemos-landing-wrapper .mobile-nav-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-secondary);
+  z-index: 99999;
+  transform: translateY(-100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.Avemos-landing-wrapper .mobile-nav-drawer.active {
+  transform: translateY(0);
+}
+
+.Avemos-landing-wrapper .mobile-nav-drawer .announcement-bar {
+  background-color: var(--primary);
+  color: white;
+  text-align: center;
+  padding: 10px 24px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.Avemos-landing-wrapper .mobile-nav-drawer .drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+}
+
+.Avemos-landing-wrapper .mobile-nav-drawer .drawer-logo {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.Avemos-landing-wrapper .mobile-nav-drawer .drawer-cart {
+  position: relative;
+  z-index: 10;
+}
+
+.Avemos-landing-wrapper .mobile-nav-drawer .drawer-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 24px;
+  gap: 20px;
+  overflow-y: auto;
+}
+
+.Avemos-landing-wrapper .mobile-nav-drawer .drawer-nav-link {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-light);
+  transition: color var(--transition-fast);
+  display: block;
+}
+
+.Avemos-landing-wrapper .mobile-nav-drawer .drawer-nav-link:hover {
+  color: var(--primary);
+}
+
+@media (max-width: 768px) {
+  .Avemos-landing-wrapper .mobile-menu-btn {
+    display: flex;
+    z-index: 10;
+  }
+  .Avemos-landing-wrapper .header-nav {
+    display: none !important;
+  }
+  .Avemos-landing-wrapper .header .logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+  }
+  .Avemos-landing-wrapper .header .cart-icon-btn {
+    z-index: 10;
+  }
+}
+
+/* Custom Overrides for Bundle layout */
+.Avemos-landing-wrapper .bundle-card-content {
+  margin-top: 6px !important;
+  padding-top: 6px !important;
+  border-top: none !important;
+}
+.Avemos-landing-wrapper .bundle-color-row {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin-left: 52px !important;
+}
+.Avemos-landing-wrapper .bundle-radio-checkmark {
+  margin-left: 20px !important;
+}
+.Avemos-landing-wrapper .bundle-title-group {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 4px !important;
+}
+.Avemos-landing-wrapper .bundle-subtitle {
+  margin-top: 2px !important;
+}
+.Avemos-landing-wrapper .bundle-price-group {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: baseline !important;
+  gap: 8px !important;
+  position: absolute !important;
+  right: 40px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+.Avemos-landing-wrapper .bundle-compare-price {
+  font-size: 20px !important;
+  margin-top: 0 !important;
+}
+.Avemos-landing-wrapper .bundle-card {
+  padding: 20px !important;
+}
+.Avemos-landing-wrapper .bundle-title {
+  font-size: 19px !important;
+  white-space: nowrap !important;
+}
+.Avemos-landing-wrapper .bundle-subtitle {
+  font-size: 15px !important;
+}
+.Avemos-landing-wrapper .larger-buy-btn {
+  background-color: #ff3333 !important;
+  padding-top: 25px !important;
+  padding-bottom: 25px !important;
+  font-size: 20px !important;
+}
+.Avemos-landing-wrapper .larger-buy-btn:hover {
+  background-color: #cc2a2a !important;
+}
+.Avemos-landing-wrapper .product-details-col {
+  gap: 20px !important;
+}
+.Avemos-landing-wrapper .bundles-selection-section {
+  gap: 8px !important;
+}
+.Avemos-landing-wrapper .checkout-form-wrapper {
+  margin-top: -4px !important;
+}

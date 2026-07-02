@@ -1,0 +1,10 @@
+{% if request.path == '/pages/about-us' or template.suffix == 'about' %}
+  {% render 'about-us-content' %}
+{% endif %}
+
+{% schema %}
+{
+  "name": "About Us Content",
+  "settings": []
+}
+{% endschema %}

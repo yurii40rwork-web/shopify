@@ -1,0 +1,86 @@
+{{ 'avemos-style.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<div class="Avemos-landing-wrapper">
+  {% render 'avemos-header-markup', logo_height: 50 %}
+
+  <div style="background-color: var(--bg-secondary); padding: 60px 0; min-height: 60vh;">
+    <div class="container" style="max-width: 800px;">
+      <h1 style="font-size: 2.5rem; font-weight: 800; text-align: center; margin-bottom: 36px;">Shipping Policy</h1>
+      
+      <div class="styled-page-content">
+        <p>At <strong>Avemos®</strong>, we strive to deliver your order as quickly and safely as possible. Below you will find the complete details of our shipping terms and delivery procedures.</p>
+
+        <h2>1. Shipping Rates & Destinations</h2>
+        <p>We ship our Avemos Travel Pillow to customers worldwide. Our shipping rates are as follows:</p>
+        <ul>
+          <li><strong>Orders over $50.00:</strong> Free Standard Express Shipping (with tracking).</li>
+          <li><strong>Orders under $50.00:</strong> Flat rate of $4.95 worldwide.</li>
+        </ul>
+
+        <h2>2. Processing & Handling Time</h2>
+        <p>All orders are processed and prepared for shipment from our fulfillment hubs within <strong>1 to 3 business days</strong> (excluding weekends and public holidays) after receiving your payment confirmation.</p>
+        <p>Once your order is handed over to our shipping carriers, you will receive an automated email notification containing your unique tracking number and shipment details.</p>
+
+        <h2>3. Estimated Delivery Times</h2>
+        <p>Depending on your location, estimated shipping times are as follows:</p>
+        <ul>
+          <li><strong>United States & Canada:</strong> 5 – 10 business days.</li>
+          <li><strong>United Kingdom & Europe:</strong> 6 – 10 business days.</li>
+          <li><strong>Australia & New Zealand:</strong> 7 – 12 business days.</li>
+          <li><strong>Rest of the World:</strong> 8 – 15 business days.</li>
+        </ul>
+        <p><em>Please note: Shipping times are estimates and may vary slightly due to seasonal high volumes, customs inspections, or extreme weather conditions.</em></p>
+
+        <h2>4. Order Tracking</h2>
+        <p>Every shipment is fully traceable. You can monitor the progress of your delivery by clicking the link in your shipping confirmation email, or by entering your tracking number on our tracking portal.</p>
+        <p>Please allow 24-48 hours for the carrier to update the initial tracking status online.</p>
+
+        <h2>5. Customs, Duties & Taxes</h2>
+        <p>For orders shipped to the USA, UK, and European Union, customs fees are typically pre-cleared and not charged to the customer. However, for other international destinations, any customs duties, import taxes, or local clearance fees levied by the destination country are the sole responsibility of the customer.</p>
+
+        <h2>6. Contact Us</h2>
+        <p>If your package is delayed, or you have any questions regarding your delivery status, please do not hesitate to contact our logistics team at <a href="mailto:support@avemosstore.com">support@avemosstore.com</a>. We will respond within 12-24 hours.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4 style="font-weight: 800;"><i class="fa-solid fa-plane-departure"></i> Avemos</h4>
+          <p>We create premium products for your comfort during travels all over the world.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Contact Us</h4>
+          <ul class="footer-links">
+            <li>Email: support@avemosstore.com</li>
+            <li>Phone: +380965347984</li>
+            <li>Address: Zelena St, 114, Lviv, Ukraine</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal Information</h4>
+          <ul class="footer-links">
+            <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/policies/terms-of-service">Terms of Service</a></li>
+            <li><a href="/policies/refund-policy">Refund Policy</a></li>
+            <li><a href="/policies/shipping-policy">Shipping Policy</a></li>
+            <li><a href="/policies/user-agreement">User Agreement</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Avemos® Mock App. All rights reserved.</p>
+        <div class="mock-payments">
+          <span class="mock-payment-badge">Stripe</span>
+          <span class="mock-payment-badge">PayPal</span>
+          <span class="mock-payment-badge">Apple Pay</span>
+          <span class="mock-payment-badge">Google Pay</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

@@ -1,0 +1,31 @@
+{{ 'avemos-style.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+{%- assign logo_height = section.settings.logo_height | default: 50 -%}
+
+<div class="Avemos-landing-wrapper">
+  {% render 'avemos-header-markup', logo_height: logo_height %}
+</div>
+
+{% schema %}
+{
+  "name": "Avemos Header",
+  "settings": [
+    {
+      "type": "range",
+      "id": "logo_height",
+      "min": 20,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Logo Height",
+      "default": 50
+    }
+  ],
+  "presets": [
+    {
+      "name": "Avemos Header"
+    }
+  ]
+}
+{% endschema %}

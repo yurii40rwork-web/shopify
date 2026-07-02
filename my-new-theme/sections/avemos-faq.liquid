@@ -1,0 +1,89 @@
+{{ 'avemos-style.css' | asset_url | stylesheet_tag }}
+
+<div class="Avemos-landing-wrapper">
+  <!-- FAQ Section -->
+  <section style="background-color: #f8fafc; border-top: 1px solid var(--border-color); padding: 40px 0;">
+    <div class="container">
+      <h2 class="section-title">Frequently Asked Questions (FAQ)</h2>
+      <p class="section-subtitle">Quick answers to common questions</p>
+      
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-header">
+            <span>Is this pillow suitable for people of different sizes?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-body">
+            <div class="faq-content">
+              Yes, thanks to the adjustable Velcro strap, you can easily control how snugly the pillow fits your neck. It is suitable for both teenagers and adults.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header">
+            <span>How do I care for and wash the pillow?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-body">
+            <div class="faq-content">
+              The outer fabric cover can be easily removed using the integrated zipper. It is machine-washable at 30°C (86°F). The inner memory foam core should not be washed; simply wipe it with a damp cloth if necessary.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header">
+            <span>What are the shipping times and guarantees?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-body">
+            <div class="faq-content">
+              We offer express shipping in 5-10 business days. You also receive a 70-day risk-free guarantee: if you are not fully satisfied, you can return it for a 100% refund.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+      const header = item.querySelector('.faq-header');
+      if (header) {
+        header.addEventListener('click', () => {
+          const isActive = item.classList.contains('active');
+          
+          // Close all first
+          faqItems.forEach(i => {
+            i.classList.remove('active');
+            const body = i.querySelector('.faq-body');
+            if (body) body.style.maxHeight = null;
+          });
+          
+          // Toggle current
+          if (!isActive) {
+            item.classList.add('active');
+            const body = item.querySelector('.faq-body');
+            if (body) body.style.maxHeight = body.scrollHeight + 'px';
+          }
+        });
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Avemos FAQ",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Avemos FAQ"
+    }
+  ]
+}
+{% endschema %}

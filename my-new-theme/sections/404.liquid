@@ -1,0 +1,83 @@
+{{ 'avemos-style.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Fallback containers for client-side JS routing -->
+<div id="about-us-fallback" style="display: none;">
+  {% render 'about-us-content' %}
+</div>
+
+<div id="contact-us-fallback" style="display: none;">
+  {% render 'contact-us-content' %}
+</div>
+
+<div id="shipping-policy-fallback" style="display: none;">
+  {% render 'shipping-policy-content' %}
+</div>
+
+<div id="refund-policy-fallback" style="display: none;">
+  {% render 'refund-policy-content' %}
+</div>
+
+<div id="user-agreement-fallback" style="display: none;">
+  {% render 'user-agreement-content' %}
+</div>
+
+<div id="terms-of-service-fallback" style="display: none;">
+  {% render 'terms-of-service-content' %}
+</div>
+
+<div id="default-404-container" style="display: none; text-align: center; padding: 100px 24px; font-family: var(--font-body);">
+  <h1 style="font-size: 4rem; font-weight: 800; color: var(--text-primary); margin-bottom: 16px; font-family: var(--font-heading);">404</h1>
+  <h2 style="font-size: 1.5rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 24px; font-family: var(--font-heading);">{{ '404.title' | t }}</h2>
+  <p style="color: var(--text-light); margin-bottom: 32px; font-size: 1.1rem;">{{ '404.not_found' | t }}</p>
+  <a href="/" style="display: inline-block; background-color: var(--primary); color: white; padding: 14px 28px; border-radius: var(--radius-full); font-weight: 600; text-decoration: none; transition: background var(--transition-fast);">
+    {{ '404.back_to_shopping' | t }}
+  </a>
+</div>
+
+<script>
+  function init404Router() {
+    var path = window.location.pathname.toLowerCase();
+    
+    // Remove trailing slash if present
+    if (path.endsWith('/') && path.length > 1) {
+      path = path.slice(0, -1);
+    }
+    
+    // Check path and show the correct element
+    if (path === '/pages/about-us') {
+      document.getElementById('about-us-fallback').style.display = 'block';
+      document.title = 'About Us – Avemos';
+    } else if (path === '/pages/contact-us') {
+      document.getElementById('contact-us-fallback').style.display = 'block';
+      document.title = 'Contact Us – Avemos';
+    } else if (path === '/pages/shipping-policy' || path === '/policies/shipping-policy') {
+      document.getElementById('shipping-policy-fallback').style.display = 'block';
+      document.title = 'Shipping Policy – Avemos';
+    } else if (path === '/pages/refund-policy' || path === '/policies/refund-policy') {
+      document.getElementById('refund-policy-fallback').style.display = 'block';
+      document.title = 'Refund Policy – Avemos';
+    } else if (path === '/pages/user-agreement' || path === '/policies/user-agreement') {
+      document.getElementById('user-agreement-fallback').style.display = 'block';
+      document.title = 'User Agreement – Avemos';
+    } else if (path === '/pages/terms-of-service' || path === '/policies/terms-of-service') {
+      document.getElementById('terms-of-service-fallback').style.display = 'block';
+      document.title = 'Terms of Service – Avemos';
+    } else {
+      document.getElementById('default-404-container').style.display = 'block';
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init404Router);
+  } else {
+    init404Router();
+  }
+</script>
+
+{% schema %}
+{
+  "name": "t:general.404",
+  "settings": []
+}
+{% endschema %}

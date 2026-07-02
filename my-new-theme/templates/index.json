@@ -1,0 +1,53 @@
+{
+  "sections": {
+    "header": {
+      "type": "avemos-header",
+      "settings": {}
+    },
+    "product": {
+      "type": "product",
+      "settings": {
+        "product": "premium-avemos™-travel-neck-pillow"
+      }
+    },
+    "as_seen_on": {
+      "type": "avemos-as-seen-on",
+      "settings": {}
+    },
+    "benefits": {
+      "type": "avemos-benefits",
+      "settings": {}
+    },
+    "comparison": {
+      "type": "avemos-comparison",
+      "settings": {}
+    },
+    "how_it_works": {
+      "type": "avemos-how-it-works",
+      "settings": {}
+    },
+    "faq": {
+      "type": "avemos-faq",
+      "settings": {}
+    },
+    "reviews": {
+      "type": "avemos-reviews",
+      "settings": {}
+    },
+    "footer": {
+      "type": "avemos-footer",
+      "settings": {}
+    }
+  },
+  "order": [
+    "header",
+    "product",
+    "as_seen_on",
+    "benefits",
+    "comparison",
+    "how_it_works",
+    "faq",
+    "reviews",
+    "footer"
+  ]
+}

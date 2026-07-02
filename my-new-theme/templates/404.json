@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "404": {
+      "type": "404",
+      "settings": {}
+    },
+    "about": {
+      "type": "about-us",
+      "settings": {}
+    },
+    "contact": {
+      "type": "contact-us",
+      "settings": {}
+    }
+  },
+  "order": [
+    "404",
+    "about",
+    "contact"
+  ]
+}

@@ -1,0 +1,28 @@
+{{ 'avemos-style.css' | asset_url | stylesheet_tag }}
+
+<div class="Avemos-landing-wrapper">
+  <!-- As Seen On Banner -->
+  <section class="as-seen-on">
+    <div class="container">
+      <div class="brand-logos">
+        <div class="brand-logo-placeholder">Forbes</div>
+        <div class="brand-logo-placeholder">Travel + Leisure</div>
+        <div class="brand-logo-placeholder">NY Times</div>
+        <div class="brand-logo-placeholder">USA Today</div>
+        <div class="brand-logo-placeholder">Bloomberg</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Avemos As Seen On",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Avemos As Seen On"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,55 @@
+{{ 'avemos-style.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<div class="Avemos-landing-wrapper">
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4 style="font-weight: 800;"><i class="fa-solid fa-plane-departure"></i> Avemos</h4>
+          <p>We create premium products for your comfort during travels all over the world.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Contact Us</h4>
+          <ul class="footer-links">
+            <li>Email: support@avemosstore.com</li>
+            <li>Phone: +380965347984</li>
+            <li>Address: Zelena St, 114, Lviv, Ukraine</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal Information</h4>
+          <ul class="footer-links">
+            <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/policies/terms-of-service">Terms of Service</a></li>
+            <li><a href="/policies/refund-policy">Refund Policy</a></li>
+            <li><a href="/policies/shipping-policy">Shipping Policy</a></li>
+            <li><a href="/policies/user-agreement">User Agreement</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Avemos® Mock App. All rights reserved.</p>
+        <div class="mock-payments">
+          <span class="mock-payment-badge">Stripe</span>
+          <span class="mock-payment-badge">PayPal</span>
+          <span class="mock-payment-badge">Apple Pay</span>
+          <span class="mock-payment-badge">Google Pay</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+{% schema %}
+{
+  "name": "Avemos Footer",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Avemos Footer"
+    }
+  ]
+}
+{% endschema %}
