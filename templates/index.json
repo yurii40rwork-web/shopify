@@ -1,14 +1,26 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "header": {
       "type": "avemos-header",
-      "settings": {}
+      "settings": {
+        "logo_height": 50,
+        "announcement_1": "🔥 SPECIAL DEAL: 50% OFF TODAY ONLY!",
+        "announcement_2": "Free Express Shipping",
+        "mobile_announcement": "🌸 Memorial Day Sale | 50% Off",
+        "menu": ""
+      }
     },
     "product": {
       "type": "product",
-      "settings": {
-        "product": "premium-avemos™-travel-neck-pillow"
-      },
       "blocks": {
         "title": {
           "type": "title",
@@ -23,7 +35,9 @@
         },
         "description": {
           "type": "description",
-          "settings": {}
+          "settings": {
+            "description_override": ""
+          }
         },
         "promo": {
           "type": "promo",
@@ -57,7 +71,13 @@
         "promo",
         "bundles",
         "buy_buttons"
-      ]
+      ],
+      "settings": {
+        "product": "premium-avemos™-travel-neck-pillow",
+        "image_ratio": "4/3",
+        "show_badge": true,
+        "badge_text": "Best Seller"
+      }
     },
     "as_seen_on": {
       "type": "avemos-as-seen-on",
@@ -144,7 +164,10 @@
         "benefit_3",
         "benefit_4"
       ],
-      "settings": {}
+      "settings": {
+        "title": "Why Travelers Choose Avemos®",
+        "subtitle": "Innovative technology for your comfortable sleep on the road"
+      }
     },
     "comparison": {
       "type": "avemos-comparison",
@@ -196,7 +219,12 @@
         "feature_3",
         "feature_4"
       ],
-      "settings": {}
+      "settings": {
+        "title": "Comparison with Traditional Pillows",
+        "subtitle": "Why traditional U-shaped travel pillows are no longer sufficient",
+        "our_product": "Avemos® Pillow",
+        "their_product": "Traditional U-Shape Pillows"
+      }
     },
     "how_it_works": {
       "type": "avemos-how-it-works",
@@ -228,7 +256,10 @@
         "step_2",
         "step_3"
       ],
-      "settings": {}
+      "settings": {
+        "title": "How It Works",
+        "subtitle": "Just 3 simple steps to perfect sleep"
+      }
     },
     "faq": {
       "type": "avemos-faq",
@@ -260,7 +291,10 @@
         "faq_2",
         "faq_3"
       ],
-      "settings": {}
+      "settings": {
+        "title": "Frequently Asked Questions (FAQ)",
+        "subtitle": "Quick answers to common questions"
+      }
     },
     "reviews": {
       "type": "avemos-reviews",
@@ -307,11 +341,32 @@
         "review_2",
         "review_3"
       ],
-      "settings": {}
+      "settings": {
+        "title": "What Our Customers Say",
+        "subtitle": "Real reviews from verified buyers",
+        "rating_score": "4.9",
+        "reviews_count": "1,248",
+        "star_5_percent": 92,
+        "star_4_percent": 6,
+        "star_3_percent": 1,
+        "star_2_percent": 0,
+        "star_1_percent": 0
+      }
     },
     "footer": {
       "type": "avemos-footer",
-      "settings": {}
+      "settings": {
+        "col_1_title": "Avemos",
+        "col_1_desc": "We create premium products for your comfort during travels all over the world.",
+        "col_2_title": "Contact Us",
+        "email": "support@avemosstore.com",
+        "phone": "+380965347984",
+        "address": "Zelena St, 114, Lviv, Ukraine",
+        "col_3_title": "Legal Information",
+        "menu": "",
+        "copyright_text": "&copy; 2026 Avemos® Mock App. All rights reserved.",
+        "show_payment_badges": true
+      }
     }
   },
   "order": [
