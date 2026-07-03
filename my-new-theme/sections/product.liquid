@@ -20,7 +20,7 @@
         
         <!-- Left Column: Image Gallery (7 cols equivalent) -->
         <div class="product-gallery-col">
-          <div class="main-image-viewport">
+          <div class="main-image-viewport" style="--image-ratio: {{ section.settings.image_ratio | default: '4/3' | replace: '/', ' / ' }};">
             <!-- Slides Track -->
             <div class="slider-track-container">
             {%- if product.media.size > 0 -%}
@@ -145,9 +145,9 @@
                     <!-- Package 1 (Buy 1) -->
                     <div class="bundle-card active" id="bundle-card-1">
                       <div class="bundle-card-header">
-                        <label class="bundle-radio-container" style="display: flex !important; align-items: center !important; cursor: pointer !important; width: 100% !important; margin: 0 !important; position: relative !important;">
+                        <label class="bundle-radio-container" style="display: flex !important; align-items: center !important; cursor: pointer !important; width: auto !important; min-width: 0 !important; margin: 0 !important; position: relative !important;">
                           <input type="radio" name="bundle_option" value="buy_1" checked style="position: absolute !important; opacity: 0 !important; width: 0 !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; pointer-events: none !important;">
-                          <span class="bundle-radio-checkmark" style="position: relative !important; display: inline-block !important; width: 20px !important; height: 20px !important; margin-left: 20px !important; margin-right: 12px !important; flex-shrink: 0 !important; box-sizing: border-box !important; border-radius: 50% !important;"></span>
+                          <span class="bundle-radio-checkmark" style="position: relative; display: inline-block; width: 20px; height: 20px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%;"></span>
                           <div class="bundle-title-group">
                             <span class="bundle-title">{{ block.settings.bundle_1_title | escape }}</span>
                             <span class="bundle-subtitle">You Save {{ current_variant.compare_at_price | minus: current_variant.price | money }}</span>
@@ -162,7 +162,7 @@
                       </div>
                       
                       <div class="bundle-card-content">
-                        <div class="bundle-color-row" style="display: flex; align-items: center; gap: 12px; margin-left: 20px;">
+                        <div class="bundle-color-row">
                           <span class="bundle-color-label" style="font-weight: 700; color: var(--text-primary); margin-bottom: 0;">Color:</span>
                           <div class="bundle-select-wrapper">
                             <div class="custom-dropdown" id="bundle-1-variant-select" data-value="{{ product.variants.first.id }}">
@@ -197,9 +197,9 @@
                     {%- assign block_bundle_2_price = current_variant.price | times: 2 | minus: block_bundle_2_discount_cents -%}
                     <div class="bundle-card" id="bundle-card-2" data-discount-cents="{{ block_bundle_2_discount_cents }}">
                       <div class="bundle-card-header">
-                        <label class="bundle-radio-container" style="display: flex !important; align-items: center !important; cursor: pointer !important; width: 100% !important; margin: 0 !important; position: relative !important;">
+                        <label class="bundle-radio-container" style="display: flex !important; align-items: center !important; cursor: pointer !important; width: auto !important; min-width: 0 !important; margin: 0 !important; position: relative !important;">
                           <input type="radio" name="bundle_option" value="buy_2" style="position: absolute !important; opacity: 0 !important; width: 0 !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; pointer-events: none !important;">
-                          <span class="bundle-radio-checkmark" style="position: relative !important; display: inline-block !important; width: 20px !important; height: 20px !important; margin-left: 20px !important; margin-right: 12px !important; flex-shrink: 0 !important; box-sizing: border-box !important; border-radius: 50% !important;"></span>
+                          <span class="bundle-radio-checkmark" style="position: relative; display: inline-block; width: 20px; height: 20px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%;"></span>
                           <div class="bundle-title-group">
                             <span class="bundle-title">{{ block.settings.bundle_2_title | escape }}, {{ block.settings.bundle_2_subtitle | escape }}</span>
                             <span class="bundle-subtitle">Best Deal: {{ block_bundle_2_price | divided_by: 2 | money }} Each</span>
@@ -214,7 +214,7 @@
                       </div>
                       
                       <div class="bundle-card-content">
-                        <div class="bundle-color-row" style="display: flex; align-items: center; gap: 12px; margin-left: 20px; flex-wrap: wrap;">
+                        <div class="bundle-color-row">
                           <span class="bundle-color-label" style="font-weight: 700; color: var(--text-primary); margin-bottom: 0;">Colors:</span>
                           <div class="bundle-select-wrapper">
                             <span class="pillow-badge">Pillow 1</span>
@@ -380,9 +380,9 @@
               <!-- Package 1 (Buy 1) -->
               <div class="bundle-card active" id="bundle-card-1">
                 <div class="bundle-card-header">
-                  <label class="bundle-radio-container" style="display: flex !important; align-items: center !important; cursor: pointer !important; width: 100% !important; margin: 0 !important; position: relative !important;">
+                  <label class="bundle-radio-container" style="display: flex !important; align-items: center !important; cursor: pointer !important; width: auto !important; min-width: 0 !important; margin: 0 !important; position: relative !important;">
                     <input type="radio" name="bundle_option" value="buy_1" checked style="position: absolute !important; opacity: 0 !important; width: 0 !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; pointer-events: none !important;">
-                    <span class="bundle-radio-checkmark" style="position: relative !important; display: inline-block !important; width: 20px !important; height: 20px !important; margin-left: 20px !important; margin-right: 12px !important; flex-shrink: 0 !important; box-sizing: border-box !important; border-radius: 50% !important;"></span>
+                    <span class="bundle-radio-checkmark" style="position: relative; display: inline-block; width: 20px; height: 20px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%;"></span>
                     <div class="bundle-title-group">
                       <span class="bundle-title">Buy 1</span>
                       <span class="bundle-subtitle">You Save {{ current_variant.compare_at_price | minus: current_variant.price | money }}</span>
@@ -397,7 +397,7 @@
                 </div>
                 
                 <div class="bundle-card-content">
-                  <div class="bundle-color-row" style="display: flex; align-items: center; gap: 12px; margin-left: 20px;">
+                  <div class="bundle-color-row">
                     <span class="bundle-color-label" style="font-weight: 700; color: var(--text-primary); margin-bottom: 0;">Color:</span>
                     <div class="bundle-select-wrapper">
                       <div class="custom-dropdown" id="bundle-1-variant-select" data-value="{{ product.variants.first.id }}">
@@ -432,9 +432,9 @@
               {%- assign fallback_bundle_2_price = current_variant.price | times: 2 | minus: 1000 -%}
               <div class="bundle-card" id="bundle-card-2" data-discount-cents="1000">
                 <div class="bundle-card-header">
-                  <label class="bundle-radio-container" style="display: flex !important; align-items: center !important; cursor: pointer !important; width: 100% !important; margin: 0 !important; position: relative !important;">
+                  <label class="bundle-radio-container" style="display: flex !important; align-items: center !important; cursor: pointer !important; width: auto !important; min-width: 0 !important; margin: 0 !important; position: relative !important;">
                     <input type="radio" name="bundle_option" value="buy_2" style="position: absolute !important; opacity: 0 !important; width: 0 !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; pointer-events: none !important;">
-                    <span class="bundle-radio-checkmark" style="position: relative !important; display: inline-block !important; width: 20px !important; height: 20px !important; margin-left: 20px !important; margin-right: 12px !important; flex-shrink: 0 !important; box-sizing: border-box !important; border-radius: 50% !important;"></span>
+                    <span class="bundle-radio-checkmark" style="position: relative; display: inline-block; width: 20px; height: 20px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%;"></span>
                     <div class="bundle-title-group">
                       <span class="bundle-title">Buy 2, Save $10</span>
                       <span class="bundle-subtitle">Best Deal: {{ fallback_bundle_2_price | divided_by: 2 | money }} Each</span>
@@ -449,7 +449,7 @@
                 </div>
                 
                 <div class="bundle-card-content">
-                  <div class="bundle-color-row" style="display: flex; align-items: center; gap: 12px; margin-left: 20px; flex-wrap: wrap;">
+                  <div class="bundle-color-row">
                     <span class="bundle-color-label" style="font-weight: 700; color: var(--text-primary); margin-bottom: 0;">Colors:</span>
                     <div class="bundle-select-wrapper">
                       <span class="pillow-badge">Pillow 1</span>
@@ -571,10 +571,10 @@
     min-width: 0;
   }
 
-  /* Main Viewport: Aspect 4:3 */
+  /* Main Viewport: Customizable Aspect Ratio */
   .main-image-viewport {
     width: 100%;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: var(--image-ratio, 4 / 3);
     background-color: var(--surface-container-low);
     border-radius: 12px;
     overflow: hidden;
@@ -657,13 +657,31 @@
     right: 16px;
   }
 
-  /* Thumbnails Grid */
+  /* Thumbnails Slider */
   .thumbnails-grid-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
     gap: 16px;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  .thumbnails-grid-container::-webkit-scrollbar {
+    height: 6px;
+  }
+  .thumbnails-grid-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .thumbnails-grid-container::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+  }
+  .thumbnails-grid-container::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
   }
   .thumb-card {
+    flex: 0 0 110px;
     background-color: var(--surface-container-low);
     border-radius: 8px;
     overflow: hidden;
@@ -768,7 +786,7 @@
   }
   .bundle-card.active {
     border: 2px solid var(--text-primary);
-    background-color: #f5f5f5;
+    background-color: #ede8e2;
     box-shadow: 0 6px 18px rgba(125, 139, 161, 0.1);
   }
   
@@ -777,29 +795,23 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    position: relative;
   }
 
   /* Custom radio styles */
   .bundle-radio-checkmark {
-    border: 2px solid var(--border-color) !important;
-    background: white !important;
+    border: 2px solid #d8d8d8 !important;
+    background: #f0f0f0 !important;
     transition: all 0.2s ease;
-    margin-left: 20px !important;
+    margin-left: 20px;
+    margin-right: 12px;
+  }
+  .bundle-radio-checkmark::after {
+    display: none !important;
   }
   .bundle-card.active .bundle-radio-checkmark {
-    border-color: var(--text-primary) !important;
-    background: var(--text-primary) !important;
-  }
-  .bundle-card.active .bundle-radio-checkmark::after {
-    content: "" !important;
-    position: absolute !important;
-    width: 6px !important;
-    height: 6px !important;
-    border-radius: 50% !important;
-    background: white !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
+    border-color: #3a3a3a !important;
+    background: #3a3a3a !important;
   }
 
   .bundle-title-group {
@@ -831,14 +843,18 @@
   .bundle-price {
     font-family: var(--font-heading);
     font-size: 20px;
+    font-weight: 400;
+    color: var(--text-primary);
+  }
+  .bundle-card.active .bundle-price {
     font-weight: 700;
-    color: var(--primary);
   }
   .bundle-compare-price {
     font-family: var(--font-body);
-    font-size: 20px;
+    font-size: 15px;
     color: var(--text-light);
     text-decoration: line-through;
+    font-weight: 400;
   }
 
   /* Bundle dropdown content styling with collapse animation */
@@ -857,21 +873,22 @@
     max-height: 400px !important;
     opacity: 1 !important;
     overflow: visible !important;
-    padding-top: 16px !important;
-    margin-top: 6px !important;
+    padding-top: 26px !important;
+    margin-top: 8px !important;
   }
   .bundle-color-row {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 12px;
-    margin-left: 20px;
+    margin-left: 32px;
   }
   .bundle-color-label {
     font-family: var(--font-body);
     font-weight: 600;
     font-size: 14px;
     color: var(--text-primary);
+    white-space: nowrap;
   }
   .bundle-selects-row {
     display: flex;
@@ -882,21 +899,21 @@
   
   .pillow-badge {
     position: absolute;
-    top: -10px;
+    top: -9px;
     left: 50%;
     transform: translateX(-50%);
     background-color: #2a2d32;
     color: #ffffff;
-    font-size: 10px;
+    font-size: 9px;
     font-family: var(--font-body);
     font-weight: 700;
-    padding: 3px 10px;
+    padding: 2px 8px;
     border-radius: 9999px;
     z-index: 10;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     white-space: nowrap;
-    line-height: 1.4;
+    line-height: 1.2;
   }
 
   .bundle-select-wrapper {
@@ -904,8 +921,8 @@
     display: inline-flex;
     flex-shrink: 0;
     width: auto;
-    min-width: 140px;
-    max-width: 185px;
+    min-width: 155px;
+    max-width: 200px;
     margin-top: 10px;
   }
 
@@ -1259,6 +1276,126 @@
       width: 100%;
     }
   }
+
+  @media (max-width: 767px) {
+    /* Card padding */
+    .bundle-card {
+      padding: 14px 12px !important;
+    }
+
+    /* ── Header row: radio+title LEFT, prices RIGHT ── */
+    .bundle-card-header {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      justify-content: space-between !important;
+      align-items: flex-start !important;
+      width: 100% !important;
+    }
+
+    /* Override the inline flex:1 on the label so it doesn't fill the row */
+    .bundle-radio-container {
+      flex: 0 1 auto !important;
+      min-width: 0 !important;
+    }
+
+    /* Radio dot */
+    .bundle-radio-checkmark {
+      width: 18px !important;
+      height: 18px !important;
+      margin-left: 2px !important;
+      margin-right: 10px !important;
+      flex-shrink: 0 !important;
+    }
+
+    /* Title text — stays left, never wraps into price zone */
+    .bundle-title-group {
+      min-width: 0 !important;
+    }
+    .bundle-title {
+      font-size: 16px !important;
+      white-space: nowrap !important;
+    }
+    .bundle-subtitle {
+      font-size: 12px !important;
+    }
+
+    /* Price group — pinned right, always on same row as title */
+    .bundle-price-group {
+      position: static !important;
+      transform: none !important;
+      flex-shrink: 0 !important;
+      margin-left: auto !important;
+      margin-right: 2px !important;
+      gap: 6px !important;
+      text-align: right !important;
+      padding-left: 8px !important;
+      white-space: nowrap !important;
+    }
+    .bundle-price {
+      font-size: 18px !important;
+    }
+    .bundle-compare-price {
+      font-size: 14px !important;
+    }
+
+    /* ── Colors section: below header with breathing room ── */
+    .bundle-card.active .bundle-card-content {
+      padding-top: 22px !important;
+      margin-top: 12px !important;
+      border-top: 1px solid rgba(0,0,0,0.08) !important;
+      overflow: visible !important;
+    }
+
+    /* Color row: label + dropdowns all on one row */
+    .bundle-color-row {
+      margin-left: 0 !important;
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      gap: 8px !important;
+      align-items: center !important;
+    }
+    .bundle-color-label {
+      font-size: 13px !important;
+      width: auto !important;
+      flex-shrink: 0 !important;
+      margin-bottom: 0 !important;
+    }
+
+    /* Dropdown wrappers: side-by-side, equal width */
+    .bundle-select-wrapper {
+      flex: 1 1 0% !important;
+      min-width: 0 !important;
+      max-width: none !important;
+      margin-top: 10px !important;
+    }
+
+    /* Pillow badges: centered over dropdown top border */
+    .pillow-badge {
+      position: absolute !important;
+      top: -8px !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      font-size: 8px !important;
+      padding: 2px 8px !important;
+      z-index: 12 !important;
+    }
+
+    /* Dropdown trigger: roomy enough for long text */
+    .custom-dropdown-trigger {
+      padding: 9px 28px 9px 10px !important;
+      font-size: 12px !important;
+      min-height: 36px !important;
+      gap: 6px !important;
+    }
+    .select-color-dot {
+      width: 16px !important;
+      height: 16px !important;
+      min-width: 16px !important;
+    }
+    .custom-dropdown-chevron {
+      right: 8px !important;
+    }
+  }
 </style>
 
 <script>
@@ -1468,6 +1605,8 @@
       thumbnails.forEach((t, i) => {
         if (i === currentSlide) {
           t.classList.add('active');
+          // Scroll active thumbnail into view
+          t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
         } else {
           t.classList.remove('active');
         }
@@ -1503,6 +1642,30 @@
       "type": "product",
       "id": "product",
       "label": "Product"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image Ratio",
+      "default": "4/3",
+      "options": [
+        {
+          "value": "1/1",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "4/3",
+          "label": "Landscape (4:3)"
+        },
+        {
+          "value": "16/9",
+          "label": "Widescreen (16:9)"
+        },
+        {
+          "value": "2/3",
+          "label": "Portrait (2:3)"
+        }
+      ]
     },
     {
       "type": "header",
@@ -1599,7 +1762,7 @@
           "type": "text",
           "id": "bundle_2_subtitle",
           "label": "Bundle 2 Subtitle",
-          "default": "Save extra $10"
+          "default": "Save $10"
         },
         {
           "type": "range",

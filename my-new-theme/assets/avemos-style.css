@@ -1359,11 +1359,21 @@
   flex-direction: row !important;
   align-items: center !important;
   gap: 10px !important;
-  margin-left: 52px !important;
-  flex-wrap: wrap !important;
+  margin-left: 32px !important;
+  flex-wrap: nowrap !important;
 }
 .Avemos-landing-wrapper .bundle-radio-checkmark {
-  margin-left: 20px !important;
+  margin-left: 16px !important;
+  margin-right: 16px !important;
+  border: 2px solid #d8d8d8 !important;
+  background: #f0f0f0 !important;
+}
+.Avemos-landing-wrapper .bundle-radio-checkmark::after {
+  display: none !important;
+}
+.Avemos-landing-wrapper .bundle-card.active .bundle-radio-checkmark {
+  border-color: #3a3a3a !important;
+  background: #3a3a3a !important;
 }
 .Avemos-landing-wrapper .bundle-title-group {
   display: flex !important;
@@ -1374,15 +1384,8 @@
 .Avemos-landing-wrapper .bundle-subtitle {
   margin-top: 2px !important;
 }
-.Avemos-landing-wrapper .bundle-price-group {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: baseline !important;
-  gap: 8px !important;
-  position: absolute !important;
-  right: 40px !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
+.Avemos-landing-wrapper .bundle-card-header {
+  position: relative !important;
 }
 .Avemos-landing-wrapper .bundle-compare-price {
   font-size: 20px !important;
@@ -1416,3 +1419,56 @@
 .Avemos-landing-wrapper .checkout-form-wrapper {
   margin-top: -4px !important;
 }
+
+/* Desktop: prices absolutely positioned right */
+@media (min-width: 768px) {
+  .Avemos-landing-wrapper .bundle-price-group {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: baseline !important;
+    gap: 8px !important;
+    position: absolute !important;
+    right: 40px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+  }
+}
+
+/* Mobile: prices in-flow on same row as title */
+@media (max-width: 767px) {
+  .Avemos-landing-wrapper .bundle-card {
+    padding: 14px 12px !important;
+  }
+  .Avemos-landing-wrapper .bundle-card-header {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+  }
+  .Avemos-landing-wrapper .bundle-price-group {
+    position: static !important;
+    transform: none !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: baseline !important;
+    flex-shrink: 0 !important;
+    margin-left: auto !important;
+    margin-right: 2px !important;
+    gap: 6px !important;
+    padding-left: 8px !important;
+    white-space: nowrap !important;
+  }
+  .Avemos-landing-wrapper .bundle-title {
+    font-size: 16px !important;
+  }
+  .Avemos-landing-wrapper .bundle-subtitle {
+    font-size: 12px !important;
+  }
+  .Avemos-landing-wrapper .bundle-price {
+    font-size: 18px !important;
+  }
+  .Avemos-landing-wrapper .bundle-compare-price {
+    font-size: 14px !important;
+  }
+}
+

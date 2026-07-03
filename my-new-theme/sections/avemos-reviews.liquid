@@ -68,93 +68,53 @@
       
       <!-- Review Cards Grid -->
       <div class="reviews-grid">
-                <div class="reviewer-avatar">EL</div>
-                <div>
-                  <div class="reviewer-name">Emily L.</div>
-                  <div class="verified-badge">
-                    <i class="fa-solid fa-circle-check"></i> Verified Buyer
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'review' -%}
+            <div class="review-card" {{ block.shopify_attributes }}>
+              <div class="review-card-inner">
+                <div class="review-header">
+                  <div class="reviewer-info">
+                    {%- if block.settings.author_initials != blank -%}
+                      <div class="reviewer-avatar">{{ block.settings.author_initials | escape }}</div>
+                    {%- endif -%}
+                    <div>
+                      {%- if block.settings.author_name != blank -%}
+                        <div class="reviewer-name">{{ block.settings.author_name | escape }}</div>
+                      {%- endif -%}
+                      {%- if block.settings.verified -%}
+                        <div class="verified-badge">
+                          <i class="fa-solid fa-circle-check"></i> Verified Buyer
+                        </div>
+                      {%- endif -%}
+                    </div>
                   </div>
+                  {%- if block.settings.date != blank -%}
+                    <span class="review-date">{{ block.settings.date | escape }}</span>
+                  {%- endif -%}
                 </div>
-              </div>
-              <span class="review-date">3 weeks ago</span>
-            </div>
-            
-            <div class="stars">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-            </div>
-            
-            <h4 class="review-title">Amazing quality & soft touch</h4>
-            <p class="review-text">
-              The fabric feels extremely soft against the skin, unlike cheap inflatable pillows. It doesn't get hot at all, which was my main concern. Excellent design and superb quality.
-            </p>
-          </div>
-        </div>
-
-        <!-- Review 5 -->
-        <div class="review-card">
-          <div class="review-card-inner">
-            <div class="review-header">
-              <div class="reviewer-info">
-                <div class="reviewer-avatar">AB</div>
-                <div>
-                  <div class="reviewer-name">Alex B.</div>
-                  <div class="verified-badge">
-                    <i class="fa-solid fa-circle-check"></i> Verified Buyer
-                  </div>
+                
+                <div class="stars">
+                  {%- for i in (1..block.settings.stars) -%}
+                    <i class="fa-solid fa-star"></i>
+                  {%- endfor -%}
+                  {%- assign empty_stars = 5 | minus: block.settings.stars -%}
+                  {%- if empty_stars > 0 -%}
+                    {%- for i in (1..empty_stars) -%}
+                      <i class="fa-regular fa-star"></i>
+                    {%- endfor -%}
+                  {%- endif -%}
                 </div>
+                
+                {%- if block.settings.title != blank -%}
+                  <h4 class="review-title">{{ block.settings.title | escape }}</h4>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}
+                  <p class="review-text">{{ block.settings.text | escape }}</p>
+                {%- endif -%}
               </div>
-              <span class="review-date">1 month ago</span>
             </div>
-            
-            <div class="stars">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-            </div>
-            
-            <h4 class="review-title">Highly recommend!</h4>
-            <p class="review-text">
-              My wife and I both got one for our trip to Europe and we couldn't be happier. We used them on flights, trains, and even in hotels with flat pillows. Customer service was also very responsive.
-            </p>
-          </div>
-        </div>
-
-        <!-- Review 6 -->
-        <div class="review-card">
-          <div class="review-card-inner">
-            <div class="review-header">
-              <div class="reviewer-info">
-                <div class="reviewer-avatar">NK</div>
-                <div>
-                  <div class="reviewer-name">Natalie K.</div>
-                  <div class="verified-badge">
-                    <i class="fa-solid fa-circle-check"></i> Verified Buyer
-                  </div>
-                </div>
-              </div>
-              <span class="review-date">1 month ago</span>
-            </div>
-            
-            <div class="stars">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-            </div>
-            
-            <h4 class="review-title">Life changer for road trips</h4>
-            <p class="review-text">
-              As someone who travels by bus frequently, this pillow has completely transformed my travel experience. No more bobbing head or waking up with aches. The strap keeps it securely in place.
-            </p>
-          </div>
-        </div>
+          {%- endif -%}
+        {%- endfor -%}
       </div>
     </div>
   </section>
