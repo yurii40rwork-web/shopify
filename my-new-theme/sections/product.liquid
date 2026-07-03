@@ -81,7 +81,7 @@
                 {%- when 'title' -%}
                   <!-- Title -->
                   <div class="details-header-block" style="display: flex; flex-direction: column; gap: 4px;" {{ block.shopify_attributes }}>
-                    <h1 class="main-product-title" style="font-size: 32px; font-weight: 700; color: var(--text-primary); margin: 0; line-height: 1.2;">{{ product.title }}</h1>
+                    <h1 class="main-product-title" style="font-size: 32px; font-weight: 700; color: var(--text-primary); margin: 0; line-height: 1.2;">{{ product.title | replace: "Premium Avemos™ ", "" }}</h1>
                   </div>
                 {%- when 'rating' -%}
                   <!-- Rating -->
@@ -325,7 +325,7 @@
             {%- comment -%} Compatibility Fallback: Render default static block layout {%- endcomment -%}
             <!-- Title & Rating -->
             <div class="details-header-block" style="display: flex; flex-direction: column; gap: 4px;">
-              <h1 class="main-product-title" style="font-size: 32px; font-weight: 700; color: var(--text-primary); margin: 0; line-height: 1.2;">{{ product.title }}</h1>
+              <h1 class="main-product-title" style="font-size: 32px; font-weight: 700; color: var(--text-primary); margin: 0; line-height: 1.2;">{{ product.title | replace: "Premium Avemos™ ", "" }}</h1>
               
               <div class="ratings-row" style="margin-top: 0px;">
                 <div class="stars-container" style="display: flex; align-items: center;">
@@ -718,6 +718,27 @@
     display: flex;
     align-items: center;
     gap: 16px;
+    margin-top: -6px !important;
+  }
+  .bullet-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 18px !important;
+    width: 20px !important;
+    height: 20px !important;
+    flex-shrink: 0 !important;
+    line-height: 1 !important;
+  }
+  .bullet-text {
+    line-height: 1.2 !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+  }
+  .product-info-description ul li {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
   }
   .stars-container {
     display: flex;
@@ -1489,6 +1510,33 @@
         const index = parseInt(thumb.getAttribute('data-index')) || 0;
         goToSlide(index);
       });
+    });
+
+    // Format product description list items to fix alignment and trim any spaces after emojis/icons
+    document.querySelectorAll('.product-info-description li').forEach(function(li) {
+      let materialSpan = li.querySelector('.material-symbols-outlined');
+      if (materialSpan) {
+        materialSpan.classList.add('bullet-icon');
+        let nextSibling = materialSpan.nextSibling;
+        let textContainer = document.createElement('span');
+        textContainer.className = 'bullet-text';
+        while (nextSibling) {
+          let currentSibling = nextSibling;
+          nextSibling = nextSibling.nextSibling;
+          textContainer.appendChild(currentSibling);
+        }
+        textContainer.textContent = textContainer.textContent.trim();
+        li.appendChild(textContainer);
+        return;
+      }
+      
+      let text = li.textContent.trim();
+      let match = text.match(/^([^\w\s\d,.:;'"?!()-]+)\s*(.*)/u);
+      if (match) {
+        let icon = match[1].trim();
+        let remainingText = match[2].trim();
+        li.innerHTML = '<span class="bullet-icon">' + icon + '</span><span class="bullet-text">' + remainingText + '</span>';
+      }
     });
   });
 </script>
