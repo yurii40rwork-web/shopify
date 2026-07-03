@@ -232,6 +232,7 @@
         "step_1": {
           "type": "step",
           "settings": {
+            "image": "shopify://shop_images/step1.jpg",
             "title": "Place on Your Neck",
             "text": "Wrap the U-shaped pillow around your neck so the elevated cushioned sides support your chin and cheeks."
           }
@@ -239,6 +240,7 @@
         "step_2": {
           "type": "step",
           "settings": {
+            "image": "shopify://shop_images/step2.jpg",
             "title": "Adjust the Strap",
             "text": "Tighten the adjustable strap to your desired level of support and head stabilization."
           }
@@ -246,6 +248,7 @@
         "step_3": {
           "type": "step",
           "settings": {
+            "image": "shopify://shop_images/step3.jpg",
             "title": "Enjoy Deep Sleep",
             "text": "Relax and sleep. The pillow holds your head in a natural, upright position throughout the journey."
           }
@@ -355,16 +358,12 @@
     },
     "refund": {
       "type": "avemos-refund",
-      "settings": {
-        "heading": "60 Day Money Back Guaranteed",
-        "description": "<p>Your satisfaction is our guarantee. If for any reason you need to send them back, we've got you covered.</p>",
-        "button_text": "👉 Get Your FlyHugz®"
-      },
       "blocks": {
         "badge_1": {
           "type": "badge",
           "settings": {
             "icon": "fa-truck",
+            "custom_svg": "",
             "text": "Free worldwide shipping"
           }
         },
@@ -372,6 +371,7 @@
           "type": "badge",
           "settings": {
             "icon": "fa-envelope",
+            "custom_svg": "",
             "text": "24/7 Customer Support"
           }
         },
@@ -379,6 +379,7 @@
           "type": "badge",
           "settings": {
             "icon": "fa-arrows-rotate",
+            "custom_svg": "",
             "text": "60 Day money back guarantee"
           }
         },
@@ -386,6 +387,7 @@
           "type": "badge",
           "settings": {
             "icon": "fa-heart",
+            "custom_svg": "",
             "text": "Over 18,640 happy customers"
           }
         }
@@ -395,7 +397,13 @@
         "badge_2",
         "badge_3",
         "badge_4"
-      ]
+      ],
+      "settings": {
+        "heading": "60 Day Money Back Guaranteed",
+        "description": "<p>Your satisfaction is our guarantee. If for any reason you need to send them back, we've got you covered.</p>",
+        "button_text": "👉 Get Your FlyHugz®",
+        "button_link": ""
+      }
     },
     "footer": {
       "type": "avemos-footer",
