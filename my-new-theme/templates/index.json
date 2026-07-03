@@ -37,7 +37,7 @@
           "settings": {
             "bundle_1_title": "Buy 1",
             "bundle_2_title": "Buy 2",
-            "bundle_2_subtitle": "Save $10",
+            "bundle_2_subtitle": "Save extra $10",
             "bundle_2_discount": 10
           }
         },
@@ -309,50 +309,6 @@
       ],
       "settings": {}
     },
-    "refund": {
-      "type": "avemos-refund",
-      "settings": {
-        "heading": "60 Day Money Back Guaranteed",
-        "description": "<p>Your satisfaction is our guarantee. If for any reason you need to send them back, we've got you covered.</p>",
-        "button_text": "👉 Get Your FlyHugz®"
-      },
-      "blocks": {
-        "badge_1": {
-          "type": "badge",
-          "settings": {
-            "icon": "fa-truck",
-            "text": "Free worldwide shipping"
-          }
-        },
-        "badge_2": {
-          "type": "badge",
-          "settings": {
-            "icon": "fa-envelope",
-            "text": "24/7 Customer Support"
-          }
-        },
-        "badge_3": {
-          "type": "badge",
-          "settings": {
-            "icon": "fa-arrows-rotate",
-            "text": "60 Day money back guarantee"
-          }
-        },
-        "badge_4": {
-          "type": "badge",
-          "settings": {
-            "icon": "fa-heart",
-            "text": "Over 18,640 happy customers"
-          }
-        }
-      },
-      "block_order": [
-        "badge_1",
-        "badge_2",
-        "badge_3",
-        "badge_4"
-      ]
-    },
     "footer": {
       "type": "avemos-footer",
       "settings": {}
@@ -367,7 +323,6 @@
     "how_it_works",
     "faq",
     "reviews",
-    "refund",
     "footer"
   ]
 }
