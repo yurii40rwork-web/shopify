@@ -1573,7 +1573,7 @@
         buyBtn.disabled = true;
         buyBtn.innerHTML = '<span class="material-symbols-outlined">sync</span> Loading...';
 
-        // Clear cart first, then add selected items, then redirect to checkout
+        // Clear cart first, then add selected items, then open cart drawer
         fetch('/cart/clear.js', {
           method: 'POST'
         }).then(() => {
@@ -1584,9 +1584,13 @@
           });
         }).then(res => res.json())
           .then(data => {
-            // Apply a discount code if configured in your Shopify admin (e.g. automatic bundle discount)
-            // Redirect straight to checkout
-            window.location.href = '/checkout';
+            buyBtn.disabled = false;
+            buyBtn.innerHTML = originalText;
+            if (window.openCartDrawer) {
+              window.openCartDrawer();
+            } else {
+              window.location.href = '/cart';
+            }
           }).catch(err => {
             console.error('Error adding items to cart:', err);
             buyBtn.disabled = false;

@@ -39,5 +39,7 @@
     {% unless template == 'index' or template == 'policy' or template == '404' or request.path == '/pages/about-us' or request.path == '/pages/contact-us' %}
       {% sections 'footer-group' %}
     {% endunless %}
+
+    {% render 'cart-drawer' %}
   </body>
 </html>
