@@ -167,12 +167,13 @@
   transform: scale(1.05);
 }
 
-.Avemos-landing-wrapper .cart-badge {
+.Avemos-landing-wrapper .cart-badge,
+.cart-badge {
   position: absolute;
   top: -6px;
   right: -8px;
   background-color: var(--accent);
-  color: white;
+  color: #ff3333;
   font-size: 0.75rem;
   font-weight: 700;
   width: 18px;
