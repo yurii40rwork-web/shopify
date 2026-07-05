@@ -746,11 +746,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Loop through and render actual cart items
     cart.items.forEach((item, index) => {
       const isPillow = item.product_title.toLowerCase().includes('pillow');
-      let itemTitle = item.product_title;
-      // Rename to FlyHugz
-      if (itemTitle.toLowerCase().includes('avemos')) {
-        itemTitle = "The Original FlyHugz® Travel Pillow";
-      }
+      const itemTitle = item.product_title;
 
       const itemElement = document.createElement('div');
       itemElement.className = 'cart-drawer-item';
@@ -940,7 +936,7 @@ document.addEventListener('DOMContentLoaded', () => {
       "type": "text",
       "id": "cart_title",
       "label": "Cart Heading",
-      "default": "Your FlyHugz® Cart"
+      "default": "Your Cart"
     },
     {
       "type": "number",
