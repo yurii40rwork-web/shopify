@@ -8,5 +8,22 @@
  * ------------------------------------------------------------
  */
 {
-  "current": {}
+  "current": {
+    "sections": {
+      "cart-drawer": {
+        "type": "cart-drawer",
+        "settings": {
+          "cart_title": "Your Avemos® Cart",
+          "free_shipping_threshold": 39.9,
+          "show_shipping_protection": true,
+          "shipping_protection_title": "Shipping Protection $5.00",
+          "shipping_protection_subtitle": "Protect your order from damage, loss, or theft.",
+          "shipping_protection_price": 5,
+          "save_percent": 57,
+          "trust_guarantee_text": "30 Day Money Back Guarantee"
+        }
+      }
+    },
+    "content_for_index": []
+  }
 }
