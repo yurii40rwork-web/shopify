@@ -1,11 +1,14 @@
-<!-- Cart Drawer Snippet -->
-<div id="cart-drawer" class="cart-drawer-container" aria-hidden="true">
+<!-- Cart Drawer Section -->
+<div id="cart-drawer" class="cart-drawer-container" aria-hidden="true" 
+     data-shipping-threshold="{{ section.settings.free_shipping_threshold | default: 50 }}"
+     data-protection-price="{{ section.settings.shipping_protection_price | default: 5.00 }}"
+     data-save-percent="{{ section.settings.save_percent | default: 57 }}">
   <div class="cart-drawer-overlay" id="cart-drawer-overlay"></div>
   
   <div class="cart-drawer-panel">
     <!-- Header -->
     <div class="cart-drawer-header">
-      <h2 class="cart-drawer-title">Your FlyHugz® Cart</h2>
+      <h2 class="cart-drawer-title">{{ section.settings.cart_title | escape }}</h2>
       <button type="button" class="cart-drawer-close-btn" id="cart-drawer-close-btn" aria-label="Close Cart">
         <i class="fa-solid fa-xmark"></i>
       </button>
@@ -42,24 +45,26 @@
     <!-- Footer Section (Fixed at bottom) -->
     <div class="cart-drawer-footer" id="cart-drawer-footer">
       <!-- Shipping Protection -->
-      <div class="shipping-protection-row">
-        <div class="protection-icon-details">
-          <div class="protection-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-              <polyline points="9 11 11 13 15 9"></polyline>
-            </svg>
+      {%- if section.settings.show_shipping_protection -%}
+        <div class="shipping-protection-row">
+          <div class="protection-icon-details">
+            <div class="protection-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <polyline points="9 11 11 13 15 9"></polyline>
+              </svg>
+            </div>
+            <div class="protection-text">
+              <div class="protection-title">{{ section.settings.shipping_protection_title | escape }}</div>
+              <div class="protection-subtitle">{{ section.settings.shipping_protection_subtitle | escape }}</div>
+            </div>
           </div>
-          <div class="protection-text">
-            <div class="protection-title">Shipping Protection $5.00</div>
-            <div class="protection-subtitle">Protect your order from damage, loss, or theft.</div>
-          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="shipping-protection-toggle" checked>
+            <span class="slider"></span>
+          </label>
         </div>
-        <label class="toggle-switch">
-          <input type="checkbox" id="shipping-protection-toggle" checked>
-          <span class="slider"></span>
-        </label>
-      </div>
+      {%- endif -%}
       
       <!-- Subtotal -->
       <div class="cart-drawer-subtotal-row">
@@ -67,7 +72,7 @@
         <div class="subtotal-prices">
           <span class="subtotal-current" id="drawer-subtotal-current">$0.00</span>
           <span class="subtotal-original" id="drawer-subtotal-original">$0.00</span>
-          <span class="subtotal-badge" id="drawer-subtotal-save">Save 57%</span>
+          <span class="subtotal-badge" id="drawer-subtotal-save">Save {{ section.settings.save_percent }}%</span>
         </div>
       </div>
       
@@ -78,7 +83,7 @@
       
       <!-- Trust Note & Badges -->
       <div class="drawer-trust-section">
-        <div class="trust-guarantee-text">60 Day Money Back Guarantee</div>
+        <div class="trust-guarantee-text">{{ section.settings.trust_guarantee_text | escape }}</div>
         <div class="drawer-payment-badges">
           <!-- Premium styled payment icons -->
           <div class="fallback-payment-badges">
@@ -415,23 +420,6 @@
   margin-top: 1px;
 }
 
-/* Free Gift E-Book Card */
-.free-gift-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: #181c21;
-  color: #ffffff;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 4px;
-  margin-top: 4px;
-}
-.free-gift-badge i {
-  font-size: 10px;
-}
-
 /* Fixed Footer Section */
 .cart-drawer-footer {
   background: #ffffff;
@@ -650,6 +638,8 @@ body.cart-drawer-open {
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const drawer = document.getElementById('cart-drawer');
+  if (!drawer) return;
+
   const overlay = document.getElementById('cart-drawer-overlay');
   const closeBtn = document.getElementById('cart-drawer-close-btn');
   const continueBtn = document.getElementById('cart-drawer-continue-btn');
@@ -668,8 +658,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const protectionToggle = document.getElementById('shipping-protection-toggle');
   const checkoutBtn = document.getElementById('drawer-checkout-btn');
 
-  // Track if eBook is explicitly deleted this session
-  let isEbookDeleted = sessionStorage.getItem('flyhugz_ebook_deleted') === 'true';
+  // Load configs from dataset attributes (from shopify schema)
+  const shippingThreshold = parseFloat(drawer.dataset.shippingThreshold || 50) * 100; // in cents
+  const protectionPrice = parseFloat(drawer.dataset.protectionPrice || 5.00) * 100; // in cents
+  const savePercentVal = parseInt(drawer.dataset.savePercent || 57);
 
   // Toggle open class
   function openCartDrawer() {
@@ -828,67 +820,33 @@ document.addEventListener('DOMContentLoaded', () => {
       itemsList.appendChild(itemElement);
     });
 
-    // Render Free E-Book Gift if not deleted
-    if (!isEbookDeleted) {
-      originalPricesSubtotal += 1995; // eBook original price $19.95
-
-      const ebookElement = document.createElement('div');
-      ebookElement.className = 'cart-drawer-item ebook-gift-item';
-      ebookElement.innerHTML = `
-        <div class="item-img-col">
-          <img src="{{ 'ebook-cover.png' | asset_url }}" alt="Free FlyHugz® eBook">
-        </div>
-        <div class="item-info-col">
-          <span class="item-title">Free FlyHugz® eBook: Tips & Hacks for Travelers in 2026</span>
-          <span class="free-gift-badge"><i class="fa-solid fa-gift"></i> Free Gift</span>
-        </div>
-        <div class="item-price-col">
-          <button type="button" class="item-delete-btn" id="delete-ebook-btn">
-            <i class="fa-regular fa-trash-can"></i>
-          </button>
-          <div class="item-prices-box">
-            <span class="price-current">Free</span>
-            <span class="price-original">$19.95</span>
-          </div>
-        </div>
-      `;
-      itemsList.appendChild(ebookElement);
-
-      document.getElementById('delete-ebook-btn').addEventListener('click', () => {
-        isEbookDeleted = true;
-        sessionStorage.setItem('flyhugz_ebook_deleted', 'true');
-        fetchAndRenderCart();
-      });
-    }
-
     // Shipping protection cost
     let protectionCost = 0;
     if (protectionToggle && protectionToggle.checked) {
-      protectionCost = 500; // $5.00 in cents
+      protectionCost = protectionPrice; 
     }
 
     // Subtotal calculations
     const finalSubtotal = basePricesSubtotal + protectionCost;
     const finalOriginal = originalPricesSubtotal + protectionCost;
-    const savePercent = finalOriginal > 0 ? Math.round((1 - (finalSubtotal / finalOriginal)) * 100) : 0;
+    const savePercent = finalOriginal > 0 ? Math.round((1 - (finalSubtotal / finalOriginal)) * 100) : savePercentVal;
 
     subtotalCurrent.textContent = formatMoney(finalSubtotal);
     subtotalOriginal.textContent = formatMoney(finalOriginal);
     subtotalSave.textContent = `Save ${savePercent}%`;
 
     // Free Shipping Progress calculation
-    const freeShippingThreshold = 5000; // $50.00 in cents
     const baseSubtotalNoProtection = basePricesSubtotal; // exclude protection from threshold
     
-    if (baseSubtotalNoProtection >= freeShippingThreshold) {
+    if (baseSubtotalNoProtection >= shippingThreshold) {
       progressBar.style.width = '100%';
       truckIcon.style.left = '100%';
       progressText.innerHTML = 'Congrats! You\'ve unlocked <strong>FREE SHIPPING!</strong>';
     } else {
-      const percentage = (baseSubtotalNoProtection / freeShippingThreshold) * 100;
+      const percentage = (baseSubtotalNoProtection / shippingThreshold) * 100;
       progressBar.style.width = `${percentage}%`;
       truckIcon.style.left = `${percentage}%`;
-      const difference = formatMoney(freeShippingThreshold - baseSubtotalNoProtection);
+      const difference = formatMoney(shippingThreshold - baseSubtotalNoProtection);
       progressText.innerHTML = `You are only <strong>${difference}</strong> away from <strong>FREE SHIPPING!</strong>`;
     }
   }
@@ -973,3 +931,59 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
+
+{% schema %}
+{
+  "name": "Cart Drawer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "cart_title",
+      "label": "Cart Heading",
+      "default": "Your FlyHugz® Cart"
+    },
+    {
+      "type": "number",
+      "id": "free_shipping_threshold",
+      "label": "Free Shipping Threshold (USD)",
+      "default": 50
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shipping_protection",
+      "label": "Show Shipping Protection Option",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "shipping_protection_title",
+      "label": "Shipping Protection Title",
+      "default": "Shipping Protection $5.00"
+    },
+    {
+      "type": "text",
+      "id": "shipping_protection_subtitle",
+      "label": "Shipping Protection Subtitle",
+      "default": "Protect your order from damage, loss, or theft."
+    },
+    {
+      "type": "number",
+      "id": "shipping_protection_price",
+      "label": "Shipping Protection Price (USD)",
+      "default": 5
+    },
+    {
+      "type": "number",
+      "id": "save_percent",
+      "label": "Save Percentage Tag (e.g. 57)",
+      "default": 57
+    },
+    {
+      "type": "text",
+      "id": "trust_guarantee_text",
+      "label": "Trust Guarantee Text",
+      "default": "60 Day Money Back Guarantee"
+    }
+  ]
+}
+{% endschema %}
