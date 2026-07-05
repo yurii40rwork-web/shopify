@@ -20,6 +20,7 @@
   --accent: #515f74;            /* Surface Tint — muted steel */
   --accent-hover: #3a485b;
   --accent-light: #d5e3fc;      /* Primary Fixed */
+  --logo-red: #ca1100;          /* Logo Red */
   --secondary: #52606f;
   --secondary-container: #d3e1f3;
   
@@ -167,13 +168,13 @@
   transform: scale(1.05);
 }
 
-.Avemos-landing-wrapper .cart-badge,
-.cart-badge {
+.cart-badge,
+.Avemos-landing-wrapper .cart-badge {
   position: absolute;
   top: -6px;
   right: -8px;
-  background-color: var(--accent);
-  color: #ff3333;
+  background-color: var(--logo-red, #ca1100);
+  color: white;
   font-size: 0.75rem;
   font-weight: 700;
   width: 18px;
