@@ -700,11 +700,25 @@
       }
     }
 
+    // Helper for cumulative discount calculation (13% off per extra pillow, min $20/ea)
+    function getCumulativePillowUnitPriceCents(basePriceCents, totalQty) {
+      if (totalQty <= 1) return basePriceCents;
+      let baseDollars = basePriceCents / 100;
+      let discountedDollars = Math.round(baseDollars * Math.pow(0.87, totalQty - 1));
+      let finalDollars = Math.max(20, discountedDollars);
+      return finalDollars * 100;
+    }
+
     // Helper: update DOM based on new cart JSON
     function updateCartDOM(cart) {
-      if (subtotalLabel) {
-        subtotalLabel.textContent = formatMoney(cart.total_price);
-      }
+      let totalPillowsQty = 0;
+      cart.items.forEach(item => {
+        if (item.product_title.toLowerCase().includes('pillow')) {
+          totalPillowsQty += item.quantity;
+        }
+      });
+
+      let calculatedSubtotal = 0;
 
       cartCounts.forEach(el => {
         el.textContent = cart.item_count;
@@ -719,6 +733,12 @@
       cart.items.forEach(item => {
         keysInCart.add(item.key);
         
+        const isPillow = item.product_title.toLowerCase().includes('pillow');
+        const baseUnitPriceCents = item.price || 3900;
+        const effectiveUnitPrice = isPillow ? getCumulativePillowUnitPriceCents(baseUnitPriceCents, totalPillowsQty) : (item.final_price || item.price);
+        const effectiveLinePrice = effectiveUnitPrice * item.quantity;
+        calculatedSubtotal += effectiveLinePrice;
+
         const card = document.querySelector(`.cart-item-card[data-line-item-key="${item.key}"]`);
         if (card) {
           const qtyInput = card.querySelector('.qty-input');
@@ -726,15 +746,19 @@
 
           const linePriceCol = card.querySelector('.cart-item-total-price-col .line-price-label');
           if (linePriceCol) {
-            linePriceCol.textContent = formatMoney(item.final_line_price);
+            linePriceCol.textContent = formatMoney(effectiveLinePrice);
           }
 
           const priceMobile = card.querySelector('.cart-item-price-mobile');
           if (priceMobile) {
-            priceMobile.textContent = formatMoney(item.final_price);
+            priceMobile.textContent = formatMoney(effectiveUnitPrice);
           }
         }
       });
+
+      if (subtotalLabel) {
+        subtotalLabel.textContent = formatMoney(calculatedSubtotal);
+      }
 
       const currentCards = document.querySelectorAll('.cart-item-card');
       currentCards.forEach(card => {

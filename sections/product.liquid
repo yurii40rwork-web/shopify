@@ -1533,8 +1533,13 @@
         if (val && variantIdInput) {
           variantIdInput.value = val;
         }
-      } else {
+      } else if (activeOption === 'buy_2') {
         const val = getDropdownValue('bundle-2-pillow-1-select');
+        if (val && variantIdInput) {
+          variantIdInput.value = val;
+        }
+      } else if (activeOption === 'buy_3') {
+        const val = getDropdownValue('bundle-3-pillow-1-select');
         if (val && variantIdInput) {
           variantIdInput.value = val;
         }
@@ -1555,15 +1560,22 @@
         if (activeOption === 'buy_1') {
           const varId = getDropdownValue('bundle-1-variant-select');
           items.push({ id: parseInt(varId), quantity: 1 * qtyMultiplier });
-        } else {
+        } else if (activeOption === 'buy_2') {
           const varId1 = getDropdownValue('bundle-2-pillow-1-select');
           const varId2 = getDropdownValue('bundle-2-pillow-2-select');
-          
-          if (varId1 === varId2) {
-            items.push({ id: parseInt(varId1), quantity: 2 * qtyMultiplier });
-          } else {
-            items.push({ id: parseInt(varId1), quantity: 1 * qtyMultiplier });
-            items.push({ id: parseInt(varId2), quantity: 1 * qtyMultiplier });
+          const counts = {};
+          [varId1, varId2].forEach(id => { if (id) counts[id] = (counts[id] || 0) + 1; });
+          for (let id in counts) {
+            items.push({ id: parseInt(id), quantity: counts[id] * qtyMultiplier });
+          }
+        } else if (activeOption === 'buy_3') {
+          const varId1 = getDropdownValue('bundle-3-pillow-1-select');
+          const varId2 = getDropdownValue('bundle-3-pillow-2-select');
+          const varId3 = getDropdownValue('bundle-3-pillow-3-select');
+          const counts = {};
+          [varId1, varId2, varId3].forEach(id => { if (id) counts[id] = (counts[id] || 0) + 1; });
+          for (let id in counts) {
+            items.push({ id: parseInt(id), quantity: counts[id] * qtyMultiplier });
           }
         }
 

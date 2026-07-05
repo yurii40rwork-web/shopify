@@ -61,9 +61,14 @@ document.addEventListener('DOMContentLoaded', () => {
     return currencySymbolAtEnd ? `${formatted} ${currencySymbol}` : `${currencySymbol}${formatted}`;
   }
 
-  // Update overall product calculations
+  // Update overall product calculations with cumulative discount rule (13% off per next pillow down to $20)
   function updateProductTotals() {
-    const total = (unitPrice * quantity).toFixed(2);
+    let effectiveUnitPrice = unitPrice;
+    if (quantity > 1) {
+      let discounted = Math.round(unitPrice * Math.pow(0.87, quantity - 1));
+      effectiveUnitPrice = Math.max(20, discounted);
+    }
+    const total = (effectiveUnitPrice * quantity).toFixed(2);
     const formattedTotal = formatMoney(total);
     if (productPriceLabel) productPriceLabel.textContent = formattedTotal;
     if (qtyInput) qtyInput.value = quantity;

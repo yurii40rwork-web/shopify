@@ -728,13 +728,21 @@ document.addEventListener('DOMContentLoaded', () => {
     cartFooter.style.display = 'block';
     progressBar.parentElement.parentElement.style.display = 'block';
 
+    // Helper for cumulative discount calculation (13% off per extra pillow, min $20/ea)
+    function getCumulativePillowUnitPriceCents(basePriceCents, totalQty) {
+      if (totalQty <= 1) return basePriceCents;
+      let baseDollars = basePriceCents / 100;
+      let discountedDollars = Math.round(baseDollars * Math.pow(0.87, totalQty - 1));
+      let finalDollars = Math.max(20, discountedDollars);
+      return finalDollars * 100;
+    }
+
     let totalPillowsQty = 0;
     let basePricesSubtotal = 0;
     let originalPricesSubtotal = 0;
 
     // Filter items and count pillow qty
     cart.items.forEach(item => {
-      // Check if product is the travel pillow
       const isPillow = item.product_title.toLowerCase().includes('pillow');
       if (isPillow) {
         totalPillowsQty += item.quantity;
@@ -752,28 +760,28 @@ document.addEventListener('DOMContentLoaded', () => {
       itemElement.className = 'cart-drawer-item';
       itemElement.dataset.key = item.key;
 
-      // Dynamic prices from Shopify cart item
-      const currentPricePerUnit = item.final_price || item.price;
-      let originalPricePerUnit = item.original_price || item.price;
+      // Dynamic prices with cumulative discount rule
+      const baseUnitPriceCents = item.price || 3900;
+      const currentPricePerUnit = isPillow ? getCumulativePillowUnitPriceCents(baseUnitPriceCents, totalPillowsQty) : (item.final_price || item.price);
+      let originalPricePerUnit = item.compare_at_price || item.original_price || (baseUnitPriceCents > 3900 ? baseUnitPriceCents : 9000);
       
-      // If item has compare_at_price or original_price is higher than final_price
-      if (item.compare_at_price && item.compare_at_price > currentPricePerUnit) {
-        originalPricePerUnit = item.compare_at_price;
-      } else if (originalPricePerUnit <= currentPricePerUnit && item.original_line_price > item.final_line_price) {
-        originalPricePerUnit = Math.round(item.original_line_price / item.quantity);
+      if (originalPricePerUnit <= currentPricePerUnit) {
+        originalPricePerUnit = 9000; // default $90 compare at if missing
       }
 
-      // Discount tag logic from Shopify item or bundle
+      // Cumulative discount tag
       let discountTag = '';
       if (item.line_level_discount_allocations && item.line_level_discount_allocations.length > 0) {
         discountTag = item.line_level_discount_allocations.map(d => d.discount_application.title).join(', ');
       } else if (item.discounts && item.discounts.length > 0) {
         discountTag = item.discounts.map(d => d.title).join(', ');
       } else if (isPillow && totalPillowsQty >= 2) {
-        discountTag = 'Buy 2, Get $10 OFF';
+        const unitDollars = currentPricePerUnit / 100;
+        const totalPctOff = Math.round((1 - (unitDollars / (baseUnitPriceCents / 100))) * 100);
+        discountTag = `Cumulative Discount: $${unitDollars}/ea (${totalPctOff}% OFF)`;
       }
 
-      basePricesSubtotal += item.final_line_price;
+      basePricesSubtotal += (currentPricePerUnit * item.quantity);
       originalPricesSubtotal += (originalPricePerUnit * item.quantity);
 
       const currentUnitFormatted = formatMoney(currentPricePerUnit);
