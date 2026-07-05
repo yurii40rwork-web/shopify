@@ -1566,7 +1566,11 @@
           const counts = {};
           [varId1, varId2].forEach(id => { if (id) counts[id] = (counts[id] || 0) + 1; });
           for (let id in counts) {
-            items.push({ id: parseInt(id), quantity: counts[id] * qtyMultiplier });
+            items.push({
+              id: parseInt(id),
+              quantity: counts[id] * qtyMultiplier,
+              properties: { 'Cumulative Discount': '13% OFF ($34/ea)' }
+            });
           }
         } else if (activeOption === 'buy_3') {
           const varId1 = getDropdownValue('bundle-3-pillow-1-select');
@@ -1575,7 +1579,11 @@
           const counts = {};
           [varId1, varId2, varId3].forEach(id => { if (id) counts[id] = (counts[id] || 0) + 1; });
           for (let id in counts) {
-            items.push({ id: parseInt(id), quantity: counts[id] * qtyMultiplier });
+            items.push({
+              id: parseInt(id),
+              quantity: counts[id] * qtyMultiplier,
+              properties: { 'Cumulative Discount': '23% OFF ($30/ea)' }
+            });
           }
         }
 

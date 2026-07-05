@@ -845,6 +845,39 @@
 
       updateQuantity(key, newQty);
     });
+
+    // Intercept checkout form submission on cart page to append discount parameter
+    const checkoutForm = document.getElementById('checkout-form-submit');
+    if (checkoutForm) {
+      checkoutForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+          const res = await fetch('/cart.js');
+          const cart = await res.json();
+          let pillowQty = 0;
+          cart.items.forEach(item => {
+            if (item.product_title && item.product_title.toLowerCase().includes('pillow')) {
+              pillowQty += item.quantity;
+            }
+          });
+
+          let discountCode = '';
+          if (pillowQty === 2) discountCode = 'PILLOWS2';
+          else if (pillowQty === 3) discountCode = 'PILLOWS3';
+          else if (pillowQty === 4) discountCode = 'PILLOWS4';
+          else if (pillowQty === 5) discountCode = 'PILLOWS5';
+          else if (pillowQty >= 6) discountCode = 'PILLOWS6';
+
+          if (discountCode) {
+            window.location.href = `/checkout?discount=${discountCode}`;
+          } else {
+            window.location.href = '/checkout';
+          }
+        } catch (err) {
+          window.location.href = '/checkout';
+        }
+      });
+    }
   });
 </script>
 
