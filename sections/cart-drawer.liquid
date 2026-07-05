@@ -922,7 +922,7 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (pillowQty >= 6) discountCode = 'PILLOWS6';
 
         if (discountCode) {
-          window.location.href = `/checkout?discount=${discountCode}`;
+          window.location.href = `/discount/${discountCode}?redirect=/checkout`;
         } else {
           window.location.href = '/checkout';
         }
