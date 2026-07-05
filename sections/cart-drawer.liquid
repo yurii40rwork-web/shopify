@@ -752,38 +752,29 @@ document.addEventListener('DOMContentLoaded', () => {
       itemElement.className = 'cart-drawer-item';
       itemElement.dataset.key = item.key;
 
-      // Prices & discount tags logic
-      let originalPricePerUnit = 7980; // $79.80 in cents
-      let currentPricePerUnit = 3990;  // $39.90 in cents
-      let discountTag = '';
-
-      if (isPillow) {
-        // If we have at least 2 pillows in the cart, apply bundle price to the second one
-        let unitTotal = 0;
-        let originalUnitTotal = originalPricePerUnit * item.quantity;
-        
-        for (let q = 1; q <= item.quantity; q++) {
-          pillowsRenderedCount++;
-          if (pillowsRenderedCount === 2) {
-            unitTotal += 2990; // $29.90 for the second pillow
-            discountTag = 'Buy 2, Get $10 OFF';
-          } else {
-            unitTotal += 3990; // $39.90 for first, third, etc.
-            if (totalPillowsQty >= 2) {
-              discountTag = 'Buy 2, Get $10 OFF';
-            }
-          }
-        }
-        
-        currentPricePerUnit = unitTotal / item.quantity;
-        basePricesSubtotal += unitTotal;
-        originalPricesSubtotal += originalUnitTotal;
-      } else {
-        basePricesSubtotal += item.final_line_price;
-        originalPricesSubtotal += (item.original_price * item.quantity);
-        currentPricePerUnit = item.final_price;
-        originalPricePerUnit = item.original_price || item.final_price;
+      // Dynamic prices from Shopify cart item
+      const currentPricePerUnit = item.final_price || item.price;
+      let originalPricePerUnit = item.original_price || item.price;
+      
+      // If item has compare_at_price or original_price is higher than final_price
+      if (item.compare_at_price && item.compare_at_price > currentPricePerUnit) {
+        originalPricePerUnit = item.compare_at_price;
+      } else if (originalPricePerUnit <= currentPricePerUnit && item.original_line_price > item.final_line_price) {
+        originalPricePerUnit = Math.round(item.original_line_price / item.quantity);
       }
+
+      // Discount tag logic from Shopify item or bundle
+      let discountTag = '';
+      if (item.line_level_discount_allocations && item.line_level_discount_allocations.length > 0) {
+        discountTag = item.line_level_discount_allocations.map(d => d.discount_application.title).join(', ');
+      } else if (item.discounts && item.discounts.length > 0) {
+        discountTag = item.discounts.map(d => d.title).join(', ');
+      } else if (isPillow && totalPillowsQty >= 2) {
+        discountTag = 'Buy 2, Get $10 OFF';
+      }
+
+      basePricesSubtotal += item.final_line_price;
+      originalPricesSubtotal += (originalPricePerUnit * item.quantity);
 
       const currentUnitFormatted = formatMoney(currentPricePerUnit);
       const originalUnitFormatted = formatMoney(originalPricePerUnit);
@@ -808,7 +799,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </button>
           <div class="item-prices-box">
             <span class="price-current">${currentUnitFormatted}</span>
-            <span class="price-original">${originalUnitFormatted}</span>
+            ${originalPricePerUnit > currentPricePerUnit ? `<span class="price-original">${originalUnitFormatted}</span>` : ''}
           </div>
         </div>
       `;
