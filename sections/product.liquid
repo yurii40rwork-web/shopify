@@ -200,7 +200,13 @@
                           <input type="radio" name="bundle_option" value="buy_2" style="position: absolute !important; opacity: 0 !important; width: 0 !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; pointer-events: none !important;">
                           <span class="bundle-radio-checkmark" style="position: relative; display: inline-block; width: 20px; height: 20px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%;"></span>
                           <div class="bundle-title-group">
-                            <span class="bundle-title">{{ block.settings.bundle_2_title | escape }}{%- if block.settings.bundle_2_subtitle != blank -%}<span class="bundle-title-separator">, </span><span class="bundle-title-subtitle">{{ block.settings.bundle_2_subtitle | escape }}</span>{%- endif -%}</span>
+                            <span class="bundle-title">
+                              {{ block.settings.bundle_2_title | escape }}
+                              {%- if block.settings.bundle_2_subtitle != blank -%}
+                                <span class="bundle-title-separator">, </span>
+                                <span class="bundle-title-subtitle">{{ block.settings.bundle_2_subtitle | escape }}</span>
+                              {%- endif -%}
+                            </span>
                             <span class="bundle-subtitle">Best Deal: {{ block_bundle_2_price | divided_by: 2 | money }} Each</span>
                           </div>
                         </label>
@@ -981,7 +987,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 9px 32px 9px 16px;
+    padding: 9px 32px 9px 12px;
     border-radius: 24px;
     border: 1.5px solid #2a2a2a;
     background: white;
@@ -1010,7 +1016,7 @@
     border-radius: 50%;
     box-shadow: inset 0 0 0 1px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.1);
     flex-shrink: 0;
-    margin-left: 16px !important;
+    margin-left: 8px !important;
   }
   .custom-dropdown-text {
     flex: 1;
@@ -1060,7 +1066,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 10px 16px;
+    padding: 10px 14px;
     cursor: pointer;
     border-radius: 12px;
     font-size: 13px;
@@ -1083,7 +1089,6 @@
     border-radius: 50%;
     box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
     flex-shrink: 0;
-    margin-left: 16px;
   }
   .option-label {
     flex: 1;
@@ -1435,29 +1440,29 @@
 
     /* Dropdown trigger: roomy enough for long text */
     .custom-dropdown-trigger {
-      padding: 9px 28px 9px 14px !important;
+      padding: 9px 28px 9px 10px !important;
       font-size: 12px !important;
       min-height: 36px !important;
-      gap: 8px !important;
+      gap: 6px !important;
     }
     .select-color-dot {
       width: 16px !important;
       height: 16px !important;
       min-width: 16px !important;
-      margin-left: 14px !important;
+      margin-left: 0 !important;
     }
     .custom-dropdown-chevron {
       right: 8px !important;
     }
-    .custom-dropdown-option {
-      padding: 8px 14px !important;
-      gap: 8px !important;
+  }
+
+  /* Desktop-only dropdown color dots adjustment */
+  @media (min-width: 768px) {
+    .select-color-dot {
+      margin-left: 14px !important;
     }
     .option-color-dot {
-      width: 16px !important;
-      height: 16px !important;
-      min-width: 16px !important;
-      margin-left: 14px !important;
+      margin-left: 12px !important;
     }
   }
 </style>
