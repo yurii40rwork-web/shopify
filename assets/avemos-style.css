@@ -1453,6 +1453,12 @@
   font-size: 19px !important;
   white-space: nowrap !important;
 }
+.Avemos-landing-wrapper .bundle-title-separator {
+  display: inline;
+}
+.Avemos-landing-wrapper .bundle-title-subtitle {
+  display: inline;
+}
 .Avemos-landing-wrapper .bundle-subtitle {
   font-size: 15px !important;
 }
@@ -1515,6 +1521,13 @@
   }
   .Avemos-landing-wrapper .bundle-title {
     font-size: 16px !important;
+    white-space: normal !important;
+  }
+  .Avemos-landing-wrapper .bundle-title-separator {
+    display: none !important;
+  }
+  .Avemos-landing-wrapper .bundle-title-subtitle {
+    display: block !important;
   }
   .Avemos-landing-wrapper .bundle-subtitle {
     font-size: 12px !important;

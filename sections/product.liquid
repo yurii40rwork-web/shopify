@@ -200,7 +200,13 @@
                           <input type="radio" name="bundle_option" value="buy_2" style="position: absolute !important; opacity: 0 !important; width: 0 !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; pointer-events: none !important;">
                           <span class="bundle-radio-checkmark" style="position: relative; display: inline-block; width: 20px; height: 20px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%;"></span>
                           <div class="bundle-title-group">
-                            <span class="bundle-title">{{ block.settings.bundle_2_title | escape }}, {{ block.settings.bundle_2_subtitle | escape }}</span>
+                            <span class="bundle-title">
+                              {{ block.settings.bundle_2_title | escape }}
+                              {%- if block.settings.bundle_2_subtitle != blank -%}
+                                <span class="bundle-title-separator">, </span>
+                                <span class="bundle-title-subtitle">{{ block.settings.bundle_2_subtitle | escape }}</span>
+                              {%- endif -%}
+                            </span>
                             <span class="bundle-subtitle">Best Deal: {{ block_bundle_2_price | divided_by: 2 | money }} Each</span>
                           </div>
                         </label>
@@ -434,7 +440,7 @@
                     <input type="radio" name="bundle_option" value="buy_2" style="position: absolute !important; opacity: 0 !important; width: 0 !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; pointer-events: none !important;">
                     <span class="bundle-radio-checkmark" style="position: relative; display: inline-block; width: 20px; height: 20px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%;"></span>
                     <div class="bundle-title-group">
-                      <span class="bundle-title">Buy 2, Save $10</span>
+                      <span class="bundle-title">Buy 2<span class="bundle-title-separator">, </span><span class="bundle-title-subtitle">Save $10</span></span>
                       <span class="bundle-subtitle">Best Deal: {{ fallback_bundle_2_price | divided_by: 2 | money }} Each</span>
                     </div>
                   </label>
@@ -843,6 +849,12 @@
     font-size: 18px;
     font-weight: 700;
     color: var(--text-primary);
+  }
+  .bundle-title-separator {
+    display: inline;
+  }
+  .bundle-title-subtitle {
+    display: inline;
   }
   .bundle-subtitle {
     font-family: var(--font-body);
@@ -1334,7 +1346,13 @@
     }
     .bundle-title {
       font-size: 16px !important;
-      white-space: nowrap !important;
+      white-space: normal !important;
+    }
+    .bundle-title-separator {
+      display: none !important;
+    }
+    .bundle-title-subtitle {
+      display: block !important;
     }
     .bundle-subtitle {
       font-size: 12px !important;
