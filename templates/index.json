@@ -307,6 +307,7 @@
           "settings": {
             "author_initials": "JD",
             "author_name": "John D.",
+            "author_location": "New York",
             "verified": true,
             "date": "2 days ago",
             "stars": 5,
@@ -319,6 +320,7 @@
           "settings": {
             "author_initials": "SM",
             "author_name": "Sarah M.",
+            "author_location": "London",
             "verified": true,
             "date": "1 week ago",
             "stars": 5,
@@ -331,6 +333,7 @@
           "settings": {
             "author_initials": "TH",
             "author_name": "Thomas H.",
+            "author_location": "Melbourne",
             "verified": true,
             "date": "2 weeks ago",
             "stars": 5,
