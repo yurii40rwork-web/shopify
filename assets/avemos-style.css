@@ -658,6 +658,47 @@
   box-shadow: 0 1px 2px rgba(185, 28, 28, 0.1);
 }
 
+@media (max-width: 767px) {
+  .Avemos-landing-wrapper .comparison-wrapper {
+    padding: 16px 8px;
+    border-radius: var(--radius-md);
+  }
+  .Avemos-landing-wrapper th, 
+  .Avemos-landing-wrapper td {
+    padding: 10px 4px;
+  }
+  .Avemos-landing-wrapper th {
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+  .Avemos-landing-wrapper td {
+    font-size: 0.75rem;
+  }
+  .Avemos-landing-wrapper th:first-child, 
+  .Avemos-landing-wrapper td:first-child {
+    width: 30%;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .Avemos-landing-wrapper .comparison-cell-value {
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-align: center;
+  }
+  .Avemos-landing-wrapper .comparison-text {
+    font-size: 10.5px;
+    line-height: 1.25;
+  }
+  .Avemos-landing-wrapper .comparison-badge {
+    width: 18px;
+    height: 18px;
+  }
+  .Avemos-landing-wrapper .comparison-badge svg {
+    width: 10px;
+    height: 10px;
+  }
+}
 
 /* How It Works Section */
 .Avemos-landing-wrapper .steps-container {
