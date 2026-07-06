@@ -101,28 +101,38 @@
     color: var(--text-secondary);
     line-height: 1.65;
   }
+  @keyframes button-gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
   .refund-cta-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background-color: #1f242c;
+    background: linear-gradient(135deg, #ff499e, #8f44fd, #ffb300, #ff499e);
+    background-size: 300% 300%;
+    animation: button-gradient-shift 6s ease infinite;
     color: #ffffff;
     padding: 16px 40px;
-    border-radius: 10px;
+    border-radius: 9999px;
     font-family: var(--font-body);
     font-size: 18.5px;
     font-weight: 700;
     text-decoration: none;
     transition: all 0.25s ease;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 15px rgba(143, 68, 253, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    cursor: pointer;
   }
   .refund-cta-btn:hover {
-    background-color: #0f1216;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    color: #ffffff;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(143, 68, 253, 0.5);
   }
   .refund-cta-btn:active {
-    transform: translateY(0);
+    transform: translateY(0) scale(0.98);
   }
   
   .refund-badges-grid {
