@@ -611,19 +611,38 @@
     z-index: 2;
   }
 
+  @keyframes badge-gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
   /* Overlay Badge */
   .best-seller-badge-overlay {
     position: absolute;
     top: 16px;
     left: 16px;
-    background-color: var(--secondary-container);
-    color: var(--on-secondary-container);
-    padding: 6px 16px;
+    background: linear-gradient(135deg, #ff499e, #8f44fd, #ffb300, #ff499e);
+    background-size: 300% 300%;
+    animation: badge-gradient-shift 6s ease infinite;
+    color: #ffffff;
+    padding: 6px 18px;
     border-radius: 9999px;
     font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 14px;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     z-index: 10;
+    box-shadow: 0 4px 15px rgba(143, 68, 253, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
+    min-width: 110px;
+    box-sizing: border-box;
   }
 
   /* Arrow Buttons */
