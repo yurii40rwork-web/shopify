@@ -363,8 +363,8 @@
   }
 
   .review-image-item {
-    width: 100px;
-    height: 100px;
+    width: {{ section.settings.review_image_size | default: 100 }}px;
+    height: {{ section.settings.review_image_size | default: 100 }}px;
     border-radius: var(--radius-md);
     overflow: hidden;
     border: 1px solid var(--border-color);
@@ -569,6 +569,16 @@
       "max": 100,
       "step": 1,
       "default": 0
+    },
+    {
+      "type": "range",
+      "id": "review_image_size",
+      "label": "Review Image Size",
+      "min": 60,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 100
     }
   ],
   "blocks": [
