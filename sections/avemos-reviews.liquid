@@ -77,7 +77,7 @@
       <div class="reviews-grid">
         {%- for block in section.blocks -%}
           {%- if block.type == 'review' -%}
-            <div class="review-card" {{ block.shopify_attributes }}>
+            <div class="review-card" {{ block.shopify_attributes }} style="--img-size: {{ block.settings.review_image_size | default: 100 }}px;">
               <div class="review-card-inner">
                 <!-- Stars and Date row -->
                 <div class="review-meta-row">
@@ -363,8 +363,8 @@
   }
 
   .review-image-item {
-    width: {{ section.settings.review_image_size | default: 100 }}px;
-    height: {{ section.settings.review_image_size | default: 100 }}px;
+    width: var(--img-size, 100px);
+    height: var(--img-size, 100px);
     border-radius: var(--radius-md);
     overflow: hidden;
     border: 1px solid var(--border-color);
@@ -570,16 +570,6 @@
       "step": 1,
       "default": 0
     },
-    {
-      "type": "range",
-      "id": "review_image_size",
-      "label": "Review Image Size",
-      "min": 60,
-      "max": 150,
-      "step": 5,
-      "unit": "px",
-      "default": 100
-    }
   ],
   "blocks": [
     {
@@ -656,6 +646,16 @@
           "type": "image_picker",
           "id": "image_3",
           "label": "Review Image 3"
+        },
+        {
+          "type": "range",
+          "id": "review_image_size",
+          "label": "Review Image Size",
+          "min": 60,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "default": 100
         }
       ]
     }
