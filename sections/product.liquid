@@ -1332,7 +1332,7 @@
   @media (max-width: 767px) {
     /* Card padding */
     .bundle-card {
-      padding: 14px 12px !important;
+      padding: 12px 10px !important;
     }
 
     /* ── Header row: radio+title LEFT, prices RIGHT ── */
@@ -1398,8 +1398,8 @@
 
     /* ── Colors section: below header with breathing room ── */
     .bundle-card.active .bundle-card-content {
-      padding-top: 22px !important;
-      margin-top: 12px !important;
+      padding-top: 12px !important;
+      margin-top: 8px !important;
       border-top: 1px solid rgba(0,0,0,0.08) !important;
       overflow: visible !important;
     }
@@ -1424,6 +1424,9 @@
       flex: 1 1 0% !important;
       min-width: 0 !important;
       max-width: none !important;
+      margin-top: 0 !important;
+    }
+    .bundle-select-wrapper:has(.pillow-badge) {
       margin-top: 10px !important;
     }
 
@@ -1449,10 +1452,19 @@
       width: 16px !important;
       height: 16px !important;
       min-width: 16px !important;
-      margin-left: 0 !important;
+      margin-left: 10px !important;
     }
     .custom-dropdown-chevron {
       right: 8px !important;
+    }
+    .custom-dropdown-option {
+      gap: 6px !important;
+    }
+    .option-color-dot {
+      width: 16px !important;
+      height: 16px !important;
+      min-width: 16px !important;
+      margin-left: 6px !important;
     }
   }
 

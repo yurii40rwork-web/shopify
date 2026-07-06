@@ -1539,7 +1539,7 @@
 /* Mobile: prices in-flow on same row as title */
 @media (max-width: 767px) {
   .Avemos-landing-wrapper .bundle-card {
-    padding: 14px 12px !important;
+    padding: 12px 10px !important;
   }
   .Avemos-landing-wrapper .bundle-card-header {
     display: flex !important;
