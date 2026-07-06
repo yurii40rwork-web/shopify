@@ -22,38 +22,42 @@
                 <tr {{ block.shopify_attributes }}>
                   <td>{{ block.settings.feature_name }}</td>
                   <td class="our-product">
-                    {%- if block.settings.our_check -%}
-                      <span class="comparison-badge badge-success">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                          <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                      </span>
-                    {%- else -%}
-                      <span class="comparison-badge badge-danger">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                          <line x1="18" y1="6" x2="6" y2="18"></line>
-                          <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                      </span>
-                    {%- endif -%}
-                    {{ block.settings.our_desc }}
+                    <div class="comparison-cell-value">
+                      {%- if block.settings.our_check -%}
+                        <span class="comparison-badge badge-success">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </span>
+                      {%- else -%}
+                        <span class="comparison-badge badge-danger">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                          </svg>
+                        </span>
+                      {%- endif -%}
+                      <span class="comparison-text">{{ block.settings.our_desc }}</span>
+                    </div>
                   </td>
                   <td class="other-product">
-                    {%- if block.settings.their_check -%}
-                      <span class="comparison-badge badge-success">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                          <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                      </span>
-                    {%- else -%}
-                      <span class="comparison-badge badge-danger">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                          <line x1="18" y1="6" x2="6" y2="18"></line>
-                          <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                      </span>
-                    {%- endif -%}
-                    {{ block.settings.their_desc }}
+                    <div class="comparison-cell-value">
+                      {%- if block.settings.their_check -%}
+                        <span class="comparison-badge badge-success">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </span>
+                      {%- else -%}
+                        <span class="comparison-badge badge-danger">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                          </svg>
+                        </span>
+                      {%- endif -%}
+                      <span class="comparison-text">{{ block.settings.their_desc }}</span>
+                    </div>
                   </td>
                 </tr>
               {%- endfor -%}
@@ -61,81 +65,97 @@
               <tr>
                 <td>Head Stabilization</td>
                 <td class="our-product">
-                  <span class="comparison-badge badge-success">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </span>
-                  360° support (no head drop)
+                  <div class="comparison-cell-value">
+                    <span class="comparison-badge badge-success">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </span>
+                    <span class="comparison-text">360° support (no head drop)</span>
+                  </div>
                 </td>
                 <td class="other-product">
-                  <span class="comparison-badge badge-danger">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </span>
-                  Sides only (head falls forward)
+                  <div class="comparison-cell-value">
+                    <span class="comparison-badge badge-danger">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </span>
+                    <span class="comparison-text">Sides only (head falls forward)</span>
+                  </div>
                 </td>
               </tr>
               <tr>
                 <td>Filling</td>
                 <td class="our-product">
-                  <span class="comparison-badge badge-success">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </span>
-                  Premium orthopedic memory foam
+                  <div class="comparison-cell-value">
+                    <span class="comparison-badge badge-success">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </span>
+                    <span class="comparison-text">Premium orthopedic memory foam</span>
+                  </div>
                 </td>
                 <td class="other-product">
-                  <span class="comparison-badge badge-danger">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </span>
-                  Air or cheap low-density foam
+                  <div class="comparison-cell-value">
+                    <span class="comparison-badge badge-danger">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </span>
+                    <span class="comparison-text">Air or cheap low-density foam</span>
+                  </div>
                 </td>
               </tr>
               <tr>
                 <td>Hygiene</td>
                 <td class="our-product">
-                  <span class="comparison-badge badge-success">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </span>
-                  Machine-washable cover
+                  <div class="comparison-cell-value">
+                    <span class="comparison-badge badge-success">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </span>
+                    <span class="comparison-text">Machine-washable cover</span>
+                  </div>
                 </td>
                 <td class="other-product">
-                  <span class="comparison-badge badge-danger">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </span>
-                  Non-removable, hard to clean
+                  <div class="comparison-cell-value">
+                    <span class="comparison-badge badge-danger">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </span>
+                    <span class="comparison-text">Non-removable, hard to clean</span>
+                  </div>
                 </td>
               </tr>
               <tr>
                 <td>Size Adjustment</td>
                 <td class="our-product">
-                  <span class="comparison-badge badge-success">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </span>
-                  Adjustable Velcro strap
+                  <div class="comparison-cell-value">
+                    <span class="comparison-badge badge-success">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </span>
+                    <span class="comparison-text">Adjustable Velcro strap</span>
+                  </div>
                 </td>
                 <td class="other-product">
-                  <span class="comparison-badge badge-danger">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </span>
-                  One size fits all (no adjustment)
+                  <div class="comparison-cell-value">
+                    <span class="comparison-badge badge-danger">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </span>
+                    <span class="comparison-text">One size fits all (no adjustment)</span>
+                  </div>
                 </td>
               </tr>
             {%- endif -%}
