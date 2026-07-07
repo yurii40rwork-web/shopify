@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "policy-page",
+      "settings": {
+        "title": "Shipping Policy",
+        "content": "<p>At <strong>Avemos®</strong>, we strive to deliver your order as quickly and safely as possible. Below you will find the complete details of our shipping terms and delivery procedures.</p>\n<h2>1. Shipping Rates & Destinations</h2>\n<p>We ship our Avemos Travel Pillow to customers worldwide. Our shipping rates are as follows:</p>\n<ul>\n  <li><strong>Orders over $50.00:</strong> Free Standard Express Shipping (with tracking).</li>\n  <li><strong>Orders under $50.00:</strong> Flat rate of $4.95 worldwide.</li>\n</ul>\n<h2>2. Processing & Handling Time</h2>\n<p>All orders are processed and prepared for shipment from our fulfillment hubs within <strong>1 to 3 business days</strong> (excluding weekends and public holidays) after receiving your payment confirmation.</p>\n<p>Once your order is handed over to our shipping carriers, you will receive an automated email notification containing your unique tracking number and shipment details.</p>\n<h2>3. Estimated Delivery Times</h2>\n<p>Depending on your location, estimated shipping times are as follows:</p>\n<ul>\n  <li><strong>United States & Canada:</strong> 5 – 10 business days.</li>\n  <li><strong>United Kingdom & Europe:</strong> 6 – 10 business days.</li>\n  <li><strong>Australia & New Zealand:</strong> 7 – 12 business days.</li>\n  <li><strong>Rest of the World:</strong> 8 – 15 business days.</li>\n</ul>\n<p><em>Please note: Shipping times are estimates and may vary slightly due to seasonal high volumes, customs inspections, or extreme weather conditions.</em></p>\n<h2>4. Order Tracking</h2>\n<p>Every shipment is fully traceable. You can monitor the progress of your delivery by clicking the link in your shipping confirmation email, or by entering your tracking number on our tracking portal.</p>\n<p>Please allow 24-48 hours for the carrier to update the initial tracking status online.</p>\n<h2>5. Customs, Duties & Taxes</h2>\n<p>For orders shipped to the USA, UK, and European Union, customs fees are typically pre-cleared and not charged to the customer. However, for other international destinations, any customs duties, import taxes, or local clearance fees levied by the destination country are the sole responsibility of the customer.</p>\n<h2>6. Contact Us</h2>\n<p>If your package is delayed, or you have any questions regarding your delivery status, please do not hesitate to contact our logistics team at <a href=\"mailto:support@avemosstore.com\">support@avemosstore.com</a>. We will respond within 12-24 hours.</p>"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

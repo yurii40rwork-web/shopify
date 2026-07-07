@@ -30,13 +30,13 @@
   </head>
 
   <body>
-    {% unless template == 'index' or template == 'policy' or template == '404' or request.path == '/pages/about-us' or request.path == '/pages/contact-us' %}
+    {% unless template == 'index' or template == 'policy' or template == '404' or request.path == '/pages/about-us' or request.path == '/pages/contact-us' or template.suffix == 'shipping-policy' or template.suffix == 'refund-policy' or template.suffix == 'privacy-policy' or template.suffix == 'terms-of-service' or template.suffix == 'user-agreement' %}
       {% sections 'header-group' %}
     {% endunless %}
 
     {{ content_for_layout }}
 
-    {% unless template == 'index' or template == 'policy' or template == '404' or request.path == '/pages/about-us' or request.path == '/pages/contact-us' %}
+    {% unless template == 'index' or template == 'policy' or template == '404' or request.path == '/pages/about-us' or request.path == '/pages/contact-us' or template.suffix == 'shipping-policy' or template.suffix == 'refund-policy' or template.suffix == 'privacy-policy' or template.suffix == 'terms-of-service' or template.suffix == 'user-agreement' %}
       {% sections 'footer-group' %}
     {% endunless %}
 

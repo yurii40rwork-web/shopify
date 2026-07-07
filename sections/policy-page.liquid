@@ -1,0 +1,75 @@
+{{ 'avemos-style.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<div class="Avemos-landing-wrapper">
+  {% render 'avemos-header-markup', logo_height: 50 %}
+
+  <div style="background-color: var(--bg-secondary); padding: 60px 0; min-height: 60vh;">
+    <div class="container" style="max-width: 800px;">
+      <h1 style="font-size: 2.5rem; font-weight: 800; text-align: center; margin-bottom: 36px;">{{ section.settings.title }}</h1>
+      
+      <div class="styled-page-content">
+        {{ section.settings.content }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4 style="font-weight: 800;"><i class="fa-solid fa-plane-departure"></i> Avemos</h4>
+          <p>We create premium products for your comfort during travels all over the world.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Contact Us</h4>
+          <ul class="footer-links">
+            <li>Email: support@avemosstore.com</li>
+            <li>Phone: +380965347984</li>
+            <li>Address: Zelena St, 114, Lviv, Ukraine</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal Information</h4>
+          <ul class="footer-links">
+            <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/policies/terms-of-service">Terms of Service</a></li>
+            <li><a href="/policies/refund-policy">Refund Policy</a></li>
+            <li><a href="/policies/shipping-policy">Shipping Policy</a></li>
+            <li><a href="/policies/user-agreement">User Agreement</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Avemos® Mock App. All rights reserved.</p>
+        <div class="mock-payments">
+          <span class="mock-payment-badge">Stripe</span>
+          <span class="mock-payment-badge">PayPal</span>
+          <span class="mock-payment-badge">Apple Pay</span>
+          <span class="mock-payment-badge">Google Pay</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+{% schema %}
+{
+  "name": "Policy Content",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Policy Title"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>Write your policy content here.</p>"
+    }
+  ]
+}
+{% endschema %}
