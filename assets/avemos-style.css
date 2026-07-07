@@ -1631,17 +1631,16 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  opacity: 0;
-  transform: translateX(12px);
-  transition: opacity var(--transition-fast), transform var(--transition-fast), color var(--transition-fast);
+  opacity: 0.45;
+  transition: opacity var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
   white-space: nowrap;
   pointer-events: none;
-  color: var(--text-secondary);
+  color: var(--text-light);
   background: var(--bg-secondary);
   padding: 4px 10px;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border-color);
-  box-shadow: 0 4px 12px rgba(125, 139, 161, 0.12);
+  border: 1px solid rgba(197, 198, 205, 0.5);
+  box-shadow: 0 2px 6px rgba(125, 139, 161, 0.06);
 }
 
 .sections-nav-strip {
@@ -1655,8 +1654,9 @@
 /* Hover State */
 .sections-nav-item:hover .sections-nav-label {
   opacity: 1;
-  transform: translateX(0);
   color: var(--primary-hover);
+  border-color: var(--primary-hover);
+  box-shadow: 0 4px 12px rgba(125, 139, 161, 0.12);
 }
 
 .sections-nav-item:hover .sections-nav-strip {
@@ -1667,8 +1667,9 @@
 /* Active State */
 .sections-nav-item.active .sections-nav-label {
   opacity: 1;
-  transform: translateX(0);
   color: var(--text-primary);
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(125, 139, 161, 0.15);
 }
 
 .sections-nav-item.active .sections-nav-strip {
