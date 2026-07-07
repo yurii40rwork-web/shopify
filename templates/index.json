@@ -19,6 +19,15 @@
         "menu": ""
       }
     },
+    "avemos_airplane_qdc9hd": {
+      "type": "avemos-airplane",
+      "name": "Background Airplane",
+      "settings": {
+        "airplane_size": 85,
+        "airplane_velocity": 3,
+        "airplane_color": "#4f5d71"
+      }
+    },
     "product": {
       "type": "product",
       "blocks": {
@@ -307,12 +316,13 @@
           "settings": {
             "author_initials": "JD",
             "author_name": "John D.",
-            "author_location": "New York",
             "verified": true,
             "date": "2 days ago",
             "stars": 5,
             "title": "The ultimate travel companion!",
-            "text": "I've used many travel pillows before, but this one is on another level. The memory foam is incredibly supportive and the adjustable strap lets me lock in the perfect fit. Slept like a baby on my 10-hour flight!"
+            "text": "I've used many travel pillows before, but this one is on another level. The memory foam is incredibly supportive and the adjustable strap lets me lock in the perfect fit. Slept like a baby on my 10-hour flight!",
+            "author_location": "New York",
+            "review_image_size": 100
           }
         },
         "review_2": {
@@ -320,12 +330,13 @@
           "settings": {
             "author_initials": "SM",
             "author_name": "Sarah M.",
-            "author_location": "London",
             "verified": true,
             "date": "1 week ago",
             "stars": 5,
             "title": "Super compact & easy to wash",
-            "text": "I love that it rolls up into a tiny carrying bag so I can easily clip it to my backpack. The removable cover was super easy to zip off and wash after my trip. Definitely worth every penny!"
+            "text": "I love that it rolls up into a tiny carrying bag so I can easily clip it to my backpack. The removable cover was super easy to zip off and wash after my trip. Definitely worth every penny!",
+            "author_location": "London",
+            "review_image_size": 100
           }
         },
         "review_3": {
@@ -333,12 +344,13 @@
           "settings": {
             "author_initials": "TH",
             "author_name": "Thomas H.",
-            "author_location": "Melbourne",
             "verified": true,
             "date": "2 weeks ago",
             "stars": 5,
             "title": "No more neck pain!",
-            "text": "I always end up with a stiff neck when sleeping in cars or planes. I tried the Avemos pillow on a road trip last weekend and for the first time, woke up without any pain. The ergonomic support is real."
+            "text": "I always end up with a stiff neck when sleeping in cars or planes. I tried the Avemos pillow on a road trip last weekend and for the first time, woke up without any pain. The ergonomic support is real.",
+            "author_location": "Melbourne",
+            "review_image_size": 100
           }
         }
       },
@@ -427,13 +439,14 @@
       "type": "avemos-airplane",
       "settings": {
         "airplane_size": 60,
-        "airplane_velocity": 1.0,
+        "airplane_velocity": 1,
         "airplane_color": "#4f5d71"
       }
     }
   },
   "order": [
     "header",
+    "avemos_airplane_qdc9hd",
     "product",
     "as_seen_on",
     "benefits",
