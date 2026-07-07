@@ -132,11 +132,29 @@
 
 <script>
 (function() {
-  const pathGuide = document.getElementById('flight-path-guide-{{ section.id }}');
-  const pathActive = document.getElementById('flight-path-active-{{ section.id }}');
-  const maskPath = document.getElementById('mask-path-{{ section.id }}');
-  const plane = document.getElementById('scroll-airplane-icon-{{ section.id }}');
-  const svg = document.querySelector('.flight-path-svg');
+  const sectionId = '{{ section.id }}';
+
+  // Cleanup function definition
+  function cleanupOldInstance() {
+    window.activeAvemosAirplanes = window.activeAvemosAirplanes || {};
+    const oldInstance = window.activeAvemosAirplanes[sectionId];
+    if (oldInstance) {
+      if (typeof oldInstance.cleanup === 'function') {
+        oldInstance.cleanup();
+      }
+      delete window.activeAvemosAirplanes[sectionId];
+    }
+  }
+
+  // Execute cleanup immediately
+  cleanupOldInstance();
+
+  const pathGuide = document.getElementById('flight-path-guide-' + sectionId);
+  const pathActive = document.getElementById('flight-path-active-' + sectionId);
+  const maskPath = document.getElementById('mask-path-' + sectionId);
+  const plane = document.getElementById('scroll-airplane-icon-' + sectionId);
+  const container = document.getElementById('scroll-airplane-' + sectionId);
+  const svg = container ? container.querySelector('.flight-path-svg') : null;
 
   // Straight diagonal path: from bottom-left (2, 92) to top-right (98, 8)
   const pathD = "M 2 92 L 98 8";
@@ -208,22 +226,58 @@
     }
   }
 
+  function handleResize() {
+    updatePathD();
+  }
+
+  const scrollHandler = handleScroll;
+  const resizeHandler = handleResize;
+
+  // Cleanup method for this instance
+  function cleanup() {
+    window.removeEventListener('scroll', scrollHandler);
+    window.removeEventListener('resize', resizeHandler);
+    document.removeEventListener('shopify:section:load', handleSectionLoad);
+    document.removeEventListener('shopify:section:select', handleSectionSelect);
+    // Explicitly purge the DOM container if it's stale
+    if (container && container.parentNode && !document.body.contains(container)) {
+      container.remove();
+    }
+  }
+
+  function handleSectionLoad(e) {
+    if (e.detail.sectionId === sectionId) {
+      updatePathD();
+    }
+  }
+
+  function handleSectionSelect(e) {
+    if (e.detail.sectionId === sectionId) {
+      updatePathD();
+    }
+  }
+
+  // Register this instance
+  window.activeAvemosAirplanes[sectionId] = {
+    cleanup: cleanup
+  };
+
   // Initialize and attach event listeners
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       updatePathD();
-      window.addEventListener('scroll', handleScroll, { passive: true });
-      window.addEventListener('resize', updatePathD, { passive: true });
+      window.addEventListener('scroll', scrollHandler, { passive: true });
+      window.addEventListener('resize', resizeHandler, { passive: true });
     });
   } else {
     updatePathD();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', updatePathD, { passive: true });
+    window.addEventListener('scroll', scrollHandler, { passive: true });
+    window.addEventListener('resize', resizeHandler, { passive: true });
   }
 
-  // Shopify editor compatibility: listen to theme editor events to re-initialize
-  document.addEventListener('shopify:section:load', updatePathD);
-  document.addEventListener('shopify:section:select', updatePathD);
+  // Shopify editor compatibility
+  document.addEventListener('shopify:section:load', handleSectionLoad);
+  document.addEventListener('shopify:section:select', handleSectionSelect);
 })();
 </script>
 
