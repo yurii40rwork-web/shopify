@@ -1587,3 +1587,100 @@
   }
 }
 
+/* Sidebar Section Navigation Bar */
+.sections-sidebar-nav {
+  position: fixed;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  pointer-events: none;
+  font-family: var(--font-body), sans-serif;
+  opacity: 0;
+  transition: opacity var(--transition-normal), transform var(--transition-normal);
+}
+
+.sections-sidebar-nav.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sections-sidebar-nav-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.sections-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 6px 0;
+  pointer-events: auto;
+  transition: color var(--transition-fast);
+}
+
+.sections-nav-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateX(12px);
+  transition: opacity var(--transition-fast), transform var(--transition-fast), color var(--transition-fast);
+  white-space: nowrap;
+  pointer-events: none;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px rgba(125, 139, 161, 0.12);
+}
+
+.sections-nav-strip {
+  width: 18px;
+  height: 3px;
+  background-color: var(--border-color);
+  border-radius: var(--radius-full);
+  transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color var(--transition-fast);
+}
+
+/* Hover State */
+.sections-nav-item:hover .sections-nav-label {
+  opacity: 1;
+  transform: translateX(0);
+  color: var(--primary-hover);
+}
+
+.sections-nav-item:hover .sections-nav-strip {
+  width: 36px;
+  background-color: var(--primary);
+}
+
+/* Active State */
+.sections-nav-item.active .sections-nav-label {
+  opacity: 1;
+  transform: translateX(0);
+  color: var(--text-primary);
+}
+
+.sections-nav-item.active .sections-nav-strip {
+  width: 54px; /* Significantly longer strip */
+  background-color: var(--primary-hover);
+}
+
+/* Hide on tablet and mobile screens */
+@media (max-width: 1024px) {
+  .sections-sidebar-nav {
+    display: none !important;
+  }
+}
+
+
