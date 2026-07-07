@@ -1,0 +1,230 @@
+<!-- scroll-airplane.liquid -->
+<div class="scroll-airplane-container" aria-hidden="true">
+  <svg class="flight-path-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+    <defs>
+      <!-- Mask to dynamically reveal the active path behind the plane -->
+      <mask id="trail-mask" maskUnits="userSpaceOnUse">
+        <path id="mask-path" d="M 5 5 L 5 95" stroke="white" stroke-width="10" fill="none" stroke-linecap="round" />
+      </mask>
+    </defs>
+    
+    <!-- Faint background guide line -->
+    <path id="flight-path-guide" class="flight-path-guide" d="M 5 5 L 5 95" fill="none" />
+    
+    <!-- Active dashed trail (masked) -->
+    <path id="flight-path-active" class="flight-path-active" d="M 5 5 L 5 95" fill="none" mask="url(#trail-mask)" />
+  </svg>
+  
+  <div id="scroll-airplane" class="scroll-airplane">
+    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Fuselage -->
+      <path d="M 32 6 C 30.5 6, 29.5 12, 29.5 22 L 29.5 48 C 29.5 53, 31 56, 32 56 C 33 56, 34.5 53, 34.5 48 L 34.5 22 C 34.5 12, 33.5 6, 32 6 Z" fill="#ffffff" stroke="var(--primary)" stroke-width="2" stroke-linejoin="round" />
+      
+      <!-- Left Wing -->
+      <path d="M 29.5 24 L 6 36 C 5.2 36.4, 5.2 37.6, 6.2 37.8 L 13 39.5 C 14.2 39.8, 15.5 39.2, 16 38.2 L 29.5 31 Z" fill="#ffffff" stroke="var(--primary)" stroke-width="2" stroke-linejoin="round" />
+      
+      <!-- Right Wing -->
+      <path d="M 34.5 24 L 58 36 C 58.8 36.4, 58.8 37.6, 57.8 37.8 L 51 39.5 C 49.8 39.8, 48.5 39.2, 48 38.2 L 34.5 31 Z" fill="#ffffff" stroke="var(--primary)" stroke-width="2" stroke-linejoin="round" />
+
+      <!-- Left Engine -->
+      <rect x="18" y="29" width="3" height="7" rx="1.5" fill="var(--secondary)" stroke="var(--primary)" stroke-width="1.5" />
+      
+      <!-- Right Engine -->
+      <rect x="43" y="29" width="3" height="7" rx="1.5" fill="var(--secondary)" stroke="var(--primary)" stroke-width="1.5" />
+
+      <!-- Tail stabilizers -->
+      <path d="M 29.5 50 L 16 54 C 15.2 54.3, 15.2 55.3, 16.2 55.5 L 32 56 Z" fill="#ffffff" stroke="var(--primary)" stroke-width="1.8" stroke-linejoin="round" />
+      <path d="M 34.5 50 L 48 54 C 48.8 54.3, 48.8 55.3, 47.8 55.5 L 32 56 Z" fill="#ffffff" stroke="var(--primary)" stroke-width="1.8" stroke-linejoin="round" />
+
+      <!-- Cockpit Window -->
+      <path d="M 30.5 13 C 31 12.2, 33 12.2, 33.5 13 C 33.8 13.5, 33.8 14.5, 33.5 15 L 30.5 15 C 30.2 14.5, 30.2 13.5, 30.5 13 Z" fill="var(--primary)" />
+
+      <!-- Blinking Beacons -->
+      <!-- Left Wingtip (Red) -->
+      <circle cx="6" cy="36" r="2.5" class="beacon beacon-red" fill="#ef4444" />
+      
+      <!-- Right Wingtip (Green) -->
+      <circle cx="58" cy="36" r="2.5" class="beacon beacon-green" fill="#22c55e" />
+      
+      <!-- Tail Beacon (Red) -->
+      <circle cx="32" cy="56" r="2" class="beacon beacon-red-slow" fill="#ef4444" />
+    </svg>
+  </div>
+</div>
+
+<style>
+.scroll-airplane-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99; /* high z-index to fly above background but behind page interactions */
+  overflow: hidden;
+}
+
+.flight-path-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.flight-path-guide {
+  stroke: var(--primary);
+  stroke-width: 1.5px;
+  opacity: 0.08;
+}
+
+.flight-path-active {
+  stroke: var(--primary);
+  stroke-width: 2px;
+  stroke-dasharray: 6 6;
+  opacity: 0.6;
+}
+
+.scroll-airplane {
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  transform: translate(-50%, -50%);
+  will-change: transform, left, top;
+  filter: drop-shadow(0 4px 12px rgba(79, 93, 113, 0.25));
+  transition: transform 0.1s ease-out, left 0.1s ease-out, top 0.1s ease-out;
+}
+
+.beacon {
+  transform-origin: center;
+}
+
+.beacon-red {
+  animation: pulse-beacon-red 0.8s infinite;
+}
+
+.beacon-green {
+  animation: pulse-beacon-green 0.8s infinite;
+}
+
+.beacon-red-slow {
+  animation: pulse-beacon-red 1.3s infinite;
+}
+
+@keyframes pulse-beacon-red {
+  0%, 100% { fill-opacity: 0.3; }
+  50% { fill-opacity: 1; }
+}
+
+@keyframes pulse-beacon-green {
+  0%, 100% { fill-opacity: 0.3; }
+  50% { fill-opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .scroll-airplane {
+    width: 36px;
+    height: 36px;
+    opacity: 0.8;
+  }
+  .flight-path-active {
+    stroke-width: 1.5px;
+    stroke-dasharray: 4 4;
+  }
+}
+</style>
+
+<script>
+(function() {
+  const pathGuide = document.getElementById('flight-path-guide');
+  const pathActive = document.getElementById('flight-path-active');
+  const maskPath = document.getElementById('mask-path');
+  const plane = document.getElementById('scroll-airplane');
+  const svg = document.querySelector('.flight-path-svg');
+
+  // Curve coordinates in 100x100 viewBox
+  const desktopPath = "M 5 5 C 5 25, 8 25, 8 35 C 8 48, 92 45, 92 65 C 92 75, 90 75, 90 85 C 90 90, 85 92, 80 96";
+  const mobilePath = "M 92 5 L 92 95";
+
+  let totalLength = 0;
+  let ticking = false;
+
+  function updatePathD() {
+    if (!pathGuide || !pathActive || !maskPath) return;
+    const isMobile = window.innerWidth < 768;
+    const d = isMobile ? mobilePath : desktopPath;
+    
+    pathGuide.setAttribute('d', d);
+    pathActive.setAttribute('d', d);
+    maskPath.setAttribute('d', d);
+    
+    totalLength = pathActive.getTotalLength();
+    maskPath.setAttribute('stroke-dasharray', totalLength);
+    maskPath.setAttribute('stroke-dashoffset', totalLength);
+    
+    onScroll();
+  }
+
+  function onScroll() {
+    if (!plane || !svg || !pathActive || !maskPath || totalLength === 0) return;
+    
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    
+    if (docHeight <= 0) return;
+    
+    let scrollPct = scrollTop / docHeight;
+    scrollPct = Math.max(0, Math.min(1, scrollPct));
+    
+    const dist = scrollPct * totalLength;
+    const point = pathActive.getPointAtLength(dist);
+    
+    plane.style.left = point.x + '%';
+    plane.style.top = point.y + '%';
+    
+    // Direction angle calculation
+    const step = 0.5;
+    const distAhead = Math.min(totalLength, dist + step);
+    const pointAhead = pathActive.getPointAtLength(distAhead);
+    
+    const svgRect = svg.getBoundingClientRect();
+    const px = (point.x / 100) * svgRect.width;
+    const py = (point.y / 100) * svgRect.height;
+    const pax = (pointAhead.x / 100) * svgRect.width;
+    const pay = (pointAhead.y / 100) * svgRect.height;
+    
+    const dx = pax - px;
+    const dy = pay - py;
+    
+    if (Math.abs(dx) > 0.01 || Math.abs(dy) > 0.01) {
+      const angle = Math.atan2(dy, dx) * 180 / Math.PI + 90;
+      plane.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+    }
+    
+    maskPath.setAttribute('stroke-dashoffset', totalLength - dist);
+  }
+
+  function handleScroll() {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        onScroll();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  // Initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      updatePathD();
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      window.addEventListener('resize', updatePathD, { passive: true });
+    });
+  } else {
+    updatePathD();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', updatePathD, { passive: true });
+  }
+})();
+</script>
