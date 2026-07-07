@@ -23,9 +23,9 @@
       "type": "avemos-airplane",
       "name": "Background Airplane",
       "settings": {
-        "airplane_size": 85,
-        "airplane_velocity": 3,
-        "airplane_color": "#4f5d71"
+        "airplane_size": 100,
+        "airplane_velocity": 1.1,
+        "airplane_color": "#14171D"
       }
     },
     "product": {
