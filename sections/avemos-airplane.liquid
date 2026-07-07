@@ -47,6 +47,12 @@
 </div>
 
 <style>
+.avemos-landing-wrapper,
+.Avemos-landing-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
 #scroll-airplane-{{ section.id }} {
   --airplane-base-size: {{ size }}px;
   --airplane-color: {{ color }};
@@ -157,10 +163,15 @@
   const container = document.getElementById('scroll-airplane-' + sectionId);
   const svg = container ? container.querySelector('.flight-path-svg') : null;
 
-  // Append container to document.body to ensure it doesn't get clipped by section overflow
-  // and stays clean on customizer updates.
+  // Append container to landing wrapper to establish stacking order (above wrapper background, behind content).
+  // Fallback to body if wrapper is not present.
   if (container) {
-    document.body.appendChild(container);
+    const wrapper = document.querySelector('.avemos-landing-wrapper') || document.querySelector('.Avemos-landing-wrapper');
+    if (wrapper) {
+      wrapper.appendChild(container);
+    } else {
+      document.body.appendChild(container);
+    }
   }
 
   // Straight diagonal path: from off-screen bottom-left (-15, 107) to off-screen top-right (115, -7)
