@@ -25,7 +25,8 @@
       }
     },
     "settings": {
-      "airplane_size": 60
+      "airplane_size": 60,
+      "airplane_velocity": 1.0
     },
     "content_for_index": []
   }

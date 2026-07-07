@@ -92,6 +92,16 @@
         "unit": "px",
         "label": "Airplane Size",
         "default": 60
+      },
+      {
+        "type": "range",
+        "id": "airplane_velocity",
+        "min": 0.2,
+        "max": 3.0,
+        "step": 0.1,
+        "unit": "x",
+        "label": "Flight Velocity Factor",
+        "default": 1.0
       }
     ]
   }

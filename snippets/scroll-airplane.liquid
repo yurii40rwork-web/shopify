@@ -1,5 +1,6 @@
 <!-- snippets/scroll-airplane.liquid -->
 {%- assign size = settings.airplane_size | default: 60 -%}
+{%- assign velocity = settings.airplane_velocity | default: 1.0 -%}
 
 <div class="scroll-airplane-container" aria-hidden="true">
   <svg class="flight-path-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -137,6 +138,7 @@
 
   // Straight diagonal path: from bottom-left (2, 92) to top-right (98, 8)
   const pathD = "M 2 92 L 98 8";
+  const speedFactor = parseFloat('{{ velocity }}');
 
   let totalLength = 0;
   let ticking = false;
@@ -163,7 +165,7 @@
     
     if (docHeight <= 0) return;
     
-    let scrollPct = scrollTop / docHeight;
+    let scrollPct = (scrollTop / docHeight) * speedFactor;
     scrollPct = Math.max(0, Math.min(1, scrollPct));
     
     const dist = scrollPct * totalLength;
