@@ -2,22 +2,21 @@
 {%- assign size = section.settings.airplane_size | default: 60 -%}
 {%- assign velocity = section.settings.airplane_velocity | default: 1.0 -%}
 {%- assign color = section.settings.airplane_color | default: '#4f5d71' -%}
-{%- assign layering = section.settings.airplane_layering | default: 'background' -%}
 
 <div class="scroll-airplane-container" id="scroll-airplane-{{ section.id }}" aria-hidden="true">
   <svg class="flight-path-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
     <defs>
       <!-- Mask to dynamically reveal the active path behind the plane -->
       <mask id="trail-mask-{{ section.id }}" maskUnits="userSpaceOnUse">
-        <path id="mask-path-{{ section.id }}" d="M -15 107 L 115 -7" stroke="white" stroke-width="10" fill="none" stroke-linecap="round" />
+        <path id="mask-path-{{ section.id }}" d="M 5 110 L 5 -10" stroke="white" stroke-width="10" fill="none" stroke-linecap="round" />
       </mask>
     </defs>
     
     <!-- Faint background guide line (stroke is none so it is completely invisible) -->
-    <path id="flight-path-guide-{{ section.id }}" class="flight-path-guide" d="M -15 107 L 115 -7" fill="none" stroke="none" />
+    <path id="flight-path-guide-{{ section.id }}" class="flight-path-guide" d="M 5 110 L 5 -10" fill="none" stroke="none" />
     
     <!-- Active dashed trail (stroke is none so it is completely invisible) -->
-    <path id="flight-path-active-{{ section.id }}" class="flight-path-active" d="M -15 107 L 115 -7" fill="none" stroke="none" mask="url(#trail-mask-{{ section.id }})" />
+    <path id="flight-path-active-{{ section.id }}" class="flight-path-active" d="M 5 110 L 5 -10" fill="none" stroke="none" mask="url(#trail-mask-{{ section.id }})" />
   </svg>
   
   <div id="scroll-airplane-icon-{{ section.id }}" class="scroll-airplane">
@@ -33,7 +32,7 @@
       <rect x="67" y="47" width="3" height="10" rx="1.5" fill="currentColor" />
       <!-- Right Outer Engine -->
       <rect x="79" y="52" width="3" height="9" rx="1.5" fill="currentColor" />
- 
+
       <!-- Blinking Beacons (Micro-interaction details) -->
       <!-- Left Wingtip (Red) -->
       <circle cx="5" cy="62" r="2.5" class="beacon beacon-red" fill="#ef4444" />
@@ -48,12 +47,6 @@
 </div>
 
 <style>
-.avemos-landing-wrapper,
-.Avemos-landing-wrapper {
-  position: relative;
-  z-index: 1;
-}
-
 #scroll-airplane-{{ section.id }} {
   --airplane-base-size: {{ size }}px;
   --airplane-color: {{ color }};
@@ -66,11 +59,7 @@
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  {% if layering == 'background' %}
-    z-index: -1;
-  {% else %}
-    z-index: 10;
-  {% endif %}
+  z-index: 10; /* Fly above background but behind body content click targets */
   overflow: hidden;
 }
 
@@ -168,19 +157,14 @@
   const container = document.getElementById('scroll-airplane-' + sectionId);
   const svg = container ? container.querySelector('.flight-path-svg') : null;
 
-  // Append container to landing wrapper to establish stacking order (above wrapper background, behind content).
-  // Fallback to body if wrapper is not present.
+  // Append container to document.body to ensure it doesn't get clipped by section overflow
+  // and stays clean on customizer updates.
   if (container) {
-    const wrapper = document.querySelector('.avemos-landing-wrapper') || document.querySelector('.Avemos-landing-wrapper');
-    if (wrapper) {
-      wrapper.appendChild(container);
-    } else {
-      document.body.appendChild(container);
-    }
+    document.body.appendChild(container);
   }
 
-  // Straight diagonal path: from off-screen bottom-left (-15, 107) to off-screen top-right (115, -7)
-  const pathD = "M -15 107 L 115 -7";
+  // Straight vertical path on the left: from off-screen bottom (5, 110) to off-screen top (5, -10)
+  const pathD = "M 5 110 L 5 -10";
   const speedFactor = parseFloat('{{ velocity }}');
 
   let totalLength = 0;
@@ -347,22 +331,6 @@
       "id": "airplane_color",
       "label": "Airplane Silhouette Color",
       "default": "#4f5d71"
-    },
-    {
-      "type": "select",
-      "id": "airplane_layering",
-      "label": "Stacking Layer",
-      "options": [
-        {
-          "value": "background",
-          "label": "Background (behind content)"
-        },
-        {
-          "value": "foreground",
-          "label": "Foreground (above content)"
-        }
-      ],
-      "default": "background"
     }
   ],
   "presets": [
