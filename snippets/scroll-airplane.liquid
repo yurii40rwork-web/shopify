@@ -6,15 +6,15 @@
     <defs>
       <!-- Mask to dynamically reveal the active path behind the plane -->
       <mask id="trail-mask" maskUnits="userSpaceOnUse">
-        <path id="mask-path" d="M 98 8 L 2 92" stroke="white" stroke-width="10" fill="none" stroke-linecap="round" />
+        <path id="mask-path" d="M 2 92 L 98 8" stroke="white" stroke-width="10" fill="none" stroke-linecap="round" />
       </mask>
     </defs>
     
-    <!-- Faint background guide line -->
-    <path id="flight-path-guide" class="flight-path-guide" d="M 98 8 L 2 92" fill="none" />
+    <!-- Faint background guide line (stroke is none so it is completely invisible) -->
+    <path id="flight-path-guide" class="flight-path-guide" d="M 2 92 L 98 8" fill="none" stroke="none" />
     
-    <!-- Active dashed trail (masked) -->
-    <path id="flight-path-active" class="flight-path-active" d="M 98 8 L 2 92" fill="none" mask="url(#trail-mask)" />
+    <!-- Active dashed trail (stroke is none so it is completely invisible) -->
+    <path id="flight-path-active" class="flight-path-active" d="M 2 92 L 98 8" fill="none" stroke="none" mask="url(#trail-mask)" />
   </svg>
   
   <div id="scroll-airplane" class="scroll-airplane">
@@ -69,23 +69,22 @@
 }
 
 .flight-path-guide {
-  stroke: var(--primary, #4f5d71);
-  stroke-width: 1.5px;
-  opacity: 0.08;
+  stroke: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .flight-path-active {
-  stroke: var(--primary, #4f5d71);
-  stroke-width: 2px;
-  stroke-dasharray: 6 6;
-  opacity: 0.5;
+  stroke: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .scroll-airplane {
   position: absolute;
   width: var(--airplane-base-size);
   height: var(--airplane-base-size);
-  transform: translate(-50%, -50%) rotate(225deg); /* Default angle pointing down-left */
+  transform: translate(-50%, -50%) rotate(45deg); /* Default angle pointing up-right */
   will-change: transform, left, top;
   color: var(--primary, #4f5d71);
   filter: drop-shadow(0 4px 10px rgba(79, 93, 113, 0.22));
@@ -125,10 +124,6 @@
     height: calc(var(--airplane-base-size) * 0.7);
     opacity: 0.55;
   }
-  .flight-path-active {
-    stroke-width: 1.2px;
-    stroke-dasharray: 4 4;
-  }
 }
 </style>
 
@@ -140,8 +135,8 @@
   const plane = document.getElementById('scroll-airplane');
   const svg = document.querySelector('.flight-path-svg');
 
-  // Straight diagonal path: from top-right (98, 8) to bottom-left (2, 92)
-  const pathD = "M 98 8 L 2 92";
+  // Straight diagonal path: from bottom-left (2, 92) to top-right (98, 8)
+  const pathD = "M 2 92 L 98 8";
 
   let totalLength = 0;
   let ticking = false;
