@@ -422,6 +422,14 @@
         "copyright_text": "&copy; 2026 Avemos® Mock App. All rights reserved.",
         "show_payment_badges": true
       }
+    },
+    "airplane": {
+      "type": "avemos-airplane",
+      "settings": {
+        "airplane_size": 60,
+        "airplane_velocity": 1.0,
+        "airplane_color": "#4f5d71"
+      }
     }
   },
   "order": [
@@ -434,6 +442,7 @@
     "faq",
     "reviews",
     "refund",
-    "footer"
+    "footer",
+    "airplane"
   ]
 }

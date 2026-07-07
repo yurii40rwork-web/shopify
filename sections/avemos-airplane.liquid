@@ -1,24 +1,25 @@
-<!-- snippets/scroll-airplane.liquid -->
-{%- assign size = settings.airplane_size | default: 60 -%}
-{%- assign velocity = settings.airplane_velocity | default: 1.0 -%}
+<!-- sections/avemos-airplane.liquid -->
+{%- assign size = section.settings.airplane_size | default: 60 -%}
+{%- assign velocity = section.settings.airplane_velocity | default: 1.0 -%}
+{%- assign color = section.settings.airplane_color | default: '#4f5d71' -%}
 
-<div class="scroll-airplane-container" aria-hidden="true">
+<div class="scroll-airplane-container" id="scroll-airplane-{{ section.id }}" aria-hidden="true">
   <svg class="flight-path-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
     <defs>
       <!-- Mask to dynamically reveal the active path behind the plane -->
-      <mask id="trail-mask" maskUnits="userSpaceOnUse">
-        <path id="mask-path" d="M 2 92 L 98 8" stroke="white" stroke-width="10" fill="none" stroke-linecap="round" />
+      <mask id="trail-mask-{{ section.id }}" maskUnits="userSpaceOnUse">
+        <path id="mask-path-{{ section.id }}" d="M 2 92 L 98 8" stroke="white" stroke-width="10" fill="none" stroke-linecap="round" />
       </mask>
     </defs>
     
     <!-- Faint background guide line (stroke is none so it is completely invisible) -->
-    <path id="flight-path-guide" class="flight-path-guide" d="M 2 92 L 98 8" fill="none" stroke="none" />
+    <path id="flight-path-guide-{{ section.id }}" class="flight-path-guide" d="M 2 92 L 98 8" fill="none" stroke="none" />
     
     <!-- Active dashed trail (stroke is none so it is completely invisible) -->
-    <path id="flight-path-active" class="flight-path-active" d="M 2 92 L 98 8" fill="none" stroke="none" mask="url(#trail-mask)" />
+    <path id="flight-path-active-{{ section.id }}" class="flight-path-active" d="M 2 92 L 98 8" fill="none" stroke="none" mask="url(#trail-mask-{{ section.id }})" />
   </svg>
   
-  <div id="scroll-airplane" class="scroll-airplane">
+  <div id="scroll-airplane-icon-{{ section.id }}" class="scroll-airplane">
     <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
       <!-- Main solid airplane silhouette (wing and tail shape matching Picture 1) -->
       <path d="M 50 3 C 48 3, 46 6, 46 18 L 46 42 L 5 62 C 3 63, 3 67, 6 67 L 46 55 L 46 85 L 33 92 C 31 93, 31 95, 33 95 L 50 91 L 67 95 C 69 95, 69 93, 67 92 L 54 85 L 54 55 L 94 62 C 97 63, 97 67, 94 67 L 54 55 L 54 42 L 54 18 C 54 6, 52 3, 50 3 Z" fill="currentColor" />
@@ -46,8 +47,9 @@
 </div>
 
 <style>
-:root {
+#scroll-airplane-{{ section.id }} {
   --airplane-base-size: {{ size }}px;
+  --airplane-color: {{ color }};
 }
 
 .scroll-airplane-container {
@@ -87,7 +89,7 @@
   height: var(--airplane-base-size);
   transform: translate(-50%, -50%) rotate(45deg); /* Default angle pointing up-right */
   will-change: transform, left, top;
-  color: var(--primary, #4f5d71);
+  color: var(--airplane-color);
   filter: drop-shadow(0 4px 10px rgba(79, 93, 113, 0.22));
   transition: transform 0.1s ease-out, left 0.1s ease-out, top 0.1s ease-out;
   opacity: 0.65;
@@ -130,10 +132,10 @@
 
 <script>
 (function() {
-  const pathGuide = document.getElementById('flight-path-guide');
-  const pathActive = document.getElementById('flight-path-active');
-  const maskPath = document.getElementById('mask-path');
-  const plane = document.getElementById('scroll-airplane');
+  const pathGuide = document.getElementById('flight-path-guide-{{ section.id }}');
+  const pathActive = document.getElementById('flight-path-active-{{ section.id }}');
+  const maskPath = document.getElementById('mask-path-{{ section.id }}');
+  const plane = document.getElementById('scroll-airplane-icon-{{ section.id }}');
   const svg = document.querySelector('.flight-path-svg');
 
   // Straight diagonal path: from bottom-left (2, 92) to top-right (98, 8)
@@ -224,3 +226,46 @@
   document.addEventListener('shopify:section:select', updatePathD);
 })();
 </script>
+
+{% schema %}
+{
+  "name": "Background Airplane",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Floating background airplane silhouette that flies diagonally from bottom-left to top-right on scroll."
+    },
+    {
+      "type": "range",
+      "id": "airplane_size",
+      "min": 20,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Airplane Size",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "airplane_velocity",
+      "min": 0.2,
+      "max": 3.0,
+      "step": 0.1,
+      "unit": "x",
+      "label": "Flight Velocity Factor",
+      "default": 1.0
+    },
+    {
+      "type": "color",
+      "id": "airplane_color",
+      "label": "Airplane Silhouette Color",
+      "default": "#4f5d71"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Background Airplane"
+    }
+  ]
+}
+{% endschema %}
