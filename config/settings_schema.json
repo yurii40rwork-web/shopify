@@ -79,5 +79,20 @@
         "default": 4
       }
     ]
+  },
+  {
+    "name": "Background Airplane",
+    "settings": [
+      {
+        "type": "range",
+        "id": "airplane_size",
+        "min": 20,
+        "max": 200,
+        "step": 5,
+        "unit": "px",
+        "label": "Airplane Size",
+        "default": 60
+      }
+    ]
   }
 ]

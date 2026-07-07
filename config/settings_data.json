@@ -24,6 +24,9 @@
         }
       }
     },
+    "settings": {
+      "airplane_size": 60
+    },
     "content_for_index": []
   }
 }
