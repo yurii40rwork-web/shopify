@@ -119,5 +119,30 @@
         });
       });
     }
+
+    // Smooth scroll for anchor links in header and drawer
+    const anchorLinks = document.querySelectorAll('a[href*="#"]');
+    anchorLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        try {
+          const url = new URL(link.href, window.location.origin);
+          if (url.pathname === window.location.pathname) {
+            const hash = url.hash;
+            if (hash) {
+              const targetEl = document.querySelector(hash);
+              if (targetEl) {
+                e.preventDefault();
+                targetEl.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start'
+                });
+              }
+            }
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      });
+    });
   });
 </script>
