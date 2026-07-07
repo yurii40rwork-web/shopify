@@ -8,15 +8,15 @@
     <defs>
       <!-- Mask to dynamically reveal the active path behind the plane -->
       <mask id="trail-mask-{{ section.id }}" maskUnits="userSpaceOnUse">
-        <path id="mask-path-{{ section.id }}" d="M 2 92 L 98 8" stroke="white" stroke-width="10" fill="none" stroke-linecap="round" />
+        <path id="mask-path-{{ section.id }}" d="M -15 107 L 115 -7" stroke="white" stroke-width="10" fill="none" stroke-linecap="round" />
       </mask>
     </defs>
     
     <!-- Faint background guide line (stroke is none so it is completely invisible) -->
-    <path id="flight-path-guide-{{ section.id }}" class="flight-path-guide" d="M 2 92 L 98 8" fill="none" stroke="none" />
+    <path id="flight-path-guide-{{ section.id }}" class="flight-path-guide" d="M -15 107 L 115 -7" fill="none" stroke="none" />
     
     <!-- Active dashed trail (stroke is none so it is completely invisible) -->
-    <path id="flight-path-active-{{ section.id }}" class="flight-path-active" d="M 2 92 L 98 8" fill="none" stroke="none" mask="url(#trail-mask-{{ section.id }})" />
+    <path id="flight-path-active-{{ section.id }}" class="flight-path-active" d="M -15 107 L 115 -7" fill="none" stroke="none" mask="url(#trail-mask-{{ section.id }})" />
   </svg>
   
   <div id="scroll-airplane-icon-{{ section.id }}" class="scroll-airplane">
@@ -133,6 +133,7 @@
 <script>
 (function() {
   const sectionId = '{{ section.id }}';
+  let destroyed = false;
 
   // Cleanup function definition
   function cleanupOldInstance() {
@@ -156,8 +157,14 @@
   const container = document.getElementById('scroll-airplane-' + sectionId);
   const svg = container ? container.querySelector('.flight-path-svg') : null;
 
-  // Straight diagonal path: from bottom-left (2, 92) to top-right (98, 8)
-  const pathD = "M 2 92 L 98 8";
+  // Append container to document.body to ensure it doesn't get clipped by section overflow
+  // and stays clean on customizer updates.
+  if (container) {
+    document.body.appendChild(container);
+  }
+
+  // Straight diagonal path: from off-screen bottom-left (-15, 107) to off-screen top-right (115, -7)
+  const pathD = "M -15 107 L 115 -7";
   const speedFactor = parseFloat('{{ velocity }}');
 
   let totalLength = 0;
@@ -235,13 +242,15 @@
 
   // Cleanup method for this instance
   function cleanup() {
+    destroyed = true;
     window.removeEventListener('scroll', scrollHandler);
     window.removeEventListener('resize', resizeHandler);
     document.removeEventListener('shopify:section:load', handleSectionLoad);
     document.removeEventListener('shopify:section:select', handleSectionSelect);
-    // Explicitly purge the DOM container if it's stale
-    if (container && container.parentNode && !document.body.contains(container)) {
-      container.remove();
+    document.removeEventListener('shopify:section:unload', handleSectionUnload);
+    // Explicitly purge the DOM container from body if it exists
+    if (container && container.parentNode) {
+      container.parentNode.removeChild(container);
     }
   }
 
@@ -257,6 +266,12 @@
     }
   }
 
+  function handleSectionUnload(e) {
+    if (e.detail.sectionId === sectionId) {
+      cleanup();
+    }
+  }
+
   // Register this instance
   window.activeAvemosAirplanes[sectionId] = {
     cleanup: cleanup
@@ -265,6 +280,7 @@
   // Initialize and attach event listeners
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
+      if (destroyed) return;
       updatePathD();
       window.addEventListener('scroll', scrollHandler, { passive: true });
       window.addEventListener('resize', resizeHandler, { passive: true });
@@ -278,6 +294,7 @@
   // Shopify editor compatibility
   document.addEventListener('shopify:section:load', handleSectionLoad);
   document.addEventListener('shopify:section:select', handleSectionSelect);
+  document.addEventListener('shopify:section:unload', handleSectionUnload);
 })();
 </script>
 
