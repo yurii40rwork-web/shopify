@@ -1,10 +1,83 @@
 {% if request.path == '/pages/contact-us' or template.suffix == 'contact' %}
-  {% render 'contact-us-content' %}
+  {% render 'contact-us-content', section: section %}
 {% endif %}
 
 {% schema %}
 {
   "name": "Contact Us Content",
-  "settings": []
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Contact Us"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Have questions about the Avemos pillow or your order? We'd love to help!"
+    },
+    {
+      "type": "text",
+      "id": "info_title",
+      "label": "Info Section Title",
+      "default": "Contact Info"
+    },
+    {
+      "type": "text",
+      "id": "email_title",
+      "label": "Email Support Title",
+      "default": "Email Support"
+    },
+    {
+      "type": "text",
+      "id": "email_address",
+      "label": "Email Address",
+      "default": "support@avemosstore.com"
+    },
+    {
+      "type": "text",
+      "id": "email_helper",
+      "label": "Email Helper Text",
+      "default": "We reply within 12-24 hours."
+    },
+    {
+      "type": "text",
+      "id": "phone_title",
+      "label": "Phone Line Title",
+      "default": "Phone Line"
+    },
+    {
+      "type": "text",
+      "id": "phone_number",
+      "label": "Phone Number",
+      "default": "+380965347984"
+    },
+    {
+      "type": "text",
+      "id": "phone_helper",
+      "label": "Phone Helper Text",
+      "default": "Mon-Fri from 9:00 AM to 6:00 PM (GMT+2)."
+    },
+    {
+      "type": "text",
+      "id": "address_title",
+      "label": "Address Title",
+      "default": "Office & Warehouse"
+    },
+    {
+      "type": "textarea",
+      "id": "address_text",
+      "label": "Address Content",
+      "default": "Avemos,\nZelena St, 114,\nLviv, 79000, Ukraine"
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Form Title",
+      "default": "Send Us a Message"
+    }
+  ]
 }
 {% endschema %}

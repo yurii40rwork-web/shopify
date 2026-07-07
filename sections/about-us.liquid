@@ -1,10 +1,106 @@
 {% if request.path == '/pages/about-us' or template.suffix == 'about' %}
-  {% render 'about-us-content' %}
+  {% render 'about-us-content', section: section %}
 {% endif %}
 
 {% schema %}
 {
   "name": "About Us Content",
-  "settings": []
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "About Us"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Image"
+    },
+    {
+      "type": "text",
+      "id": "story_title",
+      "label": "Story Title",
+      "default": "Our Story & Mission"
+    },
+    {
+      "type": "textarea",
+      "id": "story_text_1",
+      "label": "Story Text 1",
+      "default": "The Avemos® brand was born out of frustration from a group of frequent travelers and ergonomic specialists. We were tired of the standard U-shaped travel pillows on the market—whether they were inflatable ones that deflated midway, or cheap foam ones that offered zero support, causing the head to bob forward and leaving our necks stiff and painful after sleeping."
+    },
+    {
+      "type": "textarea",
+      "id": "story_text_2",
+      "label": "Story Text 2",
+      "default": "After prototyping over 20 different designs on long-haul flights and consulting with orthopedic experts, we developed the Avemos Travel Pillow. Our mission is to make every journey comfortable and pain-free, helping travelers arrive at their destinations refreshed and fully energized."
+    },
+    {
+      "type": "text",
+      "id": "features_title",
+      "label": "Features Title",
+      "default": "Premium Product Features"
+    },
+    {
+      "type": "text",
+      "id": "dtc_title",
+      "label": "DTC Title",
+      "default": "Our DTC Model & Location"
+    },
+    {
+      "type": "textarea",
+      "id": "dtc_text",
+      "label": "DTC Text",
+      "default": "We operate as a DTC (Direct-to-Consumer) brand, shipping globally straight from our design hub. Our primary office and fulfillment logistics center are located in Ukraine: Zelena St, 114, Lviv. We cut out traditional retail markups to bring you high-end travel gear at an honest price."
+    },
+    {
+      "type": "text",
+      "id": "responsible_title",
+      "label": "Responsible Section Title",
+      "default": "Responsible Person & Contact"
+    },
+    {
+      "type": "text",
+      "id": "responsible_name",
+      "label": "Responsible Name",
+      "default": "Yurii Lepkyi"
+    },
+    {
+      "type": "text",
+      "id": "responsible_role",
+      "label": "Responsible Role",
+      "default": "Responsible Person & Business Owner"
+    },
+    {
+      "type": "text",
+      "id": "responsible_email",
+      "label": "Responsible Email",
+      "default": "lepkyimanagm@gmail.com"
+    },
+    {
+      "type": "textarea",
+      "id": "responsible_desc",
+      "label": "Responsible Description",
+      "default": "As the lead director and business owner of the Avemos® brand, Yurii manages product operations, DTC logistics, and quality assurance. If you have any business inquiries or partnership suggestions, feel free to reach out directly."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Product Feature",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Feature Title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Feature Description"
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}
