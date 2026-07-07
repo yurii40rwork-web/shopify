@@ -24,8 +24,8 @@
       "name": "Background Airplane",
       "settings": {
         "airplane_size": 100,
-        "airplane_velocity": 1.1,
-        "airplane_color": "#14171D"
+        "airplane_velocity": 0.8,
+        "airplane_color": "#14171d"
       }
     },
     "product": {
