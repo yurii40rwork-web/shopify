@@ -294,7 +294,7 @@
           "type": "faq_item",
           "settings": {
             "question": "What are the shipping times and guarantees?",
-            "answer": "We offer express shipping in 5-10 business days. You also receive a 70-day risk-free guarantee: if you are not fully satisfied, you can return it for a 100% refund."
+            "answer": "We offer express shipping in 5-10 business days. You also receive a 30-day risk-free guarantee: if you are not fully satisfied, you can return it for a 100% refund."
           }
         }
       },
@@ -432,7 +432,7 @@
         "star_3_percent": 1,
         "star_2_percent": 0,
         "star_1_percent": 0,
-        "card_padding": 60
+        "card_padding": 16
       }
     },
     "refund": {
