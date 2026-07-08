@@ -784,8 +784,8 @@ document.addEventListener('DOMContentLoaded', () => {
       basePricesSubtotal += (currentPricePerUnit * item.quantity);
       originalPricesSubtotal += (originalPricePerUnit * item.quantity);
 
-      const currentUnitFormatted = formatMoney(currentPricePerUnit);
-      const originalUnitFormatted = formatMoney(originalPricePerUnit);
+      const currentLineFormatted = formatMoney(currentPricePerUnit * item.quantity);
+      const originalLineFormatted = formatMoney(originalPricePerUnit * item.quantity);
 
       itemElement.innerHTML = `
         <div class="item-img-col">
@@ -806,8 +806,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <i class="fa-regular fa-trash-can"></i>
           </button>
           <div class="item-prices-box">
-            <span class="price-current">${currentUnitFormatted}</span>
-            ${originalPricePerUnit > currentPricePerUnit ? `<span class="price-original">${originalUnitFormatted}</span>` : ''}
+            <span class="price-current">${currentLineFormatted}</span>
+            ${originalPricePerUnit > currentPricePerUnit ? `<span class="price-original">${originalLineFormatted}</span>` : ''}
           </div>
         </div>
       `;
