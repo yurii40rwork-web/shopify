@@ -1,8 +1,30 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "about-us",
-      "settings": {}
+      "settings": {
+        "title": "About Us",
+        "story_title": "Our Story & Mission",
+        "story_text_1": "The Avemos® brand was born out of frustration from a group of frequent travelers and ergonomic specialists. We were tired of the standard U-shaped travel pillows on the market—whether they were inflatable ones that deflated midway, or cheap foam ones that offered zero support, causing the head to bob forward and leaving our necks stiff and painful after sleeping.",
+        "story_text_2": "After prototyping over 20 different designs on long-haul flights and consulting with orthopedic experts, we developed the Avemos Travel Pillow. Our mission is to make every journey comfortable and pain-free, helping travelers arrive at their destinations refreshed and fully energized.",
+        "features_title": "Premium Product Features",
+        "dtc_title": "Our DTC Model & Location",
+        "dtc_text": "We operate as a DTC (Direct-to-Consumer) brand, shipping globally straight from our design hub. Our primary office and fulfillment logistics center are located in Ukraine: Zelena St, 114, Lviv. We cut out traditional retail markups to bring you high-end travel gear at an honest price.",
+        "responsible_title": "",
+        "responsible_name": "",
+        "responsible_role": "",
+        "responsible_email": "",
+        "responsible_desc": ""
+      }
     }
   },
   "order": [
