@@ -20,7 +20,9 @@
           "shipping_protection_subtitle": "Protect your order from damage, loss, or theft.",
           "shipping_protection_price": 5,
           "save_percent": 57,
-          "trust_guarantee_text": "30 Day Money Back Guarantee"
+          "trust_guarantee_text": "30 Day Money Back Guarantee",
+          "pillow_base_price": 39,
+          "pillow_original_price": 78
         }
       }
     },
