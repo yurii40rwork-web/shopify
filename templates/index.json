@@ -431,7 +431,8 @@
         "star_4_percent": 6,
         "star_3_percent": 1,
         "star_2_percent": 0,
-        "star_1_percent": 0
+        "star_1_percent": 0,
+        "card_padding": 60
       }
     },
     "refund": {
