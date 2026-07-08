@@ -33,7 +33,7 @@
       <div class="reviews-grid">
         {%- for block in section.blocks -%}
           {%- if block.type == 'review' -%}
-            <div class="review-card" {{ block.shopify_attributes }} style="--img-size: {{ block.settings.review_image_size | default: 130 }}px;">
+            <div class="review-card" {{ block.shopify_attributes }} style="--img-size: {{ block.settings.review_image_size | default: 130 }}px; --card-padding: {{ section.settings.card_padding | default: 40 }}px;">
               <div class="review-card-inner">
                 <!-- Stars and Date row -->
                 <div class="review-meta-row">
@@ -193,7 +193,7 @@
   .review-card {
     background-color: var(--bg-primary);
     border-radius: 24px;
-    padding: 40px;
+    padding: var(--card-padding, 40px);
     border: 1px solid var(--border-light);
     transition: transform var(--transition-normal), box-shadow var(--transition-normal);
   }
@@ -530,6 +530,16 @@
       "step": 1,
       "default": 0
     },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "label": "Review Card Padding",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    }
   ],
   "blocks": [
     {
