@@ -149,13 +149,25 @@
                           <span class="bundle-radio-checkmark" style="position: relative; display: inline-block; width: 20px; height: 20px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%;"></span>
                           <div class="bundle-title-group">
                             <span class="bundle-title">{{ block.settings.bundle_1_title | escape }}</span>
-                            <span class="bundle-subtitle">You Save {{ current_variant.compare_at_price | minus: current_variant.price | money }}</span>
+                            <span class="bundle-subtitle">
+                              {%- if block.settings.bundle_1_save_text != blank -%}
+                                {{ block.settings.bundle_1_save_text | escape }}
+                              {%- else -%}
+                                You Save {{ current_variant.compare_at_price | minus: current_variant.price | money }}
+                              {%- endif -%}
+                            </span>
                           </div>
                         </label>
                         <div class="bundle-price-group">
                           <span class="bundle-price">{{ current_variant.price | money }}</span>
-                          {%- if current_variant.compare_at_price > current_variant.price -%}
-                            <span class="bundle-compare-price">{{ current_variant.compare_at_price | money }}</span>
+                          {%- if current_variant.compare_at_price > current_variant.price or block.settings.bundle_1_original_price != blank -%}
+                            <span class="bundle-compare-price">
+                              {%- if block.settings.bundle_1_original_price != blank -%}
+                                {{ block.settings.bundle_1_original_price | escape }}
+                              {%- else -%}
+                                {{ current_variant.compare_at_price | money }}
+                              {%- endif -%}
+                            </span>
                           {%- endif -%}
                         </div>
                       </div>
@@ -207,13 +219,25 @@
                                 <span class="bundle-title-subtitle">{{ block.settings.bundle_2_subtitle | escape }}</span>
                               {%- endif -%}
                             </span>
-                            <span class="bundle-subtitle">Best Deal: {{ block_bundle_2_price | divided_by: 2 | money }} Each</span>
+                            <span class="bundle-subtitle">
+                              {%- if block.settings.bundle_2_save_text != blank -%}
+                                {{ block.settings.bundle_2_save_text | escape }}
+                              {%- else -%}
+                                Best Deal: {{ block_bundle_2_price | divided_by: 2 | money }} Each
+                              {%- endif -%}
+                            </span>
                           </div>
                         </label>
                         <div class="bundle-price-group">
                           <span class="bundle-price">{{ block_bundle_2_price | money }}</span>
-                          {%- if current_variant.compare_at_price > current_variant.price -%}
-                            <span class="bundle-compare-price">{{ current_variant.compare_at_price | times: 2 | money }}</span>
+                          {%- if current_variant.compare_at_price > current_variant.price or block.settings.bundle_2_original_price != blank -%}
+                            <span class="bundle-compare-price">
+                              {%- if block.settings.bundle_2_original_price != blank -%}
+                                {{ block.settings.bundle_2_original_price | escape }}
+                              {%- else -%}
+                                {{ current_variant.compare_at_price | times: 2 | money }}
+                              {%- endif -%}
+                            </span>
                           {%- endif -%}
                         </div>
                       </div>
@@ -1889,6 +1913,18 @@
         },
         {
           "type": "text",
+          "id": "bundle_1_save_text",
+          "label": "Bundle 1 Save Text",
+          "default": "You Save $39.00"
+        },
+        {
+          "type": "text",
+          "id": "bundle_1_original_price",
+          "label": "Bundle 1 Original Price",
+          "default": "$78.00"
+        },
+        {
+          "type": "text",
           "id": "bundle_2_title",
           "label": "Bundle 2 Title",
           "default": "Buy 2"
@@ -1898,6 +1934,18 @@
           "id": "bundle_2_subtitle",
           "label": "Bundle 2 Subtitle",
           "default": "Save $10"
+        },
+        {
+          "type": "text",
+          "id": "bundle_2_save_text",
+          "label": "Bundle 2 Save Text",
+          "default": "Best Deal: $34.00 Each"
+        },
+        {
+          "type": "text",
+          "id": "bundle_2_original_price",
+          "label": "Bundle 2 Original Price",
+          "default": "$156.00"
         },
         {
           "type": "range",
