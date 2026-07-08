@@ -89,28 +89,31 @@
                 <div class="review-bottom-row">
                   <!-- Reviewer Info (Left stack) -->
                   <div class="reviewer-info-left">
-                    <div class="reviewer-avatar-name-row">
-                      {%- if block.settings.author_avatar != blank -%}
-                        <div class="reviewer-avatar-img">
-                          <img src="{{ block.settings.author_avatar | image_url: width: 100 }}" alt="{{ block.settings.author_name | escape }}" loading="lazy">
-                        </div>
-                      {%- elsif block.settings.author_initials != blank -%}
-                        <div class="reviewer-avatar">
-                          {{ block.settings.author_initials | escape }}
-                        </div>
-                      {%- endif -%}
-                      {%- if block.settings.author_name != blank -%}
-                        <span class="reviewer-name">{{ block.settings.author_name | escape }}</span>
-                      {%- endif -%}
-                    </div>
-                    {%- if block.settings.author_location != blank -%}
-                      <div class="reviewer-location">{{ block.settings.author_location | escape }}</div>
-                    {%- endif -%}
-                    {%- if block.settings.verified -%}
-                      <div>
-                        <span class="verified-badge">Verified</span>
+                    {%- if block.settings.author_avatar != blank -%}
+                      <div class="reviewer-avatar-img">
+                        <img src="{{ block.settings.author_avatar | image_url: width: 100 }}" alt="{{ block.settings.author_name | escape }}" loading="lazy">
+                      </div>
+                    {%- elsif block.settings.author_initials != blank -%}
+                      <div class="reviewer-avatar">
+                        {{ block.settings.author_initials | escape }}
                       </div>
                     {%- endif -%}
+                    
+                    <div class="reviewer-text-details">
+                      <div class="reviewer-name-location">
+                        {%- if block.settings.author_name != blank -%}
+                          <span class="reviewer-name">{{ block.settings.author_name | escape }}</span>
+                        {%- endif -%}
+                        {%- if block.settings.author_location != blank -%}
+                          <span class="reviewer-location">{{ block.settings.author_location | escape }}</span>
+                        {%- endif -%}
+                      </div>
+                      {%- if block.settings.verified -%}
+                        <div class="verified-badge-wrapper">
+                          <span class="verified-badge">Verified</span>
+                        </div>
+                      {%- endif -%}
+                    </div>
                   </div>
 
                   <!-- Review Images (Right stack) -->
@@ -230,16 +233,24 @@
   
   .Avemos-landing-wrapper .reviewer-info-left {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    align-items: center;
+    gap: 12px;
     flex: 1 1 auto;
     min-width: 0;
   }
   
-  .Avemos-landing-wrapper .reviewer-avatar-name-row {
+  .Avemos-landing-wrapper .reviewer-text-details {
     display: flex;
-    align-items: center;
-    gap: 12px;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+  
+  .Avemos-landing-wrapper .reviewer-name-location {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
     min-width: 0;
   }
   
@@ -429,26 +440,6 @@
       align-items: flex-start;
       gap: 16px;
       width: 100%;
-    }
-    
-    .Avemos-landing-wrapper .reviewer-info-left {
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 12px;
-      width: 100%;
-    }
-    
-    .Avemos-landing-wrapper .reviewer-location::before {
-      content: "•";
-      color: var(--text-light);
-      margin-right: 12px;
-    }
-    
-    .Avemos-landing-wrapper .verified-badge::before {
-      content: "•";
-      color: var(--text-light);
-      margin-right: 12px;
     }
     
     .Avemos-landing-wrapper .review-images-row {
