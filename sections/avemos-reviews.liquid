@@ -1,3 +1,7 @@
+{%- assign card_padding_val = section.settings.card_padding -%}
+{%- if card_padding_val == 0 or card_padding_val == blank -%}
+  {%- assign card_padding_val = 40 -%}
+{%- endif -%}
 {{ 'avemos-style.css' | asset_url | stylesheet_tag }}
 
 <div class="Avemos-landing-wrapper" id="reviews">
@@ -190,33 +194,33 @@
     gap: 32px;
   }
   
-  .review-card {
+  .Avemos-landing-wrapper .review-card {
     background-color: var(--bg-primary);
     border-radius: 24px;
-    padding: {{ section.settings.card_padding | default: 40 }}px;
+    padding: {{ card_padding_val }}px;
     border: 1px solid var(--border-light);
     transition: transform var(--transition-normal), box-shadow var(--transition-normal);
   }
   
-  .review-card:hover {
+  .Avemos-landing-wrapper .review-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   }
   
-  .review-card-inner {
+  .Avemos-landing-wrapper .review-card-inner {
     display: flex;
     flex-direction: column;
     height: 100%;
   }
 
-  .review-meta-row {
+  .Avemos-landing-wrapper .review-meta-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 16px;
   }
   
-  .review-bottom-row {
+  .Avemos-landing-wrapper .review-bottom-row {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -224,7 +228,7 @@
     gap: 24px;
   }
   
-  .reviewer-info-left {
+  .Avemos-landing-wrapper .reviewer-info-left {
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -232,14 +236,14 @@
     min-width: 0;
   }
   
-  .reviewer-avatar-name-row {
+  .Avemos-landing-wrapper .reviewer-avatar-name-row {
     display: flex;
     align-items: center;
     gap: 12px;
     min-width: 0;
   }
   
-  .reviewer-avatar-img {
+  .Avemos-landing-wrapper .reviewer-avatar-img {
     width: 48px;
     height: 48px;
     border-radius: var(--radius-full);
@@ -248,13 +252,13 @@
     flex-shrink: 0;
   }
   
-  .reviewer-avatar-img img {
+  .Avemos-landing-wrapper .reviewer-avatar-img img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
   
-  .reviewer-avatar {
+  .Avemos-landing-wrapper .reviewer-avatar {
     width: 48px;
     height: 48px;
     border-radius: var(--radius-full);
@@ -269,7 +273,7 @@
     flex-shrink: 0;
   }
   
-  .reviewer-name {
+  .Avemos-landing-wrapper .reviewer-name {
     font-weight: 700;
     color: var(--text-primary);
     font-size: 1.1rem;
@@ -278,7 +282,7 @@
     text-overflow: ellipsis;
   }
   
-  .reviewer-location {
+  .Avemos-landing-wrapper .reviewer-location {
     font-size: 0.95rem;
     color: var(--text-light);
     font-weight: 400;
@@ -288,24 +292,24 @@
     text-overflow: ellipsis;
   }
   
-  .verified-badge {
+  .Avemos-landing-wrapper .verified-badge {
     color: #059669;
     font-size: 0.9rem;
     font-weight: 600;
   }
   
-  .review-date {
+  .Avemos-landing-wrapper .review-date {
     font-size: 0.85rem;
     color: var(--text-light);
   }
   
-  .review-card .stars {
+  .Avemos-landing-wrapper .review-card .stars {
     color: #ff9800;
     font-size: 1.15rem;
     letter-spacing: 1px;
   }
   
-  .review-title {
+  .Avemos-landing-wrapper .review-title {
     font-size: 1.4rem;
     font-weight: 700;
     color: var(--text-primary);
@@ -314,7 +318,7 @@
     line-height: 1.3;
   }
   
-  .review-text {
+  .Avemos-landing-wrapper .review-text {
     font-size: 1.05rem;
     color: var(--text-secondary);
     line-height: 1.6;
@@ -323,14 +327,14 @@
   }
 
   /* Review Images Row */
-  .review-images-row {
+  .Avemos-landing-wrapper .review-images-row {
     display: flex;
     gap: 10px;
     margin: 0;
     flex-shrink: 0;
   }
 
-  .review-image-item {
+  .Avemos-landing-wrapper .review-image-item {
     width: 85px;
     height: 85px;
     border-radius: 10px;
@@ -340,7 +344,7 @@
     transition: transform var(--transition-fast), box-shadow var(--transition-fast);
   }
 
-  .review-image-item:hover {
+  .Avemos-landing-wrapper .review-image-item:hover {
     transform: scale(1.04);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
