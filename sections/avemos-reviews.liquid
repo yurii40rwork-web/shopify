@@ -60,6 +60,27 @@
                   <p class="review-text">“{{ block.settings.text | escape }}”</p>
                 {%- endif -%}
 
+                <!-- Review Images definition -->
+                {%- assign img_1 = block.settings.image_1 -%}
+                {%- assign img_2 = block.settings.image_2 -%}
+                {%- assign img_3 = block.settings.image_3 -%}
+                
+                {%- assign img_1_fallback = '' -%}
+                {%- assign img_2_fallback = '' -%}
+                {%- assign img_3_fallback = '' -%}
+
+                {%- if img_1 == blank and img_2 == blank and img_3 == blank -%}
+                  {%- if forloop.index == 1 -%}
+                    {%- assign img_1_fallback = 'untitled-image-1-compressed.png' -%}
+                    {%- assign img_2_fallback = 'untitled-image-2.png' -%}
+                  {%- elsif forloop.index == 2 -%}
+                    {%- assign img_1_fallback = 'untitled-image-3.png' -%}
+                    {%- assign img_2_fallback = 'untitled-image-4-compressed.png' -%}
+                  {%- elsif forloop.index == 3 -%}
+                    {%- assign img_1_fallback = 'untitled-image-5-compressed.png' -%}
+                  {%- endif -%}
+                {%- endif -%}
+
                 <!-- Review Images & Reviewer Info side-by-side bottom block -->
                 <div class="review-bottom-row">
                   <!-- Reviewer Info (Left stack) -->
@@ -258,15 +279,9 @@
   }
   
   .verified-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #e6f9f3;
     color: #059669;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    padding: 4px 12px;
-    border-radius: 9999px;
   }
   
   .review-date {
