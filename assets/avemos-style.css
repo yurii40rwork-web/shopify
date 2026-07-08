@@ -495,17 +495,37 @@
 /* As Seen On Section */
 .Avemos-landing-wrapper .as-seen-on {
   background-color: var(--surface-container-low);
-  padding: 36px 0;
+  padding: 48px 0;
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
+  position: relative;
+  overflow: hidden;
 }
 
-.Avemos-landing-wrapper .brand-logos {
+.Avemos-landing-wrapper .brand-logos-container {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  user-select: none;
+}
+
+.Avemos-landing-wrapper .brand-logos-inner {
   display: flex;
-  justify-content: space-around;
+  width: max-content;
+}
+
+.Avemos-landing-wrapper .brand-logos-group {
+  display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 24px;
+  gap: 60px;
+  padding-right: 60px;
+  flex-shrink: 0;
+  animation: scroll-brands var(--brand-speed, 20s) linear infinite;
+}
+
+.Avemos-landing-wrapper .brand-logos-container:hover .brand-logos-group {
+  animation-play-state: paused;
 }
 
 .Avemos-landing-wrapper .brand-logo-placeholder {
@@ -515,6 +535,72 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   opacity: 0.75;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.Avemos-landing-wrapper .brand-logo-placeholder img {
+  display: block;
+  max-height: 40px;
+  width: auto;
+  object-fit: contain;
+  transition: opacity var(--transition-normal);
+}
+
+.Avemos-landing-wrapper .brand-logo-placeholder img:hover {
+  opacity: 1;
+}
+
+/* Background Waves */
+.Avemos-landing-wrapper .as-seen-on-waves {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: var(--wave-amplitude, 60px);
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.Avemos-landing-wrapper .wave-svg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+}
+
+.Avemos-landing-wrapper .wave-svg-1 {
+  animation: scroll-wave var(--wave-1-speed, 12s) linear infinite;
+  fill: var(--wave-color);
+  opacity: calc(var(--wave-opacity) * 0.6);
+}
+
+.Avemos-landing-wrapper .wave-svg-2 {
+  animation: scroll-wave var(--wave-2-speed, 8s) linear infinite;
+  fill: var(--wave-color);
+  opacity: var(--wave-opacity);
+}
+
+@keyframes scroll-brands {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes scroll-wave {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 /* Benefits Grid Section */

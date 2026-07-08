@@ -1,36 +1,132 @@
 {{ 'avemos-style.css' | asset_url | stylesheet_tag }}
 
+{%- style -%}
+  #as-seen-on-{{ section.id }} {
+    --brand-speed: {{ section.settings.brand_speed }}s;
+    --wave-amplitude: {{ section.settings.wave_amplitude }}px;
+    --wave-1-speed: {{ section.settings.wave_speed }}s;
+    --wave-2-speed: {{ section.settings.wave_2_speed }}s;
+    --wave-color: {{ section.settings.wave_color }};
+    --wave-opacity: {{ section.settings.wave_opacity | divided_by: 100.0 }};
+  }
+{%- endstyle -%}
+
 <div class="Avemos-landing-wrapper">
   <!-- As Seen On Banner -->
-  <section class="as-seen-on">
-    <div class="container">
-      <div class="brand-logos">
-        {%- if section.blocks.size > 0 -%}
-          {%- for block in section.blocks -%}
-            <div class="brand-logo-placeholder" {{ block.shopify_attributes }}>
-              {%- if block.settings.logo_image != blank -%}
-                <img src="{{ block.settings.logo_image | image_url: width: 200 }}" alt="{{ block.settings.name | escape }}" style="max-height: 40px; width: auto; object-fit: contain;">
-              {%- else -%}
-                {{ block.settings.name }}
-              {%- endif -%}
-            </div>
-          {%- endfor -%}
-        {%- else -%}
-          <div class="brand-logo-placeholder">Forbes</div>
-          <div class="brand-logo-placeholder">Travel + Leisure</div>
-          <div class="brand-logo-placeholder">NY Times</div>
-          <div class="brand-logo-placeholder">USA Today</div>
-          <div class="brand-logo-placeholder">Bloomberg</div>
-        {%- endif -%}
+  <section class="as-seen-on" id="as-seen-on-{{ section.id }}">
+    <div class="brand-logos-container">
+      <div class="brand-logos-inner">
+        {%- for i in (1..2) -%}
+          <div class="brand-logos-group" {% if i > 1 %}aria-hidden="true"{% endif %}>
+            {%- if section.blocks.size > 0 -%}
+              {%- for block in section.blocks -%}
+                <div class="brand-logo-placeholder" {{ block.shopify_attributes }}>
+                  {%- if block.settings.logo_image != blank -%}
+                    <img src="{{ block.settings.logo_image | image_url: width: 200 }}" alt="{{ block.settings.name | escape }}">
+                  {%- else -%}
+                    {{ block.settings.name }}
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+            {%- else -%}
+              <div class="brand-logo-placeholder">Forbes</div>
+              <div class="brand-logo-placeholder">Travel + Leisure</div>
+              <div class="brand-logo-placeholder">NY Times</div>
+              <div class="brand-logo-placeholder">USA Today</div>
+              <div class="brand-logo-placeholder">Bloomberg</div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
       </div>
     </div>
+    {%- if section.settings.show_waves -%}
+      <div class="as-seen-on-waves">
+        <svg class="wave-svg wave-svg-1" viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <path d="M 0,60 Q 360,20 720,60 T 1440,60 Q 1800,20 2160,60 T 2880,60 L 2880,120 L 0,120 Z"></path>
+        </svg>
+        <svg class="wave-svg wave-svg-2" viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <path d="M 0,80 Q 360,110 720,80 T 1440,80 Q 1800,110 2160,80 T 2880,80 L 2880,120 L 0,120 Z"></path>
+        </svg>
+      </div>
+    {%- endif -%}
   </section>
 </div>
 
 {% schema %}
 {
   "name": "Avemos As Seen On",
-  "settings": [],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Brand Movement"
+    },
+    {
+      "type": "range",
+      "id": "brand_speed",
+      "min": 5,
+      "max": 60,
+      "step": 1,
+      "unit": "s",
+      "label": "Brand Movement Speed",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Wave Background"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_waves",
+      "label": "Show Background Waves",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "wave_amplitude",
+      "min": 10,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Wave Amplitude (Height)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "wave_speed",
+      "min": 2,
+      "max": 30,
+      "step": 1,
+      "unit": "s",
+      "label": "Wave 1 Speed",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "wave_2_speed",
+      "min": 2,
+      "max": 30,
+      "step": 1,
+      "unit": "s",
+      "label": "Wave 2 Speed",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "wave_color",
+      "label": "Wave Color",
+      "default": "#d5e3fc"
+    },
+    {
+      "type": "range",
+      "id": "wave_opacity",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Wave Opacity",
+      "default": 50
+    }
+  ],
   "blocks": [
     {
       "type": "brand",
