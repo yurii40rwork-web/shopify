@@ -17,7 +17,7 @@
           {%- assign rating_score_val = section.settings.rating_score | default: "4.9" -%}
           <div style="font-size: 3.5rem; font-weight: 700; color: var(--text-primary); line-height: 1;">{{ rating_score_val }}</div>
           {%- assign rating_num = rating_score_val | plus: 0 -%}
-          <div class="rating-stars" style="color: #ff9800; font-size: 1.6rem; margin: 12px 0;">
+          <div class="rating-stars" style="color: #ff9800; font-size: 1.6rem; margin: 12px 0; display: flex; justify-content: center; align-items: center; gap: 4px;">
             {%- for i in (1..5) -%}
               {%- assign difference = rating_num | minus: i -%}
               {%- if difference >= 0 -%}
