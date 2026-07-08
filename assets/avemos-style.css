@@ -521,6 +521,9 @@
   gap: 60px;
   padding-right: 60px;
   flex-shrink: 0;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
   animation: scroll-brands var(--brand-speed, 20s) linear infinite;
 }
 
@@ -571,6 +574,10 @@
   left: 0;
   width: 200%;
   height: 100%;
+  display: block;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 .Avemos-landing-wrapper .wave-svg-1 {
@@ -587,19 +594,19 @@
 
 @keyframes scroll-brands {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translate3d(-100%, 0, 0);
   }
 }
 
 @keyframes scroll-wave {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
