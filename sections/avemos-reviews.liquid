@@ -425,16 +425,37 @@
     }
     
     .Avemos-landing-wrapper .review-bottom-row {
-      flex-direction: column;
+      flex-direction: column-reverse;
       align-items: flex-start;
       gap: 16px;
       width: 100%;
     }
     
+    .Avemos-landing-wrapper .reviewer-info-left {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+    
+    .Avemos-landing-wrapper .reviewer-location::before {
+      content: "•";
+      color: var(--text-light);
+      margin-right: 12px;
+    }
+    
+    .Avemos-landing-wrapper .verified-badge::before {
+      content: "•";
+      color: var(--text-light);
+      margin-right: 12px;
+    }
+    
     .Avemos-landing-wrapper .review-images-row {
       width: 100%;
       justify-content: flex-start;
-      margin-top: 4px;
+      margin-top: 0;
+      margin-bottom: 4px;
     }
     
     .Avemos-landing-wrapper .review-title {
