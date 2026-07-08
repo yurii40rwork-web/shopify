@@ -490,9 +490,7 @@
      data-pillow-qty1-price="{{ section.settings.pillow_qty1_price | default: 39.00 }}"
      data-pillow-qty2-price="{{ section.settings.pillow_qty2_price | default: 34.00 }}"
      data-pillow-qty3-price="{{ section.settings.pillow_qty3_price | default: 30.00 }}"
-     data-pillow-qty4-price="{{ section.settings.pillow_qty4_price | default: 26.00 }}"
-     data-pillow-qty5-price="{{ section.settings.pillow_qty5_price | default: 23.00 }}"
-     data-pillow-qty6-price="{{ section.settings.pillow_qty6_price | default: 20.00 }}">
+     data-pillow-qty4-price="{{ section.settings.pillow_qty4_price | default: 26.00 }}">
   <div class="container" style="padding-top: 40px; padding-bottom: 60px;">
     
     <div class="cart-title-container" style="text-align: {{ section.settings.title_alignment }}; margin-bottom: 30px;">
@@ -676,8 +674,6 @@
     const pillowQty2Price = parseFloat(cartPageData ? cartPageData.dataset.pillowQty2Price : 34.00) * 100;
     const pillowQty3Price = parseFloat(cartPageData ? cartPageData.dataset.pillowQty3Price : 30.00) * 100;
     const pillowQty4Price = parseFloat(cartPageData ? cartPageData.dataset.pillowQty4Price : 26.00) * 100;
-    const pillowQty5Price = parseFloat(cartPageData ? cartPageData.dataset.pillowQty5Price : 23.00) * 100;
-    const pillowQty6Price = parseFloat(cartPageData ? cartPageData.dataset.pillowQty6Price : 20.00) * 100;
 
     if (!cartContainer) return;
 
@@ -717,9 +713,7 @@
       if (totalQty === 1) return pillowQty1Price;
       if (totalQty === 2) return pillowQty2Price;
       if (totalQty === 3) return pillowQty3Price;
-      if (totalQty === 4) return pillowQty4Price;
-      if (totalQty === 5) return pillowQty5Price;
-      return pillowQty6Price;
+      return pillowQty4Price;
     }
 
     // Helper: update DOM based on new cart JSON
@@ -1058,33 +1052,15 @@
     },
     {
       "type": "number",
+      "id": "pillow_qty1_original",
+      "label": "Qty 1 - Pillow Original Price (USD)",
+      "default": 78
+    },
+    {
+      "type": "number",
       "id": "pillow_qty2_price",
       "label": "Qty 2 - Pillow Price (USD)",
       "default": 34
-    },
-    {
-      "type": "number",
-      "id": "pillow_qty3_price",
-      "label": "Qty 3 - Pillow Price (USD)",
-      "default": 30
-    },
-    {
-      "type": "number",
-      "id": "pillow_qty4_price",
-      "label": "Qty 4 - Pillow Price (USD)",
-      "default": 26
-    },
-    {
-      "type": "number",
-      "id": "pillow_qty5_price",
-      "label": "Qty 5 - Pillow Price (USD)",
-      "default": 23
-    },
-    {
-      "type": "number",
-      "id": "pillow_qty6_price",
-      "label": "Qty 6+ - Pillow Price (USD)",
-      "default": 20
     },
     {
       "type": "text",
@@ -1093,28 +1069,28 @@
       "default": "($34.00 each)"
     },
     {
+      "type": "number",
+      "id": "pillow_qty3_price",
+      "label": "Qty 3 - Pillow Price (USD)",
+      "default": 30
+    },
+    {
       "type": "text",
       "id": "pillow_qty3_info",
       "label": "Qty 3 - Pillow Price Info Tag",
       "default": "($30.00 each)"
     },
     {
+      "type": "number",
+      "id": "pillow_qty4_price",
+      "label": "Qty 4+ - Pillow Price (USD)",
+      "default": 26
+    },
+    {
       "type": "text",
       "id": "pillow_qty4_info",
-      "label": "Qty 4 - Pillow Price Info Tag",
+      "label": "Qty 4+ - Pillow Price Info Tag",
       "default": "($26.00 each)"
-    },
-    {
-      "type": "text",
-      "id": "pillow_qty5_info",
-      "label": "Qty 5 - Pillow Price Info Tag",
-      "default": "($23.00 each)"
-    },
-    {
-      "type": "text",
-      "id": "pillow_qty6_info",
-      "label": "Qty 6+ - Pillow Price Info Tag",
-      "default": "($20.00 each)"
     }
   ]
 }
