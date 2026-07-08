@@ -2,7 +2,9 @@
 <div id="cart-drawer" class="cart-drawer-container" aria-hidden="true" 
      data-shipping-threshold="{{ section.settings.free_shipping_threshold | default: 50 }}"
      data-protection-price="{{ section.settings.shipping_protection_price | default: 5.00 }}"
-     data-save-percent="{{ section.settings.save_percent | default: 57 }}">
+     data-save-percent="{{ section.settings.save_percent | default: 57 }}"
+     data-pillow-base-price="{{ section.settings.pillow_base_price | default: 39.00 }}"
+     data-pillow-original-price="{{ section.settings.pillow_original_price | default: 90.00 }}">
   <div class="cart-drawer-overlay" id="cart-drawer-overlay"></div>
   
   <div class="cart-drawer-panel">
@@ -662,6 +664,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const shippingThreshold = parseFloat(drawer.dataset.shippingThreshold || 50) * 100; // in cents
   const protectionPrice = parseFloat(drawer.dataset.protectionPrice || 5.00) * 100; // in cents
   const savePercentVal = parseInt(drawer.dataset.savePercent || 57);
+  const pillowBasePrice = parseFloat(drawer.dataset.pillowBasePrice || 39.00) * 100; // in cents
+  const pillowOriginalPrice = parseFloat(drawer.dataset.pillowOriginalPrice || 90.00) * 100; // in cents
 
   // Toggle open class
   function openCartDrawer() {
@@ -761,12 +765,12 @@ document.addEventListener('DOMContentLoaded', () => {
       itemElement.dataset.key = item.key;
 
       // Dynamic prices with cumulative discount rule
-      const baseUnitPriceCents = item.price || 3900;
+      const baseUnitPriceCents = item.price || pillowBasePrice;
       const currentPricePerUnit = isPillow ? getCumulativePillowUnitPriceCents(baseUnitPriceCents, totalPillowsQty) : (item.final_price || item.price);
-      let originalPricePerUnit = item.compare_at_price || item.original_price || (baseUnitPriceCents > 3900 ? baseUnitPriceCents : 9000);
+      let originalPricePerUnit = item.compare_at_price || item.original_price || (baseUnitPriceCents > pillowBasePrice ? baseUnitPriceCents : pillowOriginalPrice);
       
       if (originalPricePerUnit <= currentPricePerUnit) {
-        originalPricePerUnit = 9000; // default $90 compare at if missing
+        originalPricePerUnit = pillowOriginalPrice; // default compare at if missing
       }
 
       // Cumulative discount tag
@@ -807,6 +811,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </button>
           <div class="item-prices-box">
             <span class="price-current">${currentLineFormatted}</span>
+            ${item.quantity > 1 ? `<span class="price-each" style="font-size: 11px; color: #75777d; margin-top: 1px; white-space: nowrap;">(${formatMoney(currentPricePerUnit)} each)</span>` : ''}
             ${originalPricePerUnit > currentPricePerUnit ? `<span class="price-original">${originalLineFormatted}</span>` : ''}
           </div>
         </div>
@@ -1003,6 +1008,22 @@ document.addEventListener('DOMContentLoaded', () => {
       "id": "trust_guarantee_text",
       "label": "Trust Guarantee Text",
       "default": "60 Day Money Back Guarantee"
+    },
+    {
+      "type": "header",
+      "content": "Pillow Pricing Customization"
+    },
+    {
+      "type": "number",
+      "id": "pillow_base_price",
+      "label": "Pillow Base Price (USD)",
+      "default": 39
+    },
+    {
+      "type": "number",
+      "id": "pillow_original_price",
+      "label": "Pillow Original Price (USD)",
+      "default": 90
     }
   ]
 }

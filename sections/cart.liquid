@@ -486,7 +486,7 @@
   </div>
 {%- endif -%}
 
-<div class="Avemos-landing-wrapper cart-page-wrapper">
+<div class="Avemos-landing-wrapper cart-page-wrapper" id="cart-page-data" data-pillow-base-price="{{ section.settings.pillow_base_price | default: 39.00 }}">
   <div class="container" style="padding-top: 40px; padding-bottom: 60px;">
     
     <div class="cart-title-container" style="text-align: {{ section.settings.title_alignment }}; margin-bottom: 30px;">
@@ -665,6 +665,8 @@
     const activeState = document.getElementById('cart-active-state');
     const subtotalLabel = document.getElementById('cart-subtotal');
     const cartCounts = document.querySelectorAll('#cart-count, #drawer-cart-count');
+    const cartPageData = document.getElementById('cart-page-data');
+    const pillowBasePrice = parseFloat(cartPageData ? cartPageData.dataset.pillowBasePrice : 39.00) * 100;
 
     if (!cartContainer) return;
 
@@ -734,7 +736,7 @@
         keysInCart.add(item.key);
         
         const isPillow = item.product_title.toLowerCase().includes('pillow');
-        const baseUnitPriceCents = item.price || 3900;
+        const baseUnitPriceCents = item.price || pillowBasePrice;
         const effectiveUnitPrice = isPillow ? getCumulativePillowUnitPriceCents(baseUnitPriceCents, totalPillowsQty) : (item.final_price || item.price);
         const effectiveLinePrice = effectiveUnitPrice * item.quantity;
         calculatedSubtotal += effectiveLinePrice;
@@ -1032,6 +1034,16 @@
       "id": "trust_badge_image",
       "label": "Custom Trust Badge Image",
       "info": "Uploads custom badge image. If empty, displays default store payment icons."
+    },
+    {
+      "type": "header",
+      "content": "Pillow Pricing Customization"
+    },
+    {
+      "type": "number",
+      "id": "pillow_base_price",
+      "label": "Pillow Base Price (USD)",
+      "default": 39
     }
   ]
 }
