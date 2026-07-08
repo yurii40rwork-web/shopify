@@ -1,8 +1,30 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "contact-us",
-      "settings": {}
+      "settings": {
+        "title": "Contact Us",
+        "subtitle": "Have questions about the Avemos pillow or your order? We'd love to help!",
+        "info_title": "Contact Info",
+        "email_title": "Email Support",
+        "email_address": "support@avemosstore.com",
+        "email_helper": "We reply within 12-24 hours.",
+        "phone_title": "Phone Line",
+        "phone_number": "+380965347984xzxzxz",
+        "phone_helper": "Mon-Fri from 9:00 AM to 6:00 PM (GMT+2).",
+        "address_title": "Office & Warehouse",
+        "address_text": "Avemos,\nZelena St, 114,\nLviv, 79000, Ukraine",
+        "form_title": "Send Us a Message"
+      }
     }
   },
   "order": [
