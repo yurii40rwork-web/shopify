@@ -8,19 +8,6 @@
 {{ 'avemos-style.css' | asset_url | stylesheet_tag }}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-{% if request.path == '/pages/about-us' %}
-  {% render 'about-us-content' %}
-{% elsif request.path == '/pages/contact-us' %}
-  {% render 'contact-us-content' %}
-{% elsif request.path == '/pages/shipping-policy' %}
-  {% render 'shipping-policy-content' %}
-{% elsif request.path == '/pages/refund-policy' %}
-  {% render 'refund-policy-content' %}
-{% elsif request.path == '/pages/user-agreement' %}
-  {% render 'user-agreement-content' %}
-{% elsif request.path == '/pages/terms-of-service' %}
-  {% render 'terms-of-service-content' %}
-{% else %}
   <div class="avemos-landing-wrapper">
     <!-- Announcement Bar -->
     <div class="announcement-bar">
@@ -92,7 +79,6 @@
       </div>
     </footer>
   </div>
-{% endif %}
 
 {% schema %}
 {
