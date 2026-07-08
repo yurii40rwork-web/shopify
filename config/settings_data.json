@@ -14,7 +14,7 @@
         "type": "cart-drawer",
         "settings": {
           "cart_title": "Your Avemos® Cart",
-          "free_shipping_threshold": 39.9,
+          "free_shipping_threshold": 3,
           "show_shipping_protection": true,
           "shipping_protection_title": "Shipping Protection $5.00",
           "shipping_protection_subtitle": "Protect your order from damage, loss, or theft.",
