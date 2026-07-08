@@ -14,7 +14,12 @@
      data-pillow-qty5-price="{{ section.settings.pillow_qty5_price | default: 23.00 }}"
      data-pillow-qty5-original="{{ section.settings.pillow_qty5_original | default: 39.00 }}"
      data-pillow-qty6-price="{{ section.settings.pillow_qty6_price | default: 20.00 }}"
-     data-pillow-qty6-original="{{ section.settings.pillow_qty6_original | default: 39.00 }}">
+     data-pillow-qty6-original="{{ section.settings.pillow_qty6_original | default: 39.00 }}"
+     data-pillow-qty2-info="{{ section.settings.pillow_qty2_info | escape }}"
+     data-pillow-qty3-info="{{ section.settings.pillow_qty3_info | escape }}"
+     data-pillow-qty4-info="{{ section.settings.pillow_qty4_info | escape }}"
+     data-pillow-qty5-info="{{ section.settings.pillow_qty5_info | escape }}"
+     data-pillow-qty6-info="{{ section.settings.pillow_qty6_info | escape }}">
   <div class="cart-drawer-overlay" id="cart-drawer-overlay"></div>
   
   <div class="cart-drawer-panel">
@@ -688,6 +693,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const pillowQty6Price = parseFloat(drawer.dataset.pillowQty6Price || 20.00) * 100;
   const pillowQty6Original = parseFloat(drawer.dataset.pillowQty6Original || 39.00) * 100;
 
+  const pillowQty2Info = drawer.dataset.pillowQty2Info || '';
+  const pillowQty3Info = drawer.dataset.pillowQty3Info || '';
+  const pillowQty4Info = drawer.dataset.pillowQty4Info || '';
+  const pillowQty5Info = drawer.dataset.pillowQty5Info || '';
+  const pillowQty6Info = drawer.dataset.pillowQty6Info || '';
+
   // Toggle open class
   function openCartDrawer() {
     drawer.classList.add('active');
@@ -771,6 +782,15 @@ document.addEventListener('DOMContentLoaded', () => {
       return pillowQty6Original;
     }
 
+    function getPillowPricingInfo(totalQty, currentPricePerUnit) {
+      if (totalQty === 2) return pillowQty2Info || `(${formatMoney(currentPricePerUnit)} each)`;
+      if (totalQty === 3) return pillowQty3Info || `(${formatMoney(currentPricePerUnit)} each)`;
+      if (totalQty === 4) return pillowQty4Info || `(${formatMoney(currentPricePerUnit)} each)`;
+      if (totalQty === 5) return pillowQty5Info || `(${formatMoney(currentPricePerUnit)} each)`;
+      if (totalQty >= 6) return pillowQty6Info || `(${formatMoney(currentPricePerUnit)} each)`;
+      return '';
+    }
+
     let totalPillowsQty = 0;
     let basePricesSubtotal = 0;
     let originalPricesSubtotal = 0;
@@ -841,7 +861,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </button>
           <div class="item-prices-box">
             <span class="price-current">${currentLineFormatted}</span>
-            ${item.quantity > 1 ? `<span class="price-each" style="font-size: 11px; color: #75777d; margin-top: 1px; white-space: nowrap;">(${formatMoney(currentPricePerUnit)} each)</span>` : ''}
+            ${item.quantity > 1 ? `<span class="price-each" style="font-size: 11px; color: #75777d; margin-top: 1px; white-space: nowrap;">${isPillow ? getPillowPricingInfo(totalPillowsQty, currentPricePerUnit) : `(${formatMoney(currentPricePerUnit)} each)`}</span>` : ''}
             ${originalPricePerUnit > currentPricePerUnit ? `<span class="price-original">${originalLineFormatted}</span>` : ''}
           </div>
         </div>
@@ -1114,6 +1134,36 @@ document.addEventListener('DOMContentLoaded', () => {
       "id": "pillow_qty6_original",
       "label": "Qty 6+ - Pillow Original Price (USD)",
       "default": 39
+    },
+    {
+      "type": "text",
+      "id": "pillow_qty2_info",
+      "label": "Qty 2 - Pillow Price Info Tag",
+      "default": "($34.00 each)"
+    },
+    {
+      "type": "text",
+      "id": "pillow_qty3_info",
+      "label": "Qty 3 - Pillow Price Info Tag",
+      "default": "($30.00 each)"
+    },
+    {
+      "type": "text",
+      "id": "pillow_qty4_info",
+      "label": "Qty 4 - Pillow Price Info Tag",
+      "default": "($26.00 each)"
+    },
+    {
+      "type": "text",
+      "id": "pillow_qty5_info",
+      "label": "Qty 5 - Pillow Price Info Tag",
+      "default": "($23.00 each)"
+    },
+    {
+      "type": "text",
+      "id": "pillow_qty6_info",
+      "label": "Qty 6+ - Pillow Price Info Tag",
+      "default": "($20.00 each)"
     }
   ]
 }
