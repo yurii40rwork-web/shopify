@@ -14,27 +14,33 @@
 <div class="Avemos-landing-wrapper">
   <!-- As Seen On Banner -->
   <section class="as-seen-on" id="as-seen-on-{{ section.id }}">
+    {%- capture logo_items -%}
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          <div class="brand-logo-placeholder" {{ block.shopify_attributes }}>
+            {%- if block.settings.logo_image != blank -%}
+              <img src="{{ block.settings.logo_image | image_url: width: 200 }}" alt="{{ block.settings.name | escape }}">
+            {%- else -%}
+              {{ block.settings.name }}
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        <div class="brand-logo-placeholder">Forbes</div>
+        <div class="brand-logo-placeholder">Travel + Leisure</div>
+        <div class="brand-logo-placeholder">NY Times</div>
+        <div class="brand-logo-placeholder">USA Today</div>
+        <div class="brand-logo-placeholder">Bloomberg</div>
+      {%- endif -%}
+    {%- endcapture -%}
+
     <div class="brand-logos-container">
       <div class="brand-logos-inner">
-        {%- for i in (1..2) -%}
+        {%- for i in (1..4) -%}
           <div class="brand-logos-group" {% if i > 1 %}aria-hidden="true"{% endif %}>
-            {%- if section.blocks.size > 0 -%}
-              {%- for block in section.blocks -%}
-                <div class="brand-logo-placeholder" {{ block.shopify_attributes }}>
-                  {%- if block.settings.logo_image != blank -%}
-                    <img src="{{ block.settings.logo_image | image_url: width: 200 }}" alt="{{ block.settings.name | escape }}">
-                  {%- else -%}
-                    {{ block.settings.name }}
-                  {%- endif -%}
-                </div>
-              {%- endfor -%}
-            {%- else -%}
-              <div class="brand-logo-placeholder">Forbes</div>
-              <div class="brand-logo-placeholder">Travel + Leisure</div>
-              <div class="brand-logo-placeholder">NY Times</div>
-              <div class="brand-logo-placeholder">USA Today</div>
-              <div class="brand-logo-placeholder">Bloomberg</div>
-            {%- endif -%}
+            {{ logo_items }}
+            {{ logo_items }}
+            {{ logo_items }}
           </div>
         {%- endfor -%}
       </div>
@@ -42,10 +48,10 @@
     {%- if section.settings.show_waves -%}
       <div class="as-seen-on-waves">
         <svg class="wave-svg wave-svg-1" viewBox="0 0 1440 120" preserveAspectRatio="none">
-          <path d="M 0,60 Q 360,20 720,60 T 1440,60 Q 1800,20 2160,60 T 2880,60 L 2880,120 L 0,120 Z"></path>
+          <path d="M 0,60 Q 180,20 360,60 T 720,60 Q 900,20 1080,60 T 1440,60 L 1440,120 L 0,120 Z"></path>
         </svg>
         <svg class="wave-svg wave-svg-2" viewBox="0 0 1440 120" preserveAspectRatio="none">
-          <path d="M 0,80 Q 360,110 720,80 T 1440,80 Q 1800,110 2160,80 T 2880,80 L 2880,120 L 0,120 Z"></path>
+          <path d="M 0,80 Q 180,110 360,80 T 720,80 Q 900,110 1080,80 T 1440,80 L 1440,120 L 0,120 Z"></path>
         </svg>
       </div>
     {%- endif -%}
