@@ -294,7 +294,7 @@
           "type": "faq_item",
           "settings": {
             "question": "What are the shipping times and guarantees?",
-            "answer": "We offer express shipping in 5-10 business days. You also receive a 70-day risk-free guarantee: if you are not fully satisfied, you can return it for a 100% refund."
+            "answer": "We offer express shipping in 5-10 business days. You also receive a 30-day risk-free guarantee: if you are not fully satisfied, you can return it for a 100% refund."
           }
         }
       },
@@ -432,7 +432,7 @@
         "star_3_percent": 1,
         "star_2_percent": 0,
         "star_1_percent": 0,
-        "card_padding": 60
+        "card_padding": 16
       }
     },
     "refund": {
@@ -459,7 +459,7 @@
           "settings": {
             "icon": "fa-arrows-rotate",
             "custom_svg": "",
-            "text": "60 Day money back guarantee"
+            "text": "30 Day money back guarantee"
           }
         },
         "badge_4": {
@@ -478,7 +478,7 @@
         "badge_4"
       ],
       "settings": {
-        "heading": "60 Day Money Back Guaranteed",
+        "heading": "30 Day Money Back Guaranteed",
         "description": "<p>Your satisfaction is our guarantee. If for any reason you need to send them back, we've got you covered.</p>",
         "button_text": "👉 Get Your Avemos®",
         "button_link": ""
@@ -492,10 +492,10 @@
         "col_2_title": "Contact Us",
         "email": "support@avemosstore.com",
         "phone": "+380965347984",
-        "address": "Zelena St, 114, Lviv, Ukraine",
+        "address": "Sambirska`s St, 128, Drogobych, Ukraine",
         "col_3_title": "Legal Information",
         "menu": "",
-        "copyright_text": "&copy; 2026 Avemos® Mock App. All rights reserved.",
+        "copyright_text": "© 2026 Avemos® Mock App. All rights reserved.",
         "show_payment_badges": true
       }
     }
