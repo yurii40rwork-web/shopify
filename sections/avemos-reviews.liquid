@@ -60,109 +60,90 @@
                   <p class="review-text">“{{ block.settings.text | escape }}”</p>
                 {%- endif -%}
 
-                <!-- Review Images -->
-                {%- assign img_1 = block.settings.image_1 -%}
-                {%- assign img_2 = block.settings.image_2 -%}
-                {%- assign img_3 = block.settings.image_3 -%}
-                
-                {%- assign img_1_fallback = '' -%}
-                {%- assign img_2_fallback = '' -%}
-                {%- assign img_3_fallback = '' -%}
-
-                {%- if img_1 == blank and img_2 == blank and img_3 == blank -%}
-                  {%- if forloop.index == 1 -%}
-                    {%- assign img_1_fallback = 'untitled-image-1-compressed.png' -%}
-                    {%- assign img_2_fallback = 'untitled-image-2.png' -%}
-                  {%- elsif forloop.index == 2 -%}
-                    {%- assign img_1_fallback = 'untitled-image-3.png' -%}
-                    {%- assign img_2_fallback = 'untitled-image-4-compressed.png' -%}
-                  {%- elsif forloop.index == 3 -%}
-                    {%- assign img_1_fallback = 'untitled-image-5-compressed.png' -%}
-                  {%- endif -%}
-                {%- endif -%}
-
-                {%- if img_1 != blank or img_2 != blank or img_3 != blank or img_1_fallback != blank or img_2_fallback != blank or img_3_fallback != blank -%}
-                  <div class="review-images-row">
-                    {%- if img_1 != blank -%}
-                      <div class="review-image-item">
-                        <img src="{{ img_1 | image_url: width: 240 }}" 
-                             data-full-src="{{ img_1 | image_url: width: 1000 }}" 
-                             alt="Review image" 
-                             class="review-img-clickable" 
-                             loading="lazy">
-                      </div>
-                    {%- elsif img_1_fallback != blank -%}
-                      <div class="review-image-item">
-                        <img src="{{ img_1_fallback | asset_url }}" 
-                             data-full-src="{{ img_1_fallback | asset_url }}" 
-                             alt="Review image mockup" 
-                             class="review-img-clickable" 
-                             loading="lazy">
-                      </div>
-                    {%- endif -%}
-
-                    {%- if img_2 != blank -%}
-                      <div class="review-image-item">
-                        <img src="{{ img_2 | image_url: width: 240 }}" 
-                             data-full-src="{{ img_2 | image_url: width: 1000 }}" 
-                             alt="Review image" 
-                             class="review-img-clickable" 
-                             loading="lazy">
-                      </div>
-                    {%- elsif img_2_fallback != blank -%}
-                      <div class="review-image-item">
-                        <img src="{{ img_2_fallback | asset_url }}" 
-                             data-full-src="{{ img_2_fallback | asset_url }}" 
-                             alt="Review image mockup" 
-                             class="review-img-clickable" 
-                             loading="lazy">
-                      </div>
-                    {%- endif -%}
-
-                    {%- if img_3 != blank -%}
-                      <div class="review-image-item">
-                        <img src="{{ img_3 | image_url: width: 240 }}" 
-                             data-full-src="{{ img_3 | image_url: width: 1000 }}" 
-                             alt="Review image" 
-                             class="review-img-clickable" 
-                             loading="lazy">
-                      </div>
-                    {%- elsif img_3_fallback != blank -%}
-                      <div class="review-image-item">
-                        <img src="{{ img_3_fallback | asset_url }}" 
-                             data-full-src="{{ img_3_fallback | asset_url }}" 
-                             alt="Review image mockup" 
-                             class="review-img-clickable" 
-                             loading="lazy">
-                      </div>
-                    {%- endif -%}
-                  </div>
-                {%- endif -%}
-
-                <!-- Reviewer Info at the bottom -->
-                <div class="reviewer-info">
+                <!-- Review Images & Reviewer Info side-by-side bottom block -->
+                <div class="review-bottom-row">
+                  <!-- Reviewer Info (Left stack) -->
                   <div class="reviewer-info-left">
-                    {%- if block.settings.author_avatar != blank -%}
-                      <div class="reviewer-avatar-img">
-                        <img src="{{ block.settings.author_avatar | image_url: width: 100 }}" alt="{{ block.settings.author_name | escape }}" loading="lazy">
-                      </div>
-                    {%- elsif block.settings.author_initials != blank -%}
-                      <div class="reviewer-avatar">
-                        {{ block.settings.author_initials | escape }}
-                      </div>
-                    {%- endif -%}
-                    <div class="reviewer-details-inline">
+                    <div class="reviewer-avatar-name-row">
+                      {%- if block.settings.author_avatar != blank -%}
+                        <div class="reviewer-avatar-img">
+                          <img src="{{ block.settings.author_avatar | image_url: width: 100 }}" alt="{{ block.settings.author_name | escape }}" loading="lazy">
+                        </div>
+                      {%- elsif block.settings.author_initials != blank -%}
+                        <div class="reviewer-avatar">
+                          {{ block.settings.author_initials | escape }}
+                        </div>
+                      {%- endif -%}
                       {%- if block.settings.author_name != blank -%}
                         <span class="reviewer-name">{{ block.settings.author_name | escape }}</span>
                       {%- endif -%}
-                      {%- if block.settings.author_location != blank -%}
-                        <span class="reviewer-location">{{ block.settings.author_location | escape }}</span>
-                      {%- endif -%}
                     </div>
+                    {%- if block.settings.author_location != blank -%}
+                      <div class="reviewer-location">{{ block.settings.author_location | escape }}</div>
+                    {%- endif -%}
+                    {%- if block.settings.verified -%}
+                      <div>
+                        <span class="verified-badge">Verified</span>
+                      </div>
+                    {%- endif -%}
                   </div>
-                  {%- if block.settings.verified -%}
-                    <div class="verified-badge">
-                      Verified
+
+                  <!-- Review Images (Right stack) -->
+                  {%- if img_1 != blank or img_2 != blank or img_3 != blank or img_1_fallback != blank or img_2_fallback != blank or img_3_fallback != blank -%}
+                    <div class="review-images-row">
+                      {%- if img_1 != blank -%}
+                        <div class="review-image-item">
+                          <img src="{{ img_1 | image_url: width: 240 }}" 
+                               data-full-src="{{ img_1 | image_url: width: 1000 }}" 
+                               alt="Review image" 
+                               class="review-img-clickable" 
+                               loading="lazy">
+                        </div>
+                      {%- elsif img_1_fallback != blank -%}
+                        <div class="review-image-item">
+                          <img src="{{ img_1_fallback | asset_url }}" 
+                               data-full-src="{{ img_1_fallback | asset_url }}" 
+                               alt="Review image mockup" 
+                               class="review-img-clickable" 
+                               loading="lazy">
+                        </div>
+                      {%- endif -%}
+
+                      {%- if img_2 != blank -%}
+                        <div class="review-image-item">
+                          <img src="{{ img_2 | image_url: width: 240 }}" 
+                               data-full-src="{{ img_2 | image_url: width: 1000 }}" 
+                               alt="Review image" 
+                               class="review-img-clickable" 
+                               loading="lazy">
+                        </div>
+                      {%- elsif img_2_fallback != blank -%}
+                        <div class="review-image-item">
+                          <img src="{{ img_2_fallback | asset_url }}" 
+                               data-full-src="{{ img_2_fallback | asset_url }}" 
+                               alt="Review image mockup" 
+                               class="review-img-clickable" 
+                               loading="lazy">
+                        </div>
+                      {%- endif -%}
+
+                      {%- if img_3 != blank -%}
+                        <div class="review-image-item">
+                          <img src="{{ img_3 | image_url: width: 240 }}" 
+                               data-full-src="{{ img_3 | image_url: width: 1000 }}" 
+                               alt="Review image" 
+                               class="review-img-clickable" 
+                               loading="lazy">
+                        </div>
+                      {%- elsif img_3_fallback != blank -%}
+                        <div class="review-image-item">
+                          <img src="{{ img_3_fallback | asset_url }}" 
+                               data-full-src="{{ img_3_fallback | asset_url }}" 
+                               alt="Review image mockup" 
+                               class="review-img-clickable" 
+                               loading="lazy">
+                        </div>
+                      {%- endif -%}
                     </div>
                   {%- endif -%}
                 </div>
@@ -214,15 +195,22 @@
     margin-bottom: 16px;
   }
   
-  .reviewer-info {
+  .review-bottom-row {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: flex-end;
     margin-top: auto;
-    padding-top: 12px;
+    gap: 16px;
   }
   
   .reviewer-info-left {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  
+  .reviewer-avatar-name-row {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -256,12 +244,6 @@
     border: 1.5px solid var(--primary);
   }
   
-  .reviewer-details-inline {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
   .reviewer-name {
     font-weight: 700;
     color: var(--text-primary);
@@ -272,6 +254,7 @@
     font-size: 0.95rem;
     color: var(--text-light);
     font-weight: 400;
+    line-height: 1.2;
   }
   
   .verified-badge {
@@ -317,16 +300,14 @@
   /* Review Images Row */
   .review-images-row {
     display: flex;
-    gap: 12px;
-    margin-top: 4px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0;
   }
 
   .review-image-item {
-    width: var(--img-size, 130px);
-    height: var(--img-size, 130px);
-    border-radius: 14px;
+    width: 95px;
+    height: 95px;
+    border-radius: 12px;
     overflow: hidden;
     border: 1px solid var(--border-color);
     cursor: pointer;
