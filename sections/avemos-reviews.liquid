@@ -8,7 +8,7 @@
       <p class="section-subtitle">{{ section.settings.subtitle | default: "Real reviews from verified buyers" }}</p>
       
       <!-- Rating Overview Block -->
-      <div class="reviews-overview" style="margin-bottom: 50px; text-align: center; background-color: var(--bg-primary); padding: 30px; border-radius: var(--radius-lg); border: 1px solid var(--border-light); max-width: 320px; margin-left: auto; margin-right: auto;">
+      <div class="reviews-overview" style="margin-bottom: 50px; text-align: center; background-color: var(--bg-primary); padding: 40px 30px; border-radius: var(--radius-lg); border: 1px solid var(--border-light); width: 100%;">
         <div class="rating-summary">
           {%- assign rating_score_val = section.settings.rating_score | default: "4.9" -%}
           <div style="font-size: 3.5rem; font-weight: 700; color: var(--text-primary); line-height: 1;">{{ rating_score_val }}</div>
@@ -33,7 +33,7 @@
       <div class="reviews-grid">
         {%- for block in section.blocks -%}
           {%- if block.type == 'review' -%}
-            <div class="review-card" {{ block.shopify_attributes }} style="--img-size: {{ block.settings.review_image_size | default: 100 }}px;">
+            <div class="review-card" {{ block.shopify_attributes }} style="--img-size: {{ block.settings.review_image_size | default: 130 }}px;">
               <div class="review-card-inner">
                 <!-- Stars and Date row -->
                 <div class="review-meta-row">
@@ -190,8 +190,8 @@
   
   .review-card {
     background-color: var(--bg-primary);
-    border-radius: 20px;
-    padding: 32px;
+    border-radius: 24px;
+    padding: 40px;
     border: 1px solid var(--border-light);
     transition: transform var(--transition-normal), box-shadow var(--transition-normal);
   }
@@ -229,8 +229,8 @@
   }
   
   .reviewer-avatar-img {
-    width: 44px;
-    height: 44px;
+    width: 52px;
+    height: 52px;
     border-radius: var(--radius-full);
     overflow: hidden;
     border: 1.5px solid var(--primary);
@@ -243,8 +243,8 @@
   }
   
   .reviewer-avatar {
-    width: 44px;
-    height: 44px;
+    width: 52px;
+    height: 52px;
     border-radius: var(--radius-full);
     background-color: var(--secondary-container);
     color: var(--primary);
@@ -252,7 +252,7 @@
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     border: 1.5px solid var(--primary);
   }
   
@@ -265,11 +265,11 @@
   .reviewer-name {
     font-weight: 700;
     color: var(--text-primary);
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
   
   .reviewer-location {
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     color: var(--text-light);
     font-weight: 400;
   }
@@ -287,18 +287,18 @@
   }
   
   .review-date {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--text-light);
   }
   
   .review-card .stars {
     color: #ff9800;
-    font-size: 1rem;
+    font-size: 1.15rem;
     letter-spacing: 1px;
   }
   
   .review-title {
-    font-size: 1.25rem;
+    font-size: 1.4rem;
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 12px;
@@ -307,7 +307,7 @@
   }
   
   .review-text {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     color: var(--text-secondary);
     line-height: 1.6;
     margin-bottom: 20px;
@@ -324,9 +324,9 @@
   }
 
   .review-image-item {
-    width: var(--img-size, 110px);
-    height: var(--img-size, 110px);
-    border-radius: 12px;
+    width: var(--img-size, 130px);
+    height: var(--img-size, 130px);
+    border-radius: 14px;
     overflow: hidden;
     border: 1px solid var(--border-color);
     cursor: pointer;
@@ -608,7 +608,7 @@
           "max": 150,
           "step": 5,
           "unit": "px",
-          "default": 100
+          "default": 130
         }
       ]
     }
