@@ -186,7 +186,7 @@
         "benefit_4"
       ],
       "settings": {
-        "title": "Why Travelers Choose Avemos®",
+        "title": "Why Travelers Choose Avemos™ ",
         "subtitle": "Innovative technology for your comfortable sleep on the road"
       }
     },
@@ -243,7 +243,7 @@
       "settings": {
         "title": "Comparison with Traditional Pillows",
         "subtitle": "Why traditional U-shaped travel pillows are no longer sufficient",
-        "our_product": "Avemos® Pillow",
+        "our_product": "Avemos™  Pillow",
         "their_product": "Traditional U-Shape Pillows"
       }
     },
@@ -492,22 +492,22 @@
       "settings": {
         "heading": "30 Day Money Back Guaranteed",
         "description": "<p>Your satisfaction is our guarantee. If for any reason you need to send them back, we've got you covered.</p>",
-        "button_text": "👉 Get Your Avemos®",
+        "button_text": "👉 Get Your Avemos™ ",
         "button_link": ""
       }
     },
     "footer": {
       "type": "avemos-footer",
       "settings": {
-        "col_1_title": "Avemos",
+        "col_1_title": "Avemos™ ",
         "col_1_desc": "We create premium products for your comfort during travels all over the world.",
         "col_2_title": "Contact Us",
-        "email": "support@avemosstore.com",
+        "email": "support@avemos.shop",
         "phone": "+380965347984",
         "address": "Sambirska`s St, 128, Drogobych, Ukraine",
         "col_3_title": "Legal Information",
         "menu": "",
-        "copyright_text": "© 2026 Avemos® Mock App. All rights reserved.",
+        "copyright_text": "© 2026 Avemos™  Mock App. All rights reserved.",
         "show_payment_badges": true
       }
     }
