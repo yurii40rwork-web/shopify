@@ -698,19 +698,17 @@ document.addEventListener('DOMContentLoaded', () => {
   if (overlay) overlay.addEventListener('click', closeCartDrawer);
   if (continueBtn) continueBtn.addEventListener('click', closeCartDrawer);
 
-  // Hook into any click to cart links/icons
-  function hookCartButtons() {
-    const cartButtons = document.querySelectorAll('a[href="/cart"], a[href="{{ routes.cart_url }}"], .cart-icon-btn');
-    cartButtons.forEach(btn => {
-      // Clone to remove previous event listeners if any
-      const newBtn = btn.cloneNode(true);
-      btn.parentNode.replaceChild(newBtn, btn);
-      newBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        openCartDrawer();
-      });
-    });
-  }
+  // Hook into any click to cart links/icons using event delegation
+  document.addEventListener('click', (e) => {
+    const cartButton = e.target.closest('a[href="/cart"], a[href="{{ routes.cart_url }}"], .cart-icon-btn');
+    if (cartButton) {
+      e.preventDefault();
+      openCartDrawer();
+    }
+  });
+
+  // Keep a dummy hookCartButtons function for backward compatibility
+  function hookCartButtons() {}
 
   // Fetch cart details from Shopify API and render
   async function fetchAndRenderCart() {
@@ -968,6 +966,13 @@ document.addEventListener('DOMContentLoaded', () => {
   hookCartButtons();
   window.openCartDrawer = openCartDrawer;
   window.fetchAndRenderCart = fetchAndRenderCart;
+
+  // If redirected from /cart, open the drawer
+  if (window.location.search.includes('open-cart=1')) {
+    const newUrl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+    window.history.replaceState({ path: newUrl }, '', newUrl);
+    setTimeout(openCartDrawer, 300);
+  }
 
   // Intercept Shopify cart submit forms if any
   document.addEventListener('submit', (e) => {

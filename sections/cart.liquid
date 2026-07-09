@@ -1,3 +1,32 @@
+{%- if request.path == '/cart' or template == 'cart' or template.name == 'cart' -%}
+  {%- unless request.design_mode -%}
+    <script>
+      window.location.href = '/?open-cart=1';
+    </script>
+  {%- else -%}
+    <div class="cart-disabled-message" style="padding: 80px 24px; text-align: center; font-family: var(--font-body, sans-serif); max-width: 600px; margin: 0 auto;">
+      <span class="material-symbols-outlined" style="font-size: 64px; color: var(--text-light, #75777d); margin-bottom: 24px;">shopping_bag</span>
+      <h2 style="font-size: 24px; font-weight: 700; color: var(--text-primary, #181c21); margin-bottom: 12px;">Cart Page is Disabled</h2>
+      <p style="color: var(--text-secondary, #44474c); font-size: 16px; margin-bottom: 24px; line-height: 1.5;">The separate cart page is disabled because this theme uses the <strong>Cart Drawer</strong> instead.</p>
+      <button onclick="if(window.openCartDrawer) window.openCartDrawer();" style="display: inline-flex; align-items: center; justify-content: center; background-color: #181c21; color: white; font-weight: 600; padding: 12px 28px; border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.2s ease;">
+        Open Cart Drawer
+      </button>
+    </div>
+    <style>
+      .cart-page-wrapper, .cart-announcement-banner {
+        display: none !important;
+      }
+    </style>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+          if (window.openCartDrawer) window.openCartDrawer();
+        }, 800);
+      });
+    </script>
+  {%- endunless -%}
+{%- endif -%}
+
 {{ 'avemos-style.css' | asset_url | stylesheet_tag }}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
