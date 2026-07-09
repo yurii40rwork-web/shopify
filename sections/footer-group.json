@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "footer",
   "name": "t:general.footer",
@@ -5,7 +14,7 @@
     "footer": {
       "type": "avemos-footer",
       "settings": {
-        "col_1_title": "Avemos™\u00a0",
+        "col_1_title": "Avemos™ ",
         "col_1_desc": "We create premium products for your comfort during travels all over the world.",
         "col_2_title": "Contact Us",
         "email": "support@avemos.shop",
@@ -13,7 +22,7 @@
         "address": "8080 N Central Expy #1700, Dallas, TX 75206, USA",
         "col_3_title": "Legal Information",
         "menu": "",
-        "copyright_text": "\u00a9 2026 Avemos™\u00a0 Mock App. All rights reserved.",
+        "copyright_text": "© 2026 Avemos™. All rights reserved.",
         "show_payment_badges": true
       }
     }
