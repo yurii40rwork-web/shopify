@@ -36,9 +36,7 @@
 
     {{ content_for_layout }}
 
-    {% unless template == 'index' or template == 'policy' or template == '404' or request.path == '/pages/about-us' or request.path == '/pages/contact-us' or template.suffix == 'about' or template.suffix == 'contact' or template.suffix == 'shipping-policy' or template.suffix == 'refund-policy' or template.suffix == 'privacy-policy' or template.suffix == 'terms-of-service' or template.suffix == 'user-agreement' %}
-      {% sections 'footer-group' %}
-    {% endunless %}
+    {% sections 'footer-group' %}
 
     {% section 'cart-drawer' %}
     {% render 'sections-nav' %}
