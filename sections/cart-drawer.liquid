@@ -698,17 +698,19 @@ document.addEventListener('DOMContentLoaded', () => {
   if (overlay) overlay.addEventListener('click', closeCartDrawer);
   if (continueBtn) continueBtn.addEventListener('click', closeCartDrawer);
 
-  // Hook into any click to cart links/icons using event delegation
-  document.addEventListener('click', (e) => {
-    const cartButton = e.target.closest('a[href="/cart"], a[href="{{ routes.cart_url }}"], .cart-icon-btn');
-    if (cartButton) {
-      e.preventDefault();
-      openCartDrawer();
-    }
-  });
-
-  // Keep a dummy hookCartButtons function for backward compatibility
-  function hookCartButtons() {}
+  // Hook into any click to cart links/icons
+  function hookCartButtons() {
+    const cartButtons = document.querySelectorAll('a[href="/cart"], a[href="{{ routes.cart_url }}"], .cart-icon-btn');
+    cartButtons.forEach(btn => {
+      // Clone to remove previous event listeners if any
+      const newBtn = btn.cloneNode(true);
+      btn.parentNode.replaceChild(newBtn, btn);
+      newBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openCartDrawer();
+      });
+    });
+  }
 
   // Fetch cart details from Shopify API and render
   async function fetchAndRenderCart() {
@@ -793,17 +795,7 @@ document.addEventListener('DOMContentLoaded', () => {
         originalPricePerUnit = pillowQty1Original; // default compare at if missing
       }
 
-      // Cumulative discount tag
-      let discountTag = '';
-      if (item.line_level_discount_allocations && item.line_level_discount_allocations.length > 0) {
-        discountTag = item.line_level_discount_allocations.map(d => d.discount_application.title).join(', ');
-      } else if (item.discounts && item.discounts.length > 0) {
-        discountTag = item.discounts.map(d => d.title).join(', ');
-      } else if (isPillow && totalPillowsQty >= 2) {
-        const unitDollars = currentPricePerUnit / 100;
-        const totalPctOff = Math.round((1 - (unitDollars / (baseUnitPriceCents / 100))) * 100);
-        discountTag = `Cumulative Discount: $${unitDollars}/ea (${totalPctOff}% OFF)`;
-      }
+    
 
       basePricesSubtotal += (currentPricePerUnit * item.quantity);
       originalPricesSubtotal += (originalPricePerUnit * item.quantity);
@@ -818,7 +810,6 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="item-info-col">
           <a href="${item.url}" class="item-title">${itemTitle}</a>
           ${item.variant_title && !item.variant_title.includes('Default') ? `<div style="font-size: 12px; color: #75777d; margin-top: 1px;">${item.variant_title}</div>` : ''}
-          ${discountTag ? `<span class="item-tag">${discountTag}</span>` : ''}
           <div class="item-qty-selector">
             <button type="button" class="item-qty-btn" data-action="minus" data-key="${item.key}">-</button>
             <input type="number" class="item-qty-input" value="${item.quantity}" readonly>
@@ -966,13 +957,6 @@ document.addEventListener('DOMContentLoaded', () => {
   hookCartButtons();
   window.openCartDrawer = openCartDrawer;
   window.fetchAndRenderCart = fetchAndRenderCart;
-
-  // If redirected from /cart, open the drawer
-  if (window.location.search.includes('open-cart=1')) {
-    const newUrl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-    window.history.replaceState({ path: newUrl }, '', newUrl);
-    setTimeout(openCartDrawer, 300);
-  }
 
   // Intercept Shopify cart submit forms if any
   document.addEventListener('submit', (e) => {
