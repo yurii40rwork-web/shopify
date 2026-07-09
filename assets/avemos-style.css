@@ -984,8 +984,8 @@
   white-space: nowrap;
 }
 
-.Avemos-landing-wrapper .mock-payment-badge .payment-logo {
-  height: 14px;
+.Avemos-landing-wrapper .mock-payment-badge svg {
+  height: 18px;
   width: auto;
   display: block;
   max-width: 100%;
