@@ -436,7 +436,7 @@
       ],
       "settings": {
         "title": "What Our Customers Say",
-        "subtitle": "",
+        "subtitle": "-",
         "rating_score": "4.9",
         "reviews_count": "12,659",
         "star_5_percent": 92,
