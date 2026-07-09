@@ -495,6 +495,24 @@
         "button_text": "👉 Get Your Avemos™ ",
         "button_link": ""
       }
+<<<<<<< HEAD
+=======
+    },
+    "footer": {
+      "type": "avemos-footer",
+      "settings": {
+        "col_1_title": "Avemos™ ",
+        "col_1_desc": "We create premium products for your comfort during travels all over the world.",
+        "col_2_title": "Contact Us",
+        "email": "support@avemos.shop",
+        "phone": "+380965347984",
+        "address": "8080 N Central Expy #1700, Dallas, TX 75206, USA",
+        "col_3_title": "Legal Information",
+        "menu": "",
+        "copyright_text": "© 2026 Avemos™. All rights reserved.",
+        "show_payment_badges": true
+      }
+>>>>>>> 950519990566e8f06838124982a17a371206fc0e
     }
   },
   "order": [
