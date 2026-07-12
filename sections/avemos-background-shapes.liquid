@@ -1,15 +1,17 @@
 {%- comment -%}
-  Renders editable, animated background shapes with customizable symbols, colors, population, sizes, and transparency.
+  Modular Background Shapes Section
+  Renders customizable, animated background shapes relative to the page.
 {%- endcomment -%}
 
-{%- if settings.bg_shapes_enable -%}
+{%- if section.settings.bg_shapes_enable -%}
 <div class="background-shapes-container"
-     id="BackgroundShapes"
-     data-symbol="{{ settings.bg_shapes_symbol | escape }}"
-     data-population="{{ settings.bg_shapes_population | default: 30 }}"
-     data-size="{{ settings.bg_shapes_size | default: 40 }}"
-     data-color="{{ settings.bg_shapes_color | default: '#ca1100' }}"
-     data-opacity="{{ settings.bg_shapes_transparency | default: 15 }}"
+     id="BackgroundShapes-{{ section.id }}"
+     data-section-id="{{ section.id }}"
+     data-symbol="{{ section.settings.bg_shapes_symbol | escape }}"
+     data-population="{{ section.settings.bg_shapes_population | default: 30 }}"
+     data-size="{{ section.settings.bg_shapes_size | default: 40 }}"
+     data-color="{{ section.settings.bg_shapes_color | default: '#ca1100' }}"
+     data-opacity="{{ section.settings.bg_shapes_transparency | default: 15 }}"
      aria-hidden="true">
 </div>
 
@@ -17,7 +19,7 @@
   body {
     position: relative;
   }
-  .background-shapes-container {
+  #BackgroundShapes-{{ section.id }} {
     position: absolute;
     top: 0;
     left: 0;
@@ -27,27 +29,27 @@
     pointer-events: none;
     z-index: -1;
   }
-  .background-shape {
+  .background-shape-{{ section.id }} {
     position: absolute;
     display: block;
     pointer-events: auto;
     color: var(--shape-color);
     opacity: var(--shape-opacity);
     transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease, color 0.8s ease;
-    animation: float-shape var(--anim-dur) ease-in-out var(--anim-delay) infinite alternate;
+    animation: float-shape-{{ section.id }} var(--anim-dur) ease-in-out var(--anim-delay) infinite alternate;
   }
-  .background-shape svg {
+  .background-shape-{{ section.id }} svg {
     width: 100%;
     height: 100%;
     fill: currentColor;
   }
-  .background-shape:hover {
+  .background-shape-{{ section.id }}:hover {
     transform: scale(1.3) rotate(var(--hover-rotate)) !important;
     opacity: min(1.0, calc(var(--shape-opacity) * 2.2)) !important;
     cursor: default;
   }
 
-  @keyframes float-shape {
+  @keyframes float-shape-{{ section.id }} {
     0% {
       transform: translate(0, 0) rotate(var(--init-rotate));
     }
@@ -62,11 +64,24 @@
 
 <script>
   (function() {
+    const sectionId = '{{ section.id }}';
+    let destroyed = false;
+
+    function cleanupOldInstance() {
+      window.activeBackgroundShapes = window.activeBackgroundShapes || {};
+      const oldInstance = window.activeBackgroundShapes[sectionId];
+      if (oldInstance) {
+        oldInstance.cleanup();
+      }
+    }
+
     function initBackgroundShapes() {
-      const container = document.getElementById('BackgroundShapes');
+      if (destroyed) return;
+      cleanupOldInstance();
+
+      const container = document.getElementById('BackgroundShapes-' + sectionId);
       if (!container) return;
 
-      // Clear existing shapes first (crucial for theme editor refreshes)
       container.innerHTML = '';
 
       const symbol = container.dataset.symbol || 'star';
@@ -75,7 +90,6 @@
       const color = container.dataset.color || '#ca1100';
       const baseOpacity = (parseInt(container.dataset.opacity, 10) || 15) / 100;
 
-      // Predefined SVGs mapping
       const svgSymbols = {
         star: '<svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>',
         diamond: '<svg viewBox="0 0 24 24"><path d="M12 2L20 12L12 22L4 12z"/></svg>',
@@ -90,31 +104,24 @@
 
       for (let i = 0; i < population; i++) {
         const shape = document.createElement('div');
-        shape.className = 'background-shape';
+        shape.className = 'background-shape-' + sectionId;
         shape.innerHTML = svgContent;
 
-        // Randomize dimensions (min 40% of max size, max 100%)
         const size = Math.floor(Math.random() * (maxSize - (maxSize * 0.4)) + (maxSize * 0.4));
-        
-        // Randomize placement coordinates (keeping inside bounds)
         const top = (Math.random() * 96).toFixed(2) + '%';
         const left = (Math.random() * 96).toFixed(2) + '%';
 
-        // Randomize initial rotation and drift translation
         const initRotate = Math.floor(Math.random() * 360) + 'deg';
         const driftX = (Math.random() * 40 - 20).toFixed(1) + 'px';
         const driftY = (Math.random() * 60 - 30).toFixed(1) + 'px';
 
-        // Randomize animation specs
         const animDur = (Math.random() * 25 + 25).toFixed(1) + 's';
         const animDelay = (-Math.random() * 50).toFixed(1) + 's';
         const hoverRotate = (Math.random() * 120 - 60) + 'deg';
 
-        // Subtle variation in opacity (plus/minus 20% of base)
         const opacityVariation = (0.8 + Math.random() * 0.4);
         const opacity = (baseOpacity * opacityVariation).toFixed(3);
 
-        // Assign CSS custom variables and inline styles
         shape.style.width = size + 'px';
         shape.style.height = size + 'px';
         shape.style.top = top;
@@ -134,18 +141,138 @@
       container.appendChild(fragment);
     }
 
-    // Run on standard load
+    function cleanup() {
+      destroyed = true;
+      const container = document.getElementById('BackgroundShapes-' + sectionId);
+      if (container) {
+        container.innerHTML = '';
+      }
+      document.removeEventListener('shopify:section:load', handleSectionLoad);
+      document.removeEventListener('shopify:section:select', handleSectionSelect);
+      document.removeEventListener('shopify:section:unload', handleSectionUnload);
+    }
+
+    function handleSectionLoad(e) {
+      if (e.detail.sectionId === sectionId) {
+        initBackgroundShapes();
+      }
+    }
+
+    function handleSectionSelect(e) {
+      if (e.detail.sectionId === sectionId) {
+        initBackgroundShapes();
+      }
+    }
+
+    function handleSectionUnload(e) {
+      if (e.detail.sectionId === sectionId) {
+        cleanup();
+      }
+    }
+
+    // Register this instance
+    window.activeBackgroundShapes = window.activeBackgroundShapes || {};
+    window.activeBackgroundShapes[sectionId] = {
+      cleanup: cleanup
+    };
+
+    // Initialize
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initBackgroundShapes);
     } else {
       initBackgroundShapes();
     }
 
-    // Support hot reloading inside Shopify Customizer Theme Editor
-    document.addEventListener('shopify:section:load', function(e) {
-      // Re-run if global setting adjustments reload sections
-      initBackgroundShapes();
-    });
+    // Theme customizer event listeners
+    document.addEventListener('shopify:section:load', handleSectionLoad);
+    document.addEventListener('shopify:section:select', handleSectionSelect);
+    document.addEventListener('shopify:section:unload', handleSectionUnload);
   })();
 </script>
 {%- endif -%}
+
+{% schema %}
+{
+  "name": "Background Shapes",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "bg_shapes_enable",
+      "label": "Enable Background Shapes",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "bg_shapes_symbol",
+      "label": "Symbol",
+      "options": [
+        {
+          "value": "star",
+          "label": "Star ✧"
+        },
+        {
+          "value": "diamond",
+          "label": "Diamond ♢"
+        },
+        {
+          "value": "circle",
+          "label": "Circle ○"
+        },
+        {
+          "value": "square",
+          "label": "Square ▢"
+        },
+        {
+          "value": "flower",
+          "label": "Flower ✿"
+        },
+        {
+          "value": "heart",
+          "label": "Heart ♡"
+        }
+      ],
+      "default": "star"
+    },
+    {
+      "type": "range",
+      "id": "bg_shapes_population",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "label": "Population (Count)",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "bg_shapes_size",
+      "min": 10,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Max Size",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "bg_shapes_color",
+      "label": "Color",
+      "default": "#ca1100"
+    },
+    {
+      "type": "range",
+      "id": "bg_shapes_transparency",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Transparency (Opacity)",
+      "default": 15
+    }
+  ],
+  "presets": [
+    {
+      "name": "Background Shapes"
+    }
+  ]
+}
+{% endschema %}
