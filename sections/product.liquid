@@ -1598,6 +1598,14 @@
           dropdown.classList.remove('open');
 
           updatePriceAndVariant();
+
+          // Sync picture with selected color
+          const lowerLabel = label.toLowerCase();
+          if (lowerLabel.includes('pink')) {
+            goToSlide(1);
+          } else if (lowerLabel.includes('gray') || lowerLabel.includes('grey')) {
+            goToSlide(0);
+          }
         });
       });
     });
