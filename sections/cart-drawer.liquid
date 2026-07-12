@@ -712,6 +712,81 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  let protectionVariantId = null;
+
+  async function fetchProtectionVariantId() {
+    try {
+      const res = await fetch('/products/shipping-protection.js');
+      if (res.ok) {
+        const product = await res.json();
+        if (product.variants && product.variants.length > 0) {
+          protectionVariantId = product.variants[0].id;
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching protection variant:', err);
+    }
+  }
+
+  // Fetch variant ID immediately on load
+  fetchProtectionVariantId();
+
+  async function addProtectionToCart() {
+    if (!protectionVariantId) {
+      await fetchProtectionVariantId();
+    }
+    if (!protectionVariantId) return;
+    
+    drawer.querySelector('.cart-drawer-panel').classList.add('loading-active');
+    try {
+      await fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          items: [{
+            id: protectionVariantId,
+            quantity: 1
+          }]
+        })
+      });
+      await fetchAndRenderCart();
+    } catch (err) {
+      console.error('Error adding shipping protection:', err);
+    } finally {
+      drawer.querySelector('.cart-drawer-panel').classList.remove('loading-active');
+    }
+  }
+
+  async function removeProtectionFromCart() {
+    if (!protectionVariantId) {
+      await fetchProtectionVariantId();
+    }
+    if (!protectionVariantId) return;
+
+    drawer.querySelector('.cart-drawer-panel').classList.add('loading-active');
+    try {
+      await fetch('/cart/change.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          id: protectionVariantId.toString(),
+          quantity: 0
+        })
+      });
+      await fetchAndRenderCart();
+    } catch (err) {
+      console.error('Error removing shipping protection:', err);
+    } finally {
+      drawer.querySelector('.cart-drawer-panel').classList.remove('loading-active');
+    }
+  }
+
   // Fetch cart details from Shopify API and render
   async function fetchAndRenderCart() {
     try {
@@ -727,23 +802,58 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderCart(cart) {
     itemsList.innerHTML = '';
     
+    let totalPillowsQty = 0;
+    let basePricesSubtotal = 0;
+    let originalPricesSubtotal = 0;
+    let hasProtectionInCart = false;
+    let itemCountExcludingProtection = 0;
+
+    cart.items.forEach(item => {
+      const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
+      if (isProtection) {
+        hasProtectionInCart = true;
+      } else {
+        itemCountExcludingProtection += item.quantity;
+        const isPillow = item.product_title.toLowerCase().includes('pillow');
+        if (isPillow) {
+          totalPillowsQty += item.quantity;
+        }
+      }
+    });
+
     // Update global cart counts
     const countElements = document.querySelectorAll('#cart-count, #drawer-cart-count');
     countElements.forEach(el => {
-      el.textContent = cart.item_count;
-      el.style.display = cart.item_count > 0 ? 'flex' : 'none';
+      el.textContent = itemCountExcludingProtection;
+      el.style.display = itemCountExcludingProtection > 0 ? 'flex' : 'none';
     });
 
-    if (cart.items.length === 0) {
+    if (itemCountExcludingProtection === 0) {
       emptyState.style.display = 'flex';
       cartFooter.style.display = 'none';
       progressBar.parentElement.parentElement.style.display = 'none';
+      
+      // Auto remove protection if it's the only thing left
+      if (hasProtectionInCart) {
+        removeProtectionFromCart();
+      }
       return;
     }
 
     emptyState.style.display = 'none';
     cartFooter.style.display = 'block';
     progressBar.parentElement.parentElement.style.display = 'block';
+
+    // Auto add protection if cart is not empty, it's not in the cart, and user hasn't explicitly opted out
+    if (!hasProtectionInCart && localStorage.getItem('shipping_protection_opt_out') !== 'true') {
+      addProtectionToCart();
+      return;
+    }
+
+    // Sync toggle switch state with cart
+    if (protectionToggle) {
+      protectionToggle.checked = hasProtectionInCart;
+    }
 
     function getPillowUnitPriceCents(totalQty) {
       if (totalQty === 1) return pillowQty1Price;
@@ -763,22 +873,11 @@ document.addEventListener('DOMContentLoaded', () => {
       return '';
     }
 
-    let totalPillowsQty = 0;
-    let basePricesSubtotal = 0;
-    let originalPricesSubtotal = 0;
-
-    // Filter items and count pillow qty
-    cart.items.forEach(item => {
-      const isPillow = item.product_title.toLowerCase().includes('pillow');
-      if (isPillow) {
-        totalPillowsQty += item.quantity;
-      }
-    });
-
-    let pillowsRenderedCount = 0;
-
     // Loop through and render actual cart items
     cart.items.forEach((item, index) => {
+      const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
+      if (isProtection) return;
+
       const isPillow = item.product_title.toLowerCase().includes('pillow');
       const itemTitle = item.product_title;
 
@@ -844,7 +943,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Shipping protection cost
     let protectionCost = 0;
-    if (protectionToggle && protectionToggle.checked) {
+    if (hasProtectionInCart) {
       protectionCost = protectionPrice; 
     }
 
@@ -923,7 +1022,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Protection toggle click
   if (protectionToggle) {
     protectionToggle.addEventListener('change', () => {
-      fetchAndRenderCart();
+      if (protectionToggle.checked) {
+        localStorage.setItem('shipping_protection_opt_out', 'false');
+        addProtectionToCart();
+      } else {
+        localStorage.setItem('shipping_protection_opt_out', 'true');
+        removeProtectionFromCart();
+      }
     });
   }
 
