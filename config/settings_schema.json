@@ -79,5 +79,83 @@
         "default": 4
       }
     ]
+  },
+  {
+    "name": "Background Shapes",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "bg_shapes_enable",
+        "label": "Enable Background Shapes",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "bg_shapes_symbol",
+        "label": "Symbol",
+        "options": [
+          {
+            "value": "star",
+            "label": "Star ✧"
+          },
+          {
+            "value": "diamond",
+            "label": "Diamond ♢"
+          },
+          {
+            "value": "circle",
+            "label": "Circle ○"
+          },
+          {
+            "value": "square",
+            "label": "Square ▢"
+          },
+          {
+            "value": "flower",
+            "label": "Flower ✿"
+          },
+          {
+            "value": "heart",
+            "label": "Heart ♡"
+          }
+        ],
+        "default": "star"
+      },
+      {
+        "type": "range",
+        "id": "bg_shapes_population",
+        "min": 10,
+        "max": 100,
+        "step": 5,
+        "label": "Population (Count)",
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "bg_shapes_size",
+        "min": 10,
+        "max": 120,
+        "step": 5,
+        "unit": "px",
+        "label": "Max Size",
+        "default": 40
+      },
+      {
+        "type": "color",
+        "id": "bg_shapes_color",
+        "label": "Color",
+        "default": "#ca1100"
+      },
+      {
+        "type": "range",
+        "id": "bg_shapes_transparency",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "label": "Transparency (Opacity)",
+        "default": 15
+      }
+    ]
   }
 ]

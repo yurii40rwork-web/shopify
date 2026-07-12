@@ -1,0 +1,151 @@
+{%- comment -%}
+  Renders editable, animated background shapes with customizable symbols, colors, population, sizes, and transparency.
+{%- endcomment -%}
+
+{%- if settings.bg_shapes_enable -%}
+<div class="background-shapes-container"
+     id="BackgroundShapes"
+     data-symbol="{{ settings.bg_shapes_symbol | escape }}"
+     data-population="{{ settings.bg_shapes_population | default: 30 }}"
+     data-size="{{ settings.bg_shapes_size | default: 40 }}"
+     data-color="{{ settings.bg_shapes_color | default: '#ca1100' }}"
+     data-opacity="{{ settings.bg_shapes_transparency | default: 15 }}"
+     aria-hidden="true">
+</div>
+
+<style>
+  body {
+    position: relative;
+  }
+  .background-shapes-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
+  }
+  .background-shape {
+    position: absolute;
+    display: block;
+    pointer-events: auto;
+    color: var(--shape-color);
+    opacity: var(--shape-opacity);
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease, color 0.8s ease;
+    animation: float-shape var(--anim-dur) ease-in-out var(--anim-delay) infinite alternate;
+  }
+  .background-shape svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+  .background-shape:hover {
+    transform: scale(1.3) rotate(var(--hover-rotate)) !important;
+    opacity: min(1.0, calc(var(--shape-opacity) * 2.2)) !important;
+    cursor: default;
+  }
+
+  @keyframes float-shape {
+    0% {
+      transform: translate(0, 0) rotate(var(--init-rotate));
+    }
+    50% {
+      transform: translate(var(--drift-x), var(--drift-y)) rotate(calc(var(--init-rotate) + 90deg));
+    }
+    100% {
+      transform: translate(calc(var(--drift-x) * -0.5), calc(var(--drift-y) * 1.5)) rotate(calc(var(--init-rotate) + 180deg));
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    function initBackgroundShapes() {
+      const container = document.getElementById('BackgroundShapes');
+      if (!container) return;
+
+      // Clear existing shapes first (crucial for theme editor refreshes)
+      container.innerHTML = '';
+
+      const symbol = container.dataset.symbol || 'star';
+      const population = parseInt(container.dataset.population, 10) || 30;
+      const maxSize = parseInt(container.dataset.size, 10) || 40;
+      const color = container.dataset.color || '#ca1100';
+      const baseOpacity = (parseInt(container.dataset.opacity, 10) || 15) / 100;
+
+      // Predefined SVGs mapping
+      const svgSymbols = {
+        star: '<svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>',
+        diamond: '<svg viewBox="0 0 24 24"><path d="M12 2L20 12L12 22L4 12z"/></svg>',
+        circle: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>',
+        square: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>',
+        flower: '<svg viewBox="0 0 24 24"><path d="M12 7.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm5.3 3.8a2.5 2.5 0 1 1-4.33-2.5 2.5 0 0 1 4.33 2.5zm-1.8 6.8a2.5 2.5 0 1 1-4.33 2.5 2.5 0 0 1 4.33-2.5zm-7 0a2.5 2.5 0 1 1 4.33 2.5 2.5 0 0 1-4.33-2.5zm-1.8-6.8a2.5 2.5 0 1 1 4.33-2.5 2.5 0 0 1-4.33 2.5zM12 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>',
+        heart: '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'
+      };
+
+      const svgContent = svgSymbols[symbol] || svgSymbols['star'];
+      const fragment = document.createDocumentFragment();
+
+      for (let i = 0; i < population; i++) {
+        const shape = document.createElement('div');
+        shape.className = 'background-shape';
+        shape.innerHTML = svgContent;
+
+        // Randomize dimensions (min 40% of max size, max 100%)
+        const size = Math.floor(Math.random() * (maxSize - (maxSize * 0.4)) + (maxSize * 0.4));
+        
+        // Randomize placement coordinates (keeping inside bounds)
+        const top = (Math.random() * 96).toFixed(2) + '%';
+        const left = (Math.random() * 96).toFixed(2) + '%';
+
+        // Randomize initial rotation and drift translation
+        const initRotate = Math.floor(Math.random() * 360) + 'deg';
+        const driftX = (Math.random() * 40 - 20).toFixed(1) + 'px';
+        const driftY = (Math.random() * 60 - 30).toFixed(1) + 'px';
+
+        // Randomize animation specs
+        const animDur = (Math.random() * 25 + 25).toFixed(1) + 's';
+        const animDelay = (-Math.random() * 50).toFixed(1) + 's';
+        const hoverRotate = (Math.random() * 120 - 60) + 'deg';
+
+        // Subtle variation in opacity (plus/minus 20% of base)
+        const opacityVariation = (0.8 + Math.random() * 0.4);
+        const opacity = (baseOpacity * opacityVariation).toFixed(3);
+
+        // Assign CSS custom variables and inline styles
+        shape.style.width = size + 'px';
+        shape.style.height = size + 'px';
+        shape.style.top = top;
+        shape.style.left = left;
+        shape.style.setProperty('--shape-color', color);
+        shape.style.setProperty('--shape-opacity', opacity);
+        shape.style.setProperty('--init-rotate', initRotate);
+        shape.style.setProperty('--drift-x', driftX);
+        shape.style.setProperty('--drift-y', driftY);
+        shape.style.setProperty('--anim-dur', animDur);
+        shape.style.setProperty('--anim-delay', animDelay);
+        shape.style.setProperty('--hover-rotate', hoverRotate);
+
+        fragment.appendChild(shape);
+      }
+
+      container.appendChild(fragment);
+    }
+
+    // Run on standard load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initBackgroundShapes);
+    } else {
+      initBackgroundShapes();
+    }
+
+    // Support hot reloading inside Shopify Customizer Theme Editor
+    document.addEventListener('shopify:section:load', function(e) {
+      // Re-run if global setting adjustments reload sections
+      initBackgroundShapes();
+    });
+  })();
+</script>
+{%- endif -%}
