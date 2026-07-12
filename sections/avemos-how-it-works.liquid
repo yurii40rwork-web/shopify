@@ -3,8 +3,8 @@
 <div class="Avemos-landing-wrapper" id="how-it-works">
   <!-- How It Works Section -->
   <section class="container" style="margin-top: 40px; margin-bottom: 40px;">
-    <h2 class="section-title">{{ section.settings.title | default: "How It Works" }}</h2>
-    <p class="section-subtitle">{{ section.settings.subtitle | default: "Just 3 simple steps to perfect sleep" }}</p>
+    <h2 class="section-title">{{ section.settings.title }}</h2>
+    <p class="section-subtitle">{{ section.settings.subtitle }}</p>
     
     <div class="steps-container">
       {%- if section.blocks.size > 0 -%}

@@ -8,13 +8,13 @@
   <!-- Reviews Section -->
   <section style="background-color: var(--bg-secondary); border-top: 1px solid var(--border-color); padding: 80px 0;">
     <div class="container">
-      <h2 class="section-title">{{ section.settings.title | default: "What Our Customers Say" }}</h2>
-      <p class="section-subtitle">{{ section.settings.subtitle | default: "Real reviews from verified buyers" }}</p>
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+      <p class="section-subtitle">{{ section.settings.subtitle }}</p>
       
       <!-- Rating Overview Block -->
       <div class="reviews-overview" style="margin-bottom: 50px; text-align: center; background-color: var(--bg-primary); padding: 40px 30px; border-radius: var(--radius-lg); border: 1px solid var(--border-light); width: 100%;">
         <div class="rating-summary">
-          {%- assign rating_score_val = section.settings.rating_score | default: "4.9" -%}
+          {%- assign rating_score_val = section.settings.rating_score -%}
           <div style="font-size: 3.5rem; font-weight: 700; color: var(--text-primary); line-height: 1;">{{ rating_score_val }}</div>
           {%- assign rating_num = rating_score_val | plus: 0 -%}
           <div class="rating-stars" style="color: #ff9800; font-size: 1.6rem; margin: 12px 0; display: flex; justify-content: center; align-items: center; gap: 4px;">
@@ -29,7 +29,7 @@
               {%- endif -%}
             {%- endfor -%}
           </div>
-          <div style="color: var(--text-light); font-size: 0.95rem; font-weight: 500;">Based on {{ section.settings.reviews_count | default: "1,248" }} reviews</div>
+          <div style="color: var(--text-light); font-size: 0.95rem; font-weight: 500;">Based on {{ section.settings.reviews_count }} reviews</div>
         </div>
       </div>
       

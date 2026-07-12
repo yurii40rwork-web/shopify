@@ -4,8 +4,8 @@
   <!-- FAQ Section -->
   <section style="background-color: #f8fafc; border-top: 1px solid var(--border-color); padding: 40px 0;">
     <div class="container">
-      <h2 class="section-title">{{ section.settings.title | default: "Frequently Asked Questions (FAQ)" }}</h2>
-      <p class="section-subtitle">{{ section.settings.subtitle | default: "Quick answers to common questions" }}</p>
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+      <p class="section-subtitle">{{ section.settings.subtitle }}</p>
       
       <div class="faq-list">
         {%- if section.blocks.size > 0 -%}

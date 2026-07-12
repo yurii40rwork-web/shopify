@@ -7,11 +7,11 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <h4 style="font-weight: 800;"><i class="fa-solid fa-plane-departure"></i> {{ section.settings.col_1_title | default: "Avemos" }}</h4>
-          <p>{{ section.settings.col_1_desc | default: "We create premium products for your comfort during travels all over the world." }}</p>
+          <h4 style="font-weight: 800;"><i class="fa-solid fa-plane-departure"></i> {{ section.settings.col_1_title }}</h4>
+          <p>{{ section.settings.col_1_desc }}</p>
         </div>
         <div class="footer-col">
-          <h4>{{ section.settings.col_2_title | default: "Contact Us" }}</h4>
+          <h4>{{ section.settings.col_2_title }}</h4>
           <ul class="footer-links">
             {%- if section.settings.email != blank -%}
               <li>Email: {{ section.settings.email }}</li>
@@ -25,7 +25,7 @@
           </ul>
         </div>
         <div class="footer-col">
-          <h4>{{ section.settings.col_3_title | default: "Legal Information" }}</h4>
+          <h4>{{ section.settings.col_3_title }}</h4>
           <ul class="footer-links">
             {%- if section.settings.menu != blank -%}
               {%- for link in section.settings.menu.links -%}
@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>{{ section.settings.copyright_text | default: "&copy; 2026 Avemos® Mock App. All rights reserved." }}</p>
+        <p>{{ section.settings.copyright_text }}</p>
         {%- if section.settings.show_payment_badges -%}
           <div class="mock-payments">
             <span class="mock-payment-badge stripe-badge" aria-label="Stripe">

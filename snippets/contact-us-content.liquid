@@ -5,18 +5,18 @@
   {% render 'avemos-header-markup', logo_height: 50 %}
 
 {%- liquid
-  assign title = section.settings.title | default: "Contact Us"
-  assign subtitle = section.settings.subtitle | default: "Have questions about the Avemos pillow or your order? We'd love to help!"
-  assign info_title = section.settings.info_title | default: "Contact Info"
-  assign email_title = section.settings.email_title | default: "Email Support"
-  assign email_address = section.settings.email_address | default: "support@avemosstore.com"
-  assign email_helper = section.settings.email_helper | default: "We reply within 12-24 hours."
-  assign phone_title = section.settings.phone_title | default: "Phone Line"
-  assign phone_number = section.settings.phone_number | default: "+380965347984"
-  assign phone_helper = section.settings.phone_helper | default: "Mon-Fri from 9:00 AM to 6:00 PM (GMT+2)."
-  assign address_title = section.settings.address_title | default: "Office & Warehouse"
-  assign address_text = section.settings.address_text | default: "Avemos,\nZelena St, 114,\nLviv, 79000, Ukraine"
-  assign form_title = section.settings.form_title | default: "Send Us a Message"
+  assign title = section.settings.title
+  assign subtitle = section.settings.subtitle
+  assign info_title = section.settings.info_title
+  assign email_title = section.settings.email_title
+  assign email_address = section.settings.email_address
+  assign email_helper = section.settings.email_helper
+  assign phone_title = section.settings.phone_title
+  assign phone_number = section.settings.phone_number
+  assign phone_helper = section.settings.phone_helper
+  assign address_title = section.settings.address_title
+  assign address_text = section.settings.address_text
+  assign form_title = section.settings.form_title
 -%}
 
   <div style="background-color: var(--bg-secondary); padding: 60px 0; min-height: 70vh;">
