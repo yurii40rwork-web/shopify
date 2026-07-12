@@ -28,6 +28,18 @@
         "airplane_color": "#14171d"
       }
     },
+    "avemos_background_shapes_default": {
+      "type": "avemos-background-shapes",
+      "name": "Background Shapes",
+      "settings": {
+        "bg_shapes_enable": true,
+        "bg_shapes_symbol": "star",
+        "bg_shapes_population": 30,
+        "bg_shapes_size": 40,
+        "bg_shapes_color": "#ca1100",
+        "bg_shapes_transparency": 15
+      }
+    },
     "product": {
       "type": "product",
       "blocks": {
@@ -500,6 +512,7 @@
   "order": [
     "header",
     "avemos_airplane_qdc9hd",
+    "avemos_background_shapes_default",
     "product",
     "as_seen_on",
     "benefits",
