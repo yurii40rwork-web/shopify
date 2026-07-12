@@ -19,6 +19,15 @@
   body {
     position: relative;
   }
+  #shopify-section-{{ section.id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1; /* Floating above section background colors */
+  }
   #BackgroundShapes-{{ section.id }} {
     position: absolute;
     top: 0;
@@ -27,12 +36,11 @@
     height: 100%;
     overflow: hidden;
     pointer-events: none;
-    z-index: -1;
   }
   .background-shape-{{ section.id }} {
     position: absolute;
     display: block;
-    pointer-events: auto;
+    pointer-events: none; /* Crucial: prevent blocking page clicks/hovers */
     color: var(--shape-color);
     opacity: var(--shape-opacity);
     transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease, color 0.8s ease;
@@ -42,11 +50,6 @@
     width: 100%;
     height: 100%;
     fill: currentColor;
-  }
-  .background-shape-{{ section.id }}:hover {
-    transform: scale(1.3) rotate(var(--hover-rotate)) !important;
-    opacity: min(1.0, calc(var(--shape-opacity) * 2.2)) !important;
-    cursor: default;
   }
 
   @keyframes float-shape-{{ section.id }} {
