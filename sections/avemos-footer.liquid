@@ -45,10 +45,18 @@
         <p>{{ section.settings.copyright_text | default: "&copy; 2026 Avemos® Mock App. All rights reserved." }}</p>
         {%- if section.settings.show_payment_badges -%}
           <div class="mock-payments">
-            <span class="mock-payment-badge">Stripe</span>
-            <span class="mock-payment-badge">PayPal</span>
-            <span class="mock-payment-badge">Apple Pay</span>
-            <span class="mock-payment-badge">Google Pay</span>
+            <span class="mock-payment-badge stripe-badge" aria-label="Stripe">
+              {{ 'stripe' | payment_type_svg_tag }}
+            </span>
+            <span class="mock-payment-badge paypal-badge" aria-label="PayPal">
+              {{ 'paypal' | payment_type_svg_tag }}
+            </span>
+            <span class="mock-payment-badge apple-pay-badge" aria-label="Apple Pay">
+              {{ 'apple_pay' | payment_type_svg_tag }}
+            </span>
+            <span class="mock-payment-badge google-pay-badge" aria-label="Google Pay">
+              {{ 'google_pay' | payment_type_svg_tag }}
+            </span>
           </div>
         {%- endif -%}
       </div>

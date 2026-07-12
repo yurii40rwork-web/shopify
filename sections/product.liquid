@@ -1657,8 +1657,7 @@
           for (let id in counts) {
             items.push({
               id: parseInt(id),
-              quantity: counts[id] * qtyMultiplier,
-              properties: { 'Cumulative Discount': '13% OFF ($34/ea)' }
+              quantity: counts[id] * qtyMultiplier
             });
           }
         } else if (activeOption === 'buy_3') {
@@ -1670,8 +1669,7 @@
           for (let id in counts) {
             items.push({
               id: parseInt(id),
-              quantity: counts[id] * qtyMultiplier,
-              properties: { 'Cumulative Discount': '23% OFF ($30/ea)' }
+              quantity: counts[id] * qtyMultiplier
             });
           }
         }

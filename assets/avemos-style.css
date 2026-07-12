@@ -966,18 +966,25 @@
 
 .Avemos-landing-wrapper .mock-payments {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .Avemos-landing-wrapper .mock-payment-badge {
-  background-color: var(--bg-secondary);
-  color: var(--text-secondary);
-  padding: 6px 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.Avemos-landing-wrapper .mock-payment-badge svg {
+  height: 24px;
+  width: auto;
+  display: block;
 }
 
 /* Sliding Cart Drawer / Checkout */

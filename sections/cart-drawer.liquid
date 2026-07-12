@@ -894,17 +894,7 @@ document.addEventListener('DOMContentLoaded', () => {
         originalPricePerUnit = pillowQty1Original; // default compare at if missing
       }
 
-      // Cumulative discount tag
-      let discountTag = '';
-      if (item.line_level_discount_allocations && item.line_level_discount_allocations.length > 0) {
-        discountTag = item.line_level_discount_allocations.map(d => d.discount_application.title).join(', ');
-      } else if (item.discounts && item.discounts.length > 0) {
-        discountTag = item.discounts.map(d => d.title).join(', ');
-      } else if (isPillow && totalPillowsQty >= 2) {
-        const unitDollars = currentPricePerUnit / 100;
-        const totalPctOff = Math.round((1 - (unitDollars / (baseUnitPriceCents / 100))) * 100);
-        discountTag = `Cumulative Discount: $${unitDollars}/ea (${totalPctOff}% OFF)`;
-      }
+    
 
       basePricesSubtotal += (currentPricePerUnit * item.quantity);
       originalPricesSubtotal += (originalPricePerUnit * item.quantity);
@@ -919,7 +909,6 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="item-info-col">
           <a href="${item.url}" class="item-title">${itemTitle}</a>
           ${item.variant_title && !item.variant_title.includes('Default') ? `<div style="font-size: 12px; color: #75777d; margin-top: 1px;">${item.variant_title}</div>` : ''}
-          ${discountTag ? `<span class="item-tag">${discountTag}</span>` : ''}
           <div class="item-qty-selector">
             <button type="button" class="item-qty-btn" data-action="minus" data-key="${item.key}">-</button>
             <input type="number" class="item-qty-input" value="${item.quantity}" readonly>
