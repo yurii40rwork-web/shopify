@@ -82,9 +82,11 @@
           <div>
             <h3 style="font-size: 1.2rem; color: var(--text-primary); font-weight: 700; margin-bottom: 4px;">{{ responsible_name }}</h3>
             <p style="font-size: 0.95rem; color: var(--primary); font-weight: 600; margin-bottom: 8px;">{{ responsible_role }}</p>
-            <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 8px;">
-              Personal Email: <a href="mailto:{{ responsible_email }}" style="color: var(--primary); text-decoration: underline;">{{ responsible_email }}</a>
-            </p>
+            {%- if responsible_email != blank -%}
+              <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 8px;">
+                Personal Email: <a href="mailto:{{ responsible_email }}" style="color: var(--primary); text-decoration: underline;">{{ responsible_email }}</a>
+              </p>
+            {%- endif -%}
             <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5;">
               {{ responsible_desc }}
             </p>
