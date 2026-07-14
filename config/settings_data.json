@@ -40,11 +40,13 @@
         "settings": {
           "greeting_message": "",
           "show_featured_products": true,
-          "featured_products": [],
-          "background_color": "#E51414",
-          "font_color": "#FFFFFF",
-          "button_color": "#201F1F",
-          "secondary_color": "#ffffff",
+          "featured_products": [
+            "premium-avemos™-travel-neck-pillow"
+          ],
+          "background_color": "#ffffff",
+          "font_color": "#333333",
+          "button_color": "#333333",
+          "secondary_color": "#333333",
           "ternary_color": "#6a6a6a",
           "button_icon": "chat_bubble",
           "button_text": "chat_with_us",
@@ -52,7 +54,7 @@
           "button_vertical_position": "lowest",
           "agent_inherit_fonts": true,
           "agent_font": "system_ui_n4",
-          "agent_border_radius": 16
+          "agent_border_radius": 17
         }
       }
     }
