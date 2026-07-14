@@ -117,7 +117,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 10000;
+  z-index: 2147483647 !important;
   visibility: hidden;
 }
 .cart-drawer-container.active {
@@ -625,6 +625,13 @@
 /* Prevent background scrolling when active */
 body.cart-drawer-open {
   overflow: hidden;
+}
+/* Ensure chat widgets are behind cart drawer when open */
+body.cart-drawer-open #shopify-chat,
+body.cart-drawer-open #dummy-chat-button-iframe,
+body.cart-drawer-open iframe[id*="chat"],
+body.cart-drawer-open iframe[id*="inbox"] {
+  z-index: 9999 !important;
 }
 
 /* Loading overlay for panel updates */
