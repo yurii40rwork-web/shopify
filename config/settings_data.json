@@ -20,10 +20,41 @@
           "shipping_protection_subtitle": "Protect your order from damage, loss, or theft.",
           "shipping_protection_price": 5,
           "save_percent": 57,
-          "trust_guarantee_text": "30 Day Money Back Guarantee"
+          "trust_guarantee_text": "30 Day Money Back Guarantee",
+          "pillow_qty1_price": 39,
+          "pillow_qty1_original": 78,
+          "pillow_qty2_price": 34,
+          "pillow_qty2_info": "($34.00 each)",
+          "pillow_qty3_price": 30,
+          "pillow_qty3_info": "($30.00 each)",
+          "pillow_qty4_price": 26,
+          "pillow_qty4_info": "($26.00 each)"
         }
       }
     },
-    "content_for_index": []
+    "content_for_index": [],
+    "blocks": {
+      "15683396631634586217": {
+        "type": "shopify://apps/inbox/blocks/chat/841fc607-4181-4ad1-842d-e24d7f8bad6b",
+        "disabled": false,
+        "settings": {
+          "greeting_message": "",
+          "show_featured_products": true,
+          "featured_products": [],
+          "background_color": "#FFFFFF",
+          "font_color": "#333333",
+          "button_color": "#333333",
+          "secondary_color": "#FFFFFF",
+          "ternary_color": "#6A6A6A",
+          "button_icon": "chat_bubble",
+          "button_text": "chat_with_us",
+          "button_horizontal_position": "bottom_right",
+          "button_vertical_position": "lowest",
+          "agent_inherit_fonts": true,
+          "agent_font": "system_ui_n4",
+          "agent_border_radius": 16
+        }
+      }
+    }
   }
 }
