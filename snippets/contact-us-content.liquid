@@ -43,14 +43,16 @@
           </div>
 
           <!-- Phone -->
-          <div style="display: flex; gap: 14px; align-items: flex-start;">
-            <i class="fa-solid fa-phone" style="font-size: 1.3rem; color: var(--primary); margin-top: 3px;"></i>
-            <div>
-              <h4 style="font-weight: 700; font-size: 0.95rem; margin-bottom: 2px;">{{ phone_title }}</h4>
-              <p style="font-size: 0.9rem; color: var(--text-secondary);">{{ phone_number }}</p>
-              <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 2px;">{{ phone_helper }}</p>
+          {%- if phone_number != blank -%}
+            <div style="display: flex; gap: 14px; align-items: flex-start;">
+              <i class="fa-solid fa-phone" style="font-size: 1.3rem; color: var(--primary); margin-top: 3px;"></i>
+              <div>
+                <h4 style="font-weight: 700; font-size: 0.95rem; margin-bottom: 2px;">{{ phone_title }}</h4>
+                <p style="font-size: 0.9rem; color: var(--text-secondary);">{{ phone_number }}</p>
+                <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 2px;">{{ phone_helper }}</p>
+              </div>
             </div>
-          </div>
+          {%- endif -%}
 
           <!-- Address -->
           <div style="display: flex; gap: 14px; align-items: flex-start;">
