@@ -34,7 +34,7 @@
       "settings": {
         "bg_shapes_enable": true,
         "bg_shapes_symbol": "star",
-        "bg_shapes_population": 50,
+        "bg_shapes_population": 25,
         "bg_shapes_size": 40,
         "bg_shapes_color": "#83858a",
         "bg_shapes_transparency": 15
