@@ -18,9 +18,9 @@
         "email_title": "Email Support",
         "email_address": "support@avemosshop.com",
         "email_helper": "We reply within 12-24 hours.",
-        "phone_title": "2",
-        "phone_number": "2",
-        "phone_helper": "Mon-Fri from 9:00 AM to 6:00 PM (GMT+2).",
+        "phone_title": "",
+        "phone_number": "",
+        "phone_helper": "",
         "address_title": "Office & Warehouse",
         "address_text": "Avemos,\n8080 N Central Expy #1700, Dallas, TX 75206, USA",
         "form_title": "Send Us a Message"
