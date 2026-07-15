@@ -9,17 +9,6 @@
  */
 {
   "sections": {
-    "header": {
-      "type": "avemos-header",
-      "settings": {
-        "logo": "shopify://shop_images/logo-no-background12111.png",
-        "logo_height": 50,
-        "announcement_1": "🔥 SPECIAL DEAL: 50% OFF TODAY ONLY!",
-        "announcement_2": "Free Express Shipping",
-        "mobile_announcement": "🌸 Memorial Day Sale | 50% Off",
-        "menu": ""
-      }
-    },
     "avemos_airplane_qdc9hd": {
       "type": "avemos-airplane",
       "name": "Background Airplane",
@@ -511,7 +500,6 @@
     }
   },
   "order": [
-    "header",
     "avemos_airplane_qdc9hd",
     "avemos_background_shapes_default",
     "product",

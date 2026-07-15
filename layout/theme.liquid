@@ -28,20 +28,16 @@
 
     {{ content_for_header }}
   </head>
-
   <body>
+    {% section 'avemos-header' %}
+
     {% if request.path contains '/apps/track123' %}
-      {% section 'avemos-header' %}
       <div class="Avemos-landing-wrapper" style="min-height: 70vh; background-color: var(--bg-secondary); padding: 40px 0;">
         <div class="container">
           {{ content_for_layout }}
         </div>
       </div>
     {% else %}
-      {% unless template == 'index' or template == 'policy' or template == '404' or request.path == '/pages/about-us' or request.path == '/pages/contact-us' or template.suffix == 'about' or template.suffix == 'contact' or template.suffix == 'shipping-policy' or template.suffix == 'refund-policy' or template.suffix == 'privacy-policy' or template.suffix == 'terms-of-service' or template.suffix == 'user-agreement' %}
-        {% sections 'header-group' %}
-      {% endunless %}
-
       {{ content_for_layout }}
     {% endif %}
 

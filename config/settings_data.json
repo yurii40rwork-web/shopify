@@ -30,6 +30,17 @@
           "pillow_qty4_price": 26,
           "pillow_qty4_info": "($26.00 each)"
         }
+      },
+      "avemos-header": {
+        "type": "avemos-header",
+        "settings": {
+          "logo": "shopify:\/\/shop_images\/logo-no-background12111.png",
+          "logo_height": 50,
+          "announcement_1": "🔥 SPECIAL DEAL: 50% OFF TODAY ONLY!",
+          "announcement_2": "Free Express Shipping",
+          "mobile_announcement": "🌸 Memorial Day Sale | 50% Off",
+          "menu": ""
+        }
       }
     },
     "content_for_index": [],

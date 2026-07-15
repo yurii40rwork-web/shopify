@@ -44,97 +44,6 @@
 </style>
 
 <div class="Avemos-landing-wrapper">
-  <!-- Announcement Bar -->
-  <div class="announcement-bar">
-    <span>{{ settings.track123_announcement_1 }}</span>
-    <span class="highlight">{{ settings.track123_announcement_2 }}</span>
-  </div>
-
-  <!-- Header -->
-  <header class="header">
-    <div class="container header-container">
-      <!-- Hamburger Menu Button -->
-      <button type="button" class="mobile-menu-btn" id="openDrawerBtn" aria-label="Open Menu">
-        <i class="fa-solid fa-bars"></i>
-      </button>
-
-      <!-- Logo -->
-      <a href="/" class="logo">
-        {%- if settings.track123_logo != blank -%}
-          <img src="{{ settings.track123_logo | image_url: width: 300 }}" alt="{{ settings.track123_logo.alt }}" height="{{ logo_height }}" style="height: {{ logo_height }}px; width: auto; vertical-align: middle;">
-        {%- else -%}
-          <img src="{{ 'logo-color.png' | asset_url }}" alt="Avemos Logo" height="{{ logo_height }}" style="height: {{ logo_height }}px; width: auto; vertical-align: middle;">
-        {%- endif -%}
-      </a>
-      
-      <!-- Navigation Menu -->
-      <nav class="header-nav">
-        {%- if settings.track123_menu != blank -%}
-          {%- for link in settings.track123_menu.links -%}
-            <a href="{{ link.url }}" class="header-nav-link">{{ link.title }}</a>
-          {%- endfor -%}
-        {%- else -%}
-          <a href="/" class="header-nav-link">Home</a>
-          <a href="/#reviews" class="header-nav-link">Reviews</a>
-          <a href="/pages/about-us" class="header-nav-link">About Us</a>
-          <a href="/pages/contact-us" class="header-nav-link">Contact Us</a>
-          <a href="/apps/track123" class="header-nav-link">Track Order</a>
-        {%- endif -%}
-      </nav>
-
-      <!-- Cart Button -->
-      <a href="/cart" class="cart-icon-btn" aria-label="Open Cart">
-        <i class="fa-solid fa-bag-shopping"></i>
-        <span class="cart-badge" id="cart-count">{{ cart.item_count }}</span>
-      </a>
-    </div>
-  </header>
-
-  <!-- Mobile Navigation Drawer Overlay -->
-  <div class="mobile-nav-drawer" id="mobileNavDrawer">
-    <!-- Announcement Bar inside Drawer -->
-    <div class="announcement-bar">
-      <span>{{ settings.track123_mobile_announcement }}</span>
-    </div>
-    
-    <div class="drawer-header">
-      <!-- Close Button -->
-      <button type="button" class="mobile-menu-close-btn" id="closeDrawerBtn" aria-label="Close Menu">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-      
-      <!-- Logo in Drawer -->
-      <a href="/" class="logo drawer-logo">
-        {%- if settings.track123_logo != blank -%}
-          <img src="{{ settings.track123_logo | image_url: width: 300 }}" alt="{{ settings.track123_logo.alt | default: 'Avemos Logo' }}" height="{{ logo_height }}" style="height: {{ logo_height }}px; width: auto; vertical-align: middle;">
-        {%- else -%}
-          <img src="{{ 'logo-color.png' | asset_url }}" alt="Avemos Logo" height="{{ logo_height }}" style="height: {{ logo_height }}px; width: auto; vertical-align: middle;">
-        {%- endif -%}
-      </a>
-      
-      <!-- Cart in Drawer -->
-      <a href="/cart" class="cart-icon-btn drawer-cart" aria-label="Open Cart">
-        <i class="fa-solid fa-bag-shopping"></i>
-        <span class="cart-badge" id="drawer-cart-count">{{ cart.item_count }}</span>
-      </a>
-    </div>
-    
-    <!-- Drawer Links -->
-    <nav class="drawer-nav">
-      {%- if settings.track123_menu != blank -%}
-        {%- for link in settings.track123_menu.links -%}
-          <a href="{{ link.url }}" class="drawer-nav-link">{{ link.title }}</a>
-        {%- endfor -%}
-      {%- else -%}
-        <a href="/" class="drawer-nav-link">Home</a>
-        <a href="/#reviews" class="drawer-nav-link">Reviews</a>
-        <a href="/pages/about-us" class="drawer-nav-link">About Us</a>
-        <a href="/pages/contact-us" class="drawer-nav-link">Contact Us</a>
-        <a href="/apps/track123" class="drawer-nav-link">Track Order</a>
-      {%- endif -%}
-    </nav>
-  </div>
-
   {%- if settings.track123_title != blank or settings.track123_subtitle != blank -%}
     <div style="background-color: var(--bg-secondary); padding: {{ settings.track123_padding_top }}px 0 0 0; text-align: center;">
       <div class="container" style="max-width: 800px;">
@@ -148,36 +57,6 @@
     </div>
   {%- endif -%}
 </div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const openBtn = document.getElementById('openDrawerBtn');
-    const closeBtn = document.getElementById('closeDrawerBtn');
-    const drawer = document.getElementById('mobileNavDrawer');
-    
-    if (openBtn && closeBtn && drawer) {
-      openBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        drawer.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      });
-      
-      closeBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        drawer.classList.remove('active');
-        document.body.style.overflow = '';
-      });
-      
-      const drawerLinks = drawer.querySelectorAll('.drawer-nav-link');
-      drawerLinks.forEach(link => {
-        link.addEventListener('click', () => {
-          drawer.classList.remove('active');
-          document.body.style.overflow = '';
-        });
-      });
-    }
-  });
-</script>
 
 {% schema %}
 {
