@@ -45,6 +45,12 @@
             <button type="button" class="gallery-arrow-btn next-arrow" aria-label="Next image">
               <span class="material-symbols-outlined">chevron_right</span>
             </button>
+
+            <!-- Swipe Hint for Mobile -->
+            <div class="swipe-hint-overlay" id="gallery-swipe-hint">
+              <span>Swipe</span>
+              <span class="material-symbols-outlined hint-arrow">chevron_right</span>
+            </div>
           </div>
 
           <!-- Thumbnails Grid -->
@@ -753,6 +759,68 @@
     border-radius: 9999px;
     background-color: var(--primary); /* Theme primary color */
   }
+
+  /* Glass Swipe Hint Overlay */
+  .swipe-hint-overlay {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 30px;
+    padding: 8px 14px;
+    display: none; /* Hidden by default on desktop */
+    align-items: center;
+    gap: 6px;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+    z-index: 15;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .swipe-hint-overlay .hint-arrow {
+    font-size: 18px;
+    animation: arrow-bounce 1s infinite alternate ease-in-out;
+  }
+
+  @keyframes arrow-bounce {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(4px);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .swipe-hint-overlay {
+      display: flex;
+    }
+  }
+
+  .swipe-hint-overlay.visible {
+    opacity: 1;
+    animation: hint-pulse 2s infinite ease-in-out;
+  }
+
+  @keyframes hint-pulse {
+    0%, 100% {
+      transform: translateY(-50%) scale(1);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+    }
+    50% {
+      transform: translateY(-50%) scale(1.05);
+      box-shadow: 0 4px 30px rgba(255, 255, 255, 0.3);
+    }
+  }
   .thumb-card {
     flex: 0 0 110px;
     background-color: var(--surface-container-low);
@@ -1387,16 +1455,6 @@
       display: none !important;
     }
 
-    @keyframes swipe-hint-bounce {
-      0% { transform: scale(1) translateX(0); }
-      30% { transform: scale(1) translateX(-30px); }
-      60% { transform: scale(1) translateX(5px); }
-      100% { transform: scale(1) translateX(0); }
-    }
-    .gallery-slide-img.active.swipe-hint {
-      animation: swipe-hint-bounce 1.2s ease-in-out;
-    }
-
     /* Card padding */
     .bundle-card {
       padding: 12px 10px !important;
@@ -1765,6 +1823,9 @@
     const totalSlides = slides.length;
     
     function goToSlide(index) {
+      if (typeof disableHintForever === 'function') {
+        disableHintForever();
+      }
       if (index < 0) {
         currentSlide = totalSlides - 1;
       } else if (index >= totalSlides) {
@@ -1863,28 +1924,40 @@
           }
         }
       }
+    }
 
-      // Swipe hint logic for mobile (once, after a delay, if user hasn't swiped/interacted)
-      if (window.matchMedia('(max-width: 767px)').matches) {
-        let hintTimer = null;
-        let userInteracted = false;
+    // Swipe Hint Logic
+    const swipeHint = document.getElementById('gallery-swipe-hint');
+    let hintTimer = null;
+    let hintShown = false;
+    let userInteracted = false;
 
+    function disableHintForever() {
+      userInteracted = true;
+      if (hintTimer) {
+        clearTimeout(hintTimer);
+        hintTimer = null;
+      }
+      if (swipeHint) {
+        swipeHint.classList.remove('visible');
+      }
+    }
+
+    if (swipeHint && viewport) {
+      if ('IntersectionObserver' in window) {
         const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
-            if (entry.isIntersecting && !userInteracted && !hintTimer) {
+            if (entry.isIntersecting && !userInteracted && !hintShown) {
               hintTimer = setTimeout(() => {
-                if (!userInteracted && currentSlide === 0) {
-                  const activeSlide = document.querySelector('.gallery-slide-img.active');
-                  if (activeSlide) {
-                    activeSlide.classList.add('swipe-hint');
-                    activeSlide.addEventListener('animationend', () => {
-                      activeSlide.classList.remove('swipe-hint');
-                    }, { once: true });
-                  }
-                  clearHint();
+                if (!userInteracted && !hintShown) {
+                  swipeHint.classList.add('visible');
+                  hintShown = true;
+                  setTimeout(() => {
+                    swipeHint.classList.remove('visible');
+                  }, 6000);
                 }
-              }, 3000);
-            } else if (!entry.isIntersecting) {
+              }, 4000);
+            } else {
               if (hintTimer) {
                 clearTimeout(hintTimer);
                 hintTimer = null;
@@ -1892,26 +1965,17 @@
             }
           });
         }, { threshold: 0.5 });
-
-        const clearHint = () => {
-          userInteracted = true;
-          if (hintTimer) {
-            clearTimeout(hintTimer);
-            hintTimer = null;
-          }
-          try { observer.disconnect(); } catch(e) {}
-        };
-
-        // Listen for interactions on viewport, thumbnails, dots, arrows
-        viewport.addEventListener('touchstart', clearHint, { passive: true });
-        thumbnails.forEach(t => t.addEventListener('click', clearHint));
-        dots.forEach(d => d.addEventListener('click', clearHint));
-        if (prevArrow && nextArrow) {
-          prevArrow.addEventListener('click', clearHint);
-          nextArrow.addEventListener('click', clearHint);
-        }
-
         observer.observe(viewport);
+      } else {
+        hintTimer = setTimeout(() => {
+          if (!userInteracted && !hintShown) {
+            swipeHint.classList.add('visible');
+            hintShown = true;
+            setTimeout(() => {
+              swipeHint.classList.remove('visible');
+            }, 6000);
+          }
+        }, 4000);
       }
     }
 
