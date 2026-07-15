@@ -1387,6 +1387,16 @@
       display: none !important;
     }
 
+    @keyframes swipe-hint-bounce {
+      0% { transform: scale(1) translateX(0); }
+      30% { transform: scale(1) translateX(-30px); }
+      60% { transform: scale(1) translateX(5px); }
+      100% { transform: scale(1) translateX(0); }
+    }
+    .gallery-slide-img.active.swipe-hint {
+      animation: swipe-hint-bounce 1.2s ease-in-out;
+    }
+
     /* Card padding */
     .bundle-card {
       padding: 12px 10px !important;
@@ -1852,6 +1862,56 @@
             }
           }
         }
+      }
+
+      // Swipe hint logic for mobile (once, after a delay, if user hasn't swiped/interacted)
+      if (window.matchMedia('(max-width: 767px)').matches) {
+        let hintTimer = null;
+        let userInteracted = false;
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && !userInteracted && !hintTimer) {
+              hintTimer = setTimeout(() => {
+                if (!userInteracted && currentSlide === 0) {
+                  const activeSlide = document.querySelector('.gallery-slide-img.active');
+                  if (activeSlide) {
+                    activeSlide.classList.add('swipe-hint');
+                    activeSlide.addEventListener('animationend', () => {
+                      activeSlide.classList.remove('swipe-hint');
+                    }, { once: true });
+                  }
+                  clearHint();
+                }
+              }, 3000);
+            } else if (!entry.isIntersecting) {
+              if (hintTimer) {
+                clearTimeout(hintTimer);
+                hintTimer = null;
+              }
+            }
+          });
+        }, { threshold: 0.5 });
+
+        const clearHint = () => {
+          userInteracted = true;
+          if (hintTimer) {
+            clearTimeout(hintTimer);
+            hintTimer = null;
+          }
+          try { observer.disconnect(); } catch(e) {}
+        };
+
+        // Listen for interactions on viewport, thumbnails, dots, arrows
+        viewport.addEventListener('touchstart', clearHint, { passive: true });
+        thumbnails.forEach(t => t.addEventListener('click', clearHint));
+        dots.forEach(d => d.addEventListener('click', clearHint));
+        if (prevArrow && nextArrow) {
+          prevArrow.addEventListener('click', clearHint);
+          nextArrow.addEventListener('click', clearHint);
+        }
+
+        observer.observe(viewport);
       }
     }
 
