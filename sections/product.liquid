@@ -67,17 +67,18 @@
               <div class="thumb-card" data-index="1">
                 <img src="{{ 'hero-product-2.png' | asset_url }}" alt="Top product view">
               </div>
+            {%- endif -%}
           </div>
 
-          <!-- Gallery Navigation Dots -->
-          <div class="gallery-nav-dots">
+          <!-- Gallery Indicators / Dots -->
+          <div class="gallery-indicators">
             {%- if product.media.size > 0 -%}
               {%- for media in product.media -%}
-                <span class="nav-dot{% if forloop.first %} active{% endif %}" data-index="{{ forloop.index0 }}"></span>
+                <span class="indicator-dot{% if forloop.first %} active{% endif %}" data-index="{{ forloop.index0 }}"></span>
               {%- endfor -%}
             {%- else -%}
-              <span class="nav-dot active" data-index="0"></span>
-              <span class="nav-dot" data-index="1"></span>
+              <span class="indicator-dot active" data-index="0"></span>
+              <span class="indicator-dot" data-index="1"></span>
             {%- endif -%}
           </div>
         </div>
@@ -723,40 +724,34 @@
     gap: 16px;
     padding-bottom: 8px;
     -webkit-overflow-scrolling: touch;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
   }
   .thumbnails-grid-container::-webkit-scrollbar {
-    display: none;
+    display: none; /* Hide scrollbar for Chrome, Safari and Opera */
   }
 
-  /* Navigation Dots */
-  .gallery-nav-dots {
+  /* Gallery Indicators (nav circles) */
+  .gallery-indicators {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 8px;
     margin-top: 16px;
-    margin-bottom: 8px;
   }
-  .nav-dot {
+  .indicator-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background-color: var(--surface-container, #ebeef5);
+    background-color: #cbd5e1; /* Grey color for inactive dots */
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
   }
-  .nav-dot:hover {
-    background-color: var(--border-color, #c5c6cd);
-  }
-  .nav-dot.active {
+  .indicator-dot.active {
     width: 24px;
-    border-radius: 4px;
-    background-color: #ff5353;
-  }
-  .nav-dot.active:hover {
-    background-color: #ff5353;
+    height: 8px;
+    border-radius: 9999px;
+    background-color: var(--primary); /* Theme primary color */
   }
   .thumb-card {
     flex: 0 0 110px;
@@ -1752,7 +1747,7 @@
     // Gallery switcher
     const slides = document.querySelectorAll('.gallery-slide-img');
     const thumbnails = document.querySelectorAll('.thumb-card');
-    const dots = document.querySelectorAll('.nav-dot');
+    const dots = document.querySelectorAll('.indicator-dot');
     const prevArrow = document.querySelector('.prev-arrow');
     const nextArrow = document.querySelector('.next-arrow');
     
