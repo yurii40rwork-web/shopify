@@ -763,15 +763,15 @@
   /* Glass Swipe Hint Overlay */
   .swipe-hint-overlay {
     position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
+    left: 50%;
+    bottom: 16px;
+    transform: translate(-50%, 0);
     background: rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 30px;
-    padding: 8px 14px;
+    padding: 8px 16px;
     display: none; /* Hidden by default on desktop */
     align-items: center;
     gap: 6px;
@@ -784,20 +784,9 @@
     z-index: 15;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.5s ease, transform 0.5s ease;
   }
   .swipe-hint-overlay .hint-arrow {
     font-size: 18px;
-    animation: arrow-bounce 1s infinite alternate ease-in-out;
-  }
-
-  @keyframes arrow-bounce {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(4px);
-    }
   }
 
   @media (max-width: 767px) {
@@ -807,18 +796,29 @@
   }
 
   .swipe-hint-overlay.visible {
-    opacity: 1;
-    animation: hint-pulse 2s infinite ease-in-out;
+    animation: swipe-hint-movement 4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   }
 
-  @keyframes hint-pulse {
-    0%, 100% {
-      transform: translateY(-50%) scale(1);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+  @keyframes swipe-hint-movement {
+    0% {
+      transform: translate(-150%, 20px) scale(0.9);
+      opacity: 0;
     }
-    50% {
-      transform: translateY(-50%) scale(1.05);
-      box-shadow: 0 4px 30px rgba(255, 255, 255, 0.3);
+    15% {
+      transform: translate(-50%, 0) scale(1.05);
+      opacity: 1;
+    }
+    20%, 65% {
+      transform: translate(-50%, 0) scale(1);
+      opacity: 1;
+    }
+    80% {
+      transform: translate(-20%, -10px) scale(0.98);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translate(150%, -50px) scale(0.9);
+      opacity: 0;
     }
   }
   .thumb-card {
@@ -1954,7 +1954,7 @@
                   hintShown = true;
                   setTimeout(() => {
                     swipeHint.classList.remove('visible');
-                  }, 6000);
+                  }, 4000);
                 }
               }, 4000);
             } else {
@@ -1973,7 +1973,7 @@
             hintShown = true;
             setTimeout(() => {
               swipeHint.classList.remove('visible');
-            }, 6000);
+            }, 4000);
           }
         }, 4000);
       }
