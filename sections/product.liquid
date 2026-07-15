@@ -67,6 +67,17 @@
               <div class="thumb-card" data-index="1">
                 <img src="{{ 'hero-product-2.png' | asset_url }}" alt="Top product view">
               </div>
+          </div>
+
+          <!-- Gallery Navigation Dots -->
+          <div class="gallery-nav-dots">
+            {%- if product.media.size > 0 -%}
+              {%- for media in product.media -%}
+                <span class="nav-dot{% if forloop.first %} active{% endif %}" data-index="{{ forloop.index0 }}"></span>
+              {%- endfor -%}
+            {%- else -%}
+              <span class="nav-dot active" data-index="0"></span>
+              <span class="nav-dot" data-index="1"></span>
             {%- endif -%}
           </div>
         </div>
@@ -712,20 +723,40 @@
     gap: 16px;
     padding-bottom: 8px;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
   }
   .thumbnails-grid-container::-webkit-scrollbar {
-    height: 6px;
+    display: none;
   }
-  .thumbnails-grid-container::-webkit-scrollbar-track {
-    background: transparent;
+
+  /* Navigation Dots */
+  .gallery-nav-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    margin-bottom: 8px;
   }
-  .thumbnails-grid-container::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 9999px;
+  .nav-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--surface-container, #ebeef5);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .thumbnails-grid-container::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+  .nav-dot:hover {
+    background-color: var(--border-color, #c5c6cd);
+  }
+  .nav-dot.active {
+    width: 24px;
+    border-radius: 4px;
+    background-color: #ff5353;
+  }
+  .nav-dot.active:hover {
+    background-color: #ff5353;
   }
   .thumb-card {
     flex: 0 0 110px;
@@ -1721,6 +1752,7 @@
     // Gallery switcher
     const slides = document.querySelectorAll('.gallery-slide-img');
     const thumbnails = document.querySelectorAll('.thumb-card');
+    const dots = document.querySelectorAll('.nav-dot');
     const prevArrow = document.querySelector('.prev-arrow');
     const nextArrow = document.querySelector('.next-arrow');
     
@@ -1753,6 +1785,14 @@
           t.classList.remove('active');
         }
       });
+
+      dots.forEach((dot, i) => {
+        if (i === currentSlide) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
     }
     
     if (prevArrow && nextArrow) {
@@ -1770,6 +1810,13 @@
     thumbnails.forEach((thumb) => {
       thumb.addEventListener('click', () => {
         const index = parseInt(thumb.getAttribute('data-index')) || 0;
+        goToSlide(index);
+      });
+    });
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const index = parseInt(dot.getAttribute('data-index')) || 0;
         goToSlide(index);
       });
     });
