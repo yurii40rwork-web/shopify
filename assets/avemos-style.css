@@ -1785,4 +1785,68 @@
   }
 }
 
+/* Contact Us Page Styles */
+.Avemos-landing-wrapper .contact-section-wrapper {
+  background-color: var(--bg-secondary);
+  padding: 60px 0;
+  min-height: 70vh;
+}
+
+.Avemos-landing-wrapper .contact-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.Avemos-landing-wrapper .contact-subtitle {
+  text-align: center;
+  color: var(--text-secondary);
+  margin-bottom: 48px;
+  font-size: 1.1rem;
+}
+
+.Avemos-landing-wrapper .contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.Avemos-landing-wrapper .contact-info-card {
+  background-color: var(--bg-primary);
+  padding: 32px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .Avemos-landing-wrapper .contact-section-wrapper {
+    padding: 40px 0;
+  }
+
+  .Avemos-landing-wrapper .contact-title {
+    font-size: 2rem;
+    margin-bottom: 8px;
+  }
+
+  .Avemos-landing-wrapper .contact-subtitle {
+    margin-bottom: 32px;
+    font-size: 1rem;
+  }
+
+  .Avemos-landing-wrapper .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .Avemos-landing-wrapper .contact-info-card {
+    padding: 24px;
+    gap: 20px;
+  }
+}
+
 
