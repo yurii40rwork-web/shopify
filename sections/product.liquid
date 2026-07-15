@@ -1357,6 +1357,10 @@
   }
 
   @media (max-width: 767px) {
+    .gallery-arrow-btn {
+      display: none !important;
+    }
+
     /* Card padding */
     .bundle-card {
       padding: 12px 10px !important;
@@ -1769,6 +1773,45 @@
         goToSlide(index);
       });
     });
+
+    // Mobile Swiping support
+    const viewport = document.querySelector('.main-image-viewport');
+    if (viewport) {
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let touchEndX = 0;
+      let touchEndY = 0;
+      
+      viewport.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      }, { passive: true });
+      
+      viewport.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
+        handleSwipe();
+      }, { passive: true });
+      
+      function handleSwipe() {
+        const diffX = touchEndX - touchStartX;
+        const diffY = touchEndY - touchStartY;
+        
+        // Ensure it is horizontal swipe primarily
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+          // Minimum swipe distance threshold of 40px
+          if (Math.abs(diffX) > 40) {
+            if (diffX > 0) {
+              // Swipe Right -> Show previous slide
+              goToSlide(currentSlide - 1);
+            } else {
+              // Swipe Left -> Show next slide
+              goToSlide(currentSlide + 1);
+            }
+          }
+        }
+      }
+    }
 
     // Format product description list items to fix alignment and trim any spaces after emojis/icons
     document.querySelectorAll('.product-info-description li').forEach(function(li) {
