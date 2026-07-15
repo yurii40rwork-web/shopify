@@ -147,7 +147,7 @@
         "wave_color": "#d5e3fc",
         "wave_opacity": 85,
         "section_font": "work_sans_n4",
-        "section_bg_color": "",
+        "section_bg_color": "#FFFFFF",
         "section_text_color": ""
       }
     },
