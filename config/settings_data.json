@@ -34,12 +34,18 @@
       "avemos-header": {
         "type": "avemos-header",
         "settings": {
-          "logo": "shopify:\/\/shop_images\/logo-no-background12111.png",
+          "logo": "shopify://shop_images/logo-no-background12111.png",
           "logo_height": 50,
           "announcement_1": "🔥 SPECIAL DEAL: 50% OFF TODAY ONLY!",
           "announcement_2": "Free Express Shipping",
           "mobile_announcement": "🌸 Memorial Day Sale | 50% Off",
-          "menu": ""
+          "menu": "",
+          "header_font": "work_sans_n4",
+          "header_bg_color": "#ffffff",
+          "header_text_color": "#14171d",
+          "announcement_font": "outfit_n9",
+          "announcement_bg_color": "#202124",
+          "announcement_text_color": "#ffffff"
         }
       }
     },
