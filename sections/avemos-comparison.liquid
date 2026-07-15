@@ -1,5 +1,39 @@
 {{ 'avemos-style.css' | asset_url | stylesheet_tag }}
 
+{% style %}
+  {% if section.settings.section_font != blank %}
+    {{ section.settings.section_font | font_face: font_display: 'swap' }}
+  {% endif %}
+
+  #shopify-section-{{ section.id }} {
+    {% if section.settings.section_bg_color != blank %}
+      --bg-primary: {{ section.settings.section_bg_color }} !important;
+      --bg-secondary: {{ section.settings.section_bg_color }} !important;
+      --surface-container-low: {{ section.settings.section_bg_color }} !important;
+      --surface-container: {{ section.settings.section_bg_color }} !important;
+      background-color: {{ section.settings.section_bg_color }} !important;
+    {% endif %}
+    {% if section.settings.section_text_color != blank %}
+      --text-primary: {{ section.settings.section_text_color }} !important;
+      --text-secondary: {{ section.settings.section_text_color }} !important;
+      --text-light: {{ section.settings.section_text_color }} !important;
+      color: {{ section.settings.section_text_color }} !important;
+    {% endif %}
+    {% if section.settings.section_font != blank %}
+      --font-family: {{ section.settings.section_font.family }}, {{ section.settings.section_font.fallback_families }} !important;
+      --font-heading: {{ section.settings.section_font.family }}, {{ section.settings.section_font.fallback_families }} !important;
+      --font-body: {{ section.settings.section_font.family }}, {{ section.settings.section_font.fallback_families }} !important;
+      font-family: {{ section.settings.section_font.family }}, {{ section.settings.section_font.fallback_families }} !important;
+    {% endif %}
+  }
+
+  #shopify-section-{{ section.id }} section {
+    {% if section.settings.section_bg_color != blank %}
+      background-color: {{ section.settings.section_bg_color }} !important;
+    {% endif %}
+  }
+{% endstyle %}
+
 <div class="Avemos-landing-wrapper" id="comparison">
   <!-- Comparison Section -->
   <section style="background-color: #f1f5f9; padding: 40px 0;">
@@ -193,6 +227,26 @@
       "id": "their_product",
       "label": "Traditional Product Name",
       "default": "Traditional U-Shape Pillows"
+    },
+    {
+      "type": "header",
+      "content": "Section Customization"
+    },
+    {
+      "type": "font_picker",
+      "id": "section_font",
+      "label": "Section Font",
+      "default": "work_sans_n4"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section Background Color"
+    },
+    {
+      "type": "color",
+      "id": "section_text_color",
+      "label": "Section Text Color"
     }
   ],
   "blocks": [
