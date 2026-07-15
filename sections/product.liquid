@@ -771,10 +771,12 @@
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 30px;
-    padding: 8px 16px;
+    padding: 10px 32px;
+    min-width: 140px;
+    justify-content: center;
     display: none; /* Hidden by default on desktop */
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     color: #ffffff;
     font-size: 13px;
     font-weight: 600;
@@ -812,15 +814,10 @@
     55% {
       transform: translate(-50%, 0) scale(1);
       opacity: 1;
-      animation-timing-function: cubic-bezier(0.5, 0, 0.75, 0);
-    }
-    75% {
-      transform: translate(-10%, 0) scale(1);
-      opacity: 1;
-      animation-timing-function: cubic-bezier(0.85, 0, 1, 1);
+      animation-timing-function: cubic-bezier(0.4, 0, 0.7, 0.3);
     }
     100% {
-      transform: translate(150%, 0) scale(0.9);
+      transform: translate(160%, 0) scale(0.9);
       opacity: 0;
     }
   }
