@@ -57,7 +57,7 @@
         <div class="shipping-protection-row">
           <div class="protection-icon-details">
             <div class="protection-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="{{ section.settings.upsell_border_color }}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                 <polyline points="9 11 11 13 15 9"></polyline>
               </svg>
@@ -144,7 +144,7 @@
   width: 100%;
   max-width: 450px;
   height: 100%;
-  background: #ffffff;
+  background: {{ section.settings.cart_bg_color }};
   box-shadow: -6px 0 28px rgba(24, 28, 33, 0.15);
   display: flex;
   flex-direction: column;
@@ -191,7 +191,7 @@
 /* Free Shipping Bar */
 .shipping-progress-container {
   padding: 14px 20px;
-  background: #ffffff;
+  background: {{ section.settings.cart_bg_color }};
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 .shipping-progress-text {
@@ -207,13 +207,13 @@
 .shipping-progress-bar-wrapper {
   position: relative;
   height: 10px;
-  background: #f1f4fb;
+  background: {{ section.settings.progress_bar_empty_color }};
   border-radius: 9999px;
   margin: 0 10px;
 }
 .shipping-progress-bar {
   height: 100%;
-  background: #181c21;
+  background: {{ section.settings.progress_bar_fill_color }};
   border-radius: 9999px;
   width: 0%;
   transition: width 0.4s ease;
@@ -224,7 +224,7 @@
   transform: translate(-50%, -50%);
   width: 28px;
   height: 28px;
-  background: #181c21;
+  background: {{ section.settings.progress_bar_fill_color }};
   color: #ffffff;
   border-radius: 50%;
   display: flex;
@@ -262,18 +262,18 @@
   margin-bottom: 24px;
 }
 .cart-drawer-continue-btn {
-  background: #4f5d71;
-  color: #ffffff;
+  background: transparent;
+  color: {{ section.settings.ghost_btn_text_color }};
   font-weight: 600;
-  border: none;
+  border: 1px solid {{ section.settings.ghost_btn_border_color }};
   padding: 12px 28px;
   border-radius: 8px;
   font-size: 15px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 .cart-drawer-continue-btn:hover {
-  background: #3a485b;
+  background: rgba(0, 0, 0, 0.04);
 }
 
 /* Items List */
@@ -430,7 +430,7 @@
 
 /* Fixed Footer Section */
 .cart-drawer-footer {
-  background: #ffffff;
+  background: {{ section.settings.cart_bg_color }};
   border-top: 1px solid rgba(0, 0, 0, 0.06);
   padding: 16px 20px 24px 20px;
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.03);
@@ -441,9 +441,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 16px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 12px 14px;
+  border: 1px solid {{ section.settings.upsell_border_color }};
+  border-radius: 8px;
   margin-bottom: 14px;
+  background: transparent;
+  transition: background-color 0.25s ease;
+}
+.shipping-protection-row:hover {
+  background-color: {{ section.settings.upsell_hover_bg_color }};
 }
 .protection-icon-details {
   display: flex;
@@ -510,7 +516,7 @@
   box-shadow: 0 1px 3px rgba(0,0,0,0.15);
 }
 .toggle-switch input:checked + .slider {
-  background-color: #181c21;
+  background-color: {{ section.settings.upsell_border_color }};
 }
 .toggle-switch input:checked + .slider:before {
   transform: translateX(20px);
@@ -556,8 +562,8 @@
 /* Checkout Button styling */
 .drawer-checkout-btn {
   width: 100%;
-  background: #181c21;
-  color: #ffffff;
+  background: {{ section.settings.checkout_btn_bg_color }};
+  color: {{ section.settings.checkout_btn_text_color }};
   font-family: inherit;
   font-size: 16px;
   font-weight: 700;
@@ -566,13 +572,14 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition: background-color 0.2s ease, transform 0.1s ease, filter 0.2s ease;
   letter-spacing: 0.05em;
   box-shadow: 0 4px 12px rgba(24, 28, 33, 0.12);
   margin-bottom: 16px;
 }
 .drawer-checkout-btn:hover {
-  background: #0f1216;
+  background: {{ section.settings.checkout_btn_bg_color }};
+  filter: brightness(90%);
 }
 .drawer-checkout-btn:active {
   transform: translateY(1px);
@@ -1245,6 +1252,64 @@ document.addEventListener('DOMContentLoaded', () => {
       "id": "pillow_qty4_info",
       "label": "Qty 4+ - Pillow Price Info Tag",
       "default": "($26.00 each)"
+    },
+    {
+      "type": "header",
+      "content": "Visual Friction Optimization"
+    },
+    {
+      "type": "color",
+      "id": "cart_bg_color",
+      "label": "Cart Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "progress_bar_empty_color",
+      "label": "Progress Bar Empty Color",
+      "default": "#E5E5E5"
+    },
+    {
+      "type": "color",
+      "id": "progress_bar_fill_color",
+      "label": "Progress Bar Fill Color",
+      "default": "#2E6F40"
+    },
+    {
+      "type": "color",
+      "id": "upsell_border_color",
+      "label": "Upsell Border Color",
+      "default": "#C85A32"
+    },
+    {
+      "type": "color",
+      "id": "upsell_hover_bg_color",
+      "label": "Upsell Hover Background Color",
+      "default": "#FAF9F6"
+    },
+    {
+      "type": "color",
+      "id": "checkout_btn_bg_color",
+      "label": "Checkout Button Background Color",
+      "default": "#C85A32"
+    },
+    {
+      "type": "color",
+      "id": "checkout_btn_text_color",
+      "label": "Checkout Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "ghost_btn_border_color",
+      "label": "Ghost Button Border Color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "ghost_btn_text_color",
+      "label": "Ghost Button Text Color",
+      "default": "#181C21"
     }
   ]
 }
