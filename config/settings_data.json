@@ -9,6 +9,8 @@
  */
 {
   "current": {
+    "heading_color": "#000000",
+    "paragraph_color": "#111111",
     "sections": {
       "cart-drawer": {
         "type": "cart-drawer",
@@ -44,7 +46,7 @@
           "header_bg_color": "#ffffff",
           "header_text_color": "#14171d",
           "announcement_font": "outfit_n9",
-          "announcement_bg_color": "#202124",
+          "announcement_bg_color": "#C85A32",
           "announcement_text_color": "#ffffff"
         }
       }
