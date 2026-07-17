@@ -6,7 +6,11 @@
   {% endif %}
 
   #shopify-section-{{ section.id }} {
-    {% if section.settings.section_bg_color != blank %}
+    {% if section.settings.section_bg_gradient != blank %}
+      background: {{ section.settings.section_bg_gradient }} !important;
+      --bg-primary: transparent !important;
+      --bg-secondary: transparent !important;
+    {% elsif section.settings.section_bg_color != blank %}
       --bg-primary: {{ section.settings.section_bg_color }} !important;
       --bg-secondary: {{ section.settings.section_bg_color }} !important;
       --surface-container-low: {{ section.settings.section_bg_color }} !important;
@@ -28,8 +32,29 @@
   }
 
   #shopify-section-{{ section.id }} section {
-    {% if section.settings.section_bg_color != blank %}
+    {% if section.settings.section_bg_gradient != blank %}
+      background: {{ section.settings.section_bg_gradient }} !important;
+    {% elsif section.settings.section_bg_color != blank %}
       background-color: {{ section.settings.section_bg_color }} !important;
+    {% endif %}
+  }
+
+  #shopify-section-{{ section.id }} .comparison-table tbody tr:nth-child(odd) {
+    {% if section.settings.odd_row_bg != blank %}
+      background-color: {{ section.settings.odd_row_bg }} !important;
+    {% endif %}
+  }
+
+  #shopify-section-{{ section.id }} .comparison-table tbody tr:nth-child(even) {
+    {% if section.settings.even_row_bg != blank %}
+      background-color: {{ section.settings.even_row_bg }} !important;
+    {% endif %}
+  }
+
+  #shopify-section-{{ section.id }} .comparison-table th.our-product,
+  #shopify-section-{{ section.id }} .comparison-table td.our-product {
+    {% if section.settings.winner_column_bg != blank %}
+      background-color: {{ section.settings.winner_column_bg }} !important;
     {% endif %}
   }
 {% endstyle %}
@@ -244,9 +269,32 @@
       "label": "Section Background Color"
     },
     {
+      "type": "color_background",
+      "id": "section_bg_gradient",
+      "label": "Section Background Gradient"
+    },
+    {
       "type": "color",
       "id": "section_text_color",
       "label": "Section Text Color"
+    },
+    {
+      "type": "color",
+      "id": "odd_row_bg",
+      "label": "Odd Rows Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "even_row_bg",
+      "label": "Even Rows Background Color",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "color",
+      "id": "winner_column_bg",
+      "label": "Winner Column Background Color",
+      "default": "#fff3ee"
     }
   ],
   "blocks": [
