@@ -94,7 +94,14 @@
         "badge_text": "Best Seller",
         "section_font": "work_sans_n4",
         "section_bg_color": "",
-        "section_text_color": "#000000"
+        "section_bg_gradient": "linear-gradient(180deg, rgba(255, 255, 255, 1), rgba(245, 245, 247, 1) 100%)",
+        "section_text_color": "#000000",
+        "product_title_color": "#000000",
+        "rating_stars_color": "#ffc107",
+        "benefit_checkmark_color": "#2e6f40",
+        "cta_button_bg": "#C85A32",
+        "cta_button_text": "#ffffff",
+        "cta_button_whitespace": 24
       }
     },
     "as_seen_on": {
