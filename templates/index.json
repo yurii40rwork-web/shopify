@@ -94,7 +94,7 @@
         "badge_text": "Best Seller",
         "section_font": "work_sans_n4",
         "section_bg_color": "",
-        "section_text_color": ""
+        "section_text_color": "#000000"
       }
     },
     "as_seen_on": {
@@ -147,7 +147,7 @@
         "wave_color": "#d5e3fc",
         "wave_opacity": 85,
         "section_font": "work_sans_n4",
-        "section_bg_color": "#FFFFFF",
+        "section_bg_color": "#ffffff",
         "section_text_color": ""
       }
     },
