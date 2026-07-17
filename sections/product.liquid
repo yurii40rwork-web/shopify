@@ -2,6 +2,14 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 {% style %}
+  {%- assign section_bg_color = section.settings.section_bg_color | default: '#ffffff' -%}
+  {%- assign product_title_color = section.settings.product_title_color | default: '#000000' -%}
+  {%- assign rating_stars_color = section.settings.rating_stars_color | default: '#ffc107' -%}
+  {%- assign benefit_checkmark_color = section.settings.benefit_checkmark_color | default: '#2e6f40' -%}
+  {%- assign cta_button_bg = section.settings.cta_button_bg | default: '#c85a32' -%}
+  {%- assign cta_button_text = section.settings.cta_button_text | default: '#ffffff' -%}
+  {%- assign cta_button_whitespace = section.settings.cta_button_whitespace | default: 24 -%}
+
   {% if section.settings.section_font != blank %}
     {{ section.settings.section_font | font_face: font_display: 'swap' }}
   {% endif %}
@@ -11,12 +19,12 @@
       background: {{ section.settings.section_bg_gradient }} !important;
       --bg-primary: transparent !important;
       --bg-secondary: transparent !important;
-    {% elsif section.settings.section_bg_color != blank %}
-      --bg-primary: {{ section.settings.section_bg_color }} !important;
-      --bg-secondary: {{ section.settings.section_bg_color }} !important;
-      --surface-container-low: {{ section.settings.section_bg_color }} !important;
-      --surface-container: {{ section.settings.section_bg_color }} !important;
-      background-color: {{ section.settings.section_bg_color }} !important;
+    {% else %}
+      --bg-primary: {{ section_bg_color }} !important;
+      --bg-secondary: {{ section_bg_color }} !important;
+      --surface-container-low: {{ section_bg_color }} !important;
+      --surface-container: {{ section_bg_color }} !important;
+      background-color: {{ section_bg_color }} !important;
     {% endif %}
     {% if section.settings.section_text_color != blank %}
       --text-primary: {{ section.settings.section_text_color }} !important;
@@ -33,35 +41,23 @@
   }
 
   #shopify-section-{{ section.id }} .main-product-title {
-    {% if section.settings.product_title_color != blank %}
-      color: {{ section.settings.product_title_color }} !important;
-    {% endif %}
+    color: {{ product_title_color }} !important;
   }
 
   #shopify-section-{{ section.id }} .stars-container .material-symbols-outlined {
-    {% if section.settings.rating_stars_color != blank %}
-      color: {{ section.settings.rating_stars_color }} !important;
-    {% endif %}
+    color: {{ rating_stars_color }} !important;
   }
 
   #shopify-section-{{ section.id }} .product-info-description ul li .material-symbols-outlined {
-    {% if section.settings.benefit_checkmark_color != blank %}
-      color: {{ section.settings.benefit_checkmark_color }} !important;
-    {% endif %}
+    color: {{ benefit_checkmark_color }} !important;
   }
 
   #shopify-section-{{ section.id }} .premium-buy-btn {
-    {% if section.settings.cta_button_bg != blank %}
-      background-color: {{ section.settings.cta_button_bg }} !important;
-      border-color: {{ section.settings.cta_button_bg }} !important;
-    {% endif %}
-    {% if section.settings.cta_button_text != blank %}
-      color: {{ section.settings.cta_button_text }} !important;
-    {% endif %}
-    {% if section.settings.cta_button_whitespace != blank %}
-      margin-top: {{ section.settings.cta_button_whitespace }}px !important;
-      margin-bottom: {{ section.settings.cta_button_whitespace }}px !important;
-    {% endif %}
+    background-color: {{ cta_button_bg }} !important;
+    border-color: {{ cta_button_bg }} !important;
+    color: {{ cta_button_text }} !important;
+    margin-top: {{ cta_button_whitespace }}px !important;
+    margin-bottom: {{ cta_button_whitespace }}px !important;
     transition: background-color 0.2s ease, filter 0.2s ease, transform 0.2s ease !important;
   }
 

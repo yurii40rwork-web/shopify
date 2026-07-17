@@ -2,6 +2,12 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 {% style %}
+  {%- assign section_bg_color = section.settings.section_bg_color | default: '#ffffff' -%}
+  {%- assign card_bg_color = section.settings.card_bg_color | default: '#f5f5f7' -%}
+  {%- assign icon_color = section.settings.icon_color | default: '#000000' -%}
+  {%- assign icon_bg_color = section.settings.icon_bg_color | default: 'transparent' -%}
+  {%- assign icon_border_color = section.settings.icon_border_color | default: '#000000' -%}
+
   {% if section.settings.section_font != blank %}
     {{ section.settings.section_font | font_face: font_display: 'swap' }}
   {% endif %}
@@ -11,12 +17,12 @@
       background: {{ section.settings.section_bg_gradient }} !important;
       --bg-primary: transparent !important;
       --bg-secondary: transparent !important;
-    {% elsif section.settings.section_bg_color != blank %}
-      --bg-primary: {{ section.settings.section_bg_color }} !important;
-      --bg-secondary: {{ section.settings.section_bg_color }} !important;
-      --surface-container-low: {{ section.settings.section_bg_color }} !important;
-      --surface-container: {{ section.settings.section_bg_color }} !important;
-      background-color: {{ section.settings.section_bg_color }} !important;
+    {% else %}
+      --bg-primary: {{ section_bg_color }} !important;
+      --bg-secondary: {{ section_bg_color }} !important;
+      --surface-container-low: {{ section_bg_color }} !important;
+      --surface-container: {{ section_bg_color }} !important;
+      background-color: {{ section_bg_color }} !important;
     {% endif %}
     {% if section.settings.section_text_color != blank %}
       --text-primary: {{ section.settings.section_text_color }} !important;
@@ -33,21 +39,13 @@
   }
 
   #shopify-section-{{ section.id }} .benefit-card {
-    {% if section.settings.card_bg_color != blank %}
-      background-color: {{ section.settings.card_bg_color }} !important;
-    {% endif %}
+    background-color: {{ card_bg_color }} !important;
   }
 
   #shopify-section-{{ section.id }} .benefit-icon-placeholder {
-    {% if section.settings.icon_color != blank %}
-      color: {{ section.settings.icon_color }} !important;
-    {% endif %}
-    {% if section.settings.icon_bg_color != blank %}
-      background-color: {{ section.settings.icon_bg_color }} !important;
-    {% endif %}
-    {% if section.settings.icon_border_color != blank %}
-      border-color: {{ section.settings.icon_border_color }} !important;
-    {% endif %}
+    color: {{ icon_color }} !important;
+    background-color: {{ icon_bg_color }} !important;
+    border-color: {{ icon_border_color }} !important;
   }
 {% endstyle %}
 

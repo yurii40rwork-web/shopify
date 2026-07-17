@@ -1,6 +1,11 @@
 {{ 'avemos-style.css' | asset_url | stylesheet_tag }}
 
 {% style %}
+  {%- assign section_bg_color = section.settings.section_bg_color | default: '#f1f5f9' -%}
+  {%- assign odd_row_bg = section.settings.odd_row_bg | default: '#ffffff' -%}
+  {%- assign even_row_bg = section.settings.even_row_bg | default: '#f9f9f9' -%}
+  {%- assign winner_column_bg = section.settings.winner_column_bg | default: '#fff3ee' -%}
+
   {% if section.settings.section_font != blank %}
     {{ section.settings.section_font | font_face: font_display: 'swap' }}
   {% endif %}
@@ -10,12 +15,12 @@
       background: {{ section.settings.section_bg_gradient }} !important;
       --bg-primary: transparent !important;
       --bg-secondary: transparent !important;
-    {% elsif section.settings.section_bg_color != blank %}
-      --bg-primary: {{ section.settings.section_bg_color }} !important;
-      --bg-secondary: {{ section.settings.section_bg_color }} !important;
-      --surface-container-low: {{ section.settings.section_bg_color }} !important;
-      --surface-container: {{ section.settings.section_bg_color }} !important;
-      background-color: {{ section.settings.section_bg_color }} !important;
+    {% else %}
+      --bg-primary: {{ section_bg_color }} !important;
+      --bg-secondary: {{ section_bg_color }} !important;
+      --surface-container-low: {{ section_bg_color }} !important;
+      --surface-container: {{ section_bg_color }} !important;
+      background-color: {{ section_bg_color }} !important;
     {% endif %}
     {% if section.settings.section_text_color != blank %}
       --text-primary: {{ section.settings.section_text_color }} !important;
@@ -34,28 +39,22 @@
   #shopify-section-{{ section.id }} section {
     {% if section.settings.section_bg_gradient != blank %}
       background: {{ section.settings.section_bg_gradient }} !important;
-    {% elsif section.settings.section_bg_color != blank %}
-      background-color: {{ section.settings.section_bg_color }} !important;
+    {% else %}
+      background-color: {{ section_bg_color }} !important;
     {% endif %}
   }
 
   #shopify-section-{{ section.id }} .comparison-table tbody tr:nth-child(odd) {
-    {% if section.settings.odd_row_bg != blank %}
-      background-color: {{ section.settings.odd_row_bg }} !important;
-    {% endif %}
+    background-color: {{ odd_row_bg }} !important;
   }
 
   #shopify-section-{{ section.id }} .comparison-table tbody tr:nth-child(even) {
-    {% if section.settings.even_row_bg != blank %}
-      background-color: {{ section.settings.even_row_bg }} !important;
-    {% endif %}
+    background-color: {{ even_row_bg }} !important;
   }
 
   #shopify-section-{{ section.id }} .comparison-table th.our-product,
   #shopify-section-{{ section.id }} .comparison-table td.our-product {
-    {% if section.settings.winner_column_bg != blank %}
-      background-color: {{ section.settings.winner_column_bg }} !important;
-    {% endif %}
+    background-color: {{ winner_column_bg }} !important;
   }
 {% endstyle %}
 
