@@ -45,6 +45,9 @@
   "labels": {
     "alignment": "Alignment",
     "background": "Background",
+    "body_background": "Body background",
+    "headings": "Headings",
+    "body_text": "Body text (paragraphs)",
     "foreground": "Foreground",
     "grid_gap": "Grid spacing",
     "grid_item_width": "Grid item width",

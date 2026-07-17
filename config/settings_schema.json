@@ -58,15 +58,21 @@
     "settings": [
       {
         "type": "color",
-        "id": "background_color",
+        "id": "body_background_color",
         "default": "#FFFFFF",
-        "label": "t:labels.background"
+        "label": "t:labels.body_background"
       },
       {
         "type": "color",
-        "id": "foreground_color",
+        "id": "heading_color",
+        "default": "#121212",
+        "label": "t:labels.headings"
+      },
+      {
+        "type": "color",
+        "id": "paragraph_color",
         "default": "#333333",
-        "label": "t:labels.foreground"
+        "label": "t:labels.body_text"
       },
       {
         "type": "range",
