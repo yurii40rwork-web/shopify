@@ -9,6 +9,8 @@
  */
 {
   "current": {
+    "heading_color": "#000000",
+    "paragraph_color": "#111111",
     "sections": {
       "cart-drawer": {
         "type": "cart-drawer",
