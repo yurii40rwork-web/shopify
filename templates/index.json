@@ -99,7 +99,7 @@
         "product_title_color": "#000000",
         "rating_stars_color": "#ffc107",
         "benefit_checkmark_color": "#2e6f40",
-        "cta_button_bg": "#1E40AF",
+        "cta_button_bg": "#1e40af",
         "cta_button_text": "#ffffff",
         "cta_button_whitespace": 24
       }
@@ -155,7 +155,7 @@
         "wave_opacity": 85,
         "section_font": "work_sans_n4",
         "section_bg_color": "#111111",
-        "section_text_color": "#A9A9A9"
+        "section_text_color": "#a9a9a9"
       }
     },
     "benefits": {
@@ -205,7 +205,12 @@
         "subtitle": "Innovative technology for your comfortable sleep on the road",
         "section_font": "work_sans_n4",
         "section_bg_color": "",
-        "section_text_color": ""
+        "section_bg_gradient": "",
+        "section_text_color": "",
+        "card_bg_color": "#f5f5f7",
+        "icon_color": "#000000",
+        "icon_bg_color": "rgba(0,0,0,0)",
+        "icon_border_color": "#000000"
       }
     },
     "comparison": {
@@ -265,7 +270,11 @@
         "their_product": "Traditional U-Shape Pillows",
         "section_font": "work_sans_n4",
         "section_bg_color": "",
-        "section_text_color": ""
+        "section_bg_gradient": "",
+        "section_text_color": "",
+        "odd_row_bg": "#ffffff",
+        "even_row_bg": "#f9f9f9",
+        "winner_column_bg": "#F0F4FF"
       }
     },
     "how_it_works": {
