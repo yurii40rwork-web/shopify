@@ -45,8 +45,9 @@
           "header_font": "work_sans_n4",
           "header_bg_color": "#ffffff",
           "header_text_color": "#14171d",
+          "header_hover_text_color": "#C85A32",
           "announcement_font": "outfit_n9",
-          "announcement_bg_color": "#C85A32",
+          "announcement_bg_color": "#c85a32",
           "announcement_text_color": "#ffffff"
         }
       }
