@@ -154,8 +154,8 @@
         "wave_color": "#d5e3fc",
         "wave_opacity": 85,
         "section_font": "work_sans_n4",
-        "section_bg_color": "#ffffff",
-        "section_text_color": ""
+        "section_bg_color": "#111111",
+        "section_text_color": "#A9A9A9"
       }
     },
     "benefits": {
