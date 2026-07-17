@@ -148,7 +148,7 @@
       "settings": {
         "brand_speed": 60,
         "show_waves": true,
-        "wave_amplitude": 100,
+        "wave_amplitude": 60,
         "wave_speed": 12,
         "wave_2_speed": 8,
         "wave_color": "#d5e3fc",
