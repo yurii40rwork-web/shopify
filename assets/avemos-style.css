@@ -1565,6 +1565,16 @@
   margin-left: 32px !important;
   flex-wrap: nowrap !important;
 }
+@media (max-width: 767px) {
+  .Avemos-landing-wrapper .bundle-color-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    margin-left: 0 !important;
+    gap: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
 .Avemos-landing-wrapper .bundle-radio-checkmark {
   margin-left: 16px !important;
   margin-right: 16px !important;
