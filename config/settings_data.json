@@ -30,7 +30,16 @@
           "pillow_qty3_price": 30,
           "pillow_qty3_info": "($30.00 each)",
           "pillow_qty4_price": 26,
-          "pillow_qty4_info": "($26.00 each)"
+          "pillow_qty4_info": "($26.00 each)",
+          "cart_bg_color": "#ffffff",
+          "progress_bar_empty_color": "#e5e5e5",
+          "progress_bar_fill_color": "#2e6f40",
+          "upsell_border_color": "#c85a32",
+          "upsell_hover_bg_color": "#faf9f6",
+          "checkout_btn_bg_color": "#c85a32",
+          "checkout_btn_text_color": "#ffffff",
+          "ghost_btn_border_color": "#666666",
+          "ghost_btn_text_color": "#181c21"
         }
       },
       "avemos-header": {
@@ -43,11 +52,11 @@
           "mobile_announcement": "🌸 Memorial Day Sale | 50% Off",
           "menu": "",
           "header_font": "work_sans_n4",
-          "header_bg_color": "#ffffff",
-          "header_text_color": "#14171d",
-          "header_hover_text_color": "#C85A32",
+          "header_bg_color": "#FFFFFF",
+          "header_text_color": "#000000",
+          "header_hover_text_color": "#c85a32",
           "announcement_font": "outfit_n9",
-          "announcement_bg_color": "#c85a32",
+          "announcement_bg_color": "#000000",
           "announcement_text_color": "#ffffff"
         }
       }
