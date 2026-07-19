@@ -201,4 +201,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial Calculation sync
   updateProductTotals();
+
+  // Prevent image dragging globally
+  document.addEventListener('dragstart', (e) => {
+    if (e.target && (e.target.tagName === 'IMG' || e.target.closest('img'))) {
+      e.preventDefault();
+    }
+  });
 });
