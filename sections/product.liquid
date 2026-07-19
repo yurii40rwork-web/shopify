@@ -1364,14 +1364,34 @@
 
   /* Expandable Content for active card */
   .bundle-card-new .bundle-card-content {
-    opacity: 0.55;
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.2s ease, 
+                margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                padding-bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  #bundle-card-1.active .bundle-card-content {
+    max-height: 60px;
+    opacity: 1;
+    overflow: visible;
     margin-top: 12px;
     padding-bottom: 8px;
-    overflow: visible;
-    transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .bundle-card-new.active .bundle-card-content {
+  #bundle-card-2.active .bundle-card-content {
+    max-height: 75px;
     opacity: 1;
+    overflow: visible;
+    margin-top: 12px;
+    padding-bottom: 8px;
+  }
+  @media (max-width: 767px) {
+    #bundle-card-2.active .bundle-card-content {
+      max-height: 135px;
+    }
   }
 
   .bundle-color-separator {
@@ -1940,37 +1960,24 @@
 
     bundleCards.forEach(card => {
       card.addEventListener('click', (e) => {
-        const dropdown = e.target.closest('.custom-dropdown');
-        
-        // If the card is not active yet, activate it first
-        if (!card.classList.contains('active')) {
-          const radio = card.querySelector('input[type="radio"]');
-          if (radio) {
-            radio.checked = true;
-          }
-
-          bundleCards.forEach(c => {
-            c.classList.remove('active');
-          });
-
-          card.classList.add('active');
-          updatePriceAndVariant();
-          
-          // If they clicked on a dropdown trigger, let it open the dropdown immediately!
-          if (dropdown) {
-            // Close other dropdowns first
-            customDropdowns.forEach(d => {
-              if (d !== dropdown) d.classList.remove('open');
-            });
-            dropdown.classList.add('open');
-          }
+        // Prevent click trigger loop if clicking custom dropdown elements
+        if (e.target.closest('.custom-dropdown')) {
           return;
         }
 
-        // If the card is already active and they click a dropdown, let the dropdown logic handle it
-        if (dropdown) {
-          return;
+        const radio = card.querySelector('input[type="radio"]');
+        if (radio) {
+          radio.checked = true;
         }
+
+        // Toggle active status UI
+        bundleCards.forEach(c => {
+          c.classList.remove('active');
+        });
+
+        card.classList.add('active');
+
+        updatePriceAndVariant();
       });
     });
 
@@ -1981,12 +1988,6 @@
 
       // Toggle open/close on trigger click
       trigger.addEventListener('click', (e) => {
-        const card = trigger.closest('.bundle-card-new');
-        if (card && !card.classList.contains('active')) {
-          // Allow click to bubble to activate the card
-          return;
-        }
-
         e.stopPropagation();
         // Close all other dropdowns first
         customDropdowns.forEach(d => {
