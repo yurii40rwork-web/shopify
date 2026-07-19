@@ -1,17 +1,42 @@
 {{ 'avemos-style.css' | asset_url | stylesheet_tag }}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+{% style %}
+  .Avemos-landing-wrapper .footer {
+    background-color: {{ section.settings.footer_bg_color }} !important;
+    color: {{ section.settings.footer_text_color }} !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .Avemos-landing-wrapper .footer-col h4 {
+    color: {{ section.settings.footer_headings_color }} !important;
+  }
+  .Avemos-landing-wrapper .footer-links a,
+  .Avemos-landing-wrapper .footer-links li,
+  .Avemos-landing-wrapper .footer-col p,
+  .Avemos-landing-wrapper .footer-bottom p {
+    color: {{ section.settings.footer_text_color }} !important;
+    text-decoration: none;
+    transition: color 0.25s ease;
+  }
+  .Avemos-landing-wrapper .footer-links a:hover {
+    color: {{ section.settings.footer_links_hover_color }} !important;
+  }
+  .Avemos-landing-wrapper .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+{% endstyle %}
+
 <div class="Avemos-landing-wrapper">
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <h4 style="font-weight: 800;"><i class="fa-solid fa-plane-departure"></i> {{ section.settings.col_1_title | default: "Avemos" }}</h4>
-          <p>{{ section.settings.col_1_desc | default: "We create premium products for your comfort during travels all over the world." }}</p>
+          <h4 style="font-weight: 800;"><i class="fa-solid fa-plane-departure"></i> {{ section.settings.col_1_title }}</h4>
+          <p>{{ section.settings.col_1_desc }}</p>
         </div>
         <div class="footer-col">
-          <h4>{{ section.settings.col_2_title | default: "Contact Us" }}</h4>
+          <h4>{{ section.settings.col_2_title }}</h4>
           <ul class="footer-links">
             {%- if section.settings.email != blank -%}
               <li>Email: {{ section.settings.email }}</li>
@@ -25,7 +50,7 @@
           </ul>
         </div>
         <div class="footer-col">
-          <h4>{{ section.settings.col_3_title | default: "Legal Information" }}</h4>
+          <h4>{{ section.settings.col_3_title }}</h4>
           <ul class="footer-links">
             {%- if section.settings.menu != blank -%}
               {%- for link in section.settings.menu.links -%}
@@ -42,7 +67,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>{{ section.settings.copyright_text | default: "&copy; 2026 Avemos® Mock App. All rights reserved." }}</p>
+        <p>{{ section.settings.copyright_text }}</p>
         {%- if section.settings.show_payment_badges -%}
           <div class="mock-payments">
             <span class="mock-payment-badge stripe-badge" aria-label="Stripe">
@@ -142,6 +167,34 @@
       "id": "show_payment_badges",
       "label": "Show Payment Badges?",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Visual Friction Optimization (Styles)"
+    },
+    {
+      "type": "color",
+      "id": "footer_bg_color",
+      "label": "Footer Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "footer_headings_color",
+      "label": "Footer Headings Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "footer_text_color",
+      "label": "Footer Text/Links Color",
+      "default": "#B3B3B3"
+    },
+    {
+      "type": "color",
+      "id": "footer_links_hover_color",
+      "label": "Footer Links Hover Color",
+      "default": "#FFFFFF"
     }
   ],
   "presets": [

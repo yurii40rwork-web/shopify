@@ -1,0 +1,66 @@
+{{ 'avemos-style.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+{%- assign logo_height = settings.track123_logo_height | default: 50 -%}
+
+{%- assign bg_size = settings.track123_bg_size -%}
+{%- if bg_size == 'custom' -%}
+  {%- assign bg_size = settings.track123_bg_size_custom | default: 'cover' -%}
+{%- endif -%}
+
+<style>
+  /* Page background style override */
+  .Avemos-landing-wrapper {
+    {%- if settings.track123_bg_image != blank -%}
+      background-image: url('{{ settings.track123_bg_image | image_url: width: 2000 }}') !important;
+      background-size: {{ bg_size }} !important;
+      background-position: {{ settings.track123_bg_position }} !important;
+      background-repeat: no-repeat !important;
+    {%- endif -%}
+    {%- if settings.track123_bg_color != blank and settings.track123_bg_color != 'rgba(0,0,0,0)' and settings.track123_bg_color != 'transparent' -%}
+      background-color: {{ settings.track123_bg_color }} !important;
+    {%- endif -%}
+  }
+
+  /* Target the widget container to change or hide the background image */
+  #track123-tracking-page,
+  .track123_tracking_page_container,
+  .track123_form_wrapper,
+  .track123_track_content,
+  .tracking-page-container {
+    {%- if settings.track123_bg_hide_image -%}
+      background-image: none !important;
+    {%- elsif settings.track123_bg_image != blank -%}
+      background-image: url('{{ settings.track123_bg_image | image_url: width: 2000 }}') !important;
+    {%- endif -%}
+
+    {%- if bg_size != blank -%}
+      background-size: {{ bg_size }} !important;
+    {%- endif -%}
+    {%- if settings.track123_bg_position != blank -%}
+      background-position: {{ settings.track123_bg_position }} !important;
+    {%- endif -%}
+  }
+</style>
+
+<div class="Avemos-landing-wrapper">
+  {%- if settings.track123_title != blank or settings.track123_subtitle != blank -%}
+    <div style="background-color: var(--bg-secondary); padding: {{ settings.track123_padding_top }}px 0 0 0; text-align: center;">
+      <div class="container" style="max-width: 800px;">
+        {%- if settings.track123_title != blank -%}
+          <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 12px; color: var(--text-primary);">{{ settings.track123_title }}</h1>
+        {%- endif -%}
+        {%- if settings.track123_subtitle != blank -%}
+          <p style="color: var(--text-secondary); font-size: 1.1rem; max-width: 600px; margin: 0 auto; line-height: 1.5;">{{ settings.track123_subtitle }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Track123 Customizer",
+  "settings": []
+}
+{% endschema %}

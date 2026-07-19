@@ -2,21 +2,20 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <div class="Avemos-landing-wrapper">
-  {% render 'avemos-header-markup', logo_height: 50 %}
 
 {%- liquid
-  assign title = section.settings.title | default: "About Us"
-  assign story_title = section.settings.story_title | default: "Our Story & Mission"
-  assign story_text_1 = section.settings.story_text_1 | default: "The Avemos® brand was born out of frustration from a group of frequent travelers and ergonomic specialists. We were tired of the standard U-shaped travel pillows on the market—whether they were inflatable ones that deflated midway, or cheap foam ones that offered zero support, causing the head to bob forward and leaving our necks stiff and painful after sleeping."
-  assign story_text_2 = section.settings.story_text_2 | default: "After prototyping over 20 different designs on long-haul flights and consulting with orthopedic experts, we developed the Avemos Travel Pillow. Our mission is to make every journey comfortable and pain-free, helping travelers arrive at their destinations refreshed and fully energized."
-  assign features_title = section.settings.features_title | default: "Premium Product Features"
-  assign dtc_title = section.settings.dtc_title | default: "Our DTC Model & Location"
-  assign dtc_text = section.settings.dtc_text | default: "We operate as a DTC (Direct-to-Consumer) brand, shipping globally straight from our design hub. Our primary office and fulfillment logistics center are located in Ukraine: Zelena St, 114, Lviv. We cut out traditional retail markups to bring you high-end travel gear at an honest price."
-  assign responsible_title = section.settings.responsible_title | default: "Responsible Person & Contact"
-  assign responsible_name = section.settings.responsible_name | default: "Yurii Lepkyi"
-  assign responsible_role = section.settings.responsible_role | default: "Responsible Person & Business Owner"
-  assign responsible_email = section.settings.responsible_email | default: "lepkyimanagm@gmail.com"
-  assign responsible_desc = section.settings.responsible_desc | default: "As the lead director and business owner of the Avemos® brand, Yurii manages product operations, DTC logistics, and quality assurance. If you have any business inquiries or partnership suggestions, feel free to reach out directly."
+  assign title = section.settings.title
+  assign story_title = section.settings.story_title
+  assign story_text_1 = section.settings.story_text_1
+  assign story_text_2 = section.settings.story_text_2
+  assign features_title = section.settings.features_title
+  assign dtc_title = section.settings.dtc_title
+  assign dtc_text = section.settings.dtc_text
+  assign responsible_title = section.settings.responsible_title
+  assign responsible_name = section.settings.responsible_name
+  assign responsible_role = section.settings.responsible_role
+  assign responsible_email = section.settings.responsible_email
+  assign responsible_desc = section.settings.responsible_desc
 
   if section.settings.hero_image != blank
     assign hero_image_url = section.settings.hero_image | image_url: width: 800
@@ -82,9 +81,11 @@
           <div>
             <h3 style="font-size: 1.2rem; color: var(--text-primary); font-weight: 700; margin-bottom: 4px;">{{ responsible_name }}</h3>
             <p style="font-size: 0.95rem; color: var(--primary); font-weight: 600; margin-bottom: 8px;">{{ responsible_role }}</p>
-            <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 8px;">
-              Personal Email: <a href="mailto:{{ responsible_email }}" style="color: var(--primary); text-decoration: underline;">{{ responsible_email }}</a>
-            </p>
+            {%- if responsible_email != blank -%}
+              <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 8px;">
+                Personal Email: <a href="mailto:{{ responsible_email }}" style="color: var(--primary); text-decoration: underline;">{{ responsible_email }}</a>
+              </p>
+            {%- endif -%}
             <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5;">
               {{ responsible_desc }}
             </p>

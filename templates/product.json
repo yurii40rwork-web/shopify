@@ -28,24 +28,23 @@
           "type": "description",
           "settings": {}
         },
-        "promo": {
-          "type": "promo",
-          "settings": {
-            "promo_text": "⏳ Final Hours: Claim Your 50% Discount & Free Shipping Before It’s Gone",
-            "promo_color": "#ba1a1a"
-          }
-        },
         "bundles": {
           "type": "bundles",
           "settings": {
-            "bundle_1_title": "Buy 1",
-            "bundle_1_save_text": "You Save $39.00",
+            "promo_header_text": "⏳ Ends Tonight: Bundle & Save up to 60% off",
+            "promo_header_bg": "#fee2e2",
+            "promo_header_color": "#991b1b",
+            "bundle_1_title": "1 Pillow",
+            "bundle_1_save_text": "SAVE 50%",
             "bundle_1_original_price": "$78.00",
-            "bundle_2_title": "Buy 2",
-            "bundle_2_subtitle": "Save $10",
-            "bundle_2_save_text": "Best Deal: $34.00 Each",
-            "bundle_2_original_price": "$156.00",
-            "bundle_2_discount": 10
+            "bundle_2_title": "2 Pillows",
+            "bundle_2_save_text": "SAVE 60%",
+            "bundle_2_original_price": "$136.00",
+            "bundle_2_discount": 10,
+            "bundle_2_tag": "MOST POPULAR",
+            "badge_horizontal_padding": 16,
+            "selected_border_color": "#ff5a3d",
+            "selected_pin_color": "#ff5a3d"
           }
         },
         "buy_buttons": {
@@ -61,7 +60,6 @@
         "title",
         "rating",
         "description",
-        "promo",
         "bundles",
         "buy_buttons"
       ]

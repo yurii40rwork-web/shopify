@@ -1,19 +1,77 @@
 {{ 'avemos-style.css' | asset_url | stylesheet_tag }}
 
+{% style %}
+  {%- assign section_bg_color = section.settings.section_bg_color | default: '#f1f5f9' -%}
+  {%- assign odd_row_bg = section.settings.odd_row_bg | default: '#ffffff' -%}
+  {%- assign even_row_bg = section.settings.even_row_bg | default: '#f9f9f9' -%}
+  {%- assign winner_column_bg = section.settings.winner_column_bg | default: '#fff3ee' -%}
+
+  {% if section.settings.section_font != blank %}
+    {{ section.settings.section_font | font_face: font_display: 'swap' }}
+  {% endif %}
+
+  #shopify-section-{{ section.id }} {
+    {% if section.settings.section_bg_gradient != blank %}
+      background: {{ section.settings.section_bg_gradient }} !important;
+      --bg-primary: transparent !important;
+      --bg-secondary: transparent !important;
+    {% else %}
+      --bg-primary: {{ section_bg_color }} !important;
+      --bg-secondary: {{ section_bg_color }} !important;
+      --surface-container-low: {{ section_bg_color }} !important;
+      --surface-container: {{ section_bg_color }} !important;
+      background-color: {{ section_bg_color }} !important;
+    {% endif %}
+    {% if section.settings.section_text_color != blank %}
+      --text-primary: {{ section.settings.section_text_color }} !important;
+      --text-secondary: {{ section.settings.section_text_color }} !important;
+      --text-light: {{ section.settings.section_text_color }} !important;
+      color: {{ section.settings.section_text_color }} !important;
+    {% endif %}
+    {% if section.settings.section_font != blank %}
+      --font-family: {{ section.settings.section_font.family }}, {{ section.settings.section_font.fallback_families }} !important;
+      --font-heading: {{ section.settings.section_font.family }}, {{ section.settings.section_font.fallback_families }} !important;
+      --font-body: {{ section.settings.section_font.family }}, {{ section.settings.section_font.fallback_families }} !important;
+      font-family: {{ section.settings.section_font.family }}, {{ section.settings.section_font.fallback_families }} !important;
+    {% endif %}
+  }
+
+  #shopify-section-{{ section.id }} section {
+    {% if section.settings.section_bg_gradient != blank %}
+      background: {{ section.settings.section_bg_gradient }} !important;
+    {% else %}
+      background-color: {{ section_bg_color }} !important;
+    {% endif %}
+  }
+
+  #shopify-section-{{ section.id }} .comparison-table tbody tr:nth-child(odd) {
+    background-color: {{ odd_row_bg }} !important;
+  }
+
+  #shopify-section-{{ section.id }} .comparison-table tbody tr:nth-child(even) {
+    background-color: {{ even_row_bg }} !important;
+  }
+
+  #shopify-section-{{ section.id }} .comparison-table th.our-product,
+  #shopify-section-{{ section.id }} .comparison-table td.our-product {
+    background-color: {{ winner_column_bg }} !important;
+  }
+{% endstyle %}
+
 <div class="Avemos-landing-wrapper" id="comparison">
   <!-- Comparison Section -->
   <section style="background-color: #f1f5f9; padding: 40px 0;">
     <div class="container">
-      <h2 class="section-title">{{ section.settings.title | default: "Comparison with Traditional Pillows" }}</h2>
-      <p class="section-subtitle">{{ section.settings.subtitle | default: "Why traditional U-shaped travel pillows are no longer sufficient" }}</p>
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+      <p class="section-subtitle">{{ section.settings.subtitle }}</p>
       
       <div class="comparison-wrapper">
         <table class="comparison-table">
           <thead>
             <tr>
               <th>Features</th>
-              <th class="our-product">{{ section.settings.our_product | default: "Avemos® Pillow" }}</th>
-              <th>{{ section.settings.their_product | default: "Traditional U-Shape Pillows" }}</th>
+              <th class="our-product">{{ section.settings.our_product }}</th>
+              <th>{{ section.settings.their_product }}</th>
             </tr>
           </thead>
           <tbody>
@@ -193,6 +251,49 @@
       "id": "their_product",
       "label": "Traditional Product Name",
       "default": "Traditional U-Shape Pillows"
+    },
+    {
+      "type": "header",
+      "content": "Section Customization"
+    },
+    {
+      "type": "font_picker",
+      "id": "section_font",
+      "label": "Section Font",
+      "default": "work_sans_n4"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section Background Color"
+    },
+    {
+      "type": "color_background",
+      "id": "section_bg_gradient",
+      "label": "Section Background Gradient"
+    },
+    {
+      "type": "color",
+      "id": "section_text_color",
+      "label": "Section Text Color"
+    },
+    {
+      "type": "color",
+      "id": "odd_row_bg",
+      "label": "Odd Rows Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "even_row_bg",
+      "label": "Even Rows Background Color",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "color",
+      "id": "winner_column_bg",
+      "label": "Winner Column Background Color",
+      "default": "#fff3ee"
     }
   ],
   "blocks": [

@@ -9,6 +9,8 @@
  */
 {
   "current": {
+    "heading_color": "#000000",
+    "paragraph_color": "#111111",
     "sections": {
       "cart-drawer": {
         "type": "cart-drawer",
@@ -21,11 +23,69 @@
           "shipping_protection_price": 5,
           "save_percent": 57,
           "trust_guarantee_text": "30 Day Money Back Guarantee",
-          "pillow_base_price": 39,
-          "pillow_original_price": 78
+          "pillow_qty1_price": 39,
+          "pillow_qty1_original": 78,
+          "pillow_qty2_price": 34,
+          "pillow_qty2_info": "($34.00 each)",
+          "pillow_qty3_price": 30,
+          "pillow_qty3_info": "($30.00 each)",
+          "pillow_qty4_price": 26,
+          "pillow_qty4_info": "($26.00 each)",
+          "cart_bg_color": "#ffffff",
+          "progress_bar_empty_color": "#e5e5e5",
+          "progress_bar_fill_color": "#2e6f40",
+          "upsell_border_color": "#c85a32",
+          "upsell_hover_bg_color": "#faf9f6",
+          "checkout_btn_bg_color": "#c85a32",
+          "checkout_btn_text_color": "#ffffff",
+          "ghost_btn_border_color": "#666666",
+          "ghost_btn_text_color": "#181c21"
+        }
+      },
+      "avemos-header": {
+        "type": "avemos-header",
+        "settings": {
+          "logo": "shopify://shop_images/logo-no-background12111.png",
+          "logo_height": 50,
+          "announcement_1": "🔥 SPECIAL DEAL: 50% OFF TODAY ONLY!",
+          "announcement_2": "Free Express Shipping",
+          "mobile_announcement": "🌸 Memorial Day Sale | 50% Off",
+          "menu": "",
+          "header_font": "work_sans_n4",
+          "header_bg_color": "#FFFFFF",
+          "header_text_color": "#000000",
+          "header_hover_text_color": "#c85a32",
+          "announcement_font": "outfit_n9",
+          "announcement_bg_color": "#000000",
+          "announcement_text_color": "#ffffff"
         }
       }
     },
-    "content_for_index": []
+    "content_for_index": [],
+    "blocks": {
+      "15683396631634586217": {
+        "type": "shopify://apps/inbox/blocks/chat/841fc607-4181-4ad1-842d-e24d7f8bad6b",
+        "disabled": false,
+        "settings": {
+          "greeting_message": "",
+          "show_featured_products": true,
+          "featured_products": [
+            "premium-avemos™-travel-neck-pillow"
+          ],
+          "background_color": "#ffffff",
+          "font_color": "#333333",
+          "button_color": "#333333",
+          "secondary_color": "#333333",
+          "ternary_color": "#6a6a6a",
+          "button_icon": "chat_bubble",
+          "button_text": "chat_with_us",
+          "button_horizontal_position": "bottom_right",
+          "button_vertical_position": "lowest",
+          "agent_inherit_fonts": true,
+          "agent_font": "system_ui_n4",
+          "agent_border_radius": 17
+        }
+      }
+    }
   }
 }

@@ -3,6 +3,78 @@
 
 {%- assign logo_height = section.settings.logo_height | default: 50 -%}
 
+{% style %}
+  {% if section.settings.announcement_font != blank %}
+    {{ section.settings.announcement_font | font_face: font_display: 'swap' }}
+  {% endif %}
+  {% if section.settings.header_font != blank %}
+    {{ section.settings.header_font | font_face: font_display: 'swap' }}
+  {% endif %}
+
+  /* Announcement Bar Custom Styles */
+  .Avemos-landing-wrapper .announcement-bar,
+  .Avemos-landing-wrapper .mobile-nav-drawer .announcement-bar {
+    {% if section.settings.announcement_font != blank %}
+      font-family: {{ section.settings.announcement_font.family }}, {{ section.settings.announcement_font.fallback_families }} !important;
+      font-weight: {{ section.settings.announcement_font.weight }} !important;
+      font-style: {{ section.settings.announcement_font.style }} !important;
+    {% endif %}
+    {% if section.settings.announcement_bg_color != blank %}
+      background-color: {{ section.settings.announcement_bg_color }} !important;
+    {% endif %}
+    {% if section.settings.announcement_text_color != blank %}
+      color: {{ section.settings.announcement_text_color }} !important;
+    {% endif %}
+  }
+
+  .Avemos-landing-wrapper .announcement-bar .highlight,
+  .Avemos-landing-wrapper .mobile-nav-drawer .announcement-bar .highlight {
+    {% if section.settings.announcement_text_color != blank %}
+      color: {{ section.settings.announcement_text_color }} !important;
+    {% endif %}
+    opacity: 0.9;
+    font-weight: 700;
+  }
+
+  /* Header Custom Styles */
+  .Avemos-landing-wrapper .header,
+  .Avemos-landing-wrapper .mobile-nav-drawer .drawer-header {
+    {% if section.settings.header_bg_color != blank %}
+      background-color: {{ section.settings.header_bg_color }} !important;
+    {% endif %}
+  }
+
+  .Avemos-landing-wrapper .header-nav-link,
+  .Avemos-landing-wrapper .mobile-nav-drawer .drawer-nav-link,
+  .Avemos-landing-wrapper .logo,
+  .Avemos-landing-wrapper .mobile-menu-btn,
+  .Avemos-landing-wrapper .mobile-menu-close-btn,
+  .Avemos-landing-wrapper .cart-icon-btn {
+    {% if section.settings.header_font != blank %}
+      font-family: {{ section.settings.header_font.family }}, {{ section.settings.header_font.fallback_families }} !important;
+      font-weight: {{ section.settings.header_font.weight }} !important;
+      font-style: {{ section.settings.header_font.style }} !important;
+    {% endif %}
+    {% if section.settings.header_text_color != blank %}
+      color: {{ section.settings.header_text_color }} !important;
+    {% endif %}
+  }
+
+  .Avemos-landing-wrapper .header-nav-link:hover,
+  .Avemos-landing-wrapper .mobile-nav-drawer .drawer-nav-link:hover,
+  .Avemos-landing-wrapper .mobile-menu-btn:hover,
+  .Avemos-landing-wrapper .mobile-menu-close-btn:hover,
+  .Avemos-landing-wrapper .cart-icon-btn:hover {
+    {% if section.settings.header_hover_text_color != blank %}
+      color: {{ section.settings.header_hover_text_color }} !important;
+      opacity: 1 !important;
+    {% elsif section.settings.header_text_color != blank %}
+      color: {{ section.settings.header_text_color }} !important;
+      opacity: 0.8;
+    {% endif %}
+  }
+{% endstyle %}
+
 <div class="Avemos-landing-wrapper">
   {% render 'avemos-header-markup', logo_height: logo_height, section: section %}
 </div>
@@ -48,6 +120,56 @@
       "type": "link_list",
       "id": "menu",
       "label": "Navigation Menu"
+    },
+    {
+      "type": "header",
+      "content": "Header Customization"
+    },
+    {
+      "type": "font_picker",
+      "id": "header_font",
+      "label": "Header Font",
+      "default": "work_sans_n4"
+    },
+    {
+      "type": "color",
+      "id": "header_bg_color",
+      "label": "Header Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "header_text_color",
+      "label": "Header Text Color",
+      "default": "#14171d"
+    },
+    {
+      "type": "color",
+      "id": "header_hover_text_color",
+      "label": "Header Hover Text Color",
+      "default": "#ca1100"
+    },
+    {
+      "type": "header",
+      "content": "Announcement Bar Customization"
+    },
+    {
+      "type": "font_picker",
+      "id": "announcement_font",
+      "label": "Announcement Font",
+      "default": "work_sans_n4"
+    },
+    {
+      "type": "color",
+      "id": "announcement_bg_color",
+      "label": "Announcement Background Color",
+      "default": "#ca1100"
+    },
+    {
+      "type": "color",
+      "id": "announcement_text_color",
+      "label": "Announcement Text Color",
+      "default": "#ffffff"
     }
   ],
   "presets": [

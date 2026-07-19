@@ -19,11 +19,11 @@
         "features_title": "Premium Product Features",
         "dtc_title": "Our DTC Model & Location",
         "dtc_text": "We operate as a DTC (Direct-to-Consumer) brand, shipping globally straight from our design hub. Our primary office and fulfillment logistics center are located in USA: 8080 N Central Expy #1700, Dallas, TX 75206. We cut out traditional retail markups to bring you high-end travel gear at an honest price.",
-        "responsible_title": "Responsible Person & Contact",
-        "responsible_name": "Yurii Polizhak",
+        "responsible_title": "",
+        "responsible_name": "Our MoR (Merchant of Record)",
         "responsible_role": "",
         "responsible_email": "",
-        "responsible_desc": ""
+        "responsible_desc": "This store is integrated with the Western Bid™ e-commerce platform, and Western Bid, Inc. is the Merchant of Record for all purchases made in this store. Therefore, you will see \"WESTERN BID\" listed as the payee on your PayPal account and credit card statement.&nbsp;"
       }
     }
   },

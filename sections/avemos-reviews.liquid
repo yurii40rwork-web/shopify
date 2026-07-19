@@ -4,17 +4,79 @@
 {%- endif -%}
 {{ 'avemos-style.css' | asset_url | stylesheet_tag }}
 
+{% style %}
+  {%- assign section_bg_color = section.settings.section_bg_color | default: '#f5f5f7' -%}
+  {%- assign card_bg_color = section.settings.card_bg_color | default: '#ffffff' -%}
+  {%- assign review_text_color = section.settings.review_text_color | default: '#333333' -%}
+  {%- assign reviewer_name_color = section.settings.reviewer_name_color | default: '#000000' -%}
+  {%- assign verified_badge_color = section.settings.verified_badge_color | default: '#2e6f40' -%}
+
+  {% if section.settings.section_font != blank %}
+    {{ section.settings.section_font | font_face: font_display: 'swap' }}
+  {% endif %}
+
+  #shopify-section-{{ section.id }} {
+    {% if section.settings.section_bg_gradient != blank %}
+      background: {{ section.settings.section_bg_gradient }} !important;
+      --bg-primary: transparent !important;
+      --bg-secondary: transparent !important;
+    {% else %}
+      --bg-primary: {{ section_bg_color }} !important;
+      --bg-secondary: {{ section_bg_color }} !important;
+      --surface-container-low: {{ section_bg_color }} !important;
+      --surface-container: {{ section_bg_color }} !important;
+      background-color: {{ section_bg_color }} !important;
+    {% endif %}
+    {% if section.settings.section_text_color != blank %}
+      --text-primary: {{ section.settings.section_text_color }} !important;
+      --text-secondary: {{ section.settings.section_text_color }} !important;
+      --text-light: {{ section.settings.section_text_color }} !important;
+      color: {{ section.settings.section_text_color }} !important;
+    {% endif %}
+    {% if section.settings.section_font != blank %}
+      --font-family: {{ section.settings.section_font.family }}, {{ section.settings.section_font.fallback_families }} !important;
+      --font-heading: {{ section.settings.section_font.family }}, {{ section.settings.section_font.fallback_families }} !important;
+      --font-body: {{ section.settings.section_font.family }}, {{ section.settings.section_font.fallback_families }} !important;
+      font-family: {{ section.settings.section_font.family }}, {{ section.settings.section_font.fallback_families }} !important;
+    {% endif %}
+  }
+
+  #shopify-section-{{ section.id }} section {
+    {% if section.settings.section_bg_gradient != blank %}
+      background: {{ section.settings.section_bg_gradient }} !important;
+    {% else %}
+      background-color: {{ section_bg_color }} !important;
+    {% endif %}
+  }
+
+  #shopify-section-{{ section.id }} .review-card {
+    background-color: {{ card_bg_color }} !important;
+  }
+
+  #shopify-section-{{ section.id }} .review-text {
+    color: {{ review_text_color }} !important;
+  }
+
+  #shopify-section-{{ section.id }} .reviewer-name {
+    color: {{ reviewer_name_color }} !important;
+  }
+
+  #shopify-section-{{ section.id }} .verified-badge {
+    color: {{ verified_badge_color }} !important;
+  }
+{% endstyle %}
+
 <div class="Avemos-landing-wrapper" id="reviews">
   <!-- Reviews Section -->
   <section style="background-color: var(--bg-secondary); border-top: 1px solid var(--border-color); padding: 80px 0;">
     <div class="container">
-      <h2 class="section-title">{{ section.settings.title | default: "What Our Customers Say" }}</h2>
-      <p class="section-subtitle">{{ section.settings.subtitle | default: "Real reviews from verified buyers" }}</p>
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+      <p class="section-subtitle">{{ section.settings.subtitle }}</p>
       
       <!-- Rating Overview Block -->
       <div class="reviews-overview" style="margin-bottom: 50px; text-align: center; background-color: var(--bg-primary); padding: 40px 30px; border-radius: var(--radius-lg); border: 1px solid var(--border-light); width: 100%;">
         <div class="rating-summary">
-          {%- assign rating_score_val = section.settings.rating_score | default: "4.9" -%}
+          {%- assign rating_score_val = section.settings.rating_score -%}
           <div style="font-size: 3.5rem; font-weight: 700; color: var(--text-primary); line-height: 1;">{{ rating_score_val }}</div>
           {%- assign rating_num = rating_score_val | plus: 0 -%}
           <div class="rating-stars" style="color: #ff9800; font-size: 1.6rem; margin: 12px 0; display: flex; justify-content: center; align-items: center; gap: 4px;">
@@ -29,7 +91,7 @@
               {%- endif -%}
             {%- endfor -%}
           </div>
-          <div style="color: var(--text-light); font-size: 0.95rem; font-weight: 500;">Based on {{ section.settings.reviews_count | default: "1,248" }} reviews</div>
+          <div style="color: var(--text-light); font-size: 0.95rem; font-weight: 500;">Based on {{ section.settings.reviews_count }} reviews</div>
         </div>
       </div>
       
@@ -584,6 +646,56 @@
       "step": 2,
       "unit": "px",
       "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Section Customization"
+    },
+    {
+      "type": "font_picker",
+      "id": "section_font",
+      "label": "Section Font",
+      "default": "work_sans_n4"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section Background Color",
+      "default": "#f5f5f7"
+    },
+    {
+      "type": "color_background",
+      "id": "section_bg_gradient",
+      "label": "Section Background Gradient"
+    },
+    {
+      "type": "color",
+      "id": "section_text_color",
+      "label": "Section Text Color"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Review Card Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "review_text_color",
+      "label": "Review Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "reviewer_name_color",
+      "label": "Reviewer Name Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "verified_badge_color",
+      "label": "Verified Badge Color",
+      "default": "#2e6f40"
     }
   ],
   "blocks": [

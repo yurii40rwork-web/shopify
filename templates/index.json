@@ -9,16 +9,6 @@
  */
 {
   "sections": {
-    "header": {
-      "type": "avemos-header",
-      "settings": {
-        "logo_height": 50,
-        "announcement_1": "🔥 SPECIAL DEAL: 50% OFF TODAY ONLY!",
-        "announcement_2": "Free Express Shipping",
-        "mobile_announcement": "🌸 Memorial Day Sale | 50% Off",
-        "menu": ""
-      }
-    },
     "avemos_airplane_qdc9hd": {
       "type": "avemos-airplane",
       "name": "Background Airplane",
@@ -26,6 +16,18 @@
         "airplane_size": 100,
         "airplane_velocity": 0.8,
         "airplane_color": "#14171d"
+      }
+    },
+    "avemos_background_shapes_default": {
+      "type": "avemos-background-shapes",
+      "name": "Background Shapes",
+      "settings": {
+        "bg_shapes_enable": false,
+        "bg_shapes_symbol": "star",
+        "bg_shapes_population": 25,
+        "bg_shapes_size": 40,
+        "bg_shapes_color": "#83858a",
+        "bg_shapes_transparency": 15
       }
     },
     "product": {
@@ -39,7 +41,7 @@
           "type": "rating",
           "settings": {
             "show_rating": true,
-            "rating_text": "4.9/5 (12,659 reviews)"
+            "rating_text": "4.9/5 (1,659 reviews)"
           }
         },
         "description": {
@@ -48,24 +50,35 @@
             "description_override": ""
           }
         },
-        "promo": {
-          "type": "promo",
-          "settings": {
-            "promo_text": "⏳ Final Hours: Claim Your 50% Discount & Free Shipping Before It’s Gone",
-            "promo_color": "#ba1a1a"
-          }
-        },
         "bundles": {
           "type": "bundles",
           "settings": {
-            "bundle_1_title": "Buy 1",
-            "bundle_1_save_text": "You Save $39.00",
+            "promo_header_text": "⏳ Ends Tonight: Bundle & Save up to 70% off",
+            "promo_header_bg": "#f5f5f7",
+            "promo_header_color": "#000000",
+            "bundle_1_title": "1 Pillow",
+            "bundle_1_save_text": "SAVE 50%",
             "bundle_1_original_price": "$78.00",
-            "bundle_2_title": "Buy 2",
-            "bundle_2_subtitle": "Save $10",
-            "bundle_2_save_text": "Best Deal: $34.00 Each",
-            "bundle_2_original_price": "$156.00",
-            "bundle_2_discount": 10
+            "bundle_2_title": "2 Pillows",
+            "bundle_2_save_text": "SAVE 60%",
+            "bundle_2_original_price": "$136.00",
+            "bundle_2_discount": 10,
+            "bundle_2_tag": "MOST POPULAR",
+            "badge_position": "top-right",
+            "badge_font_size": 10,
+            "badge_vertical_padding": 6,
+            "badge_horizontal_padding": 8,
+            "badge_border_radius": 6,
+            "badge_bg_color": "#0f2e6e",
+            "badge_text_color": "#ffffff",
+            "discount_badge_font_size": 10,
+            "discount_badge_vertical_padding": 4,
+            "discount_badge_horizontal_padding": 4,
+            "discount_badge_border_radius": 4,
+            "discount_badge_bg_color": "#ff5a3d",
+            "discount_badge_text_color": "#ffffff",
+            "selected_border_color": "#000000",
+            "selected_pin_color": "#1e40af"
           }
         },
         "buy_buttons": {
@@ -81,7 +94,6 @@
         "title",
         "rating",
         "description",
-        "promo",
         "bundles",
         "buy_buttons"
       ],
@@ -89,7 +101,17 @@
         "product": "premium-avemos™-travel-neck-pillow",
         "image_ratio": "1/1",
         "show_badge": true,
-        "badge_text": "Best Seller"
+        "badge_text": "Best Seller",
+        "section_font": "work_sans_n4",
+        "section_bg_color": "",
+        "section_bg_gradient": "linear-gradient(180deg, rgba(255, 255, 255, 1), rgba(245, 245, 247, 1) 100%)",
+        "section_text_color": "#000000",
+        "product_title_color": "#000000",
+        "rating_stars_color": "#ffc107",
+        "benefit_checkmark_color": "#2e6f40",
+        "cta_button_bg": "#1e40af",
+        "cta_button_text": "#ffffff",
+        "cta_button_whitespace": 24
       }
     },
     "as_seen_on": {
@@ -136,11 +158,14 @@
       "settings": {
         "brand_speed": 60,
         "show_waves": true,
-        "wave_amplitude": 100,
+        "wave_amplitude": 60,
         "wave_speed": 12,
         "wave_2_speed": 8,
-        "wave_color": "#d5e3fc",
-        "wave_opacity": 85
+        "wave_color": "#ffffff",
+        "wave_opacity": 85,
+        "section_font": "work_sans_n4",
+        "section_bg_color": "#111111",
+        "section_text_color": "#a9a9a9"
       }
     },
     "benefits": {
@@ -187,7 +212,15 @@
       ],
       "settings": {
         "title": "Why Travelers Choose Avemos™ ",
-        "subtitle": "Innovative technology for your comfortable sleep on the road"
+        "subtitle": "Innovative technology for your comfortable sleep on the road",
+        "section_font": "work_sans_n4",
+        "section_bg_color": "",
+        "section_bg_gradient": "",
+        "section_text_color": "",
+        "card_bg_color": "#f5f5f7",
+        "icon_color": "#000000",
+        "icon_bg_color": "rgba(0,0,0,0)",
+        "icon_border_color": "#000000"
       }
     },
     "comparison": {
@@ -244,7 +277,14 @@
         "title": "Comparison with Traditional Pillows",
         "subtitle": "Why traditional U-shaped travel pillows are no longer sufficient",
         "our_product": "Avemos™  Pillow",
-        "their_product": "Traditional U-Shape Pillows"
+        "their_product": "Traditional U-Shape Pillows",
+        "section_font": "work_sans_n4",
+        "section_bg_color": "",
+        "section_bg_gradient": "",
+        "section_text_color": "",
+        "odd_row_bg": "#ffffff",
+        "even_row_bg": "#f9f9f9",
+        "winner_column_bg": "#f0f4ff"
       }
     },
     "how_it_works": {
@@ -282,7 +322,10 @@
       ],
       "settings": {
         "title": "How It Works",
-        "subtitle": "Just 3 simple steps to perfect sleep"
+        "subtitle": "Just 3 simple steps to perfect sleep",
+        "section_font": "work_sans_n4",
+        "section_bg_color": "",
+        "section_text_color": ""
       }
     },
     "faq": {
@@ -317,7 +360,10 @@
       ],
       "settings": {
         "title": "Frequently Asked Questions (FAQ)",
-        "subtitle": "Quick answers to common questions"
+        "subtitle": "Quick answers to common questions",
+        "section_font": "work_sans_n4",
+        "section_bg_color": "",
+        "section_text_color": ""
       }
     },
     "reviews": {
@@ -436,15 +482,23 @@
       ],
       "settings": {
         "title": "What Our Customers Say",
-        "subtitle": "-",
+        "subtitle": "",
         "rating_score": "4.9",
-        "reviews_count": "12,659",
+        "reviews_count": "1,659",
         "star_5_percent": 92,
         "star_4_percent": 6,
         "star_3_percent": 1,
         "star_2_percent": 0,
         "star_1_percent": 0,
-        "card_padding": 16
+        "card_padding": 16,
+        "section_font": "work_sans_n4",
+        "section_bg_color": "",
+        "section_bg_gradient": "",
+        "section_text_color": "",
+        "card_bg_color": "#ffffff",
+        "review_text_color": "#333333",
+        "reviewer_name_color": "#000000",
+        "verified_badge_color": "#2e6f40"
       }
     },
     "refund": {
@@ -493,13 +547,16 @@
         "heading": "30 Day Money Back Guaranteed",
         "description": "<p>Your satisfaction is our guarantee. If for any reason you need to send them back, we've got you covered.</p>",
         "button_text": "👉 Get Your Avemos™ ",
-        "button_link": ""
+        "button_link": "",
+        "section_font": "work_sans_n4",
+        "section_bg_color": "",
+        "section_text_color": ""
       }
     }
   },
   "order": [
-    "header",
     "avemos_airplane_qdc9hd",
+    "avemos_background_shapes_default",
     "product",
     "as_seen_on",
     "benefits",

@@ -1,6 +1,71 @@
 {{ 'avemos-style.css' | asset_url | stylesheet_tag }}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+{% style %}
+  {%- assign section_bg_color = section.settings.section_bg_color | default: '#ffffff' -%}
+  {%- assign product_title_color = section.settings.product_title_color | default: '#000000' -%}
+  {%- assign rating_stars_color = section.settings.rating_stars_color | default: '#ffc107' -%}
+  {%- assign benefit_checkmark_color = section.settings.benefit_checkmark_color | default: '#2e6f40' -%}
+  {%- assign cta_button_bg = section.settings.cta_button_bg | default: '#c85a32' -%}
+  {%- assign cta_button_text = section.settings.cta_button_text | default: '#ffffff' -%}
+  {%- assign cta_button_whitespace = section.settings.cta_button_whitespace | default: 24 -%}
+
+  {% if section.settings.section_font != blank %}
+    {{ section.settings.section_font | font_face: font_display: 'swap' }}
+  {% endif %}
+
+  #shopify-section-{{ section.id }} {
+    {% if section.settings.section_bg_gradient != blank %}
+      background: {{ section.settings.section_bg_gradient }} !important;
+      --bg-primary: transparent !important;
+      --bg-secondary: transparent !important;
+    {% else %}
+      --bg-primary: {{ section_bg_color }} !important;
+      --bg-secondary: {{ section_bg_color }} !important;
+      --surface-container-low: {{ section_bg_color }} !important;
+      --surface-container: {{ section_bg_color }} !important;
+      background-color: {{ section_bg_color }} !important;
+    {% endif %}
+    {% if section.settings.section_text_color != blank %}
+      --text-primary: {{ section.settings.section_text_color }} !important;
+      --text-secondary: {{ section.settings.section_text_color }} !important;
+      --text-light: {{ section.settings.section_text_color }} !important;
+      color: {{ section.settings.section_text_color }} !important;
+    {% endif %}
+    {% if section.settings.section_font != blank %}
+      --font-family: {{ section.settings.section_font.family }}, {{ section.settings.section_font.fallback_families }} !important;
+      --font-heading: {{ section.settings.section_font.family }}, {{ section.settings.section_font.fallback_families }} !important;
+      --font-body: {{ section.settings.section_font.family }}, {{ section.settings.section_font.fallback_families }} !important;
+      font-family: {{ section.settings.section_font.family }}, {{ section.settings.section_font.fallback_families }} !important;
+    {% endif %}
+  }
+
+  #shopify-section-{{ section.id }} .main-product-title {
+    color: {{ product_title_color }} !important;
+  }
+
+  #shopify-section-{{ section.id }} .stars-container .material-symbols-outlined {
+    color: {{ rating_stars_color }} !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-info-description ul li .material-symbols-outlined {
+    color: {{ benefit_checkmark_color }} !important;
+  }
+
+  #shopify-section-{{ section.id }} .premium-buy-btn {
+    background-color: {{ cta_button_bg }} !important;
+    border-color: {{ cta_button_bg }} !important;
+    color: {{ cta_button_text }} !important;
+    margin-top: {{ cta_button_whitespace }}px !important;
+    margin-bottom: {{ cta_button_whitespace }}px !important;
+    transition: background-color 0.2s ease, filter 0.2s ease, transform 0.2s ease !important;
+  }
+
+  #shopify-section-{{ section.id }} .premium-buy-btn:hover {
+    filter: brightness(0.85) !important;
+  }
+{% endstyle %}
+
 {%- assign product = section.settings.product | default: product -%}
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 
@@ -45,6 +110,12 @@
             <button type="button" class="gallery-arrow-btn next-arrow" aria-label="Next image">
               <span class="material-symbols-outlined">chevron_right</span>
             </button>
+
+            <!-- Swipe Hint for Mobile -->
+            <div class="swipe-hint-overlay" id="gallery-swipe-hint">
+              <span>Swipe</span>
+              <span class="material-symbols-outlined hint-arrow">chevron_right</span>
+            </div>
           </div>
 
           <!-- Thumbnails Grid -->
@@ -67,6 +138,18 @@
               <div class="thumb-card" data-index="1">
                 <img src="{{ 'hero-product-2.png' | asset_url }}" alt="Top product view">
               </div>
+            {%- endif -%}
+          </div>
+
+          <!-- Gallery Indicators / Dots -->
+          <div class="gallery-indicators">
+            {%- if product.media.size > 0 -%}
+              {%- for media in product.media -%}
+                <span class="indicator-dot{% if forloop.first %} active{% endif %}" data-index="{{ forloop.index0 }}"></span>
+              {%- endfor -%}
+            {%- else -%}
+              <span class="indicator-dot active" data-index="0"></span>
+              <span class="indicator-dot" data-index="1"></span>
             {%- endif -%}
           </div>
         </div>
@@ -140,161 +223,241 @@
                 {%- when 'bundles' -%}
                   <!-- Packages / Bundles Section -->
                   {%- assign block_bundle_2_discount_cents = block.settings.bundle_2_discount | times: 100 -%}
-                  <div class="bundles-selection-section" {{ block.shopify_attributes }}>
-                    <!-- Package 1 (Buy 1) -->
-                    <div class="bundle-card active" id="bundle-card-1">
-                      <div class="bundle-card-header">
-                        <label class="bundle-radio-container" style="display: flex !important; align-items: center !important; cursor: pointer !important; width: auto !important; min-width: 0 !important; margin: 0 !important; position: relative !important;">
-                          <input type="radio" name="bundle_option" value="buy_1" checked style="position: absolute !important; opacity: 0 !important; width: 0 !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; pointer-events: none !important;">
-                          <span class="bundle-radio-checkmark" style="position: relative; display: inline-block; width: 20px; height: 20px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%;"></span>
-                          <div class="bundle-title-group">
-                            <span class="bundle-title">{{ block.settings.bundle_1_title | escape }}</span>
-                            <span class="bundle-subtitle">
-                              {%- if block.settings.bundle_1_save_text != blank -%}
-                                {{ block.settings.bundle_1_save_text | escape }}
-                              {%- else -%}
-                                You Save {{ current_variant.compare_at_price | minus: current_variant.price | money }}
-                              {%- endif -%}
-                            </span>
-                          </div>
-                        </label>
-                        <div class="bundle-price-group">
-                          <span class="bundle-price">{{ current_variant.price | money }}</span>
-                          {%- if current_variant.compare_at_price > current_variant.price or block.settings.bundle_1_original_price != blank -%}
-                            <span class="bundle-compare-price">
-                              {%- if block.settings.bundle_1_original_price != blank -%}
-                                {{ block.settings.bundle_1_original_price | escape }}
-                              {%- else -%}
-                                {{ current_variant.compare_at_price | money }}
-                              {%- endif -%}
-                            </span>
-                          {%- endif -%}
-                        </div>
-                      </div>
-                      
-                      <div class="bundle-card-content">
-                        <div class="bundle-color-row">
-                          <span class="bundle-color-label" style="font-weight: 700; color: var(--text-primary); margin-bottom: 0;">Color:</span>
-                          <div class="bundle-select-wrapper">
-                            <div class="custom-dropdown" id="bundle-1-variant-select" data-value="{{ product.variants.first.id }}">
-                              <div class="custom-dropdown-trigger">
-                                <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
-                                <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
-                                <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
-                              </div>
-                              <div class="custom-dropdown-options">
-                                {%- for variant in product.variants -%}
-                                  {%- assign swatch_color = '#9ca3af' -%}
-                                  {%- assign v_title = variant.title | downcase -%}
-                                  {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
-                                  {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
-                                  {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
-                                  {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
-                                  {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
-                                  {%- endif -%}
-                                  <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
-                                    <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
-                                    <span class="option-label">{{ variant.title }}</span>
-                                  </div>
-                                {%- endfor -%}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  {%- assign block_bundle_3_discount_cents = block.settings.bundle_3_discount | times: 100 -%}
+                  
+                  {%- assign block_bundle_2_price = current_variant.price | times: 2 | minus: block_bundle_2_discount_cents -%}
+                  {%- assign block_bundle_3_price = current_variant.price | times: 3 | minus: block_bundle_3_discount_cents -%}
 
-                    <!-- Package 2 (Buy 2) -->
-                    {%- assign block_bundle_2_price = current_variant.price | times: 2 | minus: block_bundle_2_discount_cents -%}
-                    <div class="bundle-card" id="bundle-card-2" data-discount-cents="{{ block_bundle_2_discount_cents }}">
-                      <div class="bundle-card-header">
-                        <label class="bundle-radio-container" style="display: flex !important; align-items: center !important; cursor: pointer !important; width: auto !important; min-width: 0 !important; margin: 0 !important; position: relative !important;">
-                          <input type="radio" name="bundle_option" value="buy_2" style="position: absolute !important; opacity: 0 !important; width: 0 !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; pointer-events: none !important;">
-                          <span class="bundle-radio-checkmark" style="position: relative; display: inline-block; width: 20px; height: 20px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%;"></span>
-                          <div class="bundle-title-group">
-                            <span class="bundle-title">
-                              {{ block.settings.bundle_2_title | escape }}
-                              {%- if block.settings.bundle_2_subtitle != blank -%}
-                                <span class="bundle-title-separator">, </span>
-                                <span class="bundle-title-subtitle">{{ block.settings.bundle_2_subtitle | escape }}</span>
-                              {%- endif -%}
-                            </span>
-                            <span class="bundle-subtitle">
-                              {%- if block.settings.bundle_2_save_text != blank -%}
-                                {{ block.settings.bundle_2_save_text | escape }}
-                              {%- else -%}
-                                Best Deal: {{ block_bundle_2_price | divided_by: 2 | money }} Each
-                              {%- endif -%}
-                            </span>
-                          </div>
-                        </label>
-                        <div class="bundle-price-group">
-                          <span class="bundle-price">{{ block_bundle_2_price | money }}</span>
-                          {%- if current_variant.compare_at_price > current_variant.price or block.settings.bundle_2_original_price != blank -%}
-                            <span class="bundle-compare-price">
-                              {%- if block.settings.bundle_2_original_price != blank -%}
-                                {{ block.settings.bundle_2_original_price | escape }}
-                              {%- else -%}
-                                {{ current_variant.compare_at_price | times: 2 | money }}
-                              {%- endif -%}
-                            </span>
-                          {%- endif -%}
-                        </div>
+                  {%- assign badge_position = block.settings.badge_position | default: 'top-right' -%}
+                  {%- case badge_position -%}
+                    {%- when 'top-right' -%}
+                      {%- assign badge_top = '-10px' -%}
+                      {%- assign badge_right = '16px' -%}
+                      {%- assign badge_left = 'auto' -%}
+                      {%- assign badge_transform = 'none' -%}
+                      {%- assign card_padding_top = '24px' -%}
+                    {%- when 'top-left' -%}
+                      {%- assign badge_top = '-10px' -%}
+                      {%- assign badge_right = 'auto' -%}
+                      {%- assign badge_left = '16px' -%}
+                      {%- assign badge_transform = 'none' -%}
+                      {%- assign card_padding_top = '24px' -%}
+                    {%- when 'top-center' -%}
+                      {%- assign badge_top = '-10px' -%}
+                      {%- assign badge_right = 'auto' -%}
+                      {%- assign badge_left = '50%' -%}
+                      {%- assign badge_transform = 'translateX(-50%)' -%}
+                      {%- assign card_padding_top = '24px' -%}
+                    {%- when 'inside-top-right' -%}
+                      {%- assign badge_top = '10px' -%}
+                      {%- assign badge_right = '16px' -%}
+                      {%- assign badge_left = 'auto' -%}
+                      {%- assign badge_transform = 'none' -%}
+                      {%- assign card_padding_top = '42px' -%}
+                    {%- when 'inside-top-left' -%}
+                      {%- assign badge_top = '10px' -%}
+                      {%- assign badge_right = 'auto' -%}
+                      {%- assign badge_left = '16px' -%}
+                      {%- assign badge_transform = 'none' -%}
+                      {%- assign card_padding_top = '42px' -%}
+                  {%- endcase -%}
+
+                  <div class="bundles-container-box" {{ block.shopify_attributes }} style="
+                    --selected-border-color: {{ block.settings.selected_border_color | default: '#ff5a3d' }};
+                    --selected-pin-color: {{ block.settings.selected_pin_color | default: '#ff5a3d' }};
+                    --badge-top: {{ badge_top }};
+                    --badge-right: {{ badge_right }};
+                    --badge-left: {{ badge_left }};
+                    --badge-transform: {{ badge_transform }};
+                    --card-has-badge-padding-top: {{ card_padding_top }};
+                    --badge-font-size: {{ block.settings.badge_font_size | default: 10 }}px;
+                    --badge-padding-vertical: {{ block.settings.badge_vertical_padding | default: 6 }}px;
+                    --badge-padding-horizontal: {{ block.settings.badge_horizontal_padding | default: 16 }}px;
+                    --badge-border-radius: {{ block.settings.badge_border_radius | default: 6 }}px;
+                    --badge-bg-color: {{ block.settings.badge_bg_color | default: '#0f2e6e' }};
+                    --badge-text-color: {{ block.settings.badge_text_color | default: '#ffffff' }};
+                    --discount-badge-font-size: {{ block.settings.discount_badge_font_size | default: 10 }}px;
+                    --discount-badge-padding-vertical: {{ block.settings.discount_badge_vertical_padding | default: 4 }}px;
+                    --discount-badge-padding-horizontal: {{ block.settings.discount_badge_horizontal_padding | default: 16 }}px;
+                    --discount-badge-border-radius: {{ block.settings.discount_badge_border_radius | default: 4 }}px;
+                    --discount-badge-bg-color: {{ block.settings.discount_badge_bg_color | default: '#ff5a3d' }};
+                    --discount-badge-text-color: {{ block.settings.discount_badge_text_color | default: '#ffffff' }};
+                  ">
+                    {%- if block.settings.promo_header_text != blank -%}
+                      <div class="bundles-promo-header" style="background-color: {{ block.settings.promo_header_bg | default: '#fee2e2' }}; color: {{ block.settings.promo_header_color | default: '#991b1b' }};">
+                        {{ block.settings.promo_header_text | escape }}
                       </div>
-                      
-                      <div class="bundle-card-content">
-                        <div class="bundle-color-row">
-                          <span class="bundle-color-label" style="font-weight: 700; color: var(--text-primary); margin-bottom: 0;">Colors:</span>
-                          <div class="bundle-select-wrapper">
-                            <span class="pillow-badge">Pillow 1</span>
-                            <div class="custom-dropdown" id="bundle-2-pillow-1-select" data-value="{{ product.variants.first.id }}">
-                              <div class="custom-dropdown-trigger">
-                                <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
-                                <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
-                                <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                    {%- endif -%}
+
+                    <div class="bundles-list-wrapper">
+                      <!-- Package 1 (Buy 1) -->
+                      <div class="bundle-card-new active" id="bundle-card-1">
+                        {%- if product.featured_media != blank -%}
+                          {%- assign bundle_img_url = product.featured_media | image_url: width: 120 -%}
+                        {%- else -%}
+                          {%- assign bundle_img_url = 'hero-product.png' | asset_url -%}
+                        {%- endif -%}
+                        
+                        <div class="bundle-card-header-new">
+                          <label class="bundle-radio-container-new">
+                            <input type="radio" name="bundle_option" value="buy_1" checked>
+                            <span class="bundle-radio-checkmark"></span>
+                            <div class="bundle-title-group">
+                              <div class="bundle-title-row">
+                                <span class="bundle-title">{{ block.settings.bundle_1_title | escape }}</span>
+                                {%- if block.settings.bundle_1_save_text != blank -%}
+                                  <span class="bundle-save-badge">{{ block.settings.bundle_1_save_text | escape }}</span>
+                                {%- endif -%}
                               </div>
-                              <div class="custom-dropdown-options">
-                                {%- for variant in product.variants -%}
-                                  {%- assign swatch_color = '#9ca3af' -%}
-                                  {%- assign v_title = variant.title | downcase -%}
-                                  {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
-                                  {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
-                                  {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
-                                  {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
-                                  {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
-                                  {%- endif -%}
-                                  <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
-                                    <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
-                                    <span class="option-label">{{ variant.title }}</span>
-                                  </div>
-                                {%- endfor -%}
+                              {%- if block.settings.bundle_1_subtitle != blank -%}
+                                <div class="bundle-subtitle">{{ block.settings.bundle_1_subtitle | escape }}</div>
+                              {%- endif -%}
+                            </div>
+                          </label>
+                          
+                          <div class="bundle-price-group-new" style="margin-right: 16px !important;">
+                            {%- if current_variant.compare_at_price > current_variant.price or block.settings.bundle_1_original_price != blank -%}
+                              <span class="bundle-compare-price">
+                                {%- if block.settings.bundle_1_original_price != blank -%}
+                                  {{ block.settings.bundle_1_original_price | escape }}
+                                {%- else -%}
+                                  {{ current_variant.compare_at_price | money }}
+                                {%- endif -%}
+                              </span>
+                            {%- endif -%}
+                            <span class="bundle-price">{{ current_variant.price | money }}</span>
+                          </div>
+                        </div>
+                        
+                        <div class="bundle-card-content">
+                          <div class="bundle-color-separator"></div>
+                          <div class="bundle-color-row">
+                            <span class="bundle-color-label">Pillow 1</span>
+                            <div class="bundle-select-wrapper">
+                              <div class="custom-dropdown" id="bundle-1-variant-select" data-value="{{ product.variants.first.id }}">
+                                <div class="custom-dropdown-trigger">
+                                  <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
+                                  <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
+                                  <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                                </div>
+                                <div class="custom-dropdown-options">
+                                  {%- for variant in product.variants -%}
+                                    {%- assign swatch_color = '#9ca3af' -%}
+                                    {%- assign v_title = variant.title | downcase -%}
+                                    {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
+                                    {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
+                                    {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
+                                    {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
+                                    {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
+                                    {%- endif -%}
+                                    <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
+                                      <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
+                                      <span class="option-label">{{ variant.title }}</span>
+                                    </div>
+                                  {%- endfor -%}
+                                </div>
                               </div>
                             </div>
                           </div>
-                          
-                          <div class="bundle-select-wrapper">
-                            <span class="pillow-badge">Pillow 2</span>
-                            <div class="custom-dropdown" id="bundle-2-pillow-2-select" data-value="{{ product.variants.first.id }}">
-                              <div class="custom-dropdown-trigger">
-                                <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
-                                <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
-                                <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                        </div>
+                      </div>
+
+                      <!-- Package 2 (Buy 2) -->
+                      <div class="bundle-card-new{% if block.settings.bundle_2_tag != blank %} has-badge{% endif %}" id="bundle-card-2" data-discount-cents="{{ block_bundle_2_discount_cents }}">
+                        {%- if block.settings.bundle_2_tag != blank -%}
+                          <div class="bundle-tag-badge">{{ block.settings.bundle_2_tag | escape }}</div>
+                        {%- endif -%}
+                        
+                        <div class="bundle-card-header-new">
+                          <label class="bundle-radio-container-new">
+                            <input type="radio" name="bundle_option" value="buy_2">
+                            <span class="bundle-radio-checkmark"></span>
+                            <div class="bundle-title-group">
+                              <div class="bundle-title-row">
+                                <span class="bundle-title">{{ block.settings.bundle_2_title | escape }}</span>
+                                {%- if block.settings.bundle_2_save_text != blank -%}
+                                  <span class="bundle-save-badge">{{ block.settings.bundle_2_save_text | escape }}</span>
+                                {%- endif -%}
                               </div>
-                              <div class="custom-dropdown-options">
-                                {%- for variant in product.variants -%}
-                                  {%- assign swatch_color = '#9ca3af' -%}
-                                  {%- assign v_title = variant.title | downcase -%}
-                                  {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
-                                  {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
-                                  {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
-                                  {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
-                                  {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
-                                  {%- endif -%}
-                                  <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
-                                    <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
-                                    <span class="option-label">{{ variant.title }}</span>
+                              {%- if block.settings.bundle_2_subtitle != blank -%}
+                                <div class="bundle-subtitle">{{ block.settings.bundle_2_subtitle | escape }}</div>
+                              {%- endif -%}
+                            </div>
+                          </label>
+                          
+                          <div class="bundle-price-group-new" style="margin-right: 16px !important;">
+                            {%- if current_variant.compare_at_price > current_variant.price or block.settings.bundle_2_original_price != blank -%}
+                              <span class="bundle-compare-price">
+                                {%- if block.settings.bundle_2_original_price != blank -%}
+                                  {{ block.settings.bundle_2_original_price | escape }}
+                                {%- else -%}
+                                  {{ current_variant.compare_at_price | times: 2 | money }}
+                                {%- endif -%}
+                              </span>
+                            {%- endif -%}
+                            <span class="bundle-price">{{ block_bundle_2_price | money }}</span>
+                            <span class="bundle-each-price">{{ block_bundle_2_price | divided_by: 2 | money }} each</span>
+                          </div>
+                        </div>
+                        
+                        <div class="bundle-card-content">
+                          <div class="bundle-color-separator"></div>
+                          <div class="bundle-color-row multi-selects">
+                            <div class="bundle-select-column">
+                              <span class="bundle-color-label">Pillow 1</span>
+                              <div class="bundle-select-wrapper">
+                                <div class="custom-dropdown" id="bundle-2-pillow-1-select" data-value="{{ product.variants.first.id }}">
+                                  <div class="custom-dropdown-trigger">
+                                    <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
+                                    <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
+                                    <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
                                   </div>
-                                {%- endfor -%}
+                                  <div class="custom-dropdown-options">
+                                    {%- for variant in product.variants -%}
+                                      {%- assign swatch_color = '#9ca3af' -%}
+                                      {%- assign v_title = variant.title | downcase -%}
+                                      {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
+                                      {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
+                                      {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
+                                      {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
+                                      {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
+                                      {%- endif -%}
+                                      <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
+                                        <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
+                                        <span class="option-label">{{ variant.title }}</span>
+                                      </div>
+                                    {%- endfor -%}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div class="bundle-select-column">
+                              <span class="bundle-color-label">Pillow 2</span>
+                              <div class="bundle-select-wrapper">
+                                <div class="custom-dropdown" id="bundle-2-pillow-2-select" data-value="{{ product.variants.first.id }}">
+                                  <div class="custom-dropdown-trigger">
+                                    <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
+                                    <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
+                                    <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                                  </div>
+                                  <div class="custom-dropdown-options">
+                                    {%- for variant in product.variants -%}
+                                      {%- assign swatch_color = '#9ca3af' -%}
+                                      {%- assign v_title = variant.title | downcase -%}
+                                      {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
+                                      {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
+                                      {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
+                                      {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
+                                      {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
+                                      {%- endif -%}
+                                      <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
+                                        <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
+                                        <span class="option-label">{{ variant.title }}</span>
+                                      </div>
+                                    {%- endfor -%}
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -404,136 +567,165 @@
             </div>
 
             <!-- Packages / Bundles Section -->
-            <div class="bundles-selection-section">
-              <!-- Package 1 (Buy 1) -->
-              <div class="bundle-card active" id="bundle-card-1">
-                <div class="bundle-card-header">
-                  <label class="bundle-radio-container" style="display: flex !important; align-items: center !important; cursor: pointer !important; width: auto !important; min-width: 0 !important; margin: 0 !important; position: relative !important;">
-                    <input type="radio" name="bundle_option" value="buy_1" checked style="position: absolute !important; opacity: 0 !important; width: 0 !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; pointer-events: none !important;">
-                    <span class="bundle-radio-checkmark" style="position: relative; display: inline-block; width: 20px; height: 20px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%;"></span>
-                    <div class="bundle-title-group">
-                      <span class="bundle-title">Buy 1</span>
-                      <span class="bundle-subtitle">You Save {{ current_variant.compare_at_price | minus: current_variant.price | money }}</span>
-                    </div>
-                  </label>
-                  <div class="bundle-price-group">
-                    <span class="bundle-price">{{ current_variant.price | money }}</span>
-                    {%- if current_variant.compare_at_price > current_variant.price -%}
-                      <span class="bundle-compare-price">{{ current_variant.compare_at_price | money }}</span>
-                    {%- endif -%}
-                  </div>
-                </div>
-                
-                <div class="bundle-card-content">
-                  <div class="bundle-color-row">
-                    <span class="bundle-color-label" style="font-weight: 700; color: var(--text-primary); margin-bottom: 0;">Color:</span>
-                    <div class="bundle-select-wrapper">
-                      <div class="custom-dropdown" id="bundle-1-variant-select" data-value="{{ product.variants.first.id }}">
-                        <div class="custom-dropdown-trigger">
-                          <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
-                          <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
-                          <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
-                        </div>
-                        <div class="custom-dropdown-options">
-                          {%- for variant in product.variants -%}
-                            {%- assign swatch_color = '#9ca3af' -%}
-                            {%- assign v_title = variant.title | downcase -%}
-                            {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
-                            {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
-                            {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
-                            {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
-                            {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
-                            {%- endif -%}
-                            <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
-                              <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
-                              <span class="option-label">{{ variant.title }}</span>
-                            </div>
-                          {%- endfor -%}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            {%- assign fallback_bundle_2_price = current_variant.price | times: 2 | minus: 1000 -%}
+            {%- assign fallback_bundle_3_price = current_variant.price | times: 3 | minus: 2730 -%}
+
+            <div class="bundles-container-box">
+              <div class="bundles-promo-header" style="background-color: #fee2e2; color: #991b1b;">
+                ⏳ Ends Tonight: Bundle & Save up to 70% off
               </div>
 
-              <!-- Package 2 (Buy 2) -->
-              {%- assign fallback_bundle_2_price = current_variant.price | times: 2 | minus: 1000 -%}
-              <div class="bundle-card" id="bundle-card-2" data-discount-cents="1000">
-                <div class="bundle-card-header">
-                  <label class="bundle-radio-container" style="display: flex !important; align-items: center !important; cursor: pointer !important; width: auto !important; min-width: 0 !important; margin: 0 !important; position: relative !important;">
-                    <input type="radio" name="bundle_option" value="buy_2" style="position: absolute !important; opacity: 0 !important; width: 0 !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; pointer-events: none !important;">
-                    <span class="bundle-radio-checkmark" style="position: relative; display: inline-block; width: 20px; height: 20px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%;"></span>
-                    <div class="bundle-title-group">
-                      <span class="bundle-title">Buy 2<span class="bundle-title-separator">, </span><span class="bundle-title-subtitle">Save $10</span></span>
-                      <span class="bundle-subtitle">Best Deal: {{ fallback_bundle_2_price | divided_by: 2 | money }} Each</span>
-                    </div>
-                  </label>
-                  <div class="bundle-price-group">
-                    <span class="bundle-price">{{ fallback_bundle_2_price | money }}</span>
-                    {%- if current_variant.compare_at_price > current_variant.price -%}
-                      <span class="bundle-compare-price">{{ current_variant.compare_at_price | times: 2 | money }}</span>
-                    {%- endif -%}
-                  </div>
-                </div>
-                
-                <div class="bundle-card-content">
-                  <div class="bundle-color-row">
-                    <span class="bundle-color-label" style="font-weight: 700; color: var(--text-primary); margin-bottom: 0;">Colors:</span>
-                    <div class="bundle-select-wrapper">
-                      <span class="pillow-badge">Pillow 1</span>
-                      <div class="custom-dropdown" id="bundle-2-pillow-1-select" data-value="{{ product.variants.first.id }}">
-                        <div class="custom-dropdown-trigger">
-                          <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
-                          <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
-                          <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
-                        </div>
-                        <div class="custom-dropdown-options">
-                          {%- for variant in product.variants -%}
-                            {%- assign swatch_color = '#9ca3af' -%}
-                            {%- assign v_title = variant.title | downcase -%}
-                            {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
-                            {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
-                            {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
-                            {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
-                            {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
-                            {%- endif -%}
-                            <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
-                              <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
-                              <span class="option-label">{{ variant.title }}</span>
-                            </div>
-                          {%- endfor -%}
+              <div class="bundles-list-wrapper">
+                <!-- Package 1 (Buy 1) -->
+                <div class="bundle-card-new active" id="bundle-card-1">
+                  {%- if product.featured_media != blank -%}
+                    {%- assign bundle_img_url = product.featured_media | image_url: width: 120 -%}
+                  {%- else -%}
+                    {%- assign bundle_img_url = 'hero-product.png' | asset_url -%}
+                  {%- endif -%}
+                  
+                  <div class="bundle-card-header-new">
+                    <label class="bundle-radio-container-new">
+                      <input type="radio" name="bundle_option" value="buy_1" checked>
+                      <span class="bundle-radio-checkmark"></span>
+                      <div class="bundle-title-group">
+                        <div class="bundle-title-row">
+                          <span class="bundle-title">1 Pillow</span>
+                          <span class="bundle-save-badge">SAVE 50%</span>
                         </div>
                       </div>
-                    </div>
+                    </label>
                     
-                    <div class="bundle-select-wrapper">
-                      <span class="pillow-badge">Pillow 2</span>
-                      <div class="custom-dropdown" id="bundle-2-pillow-2-select" data-value="{{ product.variants.first.id }}">
-                        <div class="custom-dropdown-trigger">
-                          <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
-                          <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
-                          <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
-                        </div>
-                        <div class="custom-dropdown-options">
-                          {%- for variant in product.variants -%}
-                            {%- assign swatch_color = '#9ca3af' -%}
-                            {%- assign v_title = variant.title | downcase -%}
-                            {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
-                            {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
-                            {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
-                            {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
-                            {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
-                            {%- endif -%}
-                            <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
-                              <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
-                              <span class="option-label">{{ variant.title }}</span>
-                            </div>
-                          {%- endfor -%}
+                    <div class="bundle-price-group-new" style="margin-right: 16px !important;">
+                      {%- if current_variant.compare_at_price > current_variant.price -%}
+                        <span class="bundle-compare-price">{{ current_variant.compare_at_price | money }}</span>
+                      {%- endif -%}
+                      <span class="bundle-price">{{ current_variant.price | money }}</span>
+                    </div>
+                  </div>
+                  
+                  <div class="bundle-card-content">
+                    <div class="bundle-color-separator"></div>
+                    <div class="bundle-color-row">
+                      <span class="bundle-color-label">Pillow 1</span>
+                      <div class="bundle-select-wrapper">
+                        <div class="custom-dropdown" id="bundle-1-variant-select" data-value="{{ product.variants.first.id }}">
+                          <div class="custom-dropdown-trigger">
+                            <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
+                            <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
+                            <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                          </div>
+                          <div class="custom-dropdown-options">
+                            {%- for variant in product.variants -%}
+                              {%- assign swatch_color = '#9ca3af' -%}
+                              {%- assign v_title = variant.title | downcase -%}
+                              {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
+                              {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
+                              {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
+                              {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
+                              {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
+                              {%- endif -%}
+                              <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
+                                <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
+                                <span class="option-label">{{ variant.title }}</span>
+                              </div>
+                            {%- endfor -%}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+
+                <!-- Package 2 (Buy 2) -->
+                <div class="bundle-card-new has-badge" id="bundle-card-2" data-discount-cents="1000">
+                  <div class="bundle-tag-badge">MOST POPULAR</div>
+                  
+                  <div class="bundle-card-header-new">
+                    <label class="bundle-radio-container-new">
+                      <input type="radio" name="bundle_option" value="buy_2">
+                      <span class="bundle-radio-checkmark"></span>
+                      <div class="bundle-title-group">
+                        <div class="bundle-title-row">
+                          <span class="bundle-title">2 Pillows</span>
+                          <span class="bundle-save-badge">SAVE 60%</span>
+                        </div>
+                      </div>
+                    </label>
+                    
+                    <div class="bundle-price-group-new" style="margin-right: 16px !important;">
+                      {%- if current_variant.compare_at_price > current_variant.price -%}
+                        <span class="bundle-compare-price">{{ current_variant.compare_at_price | times: 2 | money }}</span>
+                      {%- endif -%}
+                      <span class="bundle-price">{{ fallback_bundle_2_price | money }}</span>
+                      <span class="bundle-each-price">{{ fallback_bundle_2_price | divided_by: 2 | money }} each</span>
+                    </div>
+                  </div>
+                  
+                  <div class="bundle-card-content">
+                    <div class="bundle-color-separator"></div>
+                    <div class="bundle-color-row multi-selects">
+                      <div class="bundle-select-column">
+                        <span class="bundle-color-label">Pillow 1</span>
+                        <div class="bundle-select-wrapper">
+                          <div class="custom-dropdown" id="bundle-2-pillow-1-select" data-value="{{ product.variants.first.id }}">
+                            <div class="custom-dropdown-trigger">
+                              <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
+                              <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
+                              <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                            </div>
+                            <div class="custom-dropdown-options">
+                              {%- for variant in product.variants -%}
+                                {%- assign swatch_color = '#9ca3af' -%}
+                                {%- assign v_title = variant.title | downcase -%}
+                                {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
+                                {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
+                                {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
+                                {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
+                                {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
+                                {%- endif -%}
+                                <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
+                                  <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
+                                  <span class="option-label">{{ variant.title }}</span>
+                                </div>
+                              {%- endfor -%}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="bundle-select-column">
+                        <span class="bundle-color-label">Pillow 2</span>
+                        <div class="bundle-select-wrapper">
+                          <div class="custom-dropdown" id="bundle-2-pillow-2-select" data-value="{{ product.variants.first.id }}">
+                            <div class="custom-dropdown-trigger">
+                              <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
+                              <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
+                              <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                            </div>
+                            <div class="custom-dropdown-options">
+                              {%- for variant in product.variants -%}
+                                {%- assign swatch_color = '#9ca3af' -%}
+                                {%- assign v_title = variant.title | downcase -%}
+                                {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
+                                {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
+                                {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
+                                {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
+                                {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
+                                {%- endif -%}
+                                <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
+                                  <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
+                                  <span class="option-label">{{ variant.title }}</span>
+                                </div>
+                              {%- endfor -%}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
 
@@ -712,20 +904,96 @@
     gap: 16px;
     padding-bottom: 8px;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
   }
   .thumbnails-grid-container::-webkit-scrollbar {
-    height: 6px;
+    display: none; /* Hide scrollbar for Chrome, Safari and Opera */
   }
-  .thumbnails-grid-container::-webkit-scrollbar-track {
-    background: transparent;
+
+  /* Gallery Indicators (nav circles) */
+  .gallery-indicators {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
   }
-  .thumbnails-grid-container::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
+  .indicator-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #cbd5e1; /* Grey color for inactive dots */
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .indicator-dot.active {
+    width: 24px;
+    height: 8px;
     border-radius: 9999px;
+    background-color: var(--primary); /* Theme primary color */
   }
-  .thumbnails-grid-container::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+
+  /* Glass Swipe Hint Overlay */
+  .swipe-hint-overlay {
+    position: absolute;
+    left: 50%;
+    bottom: 16px;
+    transform: translate(-50%, 0);
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 30px;
+    padding: 10px 32px;
+    min-width: 140px;
+    justify-content: center;
+    display: none; /* Hidden by default on desktop */
+    align-items: center;
+    gap: 8px;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+    z-index: 15;
+    pointer-events: none;
+    opacity: 0;
+  }
+  .swipe-hint-overlay .hint-arrow {
+    font-size: 18px;
+  }
+
+  @media (max-width: 767px) {
+    .swipe-hint-overlay {
+      display: flex;
+    }
+  }
+
+  .swipe-hint-overlay.visible {
+    animation: swipe-hint-movement 4s linear forwards;
+  }
+
+  @keyframes swipe-hint-movement {
+    0% {
+      transform: translate(-150%, 0) scale(0.9);
+      opacity: 0;
+      animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    18% {
+      transform: translate(-50%, 0) scale(1);
+      opacity: 1;
+    }
+    55% {
+      transform: translate(-50%, 0) scale(1);
+      opacity: 1;
+      animation-timing-function: cubic-bezier(0.4, 0, 0.7, 0.3);
+    }
+    100% {
+      transform: translate(160%, 0) scale(0.9);
+      opacity: 0;
+    }
   }
   .thumb-card {
     flex: 0 0 110px;
@@ -833,102 +1101,296 @@
     line-height: 1.6;
   }
 
-  /* Packages / Bundles Styling */
-  .bundles-selection-section {
+  /* Bundles Box Container */
+  .bundles-container-box {
+    --badge-padding-horizontal: 16;
+    --selected-border-color: #ff5a3d;
+    --selected-pin-color: #ff5a3d;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 16px;
+    overflow: visible; /* so tag badges can overflow */
+    background: #ffffff;
+    margin-bottom: 20px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
   }
-  .bundle-card {
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 16px 20px;
-    cursor: pointer;
-    transition: all var(--transition-normal);
-    position: relative;
-    box-shadow: 0 4px 12px rgba(125, 139, 161, 0.05);
+  .bundles-promo-header {
+    padding: 12px 16px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    border-bottom: 1.5px solid #e2e8f0;
+    line-height: 1.4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: var(--font-body);
   }
-  .bundle-card:hover {
-    border-color: var(--primary);
-  }
-  .bundle-card.active {
-    border: 2px solid var(--text-primary);
-    background-color: #ede8e2;
-    box-shadow: 0 6px 18px rgba(125, 139, 161, 0.1);
+  .bundles-list-wrapper {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
   
-  .bundle-card-header {
+  /* New Bundle Card Layout */
+  .Avemos-landing-wrapper .bundle-card-new,
+  .bundle-card-new {
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px 20px 14px 16px !important;
+    cursor: pointer;
+    background-color: #ffffff;
+    transition: all 0.2s ease;
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  @media (min-width: 768px) {
+    .Avemos-landing-wrapper .bundle-card-new:not(.active),
+    .bundle-card-new:not(.active) {
+      min-height: 90px !important;
+    }
+  }
+  .bundle-card-new:hover {
+    border-color: #cbd5e1;
+  }
+  .bundle-card-new.active {
+    border: 2px solid var(--selected-border-color, #ff5a3d);
+    background-color: #fffbfa; /* light warm tint */
+    box-shadow: 0 4px 12px rgba(255, 90, 61, 0.05);
+  }
+  .bundle-card-new.has-badge {
+    padding-top: var(--card-has-badge-padding-top, 24px) !important;
+  }
+  
+  /* Card Tag Badge */
+  .bundle-tag-badge {
+    position: absolute;
+    top: var(--badge-top, -10px);
+    right: var(--badge-right, 16px);
+    left: var(--badge-left, auto);
+    transform: var(--badge-transform, none);
+    background-color: var(--badge-bg-color, #0f2e6e) !important;
+    color: var(--badge-text-color, #ffffff) !important;
+    font-size: var(--badge-font-size, 10px) !important;
+    font-weight: 800;
+    padding: var(--badge-padding-vertical, 6px) var(--badge-padding-horizontal, 16px) !important;
+    border-radius: var(--badge-border-radius, 6px) !important;
+    white-space: nowrap !important;
+    display: inline-block !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    z-index: 10;
+    font-family: var(--font-body);
+  }
+  .bundle-tag-badge.best-value {
+    background-color: var(--badge-bg-color, #6d28d9) !important;
+  }
+
+  .bundle-card-header-new {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    position: relative;
+    gap: 12px;
+    box-sizing: border-box;
+  }
+
+  .bundle-radio-container-new {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    margin: 0;
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .bundle-radio-container-new input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+    pointer-events: none;
   }
 
   /* Custom radio styles */
-  .bundle-radio-checkmark {
-    border: 2px solid #d8d8d8 !important;
-    background: #f0f0f0 !important;
+  .bundle-card-new .bundle-radio-checkmark {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #cbd5e1;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    background-color: #ffffff;
     transition: all 0.2s ease;
-    margin-left: 20px;
-    margin-right: 12px;
   }
-  .bundle-radio-checkmark::after {
-    display: none !important;
+  .bundle-card-new.active .bundle-radio-checkmark {
+    border-color: var(--selected-border-color, #ff5a3d);
   }
-  .bundle-card.active .bundle-radio-checkmark {
-    border-color: #3a3a3a !important;
-    background: #3a3a3a !important;
+  .bundle-card-new.active .bundle-radio-checkmark::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background-color: var(--selected-pin-color, #ff5a3d);
+    border-radius: 50%;
+    display: block;
+  }
+
+  /* Product Thumbnail inside Card */
+  .bundle-media-thumbnail {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    border: 1px solid #f1f5f9;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .bundle-media-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .bundle-title-group {
     display: flex;
     flex-direction: column;
     gap: 2px;
+    min-width: 0;
+  }
+  .bundle-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
   }
   .bundle-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.2;
     font-family: var(--font-heading);
-    font-size: 18px;
+  }
+  .bundle-save-badge {
+    background-color: var(--discount-badge-bg-color, #ff5a3d) !important;
+    color: var(--discount-badge-text-color, #ffffff) !important;
+    font-size: var(--discount-badge-font-size, 10px) !important;
     font-weight: 700;
-    color: var(--text-primary);
-  }
-  .bundle-title-separator {
-    display: inline;
-  }
-  .bundle-title-subtitle {
-    display: inline;
+    padding: var(--discount-badge-padding-vertical, 4px) var(--discount-badge-padding-horizontal, 16px) !important;
+    border-radius: var(--discount-badge-border-radius, 4px) !important;
+    display: inline-block !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    font-family: var(--font-body);
   }
   .bundle-subtitle {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.3;
     font-family: var(--font-body);
-    font-size: 14px;
-    color: var(--text-secondary);
-    margin-top: 2px;
+  }
+
+  /* Price Group */
+  .Avemos-landing-wrapper .bundle-price-group-new,
+  .bundle-price-group-new {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    flex-shrink: 0;
+    text-align: right;
+    margin-right: 16px !important;
+  }
+  .bundle-price-group-new .bundle-compare-price {
+    font-size: 12px;
+    color: #94a3b8;
+    text-decoration: line-through;
+    font-weight: 500;
+    line-height: 1.2;
+    font-family: var(--font-body);
+  }
+  .bundle-price-group-new .bundle-price {
+    font-size: 18px;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.2;
+    font-family: var(--font-heading);
+  }
+  .bundle-price-group-new .bundle-each-price {
+    font-size: 12px;
+    color: #16a34a; /* green */
+    font-weight: 700;
+    margin-top: 1px;
+    line-height: 1.2;
+    font-family: var(--font-body);
+  }
+
+  /* Expandable Content for active card */
+  .bundle-card-new .bundle-card-content {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+  }
+  .bundle-card-new.active .bundle-card-content {
+    max-height: 300px;
+    opacity: 1;
+    overflow: visible;
+    margin-top: 12px;
+    padding-bottom: 8px;
+  }
+
+  .bundle-color-separator {
+    border-top: 1px dashed #e2e8f0;
+    margin-bottom: 12px;
+    width: 100%;
+  }
+
+  .bundle-color-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .bundle-color-row.multi-selects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 16px;
+    align-items: flex-start;
+  }
+  .bundle-select-column {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 120px;
   }
   
-  .bundle-price-group {
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
-    gap: 8px;
-    flex-shrink: 0;
-    margin-right: 20px;
-  }
-  .bundle-price {
-    font-family: var(--font-heading);
-    font-size: 20px;
-    font-weight: 400;
-    color: var(--text-primary);
-  }
-  .bundle-card.active .bundle-price {
+  .bundle-card-new .bundle-color-label {
+    font-size: 12px;
     font-weight: 700;
-  }
-  .bundle-compare-price {
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     font-family: var(--font-body);
-    font-size: 15px;
-    color: var(--text-light);
-    text-decoration: line-through;
-    font-weight: 400;
   }
 
   /* Bundle dropdown content styling with collapse animation */
@@ -1357,141 +1819,65 @@
   }
 
   @media (max-width: 767px) {
-    /* Card padding */
-    .bundle-card {
-      padding: 12px 10px !important;
-    }
-
-    /* ── Header row: radio+title LEFT, prices RIGHT ── */
-    .bundle-card-header {
-      display: flex !important;
-      flex-wrap: nowrap !important;
-      justify-content: space-between !important;
-      align-items: flex-start !important;
-      width: 100% !important;
-    }
-
-    /* Override the inline flex:1 on the label so it doesn't fill the row */
-    .bundle-radio-container {
-      flex: 0 1 auto !important;
-      min-width: 0 !important;
-    }
-
-    /* Radio dot */
-    .bundle-radio-checkmark {
-      width: 18px !important;
-      height: 18px !important;
-      margin-left: 2px !important;
-      margin-right: 10px !important;
-      flex-shrink: 0 !important;
-    }
-
-    /* Title text — stays left, never wraps into price zone */
-    .bundle-title-group {
-      min-width: 0 !important;
-    }
-    .bundle-title {
-      font-size: 16px !important;
-      white-space: normal !important;
-    }
-    .bundle-title-separator {
+    .gallery-arrow-btn {
       display: none !important;
     }
-    .bundle-title-subtitle {
-      display: block !important;
+
+    .bundle-card-new {
+      padding: 12px 10px !important;
     }
-    .bundle-subtitle {
-      font-size: 12px !important;
+    
+    .bundle-card-header-new {
+      align-items: flex-start !important;
     }
 
-    /* Price group — pinned right, always on same row as title */
-    .bundle-price-group {
-      position: static !important;
-      transform: none !important;
-      flex-shrink: 0 !important;
-      margin-left: auto !important;
-      margin-right: 2px !important;
-      gap: 6px !important;
-      text-align: right !important;
-      padding-left: 8px !important;
-      white-space: nowrap !important;
-    }
-    .bundle-price {
-      font-size: 18px !important;
-    }
-    .bundle-compare-price {
+    .bundle-title {
       font-size: 14px !important;
     }
-
-    /* ── Colors section: below header with breathing room ── */
-    .bundle-card.active .bundle-card-content {
-      padding-top: 12px !important;
-      margin-top: 8px !important;
-      border-top: 1px solid rgba(0,0,0,0.08) !important;
-      overflow: visible !important;
-    }
-
-    /* Color row: label + dropdowns all on one row */
-    .bundle-color-row {
-      margin-left: 0 !important;
-      display: flex !important;
-      flex-wrap: nowrap !important;
-      gap: 8px !important;
-      align-items: center !important;
-    }
-    .bundle-color-label {
-      font-size: 13px !important;
-      width: auto !important;
-      flex-shrink: 0 !important;
-      margin-bottom: 0 !important;
-    }
-
-    /* Dropdown wrappers: side-by-side, equal width */
-    .bundle-select-wrapper {
-      flex: 1 1 0% !important;
-      min-width: 0 !important;
-      max-width: none !important;
-      margin-top: 0 !important;
-    }
-    .bundle-select-wrapper:has(.pillow-badge) {
-      margin-top: 10px !important;
-    }
-
-    /* Pillow badges: centered over dropdown top border */
-    .pillow-badge {
-      position: absolute !important;
-      top: -8px !important;
-      left: 50% !important;
-      transform: translateX(-50%) !important;
+    .bundle-save-badge {
       font-size: 8px !important;
-      padding: 2px 14px !important;
-      z-index: 12 !important;
+      padding: 3px calc(var(--badge-padding-horizontal, 16) * 0.75 * 1px) !important;
+      display: inline-block !important;
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+    }
+    .bundle-subtitle {
+      font-size: 11px !important;
     }
 
-    /* Dropdown trigger: roomy enough for long text */
-    .custom-dropdown-trigger {
-      padding: 9px 28px 9px 10px !important;
-      font-size: 12px !important;
-      min-height: 36px !important;
-      gap: 6px !important;
+    .bundle-price-group-new .bundle-price {
+      font-size: 16px !important;
     }
-    .select-color-dot {
-      width: 16px !important;
-      height: 16px !important;
-      min-width: 16px !important;
-      margin-left: 10px !important;
+    .bundle-price-group-new .bundle-compare-price {
+      font-size: 11px !important;
     }
-    .custom-dropdown-chevron {
-      right: 8px !important;
+    .bundle-price-group-new .bundle-each-price {
+      font-size: 11px !important;
     }
-    .custom-dropdown-option {
-      gap: 6px !important;
+
+    .Avemos-landing-wrapper .bundle-color-row,
+    .bundle-color-row {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      margin-left: 0 !important;
+      gap: 8px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
     }
-    .option-color-dot {
-      width: 16px !important;
-      height: 16px !important;
-      min-width: 16px !important;
-      margin-left: 6px !important;
+    .bundle-color-row.multi-selects {
+      flex-direction: column !important;
+      gap: 12px !important;
+      align-items: stretch !important;
+    }
+    .bundle-select-column {
+      width: 100% !important;
+      flex: none !important;
+    }
+
+    /* Keep dropdown triggers wide on mobile */
+    .bundle-select-wrapper {
+      width: 100% !important;
+      max-width: none !important;
     }
   }
 
@@ -1530,7 +1916,7 @@
     }
 
     // Bundle Radio click selection handler
-    const bundleCards = document.querySelectorAll('.bundle-card');
+    const bundleCards = document.querySelectorAll('.bundle-card-new');
     const variantIdInput = document.getElementById('main-product-variant-id');
 
     bundleCards.forEach(card => {
@@ -1598,6 +1984,14 @@
           dropdown.classList.remove('open');
 
           updatePriceAndVariant();
+
+          // Sync picture with selected color
+          const lowerLabel = label.toLowerCase();
+          if (lowerLabel.includes('pink')) {
+            goToSlide(1);
+          } else if (lowerLabel.includes('gray') || lowerLabel.includes('grey')) {
+            goToSlide(0);
+          }
         });
       });
     });
@@ -1627,11 +2021,6 @@
         if (val && variantIdInput) {
           variantIdInput.value = val;
         }
-      } else if (activeOption === 'buy_3') {
-        const val = getDropdownValue('bundle-3-pillow-1-select');
-        if (val && variantIdInput) {
-          variantIdInput.value = val;
-        }
       }
     }
 
@@ -1654,18 +2043,6 @@
           const varId2 = getDropdownValue('bundle-2-pillow-2-select');
           const counts = {};
           [varId1, varId2].forEach(id => { if (id) counts[id] = (counts[id] || 0) + 1; });
-          for (let id in counts) {
-            items.push({
-              id: parseInt(id),
-              quantity: counts[id] * qtyMultiplier
-            });
-          }
-        } else if (activeOption === 'buy_3') {
-          const varId1 = getDropdownValue('bundle-3-pillow-1-select');
-          const varId2 = getDropdownValue('bundle-3-pillow-2-select');
-          const varId3 = getDropdownValue('bundle-3-pillow-3-select');
-          const counts = {};
-          [varId1, varId2, varId3].forEach(id => { if (id) counts[id] = (counts[id] || 0) + 1; });
           for (let id in counts) {
             items.push({
               id: parseInt(id),
@@ -1709,6 +2086,7 @@
     // Gallery switcher
     const slides = document.querySelectorAll('.gallery-slide-img');
     const thumbnails = document.querySelectorAll('.thumb-card');
+    const dots = document.querySelectorAll('.indicator-dot');
     const prevArrow = document.querySelector('.prev-arrow');
     const nextArrow = document.querySelector('.next-arrow');
     
@@ -1716,6 +2094,9 @@
     const totalSlides = slides.length;
     
     function goToSlide(index) {
+      if (typeof disableHintForever === 'function') {
+        disableHintForever();
+      }
       if (index < 0) {
         currentSlide = totalSlides - 1;
       } else if (index >= totalSlides) {
@@ -1741,6 +2122,14 @@
           t.classList.remove('active');
         }
       });
+
+      dots.forEach((dot, i) => {
+        if (i === currentSlide) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
     }
     
     if (prevArrow && nextArrow) {
@@ -1761,6 +2150,105 @@
         goToSlide(index);
       });
     });
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const index = parseInt(dot.getAttribute('data-index')) || 0;
+        goToSlide(index);
+      });
+    });
+
+    // Mobile Swiping support
+    const viewport = document.querySelector('.main-image-viewport');
+    if (viewport) {
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let touchEndX = 0;
+      let touchEndY = 0;
+      
+      viewport.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      }, { passive: true });
+      
+      viewport.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
+        handleSwipe();
+      }, { passive: true });
+      
+      function handleSwipe() {
+        const diffX = touchEndX - touchStartX;
+        const diffY = touchEndY - touchStartY;
+        
+        // Ensure it is horizontal swipe primarily
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+          // Minimum swipe distance threshold of 40px
+          if (Math.abs(diffX) > 40) {
+            if (diffX > 0) {
+              // Swipe Right -> Show previous slide
+              goToSlide(currentSlide - 1);
+            } else {
+              // Swipe Left -> Show next slide
+              goToSlide(currentSlide + 1);
+            }
+          }
+        }
+      }
+    }
+
+    // Swipe Hint Logic
+    const swipeHint = document.getElementById('gallery-swipe-hint');
+    let hintTimer = null;
+    let hintShown = false;
+    let userInteracted = false;
+
+    function disableHintForever() {
+      userInteracted = true;
+      if (hintTimer) {
+        clearTimeout(hintTimer);
+        hintTimer = null;
+      }
+      if (swipeHint) {
+        swipeHint.classList.remove('visible');
+      }
+    }
+
+    if (swipeHint && viewport) {
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && !userInteracted && !hintShown) {
+              hintTimer = setTimeout(() => {
+                if (!userInteracted && !hintShown) {
+                  swipeHint.classList.add('visible');
+                  hintShown = true;
+                  setTimeout(() => {
+                    swipeHint.classList.remove('visible');
+                  }, 4000);
+                }
+              }, 4000);
+            } else {
+              if (hintTimer) {
+                clearTimeout(hintTimer);
+                hintTimer = null;
+              }
+            }
+          });
+        }, { threshold: 0.5 });
+        observer.observe(viewport);
+      } else {
+        hintTimer = setTimeout(() => {
+          if (!userInteracted && !hintShown) {
+            swipeHint.classList.add('visible');
+            hintShown = true;
+            setTimeout(() => {
+              swipeHint.classList.remove('visible');
+            }, 4000);
+          }
+        }, 4000);
+      }
+    }
 
     // Format product description list items to fix alignment and trim any spaces after emojis/icons
     document.querySelectorAll('.product-info-description li').forEach(function(li) {
@@ -1839,6 +2327,73 @@
       "id": "badge_text",
       "label": "Badge Text",
       "default": "Best Seller"
+    },
+    {
+      "type": "header",
+      "content": "Section Customization"
+    },
+    {
+      "type": "font_picker",
+      "id": "section_font",
+      "label": "Section Font",
+      "default": "work_sans_n4"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color_background",
+      "id": "section_bg_gradient",
+      "label": "Section Background Gradient",
+      "default": "linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%)"
+    },
+    {
+      "type": "color",
+      "id": "section_text_color",
+      "label": "Section Text Color"
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Product Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "rating_stars_color",
+      "label": "Rating Stars Color",
+      "default": "#ffc107"
+    },
+    {
+      "type": "color",
+      "id": "benefit_checkmark_color",
+      "label": "Benefit Checkmark Color",
+      "default": "#2e6f40"
+    },
+    {
+      "type": "color",
+      "id": "cta_button_bg",
+      "label": "CTA Button Background Color",
+      "default": "#c85a32"
+    },
+    {
+      "type": "color",
+      "id": "cta_button_text",
+      "label": "CTA Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "cta_button_whitespace",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "label": "CTA Button Spacing (Whitespace)",
+      "default": 24
     }
   ],
   "blocks": [
@@ -1905,15 +2460,39 @@
       "settings": [
         {
           "type": "text",
+          "id": "promo_header_text",
+          "label": "Promo Header Text",
+          "default": "⏳ Ends Tonight: Bundle & Save up to 60% off"
+        },
+        {
+          "type": "color",
+          "id": "promo_header_bg",
+          "label": "Promo Header Background Color",
+          "default": "#fee2e2"
+        },
+        {
+          "type": "color",
+          "id": "promo_header_color",
+          "label": "Promo Header Text Color",
+          "default": "#991b1b"
+        },
+        {
+          "type": "text",
           "id": "bundle_1_title",
           "label": "Bundle 1 Title",
-          "default": "Buy 1"
+          "default": "1 Pillow"
+        },
+        {
+          "type": "text",
+          "id": "bundle_1_subtitle",
+          "label": "Bundle 1 Subtitle",
+          "default": "Standard shipping"
         },
         {
           "type": "text",
           "id": "bundle_1_save_text",
-          "label": "Bundle 1 Save Text",
-          "default": "You Save $39.00"
+          "label": "Bundle 1 Save Badge Text",
+          "default": "SAVE 50%"
         },
         {
           "type": "text",
@@ -1925,25 +2504,25 @@
           "type": "text",
           "id": "bundle_2_title",
           "label": "Bundle 2 Title",
-          "default": "Buy 2"
+          "default": "2 Pillows"
         },
         {
           "type": "text",
           "id": "bundle_2_subtitle",
           "label": "Bundle 2 Subtitle",
-          "default": "Save $10"
+          "default": "Free shipping + priority handling"
         },
         {
           "type": "text",
           "id": "bundle_2_save_text",
-          "label": "Bundle 2 Save Text",
-          "default": "Best Deal: $34.00 Each"
+          "label": "Bundle 2 Save Badge Text",
+          "default": "SAVE 60%"
         },
         {
           "type": "text",
           "id": "bundle_2_original_price",
           "label": "Bundle 2 Original Price",
-          "default": "$156.00"
+          "default": "$136.00"
         },
         {
           "type": "range",
@@ -1954,6 +2533,160 @@
           "unit": "$",
           "label": "Bundle 2 Discount",
           "default": 10
+        },
+        {
+          "type": "text",
+          "id": "bundle_2_tag",
+          "label": "Bundle 2 Top Tag",
+          "default": "MOST POPULAR"
+        },
+        {
+          "type": "select",
+          "id": "badge_position",
+          "label": "Badge Position",
+          "options": [
+            {
+              "value": "top-right",
+              "label": "Top Right (Hanging)"
+            },
+            {
+              "value": "top-left",
+              "label": "Top Left (Hanging)"
+            },
+            {
+              "value": "top-center",
+              "label": "Top Center (Hanging)"
+            },
+            {
+              "value": "inside-top-right",
+              "label": "Inside Top Right"
+            },
+            {
+              "value": "inside-top-left",
+              "label": "Inside Top Left"
+            }
+          ],
+          "default": "top-right"
+        },
+        {
+          "type": "range",
+          "id": "badge_font_size",
+          "min": 8,
+          "max": 16,
+          "step": 1,
+          "unit": "px",
+          "label": "Badge Font Size",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "badge_vertical_padding",
+          "min": 2,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "label": "Badge Vertical Padding",
+          "default": 6
+        },
+        {
+          "type": "range",
+          "id": "badge_horizontal_padding",
+          "min": 8,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "label": "Badge Horizontal Padding",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "badge_border_radius",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Badge Border Radius",
+          "default": 6
+        },
+        {
+          "type": "color",
+          "id": "badge_bg_color",
+          "label": "Badge Background Color",
+          "default": "#0f2e6e"
+        },
+        {
+          "type": "color",
+          "id": "badge_text_color",
+          "label": "Badge Text Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "header",
+          "content": "Discount Badge Settings"
+        },
+        {
+          "type": "range",
+          "id": "discount_badge_font_size",
+          "min": 8,
+          "max": 16,
+          "step": 1,
+          "unit": "px",
+          "label": "Discount Badge Font Size",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "discount_badge_vertical_padding",
+          "min": 2,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "label": "Discount Badge Vertical Padding",
+          "default": 4
+        },
+        {
+          "type": "range",
+          "id": "discount_badge_horizontal_padding",
+          "min": 4,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Discount Badge Horizontal Padding",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "discount_badge_border_radius",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Discount Badge Border Radius",
+          "default": 4
+        },
+        {
+          "type": "color",
+          "id": "discount_badge_bg_color",
+          "label": "Discount Badge Background Color",
+          "default": "#ff5a3d"
+        },
+        {
+          "type": "color",
+          "id": "discount_badge_text_color",
+          "label": "Discount Badge Text Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "selected_border_color",
+          "label": "Selected Card Border Color",
+          "default": "#ff5a3d"
+        },
+        {
+          "type": "color",
+          "id": "selected_pin_color",
+          "label": "Selected Checkmark Dot (Pin) Color",
+          "default": "#ff5a3d"
         }
       ]
     },

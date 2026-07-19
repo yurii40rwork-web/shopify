@@ -515,19 +515,26 @@
   </div>
 {%- endif -%}
 
+{%- assign item_count_excluding_protection = 0 -%}
+{%- for item in cart.items -%}
+  {%- unless item.handle == 'shipping-protection' -%}
+    {%- assign item_count_excluding_protection = item_count_excluding_protection | plus: item.quantity -%}
+  {%- endunless -%}
+{%- endfor -%}
+
 <div class="Avemos-landing-wrapper cart-page-wrapper" id="cart-page-data" 
      data-pillow-qty1-price="{{ section.settings.pillow_qty1_price | default: 39.00 }}"
      data-pillow-qty2-price="{{ section.settings.pillow_qty2_price | default: 34.00 }}"
      data-pillow-qty3-price="{{ section.settings.pillow_qty3_price | default: 30.00 }}"
      data-pillow-qty4-price="{{ section.settings.pillow_qty4_price | default: 26.00 }}">
   <div class="container" style="padding-top: 40px; padding-bottom: 60px;">
-    
+     
     <div class="cart-title-container" style="text-align: {{ section.settings.title_alignment }}; margin-bottom: 30px;">
       <h1 class="cart-title">{{ section.settings.title }}</h1>
     </div>
 
     <!-- Empty State -->
-    <div id="cart-empty-state" class="cart-empty-state-wrapper" {% if cart.item_count > 0 %}style="display: none;"{% endif %}>
+    <div id="cart-empty-state" class="cart-empty-state-wrapper" {% if item_count_excluding_protection > 0 %}style="display: none;"{% endif %}>
       <div class="empty-icon-box">
         <span class="material-symbols-outlined" style="font-size: 64px;">shopping_bag</span>
       </div>
@@ -539,13 +546,15 @@
     </div>
 
     <!-- Active Cart Layout -->
-    <div id="cart-active-state" class="cart-grid-layout" {% if cart.item_count == 0 %}style="display: none;"{% endif %}>
+    <div id="cart-active-state" class="cart-grid-layout" {% if item_count_excluding_protection == 0 %}style="display: none;"{% endif %}>
       
       <!-- Left Column: Cart Items -->
       <div class="cart-items-column">
         <form action="{{ routes.cart_url }}" method="post" id="cart-form">
           <div class="cart-items-list" id="cart-items-container">
             {%- for item in cart.items -%}
+              {%- if item.handle == 'shipping-protection' -%}
+                {%- continue -%}{%- endif -%}
               <div class="cart-item-card" data-line-item-key="{{ item.key }}" data-line-item-id="{{ item.id }}">
                 
                 <!-- Item Image -->
@@ -748,17 +757,26 @@
     // Helper: update DOM based on new cart JSON
     function updateCartDOM(cart) {
       let totalPillowsQty = 0;
+      let itemCountExcludingProtection = 0;
+      let hasProtectionInCart = false;
+
       cart.items.forEach(item => {
-        if (item.product_title.toLowerCase().includes('pillow')) {
-          totalPillowsQty += item.quantity;
+        const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
+        if (isProtection) {
+          hasProtectionInCart = true;
+        } else {
+          itemCountExcludingProtection += item.quantity;
+          if (item.product_title.toLowerCase().includes('pillow')) {
+            totalPillowsQty += item.quantity;
+          }
         }
       });
 
       let calculatedSubtotal = 0;
 
       cartCounts.forEach(el => {
-        el.textContent = cart.item_count;
-        if (cart.item_count > 0) {
+        el.textContent = itemCountExcludingProtection;
+        if (itemCountExcludingProtection > 0) {
           el.style.display = 'flex';
         } else {
           el.style.display = 'none';
@@ -767,6 +785,12 @@
 
       const keysInCart = new Set();
       cart.items.forEach(item => {
+        const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
+        if (isProtection) {
+          calculatedSubtotal += (item.final_price || item.price) * item.quantity;
+          return;
+        }
+
         keysInCart.add(item.key);
         
         const isPillow = item.product_title.toLowerCase().includes('pillow');
@@ -804,9 +828,28 @@
         }
       });
 
-      if (cart.item_count === 0) {
+      if (itemCountExcludingProtection === 0) {
         if (activeState) activeState.style.display = 'none';
         if (emptyState) emptyState.style.display = 'block';
+
+        if (hasProtectionInCart) {
+          const protectionItem = cart.items.find(item => item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection'));
+          if (protectionItem) {
+            fetch('/cart/change.js', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              body: JSON.stringify({
+                id: protectionItem.key,
+                quantity: 0
+              })
+            }).then(() => {
+              window.location.reload();
+            });
+          }
+        }
       }
     }
 

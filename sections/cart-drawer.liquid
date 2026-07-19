@@ -57,7 +57,7 @@
         <div class="shipping-protection-row">
           <div class="protection-icon-details">
             <div class="protection-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="{{ section.settings.upsell_border_color }}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                 <polyline points="9 11 11 13 15 9"></polyline>
               </svg>
@@ -117,7 +117,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 10000;
+  z-index: 2147483647 !important;
   visibility: hidden;
 }
 .cart-drawer-container.active {
@@ -144,7 +144,7 @@
   width: 100%;
   max-width: 450px;
   height: 100%;
-  background: #ffffff;
+  background: {{ section.settings.cart_bg_color }};
   box-shadow: -6px 0 28px rgba(24, 28, 33, 0.15);
   display: flex;
   flex-direction: column;
@@ -191,7 +191,7 @@
 /* Free Shipping Bar */
 .shipping-progress-container {
   padding: 14px 20px;
-  background: #ffffff;
+  background: {{ section.settings.cart_bg_color }};
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 .shipping-progress-text {
@@ -207,13 +207,13 @@
 .shipping-progress-bar-wrapper {
   position: relative;
   height: 10px;
-  background: #f1f4fb;
+  background: {{ section.settings.progress_bar_empty_color }};
   border-radius: 9999px;
   margin: 0 10px;
 }
 .shipping-progress-bar {
   height: 100%;
-  background: #181c21;
+  background: {{ section.settings.progress_bar_fill_color }};
   border-radius: 9999px;
   width: 0%;
   transition: width 0.4s ease;
@@ -224,7 +224,7 @@
   transform: translate(-50%, -50%);
   width: 28px;
   height: 28px;
-  background: #181c21;
+  background: {{ section.settings.progress_bar_fill_color }};
   color: #ffffff;
   border-radius: 50%;
   display: flex;
@@ -262,18 +262,18 @@
   margin-bottom: 24px;
 }
 .cart-drawer-continue-btn {
-  background: #4f5d71;
-  color: #ffffff;
+  background: transparent;
+  color: {{ section.settings.ghost_btn_text_color }};
   font-weight: 600;
-  border: none;
+  border: 1px solid {{ section.settings.ghost_btn_border_color }};
   padding: 12px 28px;
   border-radius: 8px;
   font-size: 15px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 .cart-drawer-continue-btn:hover {
-  background: #3a485b;
+  background: rgba(0, 0, 0, 0.04);
 }
 
 /* Items List */
@@ -430,7 +430,7 @@
 
 /* Fixed Footer Section */
 .cart-drawer-footer {
-  background: #ffffff;
+  background: {{ section.settings.cart_bg_color }};
   border-top: 1px solid rgba(0, 0, 0, 0.06);
   padding: 16px 20px 24px 20px;
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.03);
@@ -441,9 +441,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 16px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 12px 14px;
+  border: 1px solid {{ section.settings.upsell_border_color }};
+  border-radius: 8px;
   margin-bottom: 14px;
+  background: transparent;
+  transition: background-color 0.25s ease;
+}
+.shipping-protection-row:hover {
+  background-color: {{ section.settings.upsell_hover_bg_color }};
 }
 .protection-icon-details {
   display: flex;
@@ -510,7 +516,7 @@
   box-shadow: 0 1px 3px rgba(0,0,0,0.15);
 }
 .toggle-switch input:checked + .slider {
-  background-color: #181c21;
+  background-color: {{ section.settings.upsell_border_color }};
 }
 .toggle-switch input:checked + .slider:before {
   transform: translateX(20px);
@@ -556,8 +562,8 @@
 /* Checkout Button styling */
 .drawer-checkout-btn {
   width: 100%;
-  background: #181c21;
-  color: #ffffff;
+  background: {{ section.settings.checkout_btn_bg_color }};
+  color: {{ section.settings.checkout_btn_text_color }};
   font-family: inherit;
   font-size: 16px;
   font-weight: 700;
@@ -566,13 +572,14 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition: background-color 0.2s ease, transform 0.1s ease, filter 0.2s ease;
   letter-spacing: 0.05em;
   box-shadow: 0 4px 12px rgba(24, 28, 33, 0.12);
   margin-bottom: 16px;
 }
 .drawer-checkout-btn:hover {
-  background: #0f1216;
+  background: {{ section.settings.checkout_btn_bg_color }};
+  filter: brightness(90%);
 }
 .drawer-checkout-btn:active {
   transform: translateY(1px);
@@ -626,6 +633,13 @@
 body.cart-drawer-open {
   overflow: hidden;
 }
+/* Ensure chat widgets are behind cart drawer when open */
+body.cart-drawer-open #shopify-chat,
+body.cart-drawer-open #dummy-chat-button-iframe,
+body.cart-drawer-open iframe[id*="chat"],
+body.cart-drawer-open iframe[id*="inbox"] {
+  z-index: 9999 !important;
+}
 
 /* Loading overlay for panel updates */
 .cart-drawer-panel.loading-active::after {
@@ -634,12 +648,20 @@ body.cart-drawer-open {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.65);
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 3px;
+  background: linear-gradient(90deg, #2563eb, #3b82f6, #2563eb);
+  background-size: 200% 100%;
+  animation: loading-bar-flow 1.2s infinite linear;
+  z-index: 100;
+  pointer-events: none;
+}
+.cart-drawer-panel.loading-active .cart-drawer-items-list {
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+@keyframes loading-bar-flow {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 </style>
 
@@ -665,6 +687,10 @@ document.addEventListener('DOMContentLoaded', () => {
   
   const protectionToggle = document.getElementById('shipping-protection-toggle');
   const checkoutBtn = document.getElementById('drawer-checkout-btn');
+
+  let currentCart = null;
+  let debounceTimer = null;
+  let pendingUpdates = {};
 
   // Load configs from dataset attributes (from shopify schema)
   const shippingThreshold = parseFloat(drawer.dataset.shippingThreshold || 50) * 100; // in cents
@@ -712,11 +738,91 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  let protectionVariantId = null;
+
+  async function fetchProtectionVariantId() {
+    try {
+      const res = await fetch('/products/shipping-protection.js');
+      if (res.ok) {
+        const product = await res.json();
+        if (product.variants && product.variants.length > 0) {
+          protectionVariantId = product.variants[0].id;
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching protection variant:', err);
+    }
+  }
+
+  // Fetch variant ID immediately on load
+  fetchProtectionVariantId();
+
+  async function addProtectionToCart() {
+    if (!protectionVariantId) {
+      await fetchProtectionVariantId();
+    }
+    if (!protectionVariantId) return;
+    
+    drawer.querySelector('.cart-drawer-panel').classList.add('loading-active');
+    try {
+      const response = await fetch('/cart/update.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          updates: {
+            [protectionVariantId.toString()]: 1
+          }
+        })
+      });
+      const cart = await response.json();
+      currentCart = cart;
+      renderCart(cart);
+    } catch (err) {
+      console.error('Error adding shipping protection:', err);
+    } finally {
+      drawer.querySelector('.cart-drawer-panel').classList.remove('loading-active');
+    }
+  }
+
+  async function removeProtectionFromCart() {
+    if (!protectionVariantId) {
+      await fetchProtectionVariantId();
+    }
+    if (!protectionVariantId) return;
+
+    drawer.querySelector('.cart-drawer-panel').classList.add('loading-active');
+    try {
+      const response = await fetch('/cart/update.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          updates: {
+            [protectionVariantId.toString()]: 0
+          }
+        })
+      });
+      const cart = await response.json();
+      currentCart = cart;
+      renderCart(cart);
+    } catch (err) {
+      console.error('Error removing shipping protection:', err);
+    } finally {
+      drawer.querySelector('.cart-drawer-panel').classList.remove('loading-active');
+    }
+  }
+
   // Fetch cart details from Shopify API and render
   async function fetchAndRenderCart() {
     try {
       const response = await fetch('/cart.js');
       const cart = await response.json();
+      currentCart = cart;
       renderCart(cart);
     } catch (error) {
       console.error('Error fetching cart:', error);
@@ -725,25 +831,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Render cart items
   function renderCart(cart) {
+    currentCart = cart;
+    const bodyEl = drawer.querySelector('.cart-drawer-body');
+    const scrollTop = bodyEl ? bodyEl.scrollTop : 0;
+    
     itemsList.innerHTML = '';
     
+    let totalPillowsQty = 0;
+    let basePricesSubtotal = 0;
+    let originalPricesSubtotal = 0;
+    let hasProtectionInCart = false;
+    let itemCountExcludingProtection = 0;
+
+    cart.items.forEach(item => {
+      const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
+      if (isProtection) {
+        hasProtectionInCart = true;
+      } else {
+        itemCountExcludingProtection += item.quantity;
+        const isPillow = item.product_title.toLowerCase().includes('pillow');
+        if (isPillow) {
+          totalPillowsQty += item.quantity;
+        }
+      }
+    });
+
     // Update global cart counts
     const countElements = document.querySelectorAll('#cart-count, #drawer-cart-count');
     countElements.forEach(el => {
-      el.textContent = cart.item_count;
-      el.style.display = cart.item_count > 0 ? 'flex' : 'none';
+      el.textContent = itemCountExcludingProtection;
+      el.style.display = itemCountExcludingProtection > 0 ? 'flex' : 'none';
     });
 
-    if (cart.items.length === 0) {
+    if (itemCountExcludingProtection === 0) {
       emptyState.style.display = 'flex';
       cartFooter.style.display = 'none';
       progressBar.parentElement.parentElement.style.display = 'none';
+      
+      // Auto remove protection if it's the only thing left
+      if (hasProtectionInCart) {
+        removeProtectionFromCart();
+      }
       return;
     }
 
     emptyState.style.display = 'none';
     cartFooter.style.display = 'block';
     progressBar.parentElement.parentElement.style.display = 'block';
+
+    // Auto add protection if cart is not empty, it's not in the cart, and user hasn't explicitly opted out
+    if (!hasProtectionInCart && localStorage.getItem('shipping_protection_opt_out') !== 'true') {
+      addProtectionToCart();
+      return;
+    }
+
+    // Sync toggle switch state with cart
+    if (protectionToggle) {
+      protectionToggle.checked = hasProtectionInCart;
+    }
 
     function getPillowUnitPriceCents(totalQty) {
       if (totalQty === 1) return pillowQty1Price;
@@ -763,22 +908,11 @@ document.addEventListener('DOMContentLoaded', () => {
       return '';
     }
 
-    let totalPillowsQty = 0;
-    let basePricesSubtotal = 0;
-    let originalPricesSubtotal = 0;
-
-    // Filter items and count pillow qty
-    cart.items.forEach(item => {
-      const isPillow = item.product_title.toLowerCase().includes('pillow');
-      if (isPillow) {
-        totalPillowsQty += item.quantity;
-      }
-    });
-
-    let pillowsRenderedCount = 0;
-
     // Loop through and render actual cart items
     cart.items.forEach((item, index) => {
+      const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
+      if (isProtection) return;
+
       const isPillow = item.product_title.toLowerCase().includes('pillow');
       const itemTitle = item.product_title;
 
@@ -833,7 +967,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Shipping protection cost
     let protectionCost = 0;
-    if (protectionToggle && protectionToggle.checked) {
+    if (hasProtectionInCart) {
       protectionCost = protectionPrice; 
     }
 
@@ -860,27 +994,50 @@ document.addEventListener('DOMContentLoaded', () => {
       const difference = formatMoney(shippingThreshold - baseSubtotalNoProtection);
       progressText.innerHTML = `You are only <strong>${difference}</strong> away from <strong>FREE SHIPPING!</strong>`;
     }
+    if (bodyEl && scrollTop > 0) {
+      bodyEl.scrollTop = scrollTop;
+    }
   }
 
-  // Handle AJAX quantity updates
-  async function updateQty(key, newQty) {
-    drawer.querySelector('.cart-drawer-panel').classList.add('loading-active');
-    try {
-      const response = await fetch('/cart/change.js', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({ id: key, quantity: newQty })
-      });
-      const cart = await response.json();
-      renderCart(cart);
-    } catch (err) {
-      console.error('Error changing qty:', err);
-    } finally {
-      drawer.querySelector('.cart-drawer-panel').classList.remove('loading-active');
+  // Handle AJAX quantity updates with debounce and single batch request
+  function queueQtyUpdate(key, newQty) {
+    pendingUpdates[key] = newQty;
+    
+    if (debounceTimer) {
+      clearTimeout(debounceTimer);
     }
+    
+    debounceTimer = setTimeout(async () => {
+      drawer.querySelector('.cart-drawer-panel').classList.add('loading-active');
+      const updatesToSend = { ...pendingUpdates };
+      pendingUpdates = {}; // Clear immediately to capture any new inputs
+      
+      try {
+        const response = await fetch('/cart/update.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({ updates: updatesToSend })
+        });
+        const cart = await response.json();
+        // Only update currentCart and re-render if the user has not queued newer changes
+        if (Object.keys(pendingUpdates).length === 0) {
+          currentCart = cart;
+          renderCart(cart);
+        }
+      } catch (err) {
+        console.error('Error changing qty:', err);
+        // Fallback: fetch fresh cart
+        await fetchAndRenderCart();
+      } finally {
+        // Only remove loading state if no pending updates are left
+        if (Object.keys(pendingUpdates).length === 0) {
+          drawer.querySelector('.cart-drawer-panel').classList.remove('loading-active');
+        }
+      }
+    }, 350); // 350ms debounce window
   }
 
   // Listener for qty buttons click
@@ -895,24 +1052,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const input = card.querySelector('.item-qty-input');
     const currentQty = input ? parseInt(input.value) : 1;
+    let newQty = currentQty;
 
     if (action === 'plus') {
-      updateQty(key, currentQty + 1);
+      newQty = currentQty + 1;
     } else if (action === 'minus') {
-      if (currentQty > 1) {
-        updateQty(key, currentQty - 1);
-      } else {
-        updateQty(key, 0);
-      }
+      newQty = Math.max(0, currentQty - 1);
     } else if (action === 'delete') {
-      updateQty(key, 0);
+      newQty = 0;
     }
+
+    // Update input DOM element immediately for instant response
+    if (input) {
+      input.value = newQty;
+    }
+
+    // Optimistically update our local currentCart object and re-calculate
+    if (currentCart && currentCart.items) {
+      const itemIndex = currentCart.items.findIndex(item => item.key === key);
+      if (itemIndex > -1) {
+        if (newQty === 0) {
+          currentCart.items.splice(itemIndex, 1);
+        } else {
+          currentCart.items[itemIndex].quantity = newQty;
+        }
+        // Re-render instantly based on optimistic data!
+        renderCart(currentCart);
+      }
+    }
+
+    queueQtyUpdate(key, newQty);
   });
 
   // Protection toggle click
   if (protectionToggle) {
     protectionToggle.addEventListener('change', () => {
-      fetchAndRenderCart();
+      if (protectionToggle.checked) {
+        localStorage.setItem('shipping_protection_opt_out', 'false');
+        addProtectionToCart();
+      } else {
+        localStorage.setItem('shipping_protection_opt_out', 'true');
+        removeProtectionFromCart();
+      }
     });
   }
 
@@ -1071,6 +1252,64 @@ document.addEventListener('DOMContentLoaded', () => {
       "id": "pillow_qty4_info",
       "label": "Qty 4+ - Pillow Price Info Tag",
       "default": "($26.00 each)"
+    },
+    {
+      "type": "header",
+      "content": "Visual Friction Optimization"
+    },
+    {
+      "type": "color",
+      "id": "cart_bg_color",
+      "label": "Cart Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "progress_bar_empty_color",
+      "label": "Progress Bar Empty Color",
+      "default": "#E5E5E5"
+    },
+    {
+      "type": "color",
+      "id": "progress_bar_fill_color",
+      "label": "Progress Bar Fill Color",
+      "default": "#2E6F40"
+    },
+    {
+      "type": "color",
+      "id": "upsell_border_color",
+      "label": "Upsell Border Color",
+      "default": "#C85A32"
+    },
+    {
+      "type": "color",
+      "id": "upsell_hover_bg_color",
+      "label": "Upsell Hover Background Color",
+      "default": "#FAF9F6"
+    },
+    {
+      "type": "color",
+      "id": "checkout_btn_bg_color",
+      "label": "Checkout Button Background Color",
+      "default": "#C85A32"
+    },
+    {
+      "type": "color",
+      "id": "checkout_btn_text_color",
+      "label": "Checkout Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "ghost_btn_border_color",
+      "label": "Ghost Button Border Color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "ghost_btn_text_color",
+      "label": "Ghost Button Text Color",
+      "default": "#181C21"
     }
   ]
 }
