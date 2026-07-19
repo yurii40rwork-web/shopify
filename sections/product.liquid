@@ -228,7 +228,11 @@
                   {%- assign block_bundle_2_price = current_variant.price | times: 2 | minus: block_bundle_2_discount_cents -%}
                   {%- assign block_bundle_3_price = current_variant.price | times: 3 | minus: block_bundle_3_discount_cents -%}
 
-                  <div class="bundles-container-box" {{ block.shopify_attributes }}>
+                  <div class="bundles-container-box" {{ block.shopify_attributes }} style="
+                    --badge-padding-horizontal: {{ block.settings.badge_horizontal_padding | default: 16 }}px;
+                    --selected-border-color: {{ block.settings.selected_border_color | default: '#ff5a3d' }};
+                    --selected-pin-color: {{ block.settings.selected_pin_color | default: '#ff5a3d' }};
+                  ">
                     {%- if block.settings.promo_header_text != blank -%}
                       <div class="bundles-promo-header" style="background-color: {{ block.settings.promo_header_bg | default: '#fee2e2' }}; color: {{ block.settings.promo_header_color | default: '#991b1b' }};">
                         {{ block.settings.promo_header_text | escape }}
@@ -1043,6 +1047,9 @@
 
   /* Bundles Box Container */
   .bundles-container-box {
+    --badge-padding-horizontal: 16px;
+    --selected-border-color: #ff5a3d;
+    --selected-pin-color: #ff5a3d;
     border: 1.5px solid #e2e8f0;
     border-radius: 16px;
     overflow: visible; /* so tag badges can overflow */
@@ -1087,7 +1094,7 @@
     border-color: #cbd5e1;
   }
   .bundle-card-new.active {
-    border: 2px solid #ff5a3d; /* Orange-red border matching the tag/theme */
+    border: 2px solid var(--selected-border-color, #ff5a3d);
     background-color: #fffbfa; /* light warm tint */
     box-shadow: 0 4px 12px rgba(255, 90, 61, 0.05);
   }
@@ -1101,7 +1108,7 @@
     color: #ffffff;
     font-size: 10px;
     font-weight: 800;
-    padding: 6px 24px;
+    padding: 6px calc(var(--badge-padding-horizontal, 16px) * 1.5);
     border-radius: 6px;
     white-space: nowrap !important;
     display: inline-block !important;
@@ -1156,7 +1163,7 @@
     transition: all 0.2s ease;
   }
   .bundle-card-new.active .bundle-radio-checkmark {
-    border-color: #ff5a3d;
+    border-color: var(--selected-border-color, #ff5a3d);
   }
   .bundle-card-new.active .bundle-radio-checkmark::after {
     content: '';
@@ -1166,7 +1173,7 @@
     transform: translate(-50%, -50%);
     width: 10px;
     height: 10px;
-    background-color: #ff5a3d;
+    background-color: var(--selected-pin-color, #ff5a3d);
     border-radius: 50%;
     display: block;
   }
@@ -1214,7 +1221,7 @@
     color: #ffffff;
     font-size: 10px;
     font-weight: 700;
-    padding: 4px 16px;
+    padding: 4px var(--badge-padding-horizontal, 16px);
     border-radius: 4px;
     display: inline-block !important;
     white-space: nowrap !important;
@@ -1755,7 +1762,7 @@
     }
     .bundle-save-badge {
       font-size: 8px !important;
-      padding: 3px 12px !important;
+      padding: 3px calc(var(--badge-padding-horizontal, 16px) * 0.75) !important;
       display: inline-block !important;
       white-space: nowrap !important;
       flex-shrink: 0 !important;
@@ -2437,6 +2444,28 @@
           "id": "bundle_2_tag",
           "label": "Bundle 2 Top Tag",
           "default": "MOST POPULAR"
+        },
+        {
+          "type": "range",
+          "id": "badge_horizontal_padding",
+          "min": 8,
+          "max": 32,
+          "step": 2,
+          "unit": "px",
+          "label": "Badge Horizontal Padding",
+          "default": 16
+        },
+        {
+          "type": "color",
+          "id": "selected_border_color",
+          "label": "Selected Card Border Color",
+          "default": "#ff5a3d"
+        },
+        {
+          "type": "color",
+          "id": "selected_pin_color",
+          "label": "Selected Checkmark Dot (Pin) Color",
+          "default": "#ff5a3d"
         }
       ]
     },

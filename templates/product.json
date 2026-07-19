@@ -41,7 +41,10 @@
             "bundle_2_save_text": "SAVE 60%",
             "bundle_2_original_price": "$136.00",
             "bundle_2_discount": 10,
-            "bundle_2_tag": "MOST POPULAR"
+            "bundle_2_tag": "MOST POPULAR",
+            "badge_horizontal_padding": 16,
+            "selected_border_color": "#ff5a3d",
+            "selected_pin_color": "#ff5a3d"
           }
         },
         "buy_buttons": {

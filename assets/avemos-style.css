@@ -1575,7 +1575,7 @@
   display: none;
 }
 .Avemos-landing-wrapper .bundle-card-new.active .bundle-radio-checkmark {
-  border-color: #ff5a3d !important;
+  border-color: var(--selected-border-color, #ff5a3d) !important;
   background: #ffffff !important;
 }
 .Avemos-landing-wrapper .bundle-card-new.active .bundle-radio-checkmark::after {
