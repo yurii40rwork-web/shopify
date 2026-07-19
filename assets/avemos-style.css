@@ -1591,8 +1591,11 @@
   position: relative !important;
 }
 .Avemos-landing-wrapper .bundle-compare-price {
-  font-size: 20px !important;
+  font-size: 15px !important;
   margin-top: 0 !important;
+}
+.Avemos-landing-wrapper .bundle-price {
+  font-size: 22px !important;
 }
 .Avemos-landing-wrapper .bundle-card {
   padding: 16px 20px !important;
