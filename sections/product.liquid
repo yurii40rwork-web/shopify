@@ -228,10 +228,54 @@
                   {%- assign block_bundle_2_price = current_variant.price | times: 2 | minus: block_bundle_2_discount_cents -%}
                   {%- assign block_bundle_3_price = current_variant.price | times: 3 | minus: block_bundle_3_discount_cents -%}
 
+                  {%- assign badge_position = block.settings.badge_position | default: 'top-right' -%}
+                  {%- case badge_position -%}
+                    {%- when 'top-right' -%}
+                      {%- assign badge_top = '-10px' -%}
+                      {%- assign badge_right = '16px' -%}
+                      {%- assign badge_left = 'auto' -%}
+                      {%- assign badge_transform = 'none' -%}
+                      {%- assign card_padding_top = '24px' -%}
+                    {%- when 'top-left' -%}
+                      {%- assign badge_top = '-10px' -%}
+                      {%- assign badge_right = 'auto' -%}
+                      {%- assign badge_left = '16px' -%}
+                      {%- assign badge_transform = 'none' -%}
+                      {%- assign card_padding_top = '24px' -%}
+                    {%- when 'top-center' -%}
+                      {%- assign badge_top = '-10px' -%}
+                      {%- assign badge_right = 'auto' -%}
+                      {%- assign badge_left = '50%' -%}
+                      {%- assign badge_transform = 'translateX(-50%)' -%}
+                      {%- assign card_padding_top = '24px' -%}
+                    {%- when 'inside-top-right' -%}
+                      {%- assign badge_top = '10px' -%}
+                      {%- assign badge_right = '16px' -%}
+                      {%- assign badge_left = 'auto' -%}
+                      {%- assign badge_transform = 'none' -%}
+                      {%- assign card_padding_top = '42px' -%}
+                    {%- when 'inside-top-left' -%}
+                      {%- assign badge_top = '10px' -%}
+                      {%- assign badge_right = 'auto' -%}
+                      {%- assign badge_left = '16px' -%}
+                      {%- assign badge_transform = 'none' -%}
+                      {%- assign card_padding_top = '42px' -%}
+                  {%- endcase -%}
+
                   <div class="bundles-container-box" {{ block.shopify_attributes }} style="
-                    --badge-padding-horizontal: {{ block.settings.badge_horizontal_padding | default: 16 }};
                     --selected-border-color: {{ block.settings.selected_border_color | default: '#ff5a3d' }};
                     --selected-pin-color: {{ block.settings.selected_pin_color | default: '#ff5a3d' }};
+                    --badge-top: {{ badge_top }};
+                    --badge-right: {{ badge_right }};
+                    --badge-left: {{ badge_left }};
+                    --badge-transform: {{ badge_transform }};
+                    --card-has-badge-padding-top: {{ card_padding_top }};
+                    --badge-font-size: {{ block.settings.badge_font_size | default: 10 }}px;
+                    --badge-padding-vertical: {{ block.settings.badge_vertical_padding | default: 6 }}px;
+                    --badge-padding-horizontal: {{ block.settings.badge_horizontal_padding | default: 16 }}px;
+                    --badge-border-radius: {{ block.settings.badge_border_radius | default: 6 }}px;
+                    --badge-bg-color: {{ block.settings.badge_bg_color | default: '#0f2e6e' }};
+                    --badge-text-color: {{ block.settings.badge_text_color | default: '#ffffff' }};
                   ">
                     {%- if block.settings.promo_header_text != blank -%}
                       <div class="bundles-promo-header" style="background-color: {{ block.settings.promo_header_bg | default: '#fee2e2' }}; color: {{ block.settings.promo_header_color | default: '#991b1b' }};">
@@ -310,7 +354,7 @@
                       </div>
 
                       <!-- Package 2 (Buy 2) -->
-                      <div class="bundle-card-new" id="bundle-card-2" data-discount-cents="{{ block_bundle_2_discount_cents }}">
+                      <div class="bundle-card-new{% if block.settings.bundle_2_tag != blank %} has-badge{% endif %}" id="bundle-card-2" data-discount-cents="{{ block_bundle_2_discount_cents }}">
                         {%- if block.settings.bundle_2_tag != blank -%}
                           <div class="bundle-tag-badge">{{ block.settings.bundle_2_tag | escape }}</div>
                         {%- endif -%}
@@ -582,7 +626,7 @@
                 </div>
 
                 <!-- Package 2 (Buy 2) -->
-                <div class="bundle-card-new" id="bundle-card-2" data-discount-cents="1000">
+                <div class="bundle-card-new has-badge" id="bundle-card-2" data-discount-cents="1000">
                   <div class="bundle-tag-badge">MOST POPULAR</div>
                   
                   <div class="bundle-card-header-new">
@@ -1098,18 +1142,23 @@
     background-color: #fffbfa; /* light warm tint */
     box-shadow: 0 4px 12px rgba(255, 90, 61, 0.05);
   }
+  .bundle-card-new.has-badge {
+    padding-top: var(--card-has-badge-padding-top, 24px);
+  }
   
   /* Card Tag Badge */
   .bundle-tag-badge {
     position: absolute;
-    top: -10px;
-    right: 16px;
-    background-color: #0f2e6e; /* dark blue */
-    color: #ffffff;
-    font-size: 10px;
+    top: var(--badge-top, -10px);
+    right: var(--badge-right, 16px);
+    left: var(--badge-left, auto);
+    transform: var(--badge-transform, none);
+    background-color: var(--badge-bg-color, #0f2e6e) !important;
+    color: var(--badge-text-color, #ffffff) !important;
+    font-size: var(--badge-font-size, 10px) !important;
     font-weight: 800;
-    padding: 6px calc(var(--badge-padding-horizontal, 16) * 1.5 * 1px) !important;
-    border-radius: 6px;
+    padding: var(--badge-padding-vertical, 6px) var(--badge-padding-horizontal, 16px) !important;
+    border-radius: var(--badge-border-radius, 6px) !important;
     white-space: nowrap !important;
     display: inline-block !important;
     text-transform: uppercase;
@@ -1119,7 +1168,7 @@
     font-family: var(--font-body);
   }
   .bundle-tag-badge.best-value {
-    background-color: #6d28d9; /* purple */
+    background-color: var(--badge-bg-color, #6d28d9) !important;
   }
 
   .bundle-card-header-new {
@@ -2446,14 +2495,84 @@
           "default": "MOST POPULAR"
         },
         {
+          "type": "select",
+          "id": "badge_position",
+          "label": "Badge Position",
+          "options": [
+            {
+              "value": "top-right",
+              "label": "Top Right (Hanging)"
+            },
+            {
+              "value": "top-left",
+              "label": "Top Left (Hanging)"
+            },
+            {
+              "value": "top-center",
+              "label": "Top Center (Hanging)"
+            },
+            {
+              "value": "inside-top-right",
+              "label": "Inside Top Right"
+            },
+            {
+              "value": "inside-top-left",
+              "label": "Inside Top Left"
+            }
+          ],
+          "default": "top-right"
+        },
+        {
+          "type": "range",
+          "id": "badge_font_size",
+          "min": 8,
+          "max": 16,
+          "step": 1,
+          "unit": "px",
+          "label": "Badge Font Size",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "badge_vertical_padding",
+          "min": 2,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "label": "Badge Vertical Padding",
+          "default": 6
+        },
+        {
           "type": "range",
           "id": "badge_horizontal_padding",
           "min": 8,
           "max": 32,
-          "step": 2,
+          "step": 1,
           "unit": "px",
           "label": "Badge Horizontal Padding",
           "default": 16
+        },
+        {
+          "type": "range",
+          "id": "badge_border_radius",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Badge Border Radius",
+          "default": 6
+        },
+        {
+          "type": "color",
+          "id": "badge_bg_color",
+          "label": "Badge Background Color",
+          "default": "#0f2e6e"
+        },
+        {
+          "type": "color",
+          "id": "badge_text_color",
+          "label": "Badge Text Color",
+          "default": "#ffffff"
         },
         {
           "type": "color",
