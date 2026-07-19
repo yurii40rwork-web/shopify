@@ -710,6 +710,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Toggle open class
   function openCartDrawer() {
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
     drawer.classList.add('active');
     document.body.classList.add('cart-drawer-open');
     drawer.setAttribute('aria-hidden', 'false');
@@ -719,6 +723,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function closeCartDrawer() {
     drawer.classList.remove('active');
     document.body.classList.remove('cart-drawer-open');
+    document.body.style.paddingRight = '';
     drawer.setAttribute('aria-hidden', 'true');
   }
 
