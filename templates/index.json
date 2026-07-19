@@ -54,24 +54,19 @@
           "type": "bundles",
           "settings": {
             "promo_header_text": "⏳ Ends Tonight: Bundle & Save up to 70% off",
-            "promo_header_bg": "#fee2e2",
-            "promo_header_color": "#991b1b",
+            "promo_header_bg": "#F5F5F7",
+            "promo_header_color": "#000000",
             "bundle_1_title": "1 Pillow",
-            "bundle_1_subtitle": "Perfect for a solo traveler",
             "bundle_1_save_text": "SAVE 50%",
             "bundle_1_original_price": "$78.00",
             "bundle_2_title": "2 Pillows",
-            "bundle_2_subtitle": "Enjoy comfort together",
             "bundle_2_save_text": "SAVE 60%",
             "bundle_2_original_price": "$136.00",
             "bundle_2_discount": 10,
             "bundle_2_tag": "MOST POPULAR",
-            "bundle_3_title": "3 Pillows",
-            "bundle_3_subtitle": "A perfect gift for family & friends",
-            "bundle_3_save_text": "SAVE 70%",
-            "bundle_3_original_price": "$179.40",
-            "bundle_3_discount": 27.3,
-            "bundle_3_tag": "BEST VALUE"
+            "badge_horizontal_padding": 32,
+            "selected_border_color": "#000000",
+            "selected_pin_color": "#1E40AF"
           }
         },
         "buy_buttons": {
@@ -154,7 +149,7 @@
         "wave_amplitude": 60,
         "wave_speed": 12,
         "wave_2_speed": 8,
-        "wave_color": "#d5e3fc",
+        "wave_color": "#FFFFFF",
         "wave_opacity": 85,
         "section_font": "work_sans_n4",
         "section_bg_color": "#111111",
@@ -277,7 +272,7 @@
         "section_text_color": "",
         "odd_row_bg": "#ffffff",
         "even_row_bg": "#f9f9f9",
-        "winner_column_bg": "#F0F4FF"
+        "winner_column_bg": "#f0f4ff"
       }
     },
     "how_it_works": {
@@ -486,7 +481,12 @@
         "card_padding": 16,
         "section_font": "work_sans_n4",
         "section_bg_color": "",
-        "section_text_color": ""
+        "section_bg_gradient": "",
+        "section_text_color": "",
+        "card_bg_color": "#ffffff",
+        "review_text_color": "#333333",
+        "reviewer_name_color": "#000000",
+        "verified_badge_color": "#2e6f40"
       }
     },
     "refund": {
