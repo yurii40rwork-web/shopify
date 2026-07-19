@@ -523,6 +523,7 @@
 {%- endfor -%}
 
 <div class="Avemos-landing-wrapper cart-page-wrapper" id="cart-page-data" 
+     data-enable-bogo="{{ settings.enable_bogo | default: false }}"
      data-pillow-qty1-price="{{ section.settings.pillow_qty1_price | default: 39.00 }}"
      data-pillow-qty2-price="{{ section.settings.pillow_qty2_price | default: 19.50 }}"
      data-pillow-qty3-price="{{ section.settings.pillow_qty3_price | default: 26.00 }}"
@@ -550,11 +551,90 @@
       
       <!-- Left Column: Cart Items -->
       <div class="cart-items-column">
+        {%- assign bogo_line_prices = "" -%}
+        {%- assign bogo_line_original_prices = "" -%}
+        {%- assign bogo_line_qty_free = "" -%}
+        {%- assign bogo_subtotal = 0 -%}
+
+        {%- if settings.enable_bogo -%}
+          {%- assign sorted_items = cart.items | sort: 'price' | reverse -%}
+          {%- assign global_item_index = 0 -%}
+          
+          {%- for item in sorted_items -%}
+            {%- if item.handle == 'shipping-protection' -%}{%- continue -%}{%- endif -%}
+            
+            {%- assign line_bogo_price = 0 -%}
+            {%- assign line_original_price = 0 -%}
+            {%- assign qty_free = 0 -%}
+            
+            {%- for i in (1..item.quantity) -%}
+              {%- assign global_item_index = global_item_index | plus: 1 -%}
+              {%- assign remainder = global_item_index | modulo: 2 -%}
+              {%- if remainder == 0 -%}
+                {%- assign item_price = 0 -%}
+                {%- assign qty_free = qty_free | plus: 1 -%}
+              {%- else -%}
+                {%- assign item_price = item.price -%}
+              {%- endif -%}
+              
+              {%- assign line_bogo_price = line_bogo_price | plus: item_price -%}
+              {%- assign line_original_price = line_original_price | plus: item.price -%}
+            {%- endfor -%}
+            
+            {%- assign bogo_subtotal = bogo_subtotal | plus: line_bogo_price -%}
+            
+            {%- assign bogo_line_prices = bogo_line_prices | append: item.key | append: ":" | append: line_bogo_price | append: "," -%}
+            {%- assign bogo_line_original_prices = bogo_line_original_prices | append: item.key | append: ":" | append: line_original_price | append: "," -%}
+            {%- assign bogo_line_qty_free = bogo_line_qty_free | append: item.key | append: ":" | append: qty_free | append: "," -%}
+          {%- endfor -%}
+          
+          {%- for item in cart.items -%}
+            {%- if item.handle == 'shipping-protection' -%}
+              {%- assign bogo_subtotal = bogo_subtotal | plus: item.price -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- assign bogo_subtotal = cart.total_price -%}
+        {%- endif -%}
+
         <form action="{{ routes.cart_url }}" method="post" id="cart-form">
           <div class="cart-items-list" id="cart-items-container">
             {%- for item in cart.items -%}
               {%- if item.handle == 'shipping-protection' -%}
                 {%- continue -%}{%- endif -%}
+              
+              {%- assign bogo_price = item.final_line_price -%}
+              {%- assign bogo_original_price = item.original_line_price -%}
+              {%- assign qty_free = 0 -%}
+              
+              {%- if settings.enable_bogo -%}
+                {%- assign key_colon = item.key | append: ":" -%}
+                
+                {%- assign price_pairs = bogo_line_prices | split: "," -%}
+                {%- for pair in price_pairs -%}
+                  {%- if pair contains key_colon -%}
+                    {%- assign bogo_price = pair | split: ":" | last | plus: 0 -%}
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+                
+                {%- assign original_price_pairs = bogo_line_original_prices | split: "," -%}
+                {%- for pair in original_price_pairs -%}
+                  {%- if pair contains key_colon -%}
+                    {%- assign bogo_original_price = pair | split: ":" | last | plus: 0 -%}
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+                
+                {%- assign qty_free_pairs = bogo_line_qty_free | split: "," -%}
+                {%- for pair in qty_free_pairs -%}
+                  {%- if pair contains key_colon -%}
+                    {%- assign qty_free = pair | split: ":" | last | plus: 0 -%}
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endif -%}
+
               <div class="cart-item-card" data-line-item-key="{{ item.key }}" data-line-item-id="{{ item.id }}">
                 
                 <!-- Item Image -->
@@ -598,7 +678,8 @@
 
                   <!-- Price Mobile Only -->
                   <div class="cart-item-price-mobile">
-                    {{ item.final_price | money }}
+                    {%- assign unit_price_displayed = bogo_price | divided_by: item.quantity -%}
+                    {{ unit_price_displayed | money }}
                   </div>
                 </div>
 
@@ -621,8 +702,16 @@
                 </div>
 
                 <!-- Line Item Price (Desktop) -->
-                <div class="cart-item-total-price-col">
-                  <span class="line-price-label">{{ item.final_line_price | money }}</span>
+                <div class="cart-item-total-price-col" style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+                  <span class="line-price-label">
+                    {{ bogo_price | money }}
+                    {%- if qty_free > 0 -%}
+                      <span class="subtotal-badge" style="background:#2e6f40; margin-left:4px; font-size:10px; padding: 2px 6px; border-radius: 4px; color:#fff; font-weight:700;">{{ qty_free }} FREE</span>
+                    {%- endif -%}
+                  </span>
+                  {%- if bogo_original_price > bogo_price -%}
+                    <span class="price-original" style="text-decoration: line-through; color: #75777d; font-size: 0.9rem;">{{ bogo_original_price | money }}</span>
+                  {%- endif -%}
                 </div>
 
               </div>
@@ -641,7 +730,7 @@
             <!-- Subtotal Row -->
             <div class="summary-row subtotal-row">
               <span class="subtotal-label">Subtotal</span>
-              <span class="subtotal-value" id="cart-subtotal">{{ cart.total_price | money }}</span>
+              <span class="subtotal-value" id="cart-subtotal">{{ bogo_subtotal | money }}</span>
             </div>
 
             <!-- Tax / Shipping info -->
@@ -708,6 +797,7 @@
     const subtotalLabel = document.getElementById('cart-subtotal');
     const cartCounts = document.querySelectorAll('#cart-count, #drawer-cart-count');
     const cartPageData = document.getElementById('cart-page-data');
+    const bogoEnabled = cartPageData ? cartPageData.dataset.enableBogo === 'true' : false;
     const pillowQty1Price = parseFloat(cartPageData ? cartPageData.dataset.pillowQty1Price : 39.00) * 100;
     const pillowQty2Price = parseFloat(cartPageData ? cartPageData.dataset.pillowQty2Price : 19.50) * 100;
     const pillowQty3Price = parseFloat(cartPageData ? cartPageData.dataset.pillowQty3Price : 26.00) * 100;
@@ -772,6 +862,59 @@
         }
       });
 
+      // Calculate BOGO details
+      const lineItemDetails = {};
+      if (bogoEnabled) {
+        let units = [];
+        cart.items.forEach(item => {
+          const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
+          if (isProtection) return;
+
+          const isPillow = item.product_title.toLowerCase().includes('pillow');
+          const baseUnitPriceCents = item.price || pillowQty1Price;
+          const currentPricePerUnit = isPillow ? getPillowUnitPriceCents(totalPillowsQty) : (item.final_price || item.price);
+          const originalPricePerUnit = isPillow ? (pillowQty1Original) : (item.compare_at_price || item.original_price || (baseUnitPriceCents > pillowQty1Price ? baseUnitPriceCents : pillowQty1Original));
+
+          for (let i = 0; i < item.quantity; i++) {
+            units.push({
+              key: item.key,
+              currentPrice: currentPricePerUnit,
+              originalPrice: originalPricePerUnit
+            });
+          }
+        });
+
+        // Sort descending by current price so BOGO discounts the cheaper items
+        units.sort((a, b) => b.currentPrice - a.currentPrice);
+
+        units.forEach((unit, idx) => {
+          if (idx % 2 === 1) {
+            unit.discountedPrice = 0; // FREE
+          } else {
+            unit.discountedPrice = unit.currentPrice;
+          }
+        });
+
+        units.forEach(unit => {
+          if (!lineItemDetails[unit.key]) {
+            lineItemDetails[unit.key] = {
+              key: unit.key,
+              totalBogoPrice: 0,
+              totalOriginalPrice: 0,
+              qtyFree: 0,
+              qtyPaid: 0
+            };
+          }
+          lineItemDetails[unit.key].totalBogoPrice += unit.discountedPrice;
+          lineItemDetails[unit.key].totalOriginalPrice += unit.originalPrice;
+          if (unit.discountedPrice === 0) {
+            lineItemDetails[unit.key].qtyFree++;
+          } else {
+            lineItemDetails[unit.key].qtyPaid++;
+          }
+        });
+      }
+
       let calculatedSubtotal = 0;
 
       cartCounts.forEach(el => {
@@ -795,23 +938,39 @@
         
         const isPillow = item.product_title.toLowerCase().includes('pillow');
         const baseUnitPriceCents = item.price || pillowQty1Price;
-        const effectiveUnitPrice = isPillow ? getPillowUnitPriceCents(totalPillowsQty) : (item.final_price || item.price);
-        const effectiveLinePrice = effectiveUnitPrice * item.quantity;
-        calculatedSubtotal += effectiveLinePrice;
+        const currentPricePerUnit = isPillow ? getPillowUnitPriceCents(totalPillowsQty) : (item.final_price || item.price);
+        const originalPricePerUnit = isPillow ? (pillowQty1Original) : (item.compare_at_price || item.original_price || (baseUnitPriceCents > pillowQty1Price ? baseUnitPriceCents : pillowQty1Original));
+
+        const hasBogoDetails = bogoEnabled && lineItemDetails[item.key];
+        const totalBogoPrice = hasBogoDetails ? lineItemDetails[item.key].totalBogoPrice : (currentPricePerUnit * item.quantity);
+        const totalOriginalPrice = hasBogoDetails ? lineItemDetails[item.key].totalOriginalPrice : (originalPricePerUnit * item.quantity);
+        const qtyFree = hasBogoDetails ? lineItemDetails[item.key].qtyFree : 0;
+
+        calculatedSubtotal += totalBogoPrice;
 
         const card = document.querySelector(`.cart-item-card[data-line-item-key="${item.key}"]`);
         if (card) {
           const qtyInput = card.querySelector('.qty-input');
           if (qtyInput) qtyInput.value = item.quantity;
 
-          const linePriceCol = card.querySelector('.cart-item-total-price-col .line-price-label');
+          const linePriceCol = card.querySelector('.cart-item-total-price-col');
           if (linePriceCol) {
-            linePriceCol.textContent = formatMoney(effectiveLinePrice);
+            let lineHTML = `<span class="line-price-label">${formatMoney(totalBogoPrice)}`;
+            if (qtyFree > 0) {
+              lineHTML += ` <span class="subtotal-badge" style="background:#2e6f40; margin-left:4px; font-size:10px; padding: 2px 6px; border-radius: 4px; color:#fff; font-weight:700;">${qtyFree} FREE</span>`;
+            }
+            lineHTML += `</span>`;
+            if (totalOriginalPrice > totalBogoPrice) {
+              lineHTML += ` <span class="price-original" style="text-decoration: line-through; color: #75777d; font-size: 0.9rem; margin-top: 4px;">${formatMoney(totalOriginalPrice)}</span>`;
+            } else if (originalPricePerUnit > currentPricePerUnit) {
+              lineHTML += ` <span class="price-original" style="text-decoration: line-through; color: #75777d; font-size: 0.9rem; margin-top: 4px;">${formatMoney(totalOriginalPrice)}</span>`;
+            }
+            linePriceCol.innerHTML = lineHTML;
           }
 
           const priceMobile = card.querySelector('.cart-item-price-mobile');
           if (priceMobile) {
-            priceMobile.textContent = formatMoney(effectiveUnitPrice);
+            priceMobile.textContent = formatMoney(totalBogoPrice / item.quantity);
           }
         }
       });
@@ -933,19 +1092,24 @@
         try {
           const res = await fetch('/cart.js');
           const cart = await res.json();
-          let pillowQty = 0;
-          cart.items.forEach(item => {
-            if (item.product_title && item.product_title.toLowerCase().includes('pillow')) {
-              pillowQty += item.quantity;
-            }
-          });
-
+          
           let discountCode = '';
-          if (pillowQty === 2) discountCode = 'PILLOWS2';
-          else if (pillowQty === 3) discountCode = 'PILLOWS3';
-          else if (pillowQty === 4) discountCode = 'PILLOWS4';
-          else if (pillowQty === 5) discountCode = 'PILLOWS5';
-          else if (pillowQty >= 6) discountCode = 'PILLOWS6';
+          if (bogoEnabled) {
+            discountCode = 'BOGO';
+          } else {
+            let pillowQty = 0;
+            cart.items.forEach(item => {
+              if (item.product_title && item.product_title.toLowerCase().includes('pillow')) {
+                pillowQty += item.quantity;
+              }
+            });
+
+            if (pillowQty === 2) discountCode = 'PILLOWS2';
+            else if (pillowQty === 3) discountCode = 'PILLOWS3';
+            else if (pillowQty === 4) discountCode = 'PILLOWS4';
+            else if (pillowQty === 5) discountCode = 'PILLOWS5';
+            else if (pillowQty >= 6) discountCode = 'PILLOWS6';
+          }
 
           if (discountCode) {
             window.location.href = `/discount/${discountCode}?redirect=/checkout`;
@@ -957,6 +1121,12 @@
         }
       });
     }
+
+    // Update cart DOM on page load to apply custom discounts (pillow qty and BOGO)
+    fetch('/cart.js')
+      .then(res => res.json())
+      .then(cart => updateCartDOM(cart))
+      .catch(err => console.error('Error fetching cart on page load:', err));
   });
 </script>
 

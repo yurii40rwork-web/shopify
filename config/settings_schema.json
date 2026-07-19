@@ -85,5 +85,17 @@
         "default": 4
       }
     ]
+  },
+  {
+    "name": "BOGO Discount",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_bogo",
+        "label": "Enable BOGO Discount",
+        "default": false,
+        "info": "When enabled, every second product in the cart/checkout is marked as FREE."
+      }
+    ]
   }
 ]

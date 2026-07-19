@@ -1,5 +1,6 @@
 <!-- Cart Drawer Section -->
 <div id="cart-drawer" class="cart-drawer-container" aria-hidden="true" 
+     data-enable-bogo="{{ settings.enable_bogo | default: false }}"
      data-shipping-threshold="{{ section.settings.free_shipping_threshold | default: 50 }}"
      data-protection-price="{{ section.settings.shipping_protection_price | default: 5.00 }}"
      data-save-percent="{{ section.settings.save_percent | default: 57 }}"
@@ -696,6 +697,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const shippingThreshold = parseFloat(drawer.dataset.shippingThreshold || 50) * 100; // in cents
   const protectionPrice = parseFloat(drawer.dataset.protectionPrice || 5.00) * 100; // in cents
   const savePercentVal = parseInt(drawer.dataset.savePercent || 57);
+  const bogoEnabled = drawer.dataset.enableBogo === 'true';
   
   const pillowQty1Price = parseFloat(drawer.dataset.pillowQty1Price || 39.00) * 100;
   const pillowQty1Original = parseFloat(drawer.dataset.pillowQty1Original || 78.00) * 100;
@@ -908,6 +910,59 @@ document.addEventListener('DOMContentLoaded', () => {
       return '';
     }
 
+    // Calculate BOGO details
+    const lineItemDetails = {};
+    if (bogoEnabled) {
+      let units = [];
+      cart.items.forEach(item => {
+        const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
+        if (isProtection) return;
+
+        const isPillow = item.product_title.toLowerCase().includes('pillow');
+        const baseUnitPriceCents = item.price || pillowQty1Price;
+        const currentPricePerUnit = isPillow ? getPillowUnitPriceCents(totalPillowsQty) : (item.final_price || item.price);
+        const originalPricePerUnit = isPillow ? getPillowOriginalUnitPriceCents(totalPillowsQty) : (item.compare_at_price || item.original_price || (baseUnitPriceCents > pillowQty1Price ? baseUnitPriceCents : pillowQty1Original));
+
+        for (let i = 0; i < item.quantity; i++) {
+          units.push({
+            key: item.key,
+            currentPrice: currentPricePerUnit,
+            originalPrice: originalPricePerUnit
+          });
+        }
+      });
+
+      // Sort descending by current price so BOGO discounts the cheaper items
+      units.sort((a, b) => b.currentPrice - a.currentPrice);
+
+      units.forEach((unit, idx) => {
+        if (idx % 2 === 1) {
+          unit.discountedPrice = 0; // FREE
+        } else {
+          unit.discountedPrice = unit.currentPrice;
+        }
+      });
+
+      units.forEach(unit => {
+        if (!lineItemDetails[unit.key]) {
+          lineItemDetails[unit.key] = {
+            key: unit.key,
+            totalBogoPrice: 0,
+            totalOriginalPrice: 0,
+            qtyFree: 0,
+            qtyPaid: 0
+          };
+        }
+        lineItemDetails[unit.key].totalBogoPrice += unit.discountedPrice;
+        lineItemDetails[unit.key].totalOriginalPrice += unit.originalPrice;
+        if (unit.discountedPrice === 0) {
+          lineItemDetails[unit.key].qtyFree++;
+        } else {
+          lineItemDetails[unit.key].qtyPaid++;
+        }
+      });
+    }
+
     // Loop through and render actual cart items
     cart.items.forEach((item, index) => {
       const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
@@ -929,13 +984,28 @@ document.addEventListener('DOMContentLoaded', () => {
         originalPricePerUnit = pillowQty1Original; // default compare at if missing
       }
 
-    
+      const hasBogoDetails = bogoEnabled && lineItemDetails[item.key];
+      const totalBogoPrice = hasBogoDetails ? lineItemDetails[item.key].totalBogoPrice : (currentPricePerUnit * item.quantity);
+      const totalOriginalPrice = hasBogoDetails ? lineItemDetails[item.key].totalOriginalPrice : (originalPricePerUnit * item.quantity);
+      const qtyFree = hasBogoDetails ? lineItemDetails[item.key].qtyFree : 0;
 
-      basePricesSubtotal += (currentPricePerUnit * item.quantity);
-      originalPricesSubtotal += (originalPricePerUnit * item.quantity);
+      basePricesSubtotal += totalBogoPrice;
+      originalPricesSubtotal += totalOriginalPrice;
 
-      const currentLineFormatted = formatMoney(currentPricePerUnit * item.quantity);
-      const originalLineFormatted = formatMoney(originalPricePerUnit * item.quantity);
+      const currentLineFormatted = formatMoney(totalBogoPrice);
+      const originalLineFormatted = formatMoney(totalOriginalPrice);
+
+      let priceLabelHTML = `<span class="price-current">${currentLineFormatted}</span>`;
+      if (qtyFree > 0) {
+        priceLabelHTML += ` <span class="subtotal-badge" style="background:#2e6f40; margin-left:4px; font-size:10px; padding: 2px 6px; border-radius: 4px; color:#fff;">${qtyFree} FREE</span>`;
+      }
+
+      let originalPriceHTML = '';
+      if (totalOriginalPrice > totalBogoPrice) {
+        originalPriceHTML = `<span class="price-original">${originalLineFormatted}</span>`;
+      } else if (originalPricePerUnit > currentPricePerUnit) {
+        originalPriceHTML = `<span class="price-original">${originalLineFormatted}</span>`;
+      }
 
       itemElement.innerHTML = `
         <div class="item-img-col">
@@ -955,9 +1025,9 @@ document.addEventListener('DOMContentLoaded', () => {
             <i class="fa-regular fa-trash-can"></i>
           </button>
           <div class="item-prices-box">
-            <span class="price-current">${currentLineFormatted}</span>
+            ${priceLabelHTML}
             ${item.quantity > 1 ? `<span class="price-each" style="font-size: 11px; color: #75777d; margin-top: 1px; white-space: nowrap;">${isPillow ? getPillowPricingInfo(totalPillowsQty, currentPricePerUnit) : `(${formatMoney(currentPricePerUnit)} each)`}</span>` : ''}
-            ${originalPricePerUnit > currentPricePerUnit ? `<span class="price-original">${originalLineFormatted}</span>` : ''}
+            ${originalPriceHTML}
           </div>
         </div>
       `;
@@ -1104,19 +1174,23 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const res = await fetch('/cart.js');
         const cart = await res.json();
-        let pillowQty = 0;
-        cart.items.forEach(item => {
-          if (item.product_title && item.product_title.toLowerCase().includes('pillow')) {
-            pillowQty += item.quantity;
-          }
-        });
-        
         let discountCode = '';
-        if (pillowQty === 2) discountCode = 'PILLOWS2';
-        else if (pillowQty === 3) discountCode = 'PILLOWS3';
-        else if (pillowQty === 4) discountCode = 'PILLOWS4';
-        else if (pillowQty === 5) discountCode = 'PILLOWS5';
-        else if (pillowQty >= 6) discountCode = 'PILLOWS6';
+        if (bogoEnabled) {
+          discountCode = 'BOGO';
+        } else {
+          let pillowQty = 0;
+          cart.items.forEach(item => {
+            if (item.product_title && item.product_title.toLowerCase().includes('pillow')) {
+              pillowQty += item.quantity;
+            }
+          });
+          
+          if (pillowQty === 2) discountCode = 'PILLOWS2';
+          else if (pillowQty === 3) discountCode = 'PILLOWS3';
+          else if (pillowQty === 4) discountCode = 'PILLOWS4';
+          else if (pillowQty === 5) discountCode = 'PILLOWS5';
+          else if (pillowQty >= 6) discountCode = 'PILLOWS6';
+        }
 
         if (discountCode) {
           window.location.href = `/discount/${discountCode}?redirect=/checkout`;
