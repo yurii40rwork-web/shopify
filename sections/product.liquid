@@ -229,7 +229,7 @@
                   {%- assign block_bundle_3_price = current_variant.price | times: 3 | minus: block_bundle_3_discount_cents -%}
 
                   <div class="bundles-container-box" {{ block.shopify_attributes }} style="
-                    --badge-padding-horizontal: {{ block.settings.badge_horizontal_padding | default: 16 }}px;
+                    --badge-padding-horizontal: {{ block.settings.badge_horizontal_padding | default: 16 }};
                     --selected-border-color: {{ block.settings.selected_border_color | default: '#ff5a3d' }};
                     --selected-pin-color: {{ block.settings.selected_pin_color | default: '#ff5a3d' }};
                   ">
@@ -1047,7 +1047,7 @@
 
   /* Bundles Box Container */
   .bundles-container-box {
-    --badge-padding-horizontal: 16px;
+    --badge-padding-horizontal: 16;
     --selected-border-color: #ff5a3d;
     --selected-pin-color: #ff5a3d;
     border: 1.5px solid #e2e8f0;
@@ -1108,7 +1108,7 @@
     color: #ffffff;
     font-size: 10px;
     font-weight: 800;
-    padding: 6px calc(var(--badge-padding-horizontal, 16px) * 1.5);
+    padding: 6px calc(var(--badge-padding-horizontal, 16) * 1.5 * 1px) !important;
     border-radius: 6px;
     white-space: nowrap !important;
     display: inline-block !important;
@@ -1221,7 +1221,7 @@
     color: #ffffff;
     font-size: 10px;
     font-weight: 700;
-    padding: 4px var(--badge-padding-horizontal, 16px);
+    padding: 4px calc(var(--badge-padding-horizontal, 16) * 1px) !important;
     border-radius: 4px;
     display: inline-block !important;
     white-space: nowrap !important;
@@ -1762,7 +1762,7 @@
     }
     .bundle-save-badge {
       font-size: 8px !important;
-      padding: 3px calc(var(--badge-padding-horizontal, 16px) * 0.75) !important;
+      padding: 3px calc(var(--badge-padding-horizontal, 16) * 0.75 * 1px) !important;
       display: inline-block !important;
       white-space: nowrap !important;
       flex-shrink: 0 !important;
