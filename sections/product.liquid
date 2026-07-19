@@ -1368,12 +1368,10 @@
     margin-top: 12px;
     padding-bottom: 8px;
     overflow: visible;
-    pointer-events: none;
     transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .bundle-card-new.active .bundle-card-content {
     opacity: 1;
-    pointer-events: auto;
   }
 
   .bundle-color-separator {
@@ -1977,14 +1975,18 @@
     });
 
     // Custom dropdown logic
-    const customDropdowns = document.querySelectorAll('.custom-dropdown');
-
     customDropdowns.forEach(dropdown => {
       const trigger = dropdown.querySelector('.custom-dropdown-trigger');
       const options = dropdown.querySelectorAll('.custom-dropdown-option');
 
       // Toggle open/close on trigger click
       trigger.addEventListener('click', (e) => {
+        const card = trigger.closest('.bundle-card-new');
+        if (card && !card.classList.contains('active')) {
+          // Allow click to bubble to activate the card
+          return;
+        }
+
         e.stopPropagation();
         // Close all other dropdowns first
         customDropdowns.forEach(d => {
