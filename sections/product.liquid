@@ -1583,17 +1583,14 @@
     gap: 12px;
   }
   .bundle-color-row.multi-selects {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px 16px;
-    align-items: flex-start;
   }
   .bundle-select-column {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    flex: 1;
-    min-width: 120px;
   }
   
   .bundle-card-new .bundle-color-label {
@@ -2080,13 +2077,9 @@
       box-sizing: border-box !important;
     }
     .bundle-color-row.multi-selects {
-      flex-direction: column !important;
+      display: grid !important;
+      grid-template-columns: 1fr !important;
       gap: 12px !important;
-      align-items: stretch !important;
-    }
-    .bundle-select-column {
-      width: 100% !important;
-      flex: none !important;
     }
 
     /* Keep dropdown triggers wide on mobile */
