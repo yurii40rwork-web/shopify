@@ -901,7 +901,7 @@
       });
 
       // Calculate BOGO details
-      const lineItemDetails = {};
+      const displayCards = [];
       if (bogoEnabled) {
         let units = [];
         groupedItems.forEach(item => {
@@ -915,7 +915,8 @@
 
           for (let i = 0; i < item.quantity; i++) {
             units.push({
-              key: item.key,
+              groupKey: item.key,
+              item: item,
               currentPrice: currentPricePerUnit,
               originalPrice: originalPricePerUnit
             });
@@ -926,30 +927,88 @@
         units.sort((a, b) => b.currentPrice - a.currentPrice);
 
         units.forEach((unit, idx) => {
-          if (idx % 2 === 1) {
-            unit.discountedPrice = 0; // FREE
+          unit.isFree = (idx % 2 === 1);
+        });
+
+        const groupBogo = {};
+        units.forEach(unit => {
+          if (!groupBogo[unit.groupKey]) {
+            groupBogo[unit.groupKey] = {
+              item: unit.item,
+              paidQty: 0,
+              freeQty: 0,
+              unitCurrentPrice: unit.currentPrice,
+              unitOriginalPrice: unit.originalPrice
+            };
+          }
+          if (unit.isFree) {
+            groupBogo[unit.groupKey].freeQty++;
           } else {
-            unit.discountedPrice = unit.currentPrice;
+            groupBogo[unit.groupKey].paidQty++;
           }
         });
 
-        units.forEach(unit => {
-          if (!lineItemDetails[unit.key]) {
-            lineItemDetails[unit.key] = {
-              key: unit.key,
-              totalBogoPrice: 0,
-              totalOriginalPrice: 0,
-              qtyFree: 0,
-              qtyPaid: 0
-            };
+        groupedItems.forEach(item => {
+          const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
+          if (isProtection) {
+            displayCards.push({
+              ...item,
+              isFreeCard: false,
+              cardQty: item.quantity,
+              totalItemQty: item.quantity,
+              cardPrice: (item.final_price || item.price) * item.quantity,
+              cardOriginalPrice: (item.original_price || item.price) * item.quantity,
+              unitCurrentPrice: item.final_price || item.price,
+              unitOriginalPrice: item.original_price || item.price
+            });
+            return;
           }
-          lineItemDetails[unit.key].totalBogoPrice += unit.discountedPrice;
-          lineItemDetails[unit.key].totalOriginalPrice += unit.originalPrice;
-          if (unit.discountedPrice === 0) {
-            lineItemDetails[unit.key].qtyFree++;
-          } else {
-            lineItemDetails[unit.key].qtyPaid++;
+
+          const bogoInfo = groupBogo[item.key];
+          if (bogoInfo) {
+            if (bogoInfo.paidQty > 0) {
+              displayCards.push({
+                ...item,
+                isFreeCard: false,
+                cardQty: bogoInfo.paidQty,
+                totalItemQty: item.quantity,
+                cardPrice: bogoInfo.paidQty * bogoInfo.unitCurrentPrice,
+                cardOriginalPrice: bogoInfo.paidQty * bogoInfo.unitOriginalPrice,
+                unitCurrentPrice: bogoInfo.unitCurrentPrice,
+                unitOriginalPrice: bogoInfo.unitOriginalPrice
+              });
+            }
+            if (bogoInfo.freeQty > 0) {
+              displayCards.push({
+                ...item,
+                isFreeCard: true,
+                cardQty: bogoInfo.freeQty,
+                totalItemQty: item.quantity,
+                cardPrice: 0,
+                cardOriginalPrice: bogoInfo.freeQty * bogoInfo.unitOriginalPrice,
+                unitCurrentPrice: bogoInfo.unitCurrentPrice,
+                unitOriginalPrice: bogoInfo.unitOriginalPrice
+              });
+            }
           }
+        });
+      } else {
+        groupedItems.forEach(item => {
+          const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
+          const isPillow = item.product_title.toLowerCase().includes('pillow');
+          const currentPricePerUnit = isPillow ? getPillowUnitPriceCents(totalPillowsQty) : (item.final_price || item.price);
+          const originalPricePerUnit = isPillow ? (pillowQty1Original) : (item.compare_at_price || item.original_price || item.price);
+
+          displayCards.push({
+            ...item,
+            isFreeCard: false,
+            cardQty: item.quantity,
+            totalItemQty: item.quantity,
+            cardPrice: isProtection ? (item.final_price || item.price) * item.quantity : currentPricePerUnit * item.quantity,
+            cardOriginalPrice: isProtection ? (item.original_price || item.price) * item.quantity : originalPricePerUnit * item.quantity,
+            unitCurrentPrice: currentPricePerUnit,
+            unitOriginalPrice: originalPricePerUnit
+          });
         });
       }
 
@@ -965,51 +1024,73 @@
       });
 
       const keysInCart = new Set();
-      groupedItems.forEach(item => {
-        const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
+      displayCards.forEach(card => {
+        const isProtection = card.handle === 'shipping-protection' || card.product_title.toLowerCase().includes('shipping protection');
         if (isProtection) {
-          calculatedSubtotal += (item.final_price || item.price) * item.quantity;
+          calculatedSubtotal += card.cardPrice;
           return;
         }
 
-        keysInCart.add(item.key);
-        
-        const isPillow = item.product_title.toLowerCase().includes('pillow');
-        const baseUnitPriceCents = item.price || pillowQty1Price;
-        const currentPricePerUnit = isPillow ? getPillowUnitPriceCents(totalPillowsQty) : (item.final_price || item.price);
-        const originalPricePerUnit = isPillow ? (pillowQty1Original) : (item.compare_at_price || item.original_price || (baseUnitPriceCents > pillowQty1Price ? baseUnitPriceCents : pillowQty1Original));
+        calculatedSubtotal += card.cardPrice;
 
-        const hasBogoDetails = bogoEnabled && lineItemDetails[item.key];
-        const totalBogoPrice = hasBogoDetails ? lineItemDetails[item.key].totalBogoPrice : (currentPricePerUnit * item.quantity);
-        const totalOriginalPrice = hasBogoDetails ? lineItemDetails[item.key].totalOriginalPrice : (originalPricePerUnit * item.quantity);
-        const qtyFree = hasBogoDetails ? lineItemDetails[item.key].qtyFree : 0;
+        if (!card.isFreeCard) {
+          keysInCart.add(card.key);
+          const mainCard = document.querySelector(`.cart-item-card[data-line-item-key="${card.key}"]:not(.bogo-free-item-card)`);
+          if (mainCard) {
+            mainCard.dataset.keys = JSON.stringify(card.keys || [card.key]);
+            const qtyInput = mainCard.querySelector('.qty-input');
+            if (qtyInput) qtyInput.value = card.cardQty;
 
-        calculatedSubtotal += totalBogoPrice;
-
-        const card = document.querySelector(`.cart-item-card[data-line-item-key="${item.key}"]`);
-        if (card) {
-          card.dataset.keys = JSON.stringify(item.keys || [item.key]);
-          const qtyInput = card.querySelector('.qty-input');
-          if (qtyInput) qtyInput.value = item.quantity;
-
-          const linePriceCol = card.querySelector('.cart-item-total-price-col');
-          if (linePriceCol) {
-            let lineHTML = `<span class="line-price-label">${formatMoney(totalBogoPrice)}`;
-            if (qtyFree > 0) {
-              lineHTML += ` <span class="subtotal-badge" style="background:#2e6f40; margin-left:4px; font-size:10px; padding: 2px 6px; border-radius: 4px; color:#fff; font-weight:700;">${qtyFree} FREE</span>`;
+            const linePriceCol = mainCard.querySelector('.cart-item-total-price-col');
+            if (linePriceCol) {
+              let lineHTML = `<span class="line-price-label">${formatMoney(card.cardPrice)}</span>`;
+              if (card.cardOriginalPrice > card.cardPrice) {
+                lineHTML += ` <span class="price-original" style="text-decoration: line-through; color: #75777d; font-size: 0.9rem; margin-top: 4px;">${formatMoney(card.cardOriginalPrice)}</span>`;
+              }
+              linePriceCol.innerHTML = lineHTML;
             }
-            lineHTML += `</span>`;
-            if (totalOriginalPrice > totalBogoPrice) {
-              lineHTML += ` <span class="price-original" style="text-decoration: line-through; color: #75777d; font-size: 0.9rem; margin-top: 4px;">${formatMoney(totalOriginalPrice)}</span>`;
-            } else if (originalPricePerUnit > currentPricePerUnit) {
-              lineHTML += ` <span class="price-original" style="text-decoration: line-through; color: #75777d; font-size: 0.9rem; margin-top: 4px;">${formatMoney(totalOriginalPrice)}</span>`;
+
+            const priceMobile = mainCard.querySelector('.cart-item-price-mobile');
+            if (priceMobile) {
+              priceMobile.textContent = formatMoney(card.unitCurrentPrice);
             }
-            linePriceCol.innerHTML = lineHTML;
+          }
+        } else {
+          const freeCardId = `bogo-free-card-${card.key}`;
+          keysInCart.add(freeCardId);
+          let freeCard = document.getElementById(freeCardId);
+          const mainCard = document.querySelector(`.cart-item-card[data-line-item-key="${card.key}"]:not(.bogo-free-item-card)`);
+          
+          if (!freeCard && mainCard) {
+            freeCard = mainCard.cloneNode(true);
+            freeCard.id = freeCardId;
+            freeCard.classList.add('bogo-free-item-card');
+            freeCard.style.border = '1.5px dashed #2e6f40';
+            freeCard.style.backgroundColor = '#f4fbf6';
+            freeCard.style.marginTop = '12px';
+            mainCard.parentNode.insertBefore(freeCard, mainCard.nextSibling);
           }
 
-          const priceMobile = card.querySelector('.cart-item-price-mobile');
-          if (priceMobile) {
-            priceMobile.textContent = formatMoney(totalBogoPrice / item.quantity);
+          if (freeCard) {
+            freeCard.dataset.keys = JSON.stringify(card.keys || [card.key]);
+            const qtyInput = freeCard.querySelector('.qty-input');
+            if (qtyInput) qtyInput.value = card.cardQty;
+
+            const linePriceCol = freeCard.querySelector('.cart-item-total-price-col');
+            if (linePriceCol) {
+              let lineHTML = `<span class="line-price-label" style="color:#2e6f40; font-weight:800;">FREE</span> <span class="subtotal-badge" style="background:#2e6f40; color:#fff; font-size:10px; padding: 2px 6px; border-radius: 4px; font-weight:700;">FREE BOGO GIFT</span>`;
+              if (card.cardOriginalPrice > 0) {
+                lineHTML += ` <span class="price-original" style="text-decoration: line-through; color: #75777d; font-size: 0.9rem; margin-top: 4px;">${formatMoney(card.cardOriginalPrice)}</span>`;
+              }
+              linePriceCol.innerHTML = lineHTML;
+            }
+
+            const priceMobile = freeCard.querySelector('.cart-item-price-mobile');
+            if (priceMobile) {
+              priceMobile.textContent = 'FREE';
+              priceMobile.style.color = '#2e6f40';
+              priceMobile.style.fontWeight = '700';
+            }
           }
         }
       });

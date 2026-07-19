@@ -941,8 +941,9 @@ document.addEventListener('DOMContentLoaded', () => {
       return '';
     }
 
-    // Calculate BOGO details
-    const lineItemDetails = {};
+    // Calculate BOGO details and split cards into Paid items vs FREE items list
+    const displayCards = [];
+
     if (bogoEnabled) {
       let units = [];
       groupedItems.forEach(item => {
@@ -956,7 +957,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         for (let i = 0; i < item.quantity; i++) {
           units.push({
-            key: item.key,
+            groupKey: item.key,
+            item: item,
             currentPrice: currentPricePerUnit,
             originalPrice: originalPricePerUnit
           });
@@ -967,98 +969,169 @@ document.addEventListener('DOMContentLoaded', () => {
       units.sort((a, b) => b.currentPrice - a.currentPrice);
 
       units.forEach((unit, idx) => {
-        if (idx % 2 === 1) {
-          unit.discountedPrice = 0; // FREE
+        unit.isFree = (idx % 2 === 1);
+      });
+
+      const groupBogo = {};
+      units.forEach(unit => {
+        if (!groupBogo[unit.groupKey]) {
+          groupBogo[unit.groupKey] = {
+            item: unit.item,
+            paidQty: 0,
+            freeQty: 0,
+            unitCurrentPrice: unit.currentPrice,
+            unitOriginalPrice: unit.originalPrice
+          };
+        }
+        if (unit.isFree) {
+          groupBogo[unit.groupKey].freeQty++;
         } else {
-          unit.discountedPrice = unit.currentPrice;
+          groupBogo[unit.groupKey].paidQty++;
         }
       });
 
-      units.forEach(unit => {
-        if (!lineItemDetails[unit.key]) {
-          lineItemDetails[unit.key] = {
-            key: unit.key,
-            totalBogoPrice: 0,
-            totalOriginalPrice: 0,
-            qtyFree: 0,
-            qtyPaid: 0
-          };
+      groupedItems.forEach(item => {
+        const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
+        if (isProtection) {
+          displayCards.push({
+            ...item,
+            isFreeCard: false,
+            cardQty: item.quantity,
+            totalItemQty: item.quantity,
+            cardPrice: (item.final_price || item.price) * item.quantity,
+            cardOriginalPrice: (item.original_price || item.price) * item.quantity,
+            unitCurrentPrice: item.final_price || item.price,
+            unitOriginalPrice: item.original_price || item.price
+          });
+          return;
         }
-        lineItemDetails[unit.key].totalBogoPrice += unit.discountedPrice;
-        lineItemDetails[unit.key].totalOriginalPrice += unit.originalPrice;
-        if (unit.discountedPrice === 0) {
-          lineItemDetails[unit.key].qtyFree++;
+
+        const bogoInfo = groupBogo[item.key];
+        if (bogoInfo) {
+          // Paid Card first
+          if (bogoInfo.paidQty > 0) {
+            displayCards.push({
+              ...item,
+              isFreeCard: false,
+              cardQty: bogoInfo.paidQty,
+              totalItemQty: item.quantity,
+              cardPrice: bogoInfo.paidQty * bogoInfo.unitCurrentPrice,
+              cardOriginalPrice: bogoInfo.paidQty * bogoInfo.unitOriginalPrice,
+              unitCurrentPrice: bogoInfo.unitCurrentPrice,
+              unitOriginalPrice: bogoInfo.unitOriginalPrice
+            });
+          }
+          // Free Card next
+          if (bogoInfo.freeQty > 0) {
+            displayCards.push({
+              ...item,
+              isFreeCard: true,
+              cardQty: bogoInfo.freeQty,
+              totalItemQty: item.quantity,
+              cardPrice: 0, // FREE
+              cardOriginalPrice: bogoInfo.freeQty * bogoInfo.unitOriginalPrice,
+              unitCurrentPrice: bogoInfo.unitCurrentPrice,
+              unitOriginalPrice: bogoInfo.unitOriginalPrice
+            });
+          }
         } else {
-          lineItemDetails[unit.key].qtyPaid++;
+          displayCards.push({
+            ...item,
+            isFreeCard: false,
+            cardQty: item.quantity,
+            totalItemQty: item.quantity,
+            cardPrice: item.price * item.quantity,
+            cardOriginalPrice: (item.compare_at_price || item.price) * item.quantity,
+            unitCurrentPrice: item.price,
+            unitOriginalPrice: item.compare_at_price || item.price
+          });
         }
+      });
+    } else {
+      groupedItems.forEach(item => {
+        const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
+        const isPillow = item.product_title.toLowerCase().includes('pillow');
+        const currentPricePerUnit = isPillow ? getPillowUnitPriceCents(totalPillowsQty) : (item.final_price || item.price);
+        const originalPricePerUnit = isPillow ? getPillowOriginalUnitPriceCents(totalPillowsQty) : (item.compare_at_price || item.original_price || item.price);
+
+        displayCards.push({
+          ...item,
+          isFreeCard: false,
+          cardQty: item.quantity,
+          totalItemQty: item.quantity,
+          cardPrice: isProtection ? (item.final_price || item.price) * item.quantity : currentPricePerUnit * item.quantity,
+          cardOriginalPrice: isProtection ? (item.original_price || item.price) * item.quantity : originalPricePerUnit * item.quantity,
+          unitCurrentPrice: currentPricePerUnit,
+          unitOriginalPrice: originalPricePerUnit
+        });
       });
     }
 
-    // Loop through and render actual cart items
-    groupedItems.forEach((item, index) => {
-      const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
+    // Loop through and render display cards
+    displayCards.forEach((card) => {
+      const isProtection = card.handle === 'shipping-protection' || card.product_title.toLowerCase().includes('shipping protection');
       if (isProtection) return;
 
-      const isPillow = item.product_title.toLowerCase().includes('pillow');
-      const itemTitle = item.product_title;
+      const isPillow = card.product_title.toLowerCase().includes('pillow');
+      const itemTitle = card.product_title;
 
       const itemElement = document.createElement('div');
       itemElement.className = 'cart-drawer-item';
-      itemElement.dataset.key = item.key;
-      itemElement.dataset.keys = JSON.stringify(item.keys || [item.key]);
-
-      // Dynamic prices with cumulative discount rule
-      const baseUnitPriceCents = item.price || pillowQty1Price;
-      const currentPricePerUnit = isPillow ? getPillowUnitPriceCents(totalPillowsQty) : (item.final_price || item.price);
-      let originalPricePerUnit = isPillow ? getPillowOriginalUnitPriceCents(totalPillowsQty) : (item.compare_at_price || item.original_price || (baseUnitPriceCents > pillowQty1Price ? baseUnitPriceCents : pillowQty1Original));
-      
-      if (originalPricePerUnit <= currentPricePerUnit && !isPillow) {
-        originalPricePerUnit = pillowQty1Original; // default compare at if missing
+      if (card.isFreeCard) {
+        itemElement.classList.add('bogo-free-item-card');
+        itemElement.style.border = '1.5px dashed #2e6f40';
+        itemElement.style.backgroundColor = '#f4fbf6';
       }
+      itemElement.dataset.key = card.key;
+      itemElement.dataset.keys = JSON.stringify(card.keys || [card.key]);
+      itemElement.dataset.isFreeCard = card.isFreeCard ? 'true' : 'false';
 
-      const hasBogoDetails = bogoEnabled && lineItemDetails[item.key];
-      const totalBogoPrice = hasBogoDetails ? lineItemDetails[item.key].totalBogoPrice : (currentPricePerUnit * item.quantity);
-      const totalOriginalPrice = hasBogoDetails ? lineItemDetails[item.key].totalOriginalPrice : (originalPricePerUnit * item.quantity);
-      const qtyFree = hasBogoDetails ? lineItemDetails[item.key].qtyFree : 0;
+      basePricesSubtotal += card.cardPrice;
+      originalPricesSubtotal += card.cardOriginalPrice;
 
-      basePricesSubtotal += totalBogoPrice;
-      originalPricesSubtotal += totalOriginalPrice;
+      const currentLineFormatted = card.isFreeCard ? 'FREE' : formatMoney(card.cardPrice);
+      const originalLineFormatted = formatMoney(card.cardOriginalPrice);
 
-      const currentLineFormatted = formatMoney(totalBogoPrice);
-      const originalLineFormatted = formatMoney(totalOriginalPrice);
-
-      let priceLabelHTML = `<span class="price-current">${currentLineFormatted}</span>`;
-      if (qtyFree > 0) {
-        priceLabelHTML += ` <span class="subtotal-badge" style="background:#2e6f40; margin-left:4px; font-size:10px; padding: 2px 6px; border-radius: 4px; color:#fff;">${qtyFree} FREE</span>`;
+      let priceLabelHTML = '';
+      if (card.isFreeCard) {
+        priceLabelHTML = `<span class="price-current" style="color:#2e6f40; font-weight:800;">FREE</span> <span class="subtotal-badge" style="background:#2e6f40; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:700;">FREE BOGO GIFT</span>`;
+      } else {
+        priceLabelHTML = `<span class="price-current">${currentLineFormatted}</span>`;
       }
 
       let originalPriceHTML = '';
-      if (totalOriginalPrice > totalBogoPrice) {
-        originalPriceHTML = `<span class="price-original">${originalLineFormatted}</span>`;
-      } else if (originalPricePerUnit > currentPricePerUnit) {
-        originalPriceHTML = `<span class="price-original">${originalLineFormatted}</span>`;
+      if (card.cardOriginalPrice > card.cardPrice) {
+        originalPriceHTML = `<span class="price-original" style="text-decoration: line-through; color: #75777d; font-size: 0.9rem;">${originalLineFormatted}</span>`;
+      }
+
+      let priceEachHTML = '';
+      if (!card.isFreeCard && card.cardQty > 1) {
+        priceEachHTML = `<span class="price-each" style="font-size: 11px; color: #75777d; margin-top: 1px; white-space: nowrap;">${formatMoney(card.unitCurrentPrice)} each</span>`;
+      } else if (card.isFreeCard) {
+        priceEachHTML = `<span class="price-each" style="font-size: 11px; color: #2e6f40; margin-top: 1px; white-space: nowrap; font-weight:600;">$0.00 each</span>`;
       }
 
       itemElement.innerHTML = `
         <div class="item-img-col">
-          <img src="${item.image ? item.image : '//cdn.shopify.com/s/images/admin/no-image-large.gif'}" alt="${itemTitle}">
+          <img src="${card.image ? card.image : '//cdn.shopify.com/s/images/admin/no-image-large.gif'}" alt="${itemTitle}">
         </div>
         <div class="item-info-col">
-          <a href="${item.url}" class="item-title">${itemTitle}</a>
-          ${item.variant_title && !item.variant_title.includes('Default') ? `<div style="font-size: 12px; color: #75777d; margin-top: 1px;">${item.variant_title}</div>` : ''}
+          <a href="${card.url}" class="item-title">${itemTitle}</a>
+          ${card.variant_title && !card.variant_title.includes('Default') ? `<div style="font-size: 12px; color: #75777d; margin-top: 1px;">${card.variant_title}</div>` : ''}
+          ${card.isFreeCard ? `<div style="font-size: 11px; color: #2e6f40; font-weight:700; margin-top: 2px;">🎁 Free Gift Included</div>` : ''}
           <div class="item-qty-selector">
-            <button type="button" class="item-qty-btn" data-action="minus" data-key="${item.key}">-</button>
-            <input type="number" class="item-qty-input" value="${item.quantity}" readonly>
-            <button type="button" class="item-qty-btn" data-action="plus" data-key="${item.key}">+</button>
+            <button type="button" class="item-qty-btn" data-action="minus" data-key="${card.key}" data-is-free="${card.isFreeCard}">-</button>
+            <input type="number" class="item-qty-input" value="${card.cardQty}" readonly>
+            <button type="button" class="item-qty-btn" data-action="plus" data-key="${card.key}" data-is-free="${card.isFreeCard}">+</button>
           </div>
         </div>
         <div class="item-price-col">
-          <button type="button" class="item-delete-btn" data-action="delete" data-key="${item.key}">
+          <button type="button" class="item-delete-btn" data-action="delete" data-key="${card.key}">
             <i class="fa-regular fa-trash-can"></i>
           </button>
           <div class="item-prices-box">
             ${priceLabelHTML}
-            ${item.quantity > 1 ? `<span class="price-each" style="font-size: 11px; color: #75777d; margin-top: 1px; white-space: nowrap;">${isPillow ? getPillowPricingInfo(totalPillowsQty, currentPricePerUnit) : `(${formatMoney(currentPricePerUnit)} each)`}</span>` : ''}
+            ${priceEachHTML}
             ${originalPriceHTML}
           </div>
         </div>
@@ -1164,30 +1237,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const keysArray = JSON.parse(card.dataset.keys || '[]');
     const input = card.querySelector('.item-qty-input');
-    const currentQty = input ? parseInt(input.value) : 1;
-    let newQty = currentQty;
+    const currentCardQty = input ? parseInt(input.value) : 1;
+    let newCardQty = currentCardQty;
 
     if (action === 'plus') {
-      newQty = currentQty + 1;
+      newCardQty = currentCardQty + 1;
     } else if (action === 'minus') {
-      newQty = Math.max(0, currentQty - 1);
+      newCardQty = Math.max(0, currentCardQty - 1);
     } else if (action === 'delete') {
-      newQty = 0;
+      newCardQty = 0;
     }
 
-    // Update input DOM element immediately for instant response
+    const newTotalQty = bogoEnabled && newCardQty > 0 ? (newCardQty * 2) : newCardQty;
+
     if (input) {
-      input.value = newQty;
+      input.value = newCardQty;
     }
 
     // Optimistically update our local currentCart object and re-calculate
     if (currentCart && currentCart.items) {
       const itemIndex = currentCart.items.findIndex(item => item.key === key);
       if (itemIndex > -1) {
-        if (newQty === 0) {
+        if (newTotalQty === 0) {
           currentCart.items = currentCart.items.filter(item => !keysArray.includes(item.key));
         } else {
-          currentCart.items[itemIndex].quantity = newQty;
+          currentCart.items[itemIndex].quantity = newTotalQty;
           currentCart.items = currentCart.items.filter(item => item.key === key || !keysArray.includes(item.key));
         }
         // Re-render instantly based on optimistic data!
@@ -1195,7 +1269,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    queueQtyUpdate(key, newQty, keysArray);
+    queueQtyUpdate(key, newTotalQty, keysArray);
   });
 
   // Protection toggle click
