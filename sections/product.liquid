@@ -309,6 +309,9 @@
                                   <span class="bundle-save-badge">{{ block.settings.bundle_1_save_text | escape }}</span>
                                 {%- endif -%}
                               </div>
+                              {%- if block.settings.bundle_1_subtitle != blank -%}
+                                <div class="bundle-subtitle">{{ block.settings.bundle_1_subtitle | escape }}</div>
+                              {%- endif -%}
                             </div>
                           </label>
                           
@@ -376,6 +379,9 @@
                                   <span class="bundle-save-badge">{{ block.settings.bundle_2_save_text | escape }}</span>
                                 {%- endif -%}
                               </div>
+                              {%- if block.settings.bundle_2_subtitle != blank -%}
+                                <div class="bundle-subtitle">{{ block.settings.bundle_2_subtitle | escape }}</div>
+                              {%- endif -%}
                             </div>
                           </label>
                           
@@ -2456,6 +2462,12 @@
         },
         {
           "type": "text",
+          "id": "bundle_1_subtitle",
+          "label": "Bundle 1 Subtitle",
+          "default": "Standard shipping"
+        },
+        {
+          "type": "text",
           "id": "bundle_1_save_text",
           "label": "Bundle 1 Save Badge Text",
           "default": "SAVE 50%"
@@ -2471,6 +2483,12 @@
           "id": "bundle_2_title",
           "label": "Bundle 2 Title",
           "default": "2 Pillows"
+        },
+        {
+          "type": "text",
+          "id": "bundle_2_subtitle",
+          "label": "Bundle 2 Subtitle",
+          "default": "Free shipping + priority handling"
         },
         {
           "type": "text",
