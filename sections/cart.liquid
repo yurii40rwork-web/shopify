@@ -806,20 +806,32 @@
     if (!cartContainer) return;
 
     // Helper: update item quantity on Shopify
-    async function updateQuantity(key, quantity) {
+    async function updateQuantity(key, quantity, keysArray = []) {
       const itemCard = document.querySelector(`.cart-item-card[data-line-item-key="${key}"]`);
       if (itemCard) itemCard.classList.add('loading-active');
 
+      const updates = {};
+      if (keysArray.length > 1) {
+        keysArray.forEach(k => {
+          if (k === key) {
+            updates[k] = quantity;
+          } else {
+            updates[k] = 0;
+          }
+        });
+      } else {
+        updates[key] = quantity;
+      }
+
       try {
-        const response = await fetch('/cart/change.js', {
+        const response = await fetch('/cart/update.js', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           },
           body: JSON.stringify({
-            id: key,
-            quantity: quantity
+            updates: updates
           })
         });
 
@@ -850,7 +862,33 @@
       let itemCountExcludingProtection = 0;
       let hasProtectionInCart = false;
 
+      // Group cart items by variant_id to stack identical items for better UX
+      const groupedItems = [];
+      const itemMap = {};
+
       cart.items.forEach(item => {
+        const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
+        if (isProtection) {
+          groupedItems.push(item);
+          return;
+        }
+
+        const key = item.variant_id || item.id;
+        if (!itemMap[key]) {
+          itemMap[key] = {
+            ...item,
+            keys: [item.key],
+            originalQuantities: { [item.key]: item.quantity }
+          };
+          groupedItems.push(itemMap[key]);
+        } else {
+          itemMap[key].quantity += item.quantity;
+          itemMap[key].keys.push(item.key);
+          itemMap[key].originalQuantities[item.key] = item.quantity;
+        }
+      });
+
+      groupedItems.forEach(item => {
         const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
         if (isProtection) {
           hasProtectionInCart = true;
@@ -866,7 +904,7 @@
       const lineItemDetails = {};
       if (bogoEnabled) {
         let units = [];
-        cart.items.forEach(item => {
+        groupedItems.forEach(item => {
           const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
           if (isProtection) return;
 
@@ -927,7 +965,7 @@
       });
 
       const keysInCart = new Set();
-      cart.items.forEach(item => {
+      groupedItems.forEach(item => {
         const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
         if (isProtection) {
           calculatedSubtotal += (item.final_price || item.price) * item.quantity;
@@ -950,6 +988,7 @@
 
         const card = document.querySelector(`.cart-item-card[data-line-item-key="${item.key}"]`);
         if (card) {
+          card.dataset.keys = JSON.stringify(item.keys || [item.key]);
           const qtyInput = card.querySelector('.qty-input');
           if (qtyInput) qtyInput.value = item.quantity;
 
@@ -1053,6 +1092,7 @@
       if (!card) return;
 
       const key = card.dataset.lineItemKey;
+      const keysArray = JSON.parse(card.dataset.keys || '[]');
       const qtyInput = card.querySelector('.qty-input');
       if (!qtyInput) return;
 
@@ -1061,12 +1101,12 @@
 
       if (action === 'minus') {
         if (currentQty > 0) {
-          updateQuantity(key, currentQty - 1);
+          updateQuantity(key, currentQty - 1, keysArray);
         }
       } else if (action === 'plus') {
-        updateQuantity(key, currentQty + 1);
+        updateQuantity(key, currentQty + 1, keysArray);
       } else if (action === 'remove' || button.classList.contains('cart-item-remove-link')) {
-        updateQuantity(key, 0);
+        updateQuantity(key, 0, keysArray);
       }
     });
 
@@ -1079,9 +1119,10 @@
       if (!card) return;
 
       const key = card.dataset.lineItemKey;
+      const keysArray = JSON.parse(card.dataset.keys || '[]');
       const newQty = Math.max(0, parseInt(input.value) || 0);
 
-      updateQuantity(key, newQty);
+      updateQuantity(key, newQty, keysArray);
     });
 
     // Intercept checkout form submission on cart page to append discount parameter

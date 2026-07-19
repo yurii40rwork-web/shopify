@@ -844,13 +844,39 @@ document.addEventListener('DOMContentLoaded', () => {
     
     itemsList.innerHTML = '';
     
+    // Group cart items by variant_id to stack identical items for better UX
+    const groupedItems = [];
+    const itemMap = {};
+
+    cart.items.forEach(item => {
+      const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
+      if (isProtection) {
+        groupedItems.push(item);
+        return;
+      }
+
+      const key = item.variant_id || item.id;
+      if (!itemMap[key]) {
+        itemMap[key] = {
+          ...item,
+          keys: [item.key],
+          originalQuantities: { [item.key]: item.quantity }
+        };
+        groupedItems.push(itemMap[key]);
+      } else {
+        itemMap[key].quantity += item.quantity;
+        itemMap[key].keys.push(item.key);
+        itemMap[key].originalQuantities[item.key] = item.quantity;
+      }
+    });
+    
     let totalPillowsQty = 0;
     let basePricesSubtotal = 0;
     let originalPricesSubtotal = 0;
     let hasProtectionInCart = false;
     let itemCountExcludingProtection = 0;
 
-    cart.items.forEach(item => {
+    groupedItems.forEach(item => {
       const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
       if (isProtection) {
         hasProtectionInCart = true;
@@ -919,7 +945,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const lineItemDetails = {};
     if (bogoEnabled) {
       let units = [];
-      cart.items.forEach(item => {
+      groupedItems.forEach(item => {
         const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
         if (isProtection) return;
 
@@ -969,7 +995,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Loop through and render actual cart items
-    cart.items.forEach((item, index) => {
+    groupedItems.forEach((item, index) => {
       const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
       if (isProtection) return;
 
@@ -979,6 +1005,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const itemElement = document.createElement('div');
       itemElement.className = 'cart-drawer-item';
       itemElement.dataset.key = item.key;
+      itemElement.dataset.keys = JSON.stringify(item.keys || [item.key]);
 
       // Dynamic prices with cumulative discount rule
       const baseUnitPriceCents = item.price || pillowQty1Price;
@@ -1075,8 +1102,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Handle AJAX quantity updates with debounce and single batch request
-  function queueQtyUpdate(key, newQty) {
-    pendingUpdates[key] = newQty;
+  function queueQtyUpdate(key, newQty, keysArray = []) {
+    if (keysArray.length > 1) {
+      keysArray.forEach(k => {
+        if (k === key) {
+          pendingUpdates[k] = newQty;
+        } else {
+          pendingUpdates[k] = 0;
+        }
+      });
+    } else {
+      pendingUpdates[key] = newQty;
+    }
     
     if (debounceTimer) {
       clearTimeout(debounceTimer);
@@ -1125,6 +1162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const card = btn.closest('.cart-drawer-item');
     if (!card) return;
 
+    const keysArray = JSON.parse(card.dataset.keys || '[]');
     const input = card.querySelector('.item-qty-input');
     const currentQty = input ? parseInt(input.value) : 1;
     let newQty = currentQty;
@@ -1147,16 +1185,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const itemIndex = currentCart.items.findIndex(item => item.key === key);
       if (itemIndex > -1) {
         if (newQty === 0) {
-          currentCart.items.splice(itemIndex, 1);
+          currentCart.items = currentCart.items.filter(item => !keysArray.includes(item.key));
         } else {
           currentCart.items[itemIndex].quantity = newQty;
+          currentCart.items = currentCart.items.filter(item => item.key === key || !keysArray.includes(item.key));
         }
         // Re-render instantly based on optimistic data!
         renderCart(currentCart);
       }
     }
 
-    queueQtyUpdate(key, newQty);
+    queueQtyUpdate(key, newQty, keysArray);
   });
 
   // Protection toggle click
