@@ -1078,7 +1078,7 @@
 
             const linePriceCol = freeCard.querySelector('.cart-item-total-price-col');
             if (linePriceCol) {
-              let lineHTML = `<span class="line-price-label" style="color:#2e6f40; font-weight:800;">FREE</span> <span class="subtotal-badge" style="background:#2e6f40; color:#fff; font-size:10px; padding: 2px 6px; border-radius: 4px; font-weight:700;">FREE BOGO GIFT</span>`;
+              let lineHTML = `<span class="subtotal-badge" style="background:#2e6f40; color:#fff; font-size:10px; padding: 2px 6px; border-radius: 4px; font-weight:700;">FREE BOGO GIFT</span>`;
               if (card.cardOriginalPrice > 0) {
                 lineHTML += ` <span class="price-original" style="text-decoration: line-through; color: #75777d; font-size: 0.9rem; margin-top: 4px;">${formatMoney(card.cardOriginalPrice)}</span>`;
               }
@@ -1087,9 +1087,7 @@
 
             const priceMobile = freeCard.querySelector('.cart-item-price-mobile');
             if (priceMobile) {
-              priceMobile.textContent = 'FREE';
-              priceMobile.style.color = '#2e6f40';
-              priceMobile.style.fontWeight = '700';
+              priceMobile.textContent = '';
             }
           }
         }
