@@ -276,6 +276,12 @@
                     --badge-border-radius: {{ block.settings.badge_border_radius | default: 6 }}px;
                     --badge-bg-color: {{ block.settings.badge_bg_color | default: '#0f2e6e' }};
                     --badge-text-color: {{ block.settings.badge_text_color | default: '#ffffff' }};
+                    --discount-badge-font-size: {{ block.settings.discount_badge_font_size | default: 10 }}px;
+                    --discount-badge-padding-vertical: {{ block.settings.discount_badge_vertical_padding | default: 4 }}px;
+                    --discount-badge-padding-horizontal: {{ block.settings.discount_badge_horizontal_padding | default: 16 }}px;
+                    --discount-badge-border-radius: {{ block.settings.discount_badge_border_radius | default: 4 }}px;
+                    --discount-badge-bg-color: {{ block.settings.discount_badge_bg_color | default: '#ff5a3d' }};
+                    --discount-badge-text-color: {{ block.settings.discount_badge_text_color | default: '#ffffff' }};
                   ">
                     {%- if block.settings.promo_header_text != blank -%}
                       <div class="bundles-promo-header" style="background-color: {{ block.settings.promo_header_bg | default: '#fee2e2' }}; color: {{ block.settings.promo_header_color | default: '#991b1b' }};">
@@ -1266,12 +1272,12 @@
     font-family: var(--font-heading);
   }
   .bundle-save-badge {
-    background-color: #ff5a3d;
-    color: #ffffff;
-    font-size: 10px;
+    background-color: var(--discount-badge-bg-color, #ff5a3d) !important;
+    color: var(--discount-badge-text-color, #ffffff) !important;
+    font-size: var(--discount-badge-font-size, 10px) !important;
     font-weight: 700;
-    padding: 4px calc(var(--badge-padding-horizontal, 16) * 1px) !important;
-    border-radius: 4px;
+    padding: var(--discount-badge-padding-vertical, 4px) var(--discount-badge-padding-horizontal, 16px) !important;
+    border-radius: var(--discount-badge-border-radius, 4px) !important;
     display: inline-block !important;
     white-space: nowrap !important;
     flex-shrink: 0 !important;
@@ -2572,6 +2578,62 @@
           "type": "color",
           "id": "badge_text_color",
           "label": "Badge Text Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "header",
+          "content": "Discount Badge Settings"
+        },
+        {
+          "type": "range",
+          "id": "discount_badge_font_size",
+          "min": 8,
+          "max": 16,
+          "step": 1,
+          "unit": "px",
+          "label": "Discount Badge Font Size",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "discount_badge_vertical_padding",
+          "min": 2,
+          "max": 12,
+          "step": 1,
+          "unit": "px",
+          "label": "Discount Badge Vertical Padding",
+          "default": 4
+        },
+        {
+          "type": "range",
+          "id": "discount_badge_horizontal_padding",
+          "min": 4,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Discount Badge Horizontal Padding",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "discount_badge_border_radius",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Discount Badge Border Radius",
+          "default": 4
+        },
+        {
+          "type": "color",
+          "id": "discount_badge_bg_color",
+          "label": "Discount Badge Background Color",
+          "default": "#ff5a3d"
+        },
+        {
+          "type": "color",
+          "id": "discount_badge_text_color",
+          "label": "Discount Badge Text Color",
           "default": "#ffffff"
         },
         {
