@@ -326,35 +326,67 @@
                               </span>
                             {%- endif -%}
                             <span class="bundle-price">{{ current_variant.price | money }}</span>
+                            <span class="bundle-each-price">{{ current_variant.price | divided_by: 2 | money }} each</span>
                           </div>
                         </div>
                         
                         <div class="bundle-card-content">
                           <div class="bundle-color-separator"></div>
-                          <div class="bundle-color-row">
-                            <span class="bundle-color-label">Pillow 1</span>
-                            <div class="bundle-select-wrapper">
-                              <div class="custom-dropdown" id="bundle-1-variant-select" data-value="{{ product.variants.first.id }}">
-                                <div class="custom-dropdown-trigger">
-                                  <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
-                                  <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
-                                  <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                          <div class="bundle-color-row multi-selects">
+                            <div class="bundle-select-column">
+                              <span class="bundle-color-label">Pillow 1</span>
+                              <div class="bundle-select-wrapper">
+                                <div class="custom-dropdown" id="bundle-1-pillow-1-select" data-value="{{ product.variants.first.id }}">
+                                  <div class="custom-dropdown-trigger">
+                                    <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
+                                    <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
+                                    <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                                  </div>
+                                  <div class="custom-dropdown-options">
+                                    {%- for variant in product.variants -%}
+                                      {%- assign swatch_color = '#9ca3af' -%}
+                                      {%- assign v_title = variant.title | downcase -%}
+                                      {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
+                                      {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
+                                      {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
+                                      {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
+                                      {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
+                                      {%- endif -%}
+                                      <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
+                                        <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
+                                        <span class="option-label">{{ variant.title }}</span>
+                                      </div>
+                                    {%- endfor -%}
+                                  </div>
                                 </div>
-                                <div class="custom-dropdown-options">
-                                  {%- for variant in product.variants -%}
-                                    {%- assign swatch_color = '#9ca3af' -%}
-                                    {%- assign v_title = variant.title | downcase -%}
-                                    {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
-                                    {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
-                                    {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
-                                    {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
-                                    {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
-                                    {%- endif -%}
-                                    <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
-                                      <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
-                                      <span class="option-label">{{ variant.title }}</span>
-                                    </div>
-                                  {%- endfor -%}
+                              </div>
+                            </div>
+                            
+                            <div class="bundle-select-column">
+                              <span class="bundle-color-label">Pillow 2</span>
+                              <div class="bundle-select-wrapper">
+                                <div class="custom-dropdown" id="bundle-1-pillow-2-select" data-value="{{ product.variants.first.id }}">
+                                  <div class="custom-dropdown-trigger">
+                                    <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
+                                    <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
+                                    <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                                  </div>
+                                  <div class="custom-dropdown-options">
+                                    {%- for variant in product.variants -%}
+                                      {%- assign swatch_color = '#9ca3af' -%}
+                                      {%- assign v_title = variant.title | downcase -%}
+                                      {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
+                                      {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
+                                      {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
+                                      {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
+                                      {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
+                                      {%- endif -%}
+                                      <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
+                                        <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
+                                        <span class="option-label">{{ variant.title }}</span>
+                                      </div>
+                                    {%- endfor -%}
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -396,7 +428,7 @@
                               </span>
                             {%- endif -%}
                             <span class="bundle-price">{{ block_bundle_2_price | money }}</span>
-                            <span class="bundle-each-price">{{ block_bundle_2_price | divided_by: 2 | money }} each</span>
+                            <span class="bundle-each-price">{{ block_bundle_2_price | divided_by: 4 | money }} each</span>
                           </div>
                         </div>
                         
@@ -460,6 +492,65 @@
                                 </div>
                               </div>
                             </div>
+
+                            <div class="bundle-select-column">
+                              <span class="bundle-color-label">Pillow 3</span>
+                              <div class="bundle-select-wrapper">
+                                <div class="custom-dropdown" id="bundle-2-pillow-3-select" data-value="{{ product.variants.first.id }}">
+                                  <div class="custom-dropdown-trigger">
+                                    <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
+                                    <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
+                                    <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                                  </div>
+                                  <div class="custom-dropdown-options">
+                                    {%- for variant in product.variants -%}
+                                      {%- assign swatch_color = '#9ca3af' -%}
+                                      {%- assign v_title = variant.title | downcase -%}
+                                      {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
+                                      {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
+                                      {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
+                                      {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
+                                      {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
+                                      {%- endif -%}
+                                      <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
+                                        <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
+                                        <span class="option-label">{{ variant.title }}</span>
+                                      </div>
+                                    {%- endfor -%}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="bundle-select-column">
+                              <span class="bundle-color-label">Pillow 4</span>
+                              <div class="bundle-select-wrapper">
+                                <div class="custom-dropdown" id="bundle-2-pillow-4-select" data-value="{{ product.variants.first.id }}">
+                                  <div class="custom-dropdown-trigger">
+                                    <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
+                                    <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
+                                    <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                                  </div>
+                                  <div class="custom-dropdown-options">
+                                    {%- for variant in product.variants -%}
+                                      {%- assign swatch_color = '#9ca3af' -%}
+                                      {%- assign v_title = variant.title | downcase -%}
+                                      {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
+                                      {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
+                                      {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
+                                      {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
+                                      {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
+                                      {%- endif -%}
+                                      <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
+                                        <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
+                                        <span class="option-label">{{ variant.title }}</span>
+                                      </div>
+                                    {%- endfor -%}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
                           </div>
                         </div>
                       </div>
@@ -601,64 +692,7 @@
                         <span class="bundle-compare-price">{{ current_variant.compare_at_price | money }}</span>
                       {%- endif -%}
                       <span class="bundle-price">{{ current_variant.price | money }}</span>
-                    </div>
-                  </div>
-                  
-                  <div class="bundle-card-content">
-                    <div class="bundle-color-separator"></div>
-                    <div class="bundle-color-row">
-                      <span class="bundle-color-label">Pillow 1</span>
-                      <div class="bundle-select-wrapper">
-                        <div class="custom-dropdown" id="bundle-1-variant-select" data-value="{{ product.variants.first.id }}">
-                          <div class="custom-dropdown-trigger">
-                            <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
-                            <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
-                            <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
-                          </div>
-                          <div class="custom-dropdown-options">
-                            {%- for variant in product.variants -%}
-                              {%- assign swatch_color = '#9ca3af' -%}
-                              {%- assign v_title = variant.title | downcase -%}
-                              {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
-                              {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
-                              {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
-                              {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}
-                              {%- elsif v_title contains 'leopard' -%}{%- assign swatch_color = '#c8a45a' -%}
-                              {%- endif -%}
-                              <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
-                                <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
-                                <span class="option-label">{{ variant.title }}</span>
-                              </div>
-                            {%- endfor -%}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Package 2 (Buy 2) -->
-                <div class="bundle-card-new has-badge" id="bundle-card-2" data-discount-cents="1000">
-                  <div class="bundle-tag-badge">MOST POPULAR</div>
-                  
-                  <div class="bundle-card-header-new">
-                    <label class="bundle-radio-container-new">
-                      <input type="radio" name="bundle_option" value="buy_2">
-                      <span class="bundle-radio-checkmark"></span>
-                      <div class="bundle-title-group">
-                        <div class="bundle-title-row">
-                          <span class="bundle-title">2 Pillows</span>
-                          <span class="bundle-save-badge">SAVE 60%</span>
-                        </div>
-                      </div>
-                    </label>
-                    
-                    <div class="bundle-price-group-new" style="margin-right: 16px !important;">
-                      {%- if current_variant.compare_at_price > current_variant.price -%}
-                        <span class="bundle-compare-price">{{ current_variant.compare_at_price | times: 2 | money }}</span>
-                      {%- endif -%}
-                      <span class="bundle-price">{{ fallback_bundle_2_price | money }}</span>
-                      <span class="bundle-each-price">{{ fallback_bundle_2_price | divided_by: 2 | money }} each</span>
+                      <span class="bundle-each-price">{{ current_variant.price | divided_by: 2 | money }} each</span>
                     </div>
                   </div>
                   
@@ -668,7 +702,7 @@
                       <div class="bundle-select-column">
                         <span class="bundle-color-label">Pillow 1</span>
                         <div class="bundle-select-wrapper">
-                          <div class="custom-dropdown" id="bundle-2-pillow-1-select" data-value="{{ product.variants.first.id }}">
+                          <div class="custom-dropdown" id="bundle-1-pillow-1-select" data-value="{{ product.variants.first.id }}">
                             <div class="custom-dropdown-trigger">
                               <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
                               <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
@@ -697,7 +731,7 @@
                       <div class="bundle-select-column">
                         <span class="bundle-color-label">Pillow 2</span>
                         <div class="bundle-select-wrapper">
-                          <div class="custom-dropdown" id="bundle-2-pillow-2-select" data-value="{{ product.variants.first.id }}">
+                          <div class="custom-dropdown" id="bundle-1-pillow-2-select" data-value="{{ product.variants.first.id }}">
                             <div class="custom-dropdown-trigger">
                               <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
                               <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
@@ -722,6 +756,146 @@
                           </div>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Package 2 (Buy 2) -->
+                <div class="bundle-card-new has-badge" id="bundle-card-2" data-discount-cents="1000">
+                  <div class="bundle-tag-badge">MOST POPULAR</div>
+                  
+                  <div class="bundle-card-header-new">
+                    <label class="bundle-radio-container-new">
+                      <input type="radio" name="bundle_option" value="buy_2">
+                      <span class="bundle-radio-checkmark"></span>
+                      <div class="bundle-title-group">
+                        <div class="bundle-title-row">
+                          <span class="bundle-title">2 Pillows</span>
+                          <span class="bundle-save-badge">SAVE 60%</span>
+                        </div>
+                      </div>
+                    </label>
+                    
+                    <div class="bundle-price-group-new" style="margin-right: 16px !important;">
+                      {%- if current_variant.compare_at_price > current_variant.price -%}
+                        <span class="bundle-compare-price">{{ current_variant.compare_at_price | times: 2 | money }}</span>
+                      {%- endif -%}
+                      <span class="bundle-price">{{ fallback_bundle_2_price | money }}</span>
+                      <span class="bundle-each-price">{{ fallback_bundle_2_price | divided_by: 4 | money }} each</span>
+                    </div>
+                  </div>
+                  
+                  <div class="bundle-card-content">
+                    <div class="bundle-color-separator"></div>
+                    <div class="bundle-color-row multi-selects">
+                      <div class="bundle-select-column">
+                        <span class="bundle-color-label">Pillow 1</span>
+                        <div class="bundle-select-wrapper">
+                          <div class="custom-dropdown" id="bundle-2-pillow-1-select" data-value="{{ product.variants.first.id }}">
+                            <div class="custom-dropdown-trigger">
+                              <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
+                              <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
+                              <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                            </div>
+                            <div class="custom-dropdown-options">
+                              {%- for variant in product.variants -%}
+                                {%- assign swatch_color = '#9ca3af' -%}
+                                {%- assign v_title = variant.title | downcase -%}
+                                {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
+                                {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
+                                {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
+                                {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}{%- assign swatch_color = '#c8a45a' -%}{%- endif -%}
+                                <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
+                                  <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
+                                  <span class="option-label">{{ variant.title }}</span>
+                                </div>
+                              {%- endfor -%}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="bundle-select-column">
+                        <span class="bundle-color-label">Pillow 2</span>
+                        <div class="bundle-select-wrapper">
+                          <div class="custom-dropdown" id="bundle-2-pillow-2-select" data-value="{{ product.variants.first.id }}">
+                            <div class="custom-dropdown-trigger">
+                              <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
+                              <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
+                              <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                            </div>
+                            <div class="custom-dropdown-options">
+                              {%- for variant in product.variants -%}
+                                {%- assign swatch_color = '#9ca3af' -%}
+                                {%- assign v_title = variant.title | downcase -%}
+                                {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
+                                {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
+                                {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
+                                {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}{%- assign swatch_color = '#c8a45a' -%}{%- endif -%}
+                                <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
+                                  <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
+                                  <span class="option-label">{{ variant.title }}</span>
+                                </div>
+                              {%- endfor -%}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="bundle-select-column">
+                        <span class="bundle-color-label">Pillow 3</span>
+                        <div class="bundle-select-wrapper">
+                          <div class="custom-dropdown" id="bundle-2-pillow-3-select" data-value="{{ product.variants.first.id }}">
+                            <div class="custom-dropdown-trigger">
+                              <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
+                              <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
+                              <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                            </div>
+                            <div class="custom-dropdown-options">
+                              {%- for variant in product.variants -%}
+                                {%- assign swatch_color = '#9ca3af' -%}
+                                {%- assign v_title = variant.title | downcase -%}
+                                {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
+                                {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
+                                {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
+                                {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}{%- assign swatch_color = '#c8a45a' -%}{%- endif -%}
+                                <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
+                                  <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
+                                  <span class="option-label">{{ variant.title }}</span>
+                                </div>
+                              {%- endfor -%}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="bundle-select-column">
+                        <span class="bundle-color-label">Pillow 4</span>
+                        <div class="bundle-select-wrapper">
+                          <div class="custom-dropdown" id="bundle-2-pillow-4-select" data-value="{{ product.variants.first.id }}">
+                            <div class="custom-dropdown-trigger">
+                              <span class="select-color-dot" style="background-color: {% assign first_v = product.variants.first.title | downcase %}{% if first_v contains 'navy' or first_v contains 'blue' %}#3b4857{% elsif first_v contains 'gray' or first_v contains 'grey' %}#9ca3af{% elsif first_v contains 'pink' %}#db2777{% elsif first_v contains 'black' %}#1f2937{% elsif first_v contains 'leopard' %}#c8a45a{% else %}#9ca3af{% endif %};"></span>
+                              <span class="custom-dropdown-text">{{ product.variants.first.title }}</span>
+                              <span class="custom-dropdown-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                            </div>
+                            <div class="custom-dropdown-options">
+                              {%- for variant in product.variants -%}
+                                {%- assign swatch_color = '#9ca3af' -%}
+                                {%- assign v_title = variant.title | downcase -%}
+                                {%- if v_title contains 'navy' or v_title contains 'blue' -%}{%- assign swatch_color = '#3b4857' -%}
+                                {%- elsif v_title contains 'gray' or v_title contains 'grey' -%}{%- assign swatch_color = '#9ca3af' -%}
+                                {%- elsif v_title contains 'pink' -%}{%- assign swatch_color = '#db2777' -%}
+                                {%- elsif v_title contains 'black' -%}{%- assign swatch_color = '#1f2937' -%}{%- assign swatch_color = '#c8a45a' -%}{%- endif -%}
+                                <div class="custom-dropdown-option{% if forloop.first %} selected{% endif %}" data-value="{{ variant.id }}" data-color="{{ swatch_color }}">
+                                  <span class="option-color-dot" style="background-color: {{ swatch_color }};"></span>
+                                  <span class="option-label">{{ variant.title }}</span>
+                                </div>
+                              {%- endfor -%}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
                   </div>
                 </div>
@@ -1375,22 +1549,25 @@
                 padding-bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   #bundle-card-1.active .bundle-card-content {
-    max-height: 60px;
+    max-height: 85px;
     opacity: 1;
     overflow: visible;
     margin-top: 12px;
     padding-bottom: 8px;
   }
   #bundle-card-2.active .bundle-card-content {
-    max-height: 75px;
+    max-height: 160px;
     opacity: 1;
     overflow: visible;
     margin-top: 12px;
     padding-bottom: 8px;
   }
   @media (max-width: 767px) {
+    #bundle-card-1.active .bundle-card-content {
+      max-height: 160px;
+    }
     #bundle-card-2.active .bundle-card-content {
-      max-height: 135px;
+      max-height: 320px;
     }
   }
 
@@ -2049,7 +2226,7 @@
     function updatePriceAndVariant() {
       const activeOption = document.querySelector('input[name="bundle_option"]:checked').value;
       if (activeOption === 'buy_1') {
-        const val = getDropdownValue('bundle-1-variant-select');
+        const val = getDropdownValue('bundle-1-pillow-1-select');
         if (val && variantIdInput) {
           variantIdInput.value = val;
         }
@@ -2073,13 +2250,23 @@
         let items = [];
         
         if (activeOption === 'buy_1') {
-          const varId = getDropdownValue('bundle-1-variant-select');
-          items.push({ id: parseInt(varId), quantity: 1 * qtyMultiplier });
+          const varId1 = getDropdownValue('bundle-1-pillow-1-select');
+          const varId2 = getDropdownValue('bundle-1-pillow-2-select');
+          const counts = {};
+          [varId1, varId2].forEach(id => { if (id) counts[id] = (counts[id] || 0) + 1; });
+          for (let id in counts) {
+            items.push({
+              id: parseInt(id),
+              quantity: counts[id] * qtyMultiplier
+            });
+          }
         } else if (activeOption === 'buy_2') {
           const varId1 = getDropdownValue('bundle-2-pillow-1-select');
           const varId2 = getDropdownValue('bundle-2-pillow-2-select');
+          const varId3 = getDropdownValue('bundle-2-pillow-3-select');
+          const varId4 = getDropdownValue('bundle-2-pillow-4-select');
           const counts = {};
-          [varId1, varId2].forEach(id => { if (id) counts[id] = (counts[id] || 0) + 1; });
+          [varId1, varId2, varId3, varId4].forEach(id => { if (id) counts[id] = (counts[id] || 0) + 1; });
           for (let id in counts) {
             items.push({
               id: parseInt(id),

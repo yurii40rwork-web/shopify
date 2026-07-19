@@ -5,12 +5,12 @@
      data-save-percent="{{ section.settings.save_percent | default: 57 }}"
      data-pillow-qty1-price="{{ section.settings.pillow_qty1_price | default: 39.00 }}"
      data-pillow-qty1-original="{{ section.settings.pillow_qty1_original | default: 78.00 }}"
-     data-pillow-qty2-price="{{ section.settings.pillow_qty2_price | default: 34.00 }}"
-     data-pillow-qty2-info="{{ section.settings.pillow_qty2_info | escape }}"
-     data-pillow-qty3-price="{{ section.settings.pillow_qty3_price | default: 30.00 }}"
-     data-pillow-qty3-info="{{ section.settings.pillow_qty3_info | escape }}"
-     data-pillow-qty4-price="{{ section.settings.pillow_qty4_price | default: 26.00 }}"
-     data-pillow-qty4-info="{{ section.settings.pillow_qty4_info | escape }}">
+     data-pillow-qty2-price="{{ section.settings.pillow_qty2_price | default: 19.50 }}"
+     data-pillow-qty2-info="{{ section.settings.pillow_qty2_info | default: '($19.50 each)' | escape }}"
+     data-pillow-qty3-price="{{ section.settings.pillow_qty3_price | default: 26.00 }}"
+     data-pillow-qty3-info="{{ section.settings.pillow_qty3_info | default: '($26.00 each)' | escape }}"
+     data-pillow-qty4-price="{{ section.settings.pillow_qty4_price | default: 17.00 }}"
+     data-pillow-qty4-info="{{ section.settings.pillow_qty4_info | default: '($17.00 each)' | escape }}">
   <div class="cart-drawer-overlay" id="cart-drawer-overlay"></div>
   
   <div class="cart-drawer-panel">
@@ -699,12 +699,12 @@ document.addEventListener('DOMContentLoaded', () => {
   
   const pillowQty1Price = parseFloat(drawer.dataset.pillowQty1Price || 39.00) * 100;
   const pillowQty1Original = parseFloat(drawer.dataset.pillowQty1Original || 78.00) * 100;
-  const pillowQty2Price = parseFloat(drawer.dataset.pillowQty2Price || 34.00) * 100;
-  const pillowQty2Info = drawer.dataset.pillowQty2Info || '';
-  const pillowQty3Price = parseFloat(drawer.dataset.pillowQty3Price || 30.00) * 100;
-  const pillowQty3Info = drawer.dataset.pillowQty3Info || '';
-  const pillowQty4Price = parseFloat(drawer.dataset.pillowQty4Price || 26.00) * 100;
-  const pillowQty4Info = drawer.dataset.pillowQty4Info || '';
+  const pillowQty2Price = parseFloat(drawer.dataset.pillowQty2Price || 19.50) * 100;
+  const pillowQty2Info = drawer.dataset.pillowQty2Info || '($19.50 each)';
+  const pillowQty3Price = parseFloat(drawer.dataset.pillowQty3Price || 26.00) * 100;
+  const pillowQty3Info = drawer.dataset.pillowQty3Info || '($26.00 each)';
+  const pillowQty4Price = parseFloat(drawer.dataset.pillowQty4Price || 17.00) * 100;
+  const pillowQty4Info = drawer.dataset.pillowQty4Info || '($17.00 each)';
 
   // Toggle open class
   function openCartDrawer() {
@@ -1218,40 +1218,40 @@ document.addEventListener('DOMContentLoaded', () => {
       "default": 78
     },
     {
-      "type": "number",
+      "type": "text",
       "id": "pillow_qty2_price",
       "label": "Qty 2 - Pillow Price (USD)",
-      "default": 34
+      "default": "19.50"
     },
     {
       "type": "text",
       "id": "pillow_qty2_info",
       "label": "Qty 2 - Pillow Price Info Tag",
-      "default": "($34.00 each)"
+      "default": "($19.50 each)"
     },
     {
-      "type": "number",
+      "type": "text",
       "id": "pillow_qty3_price",
       "label": "Qty 3 - Pillow Price (USD)",
-      "default": 30
+      "default": "26.00"
     },
     {
       "type": "text",
       "id": "pillow_qty3_info",
       "label": "Qty 3 - Pillow Price Info Tag",
-      "default": "($30.00 each)"
+      "default": "($26.00 each)"
     },
     {
-      "type": "number",
+      "type": "text",
       "id": "pillow_qty4_price",
       "label": "Qty 4+ - Pillow Price (USD)",
-      "default": 26
+      "default": "17.00"
     },
     {
       "type": "text",
       "id": "pillow_qty4_info",
       "label": "Qty 4+ - Pillow Price Info Tag",
-      "default": "($26.00 each)"
+      "default": "($17.00 each)"
     },
     {
       "type": "header",
