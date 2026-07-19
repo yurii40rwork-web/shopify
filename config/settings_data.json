@@ -11,7 +11,7 @@
   "current": {
     "heading_color": "#000000",
     "paragraph_color": "#111111",
-    "enable_bogo": true,
+    "enable_bogo": false,
     "sections": {
       "cart-drawer": {
         "type": "cart-drawer",
