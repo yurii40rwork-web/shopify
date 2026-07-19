@@ -31,25 +31,17 @@
         "bundles": {
           "type": "bundles",
           "settings": {
-            "promo_header_text": "⏳ Ends Tonight: Bundle & Save up to 70% off",
+            "promo_header_text": "⏳ Ends Tonight: Bundle & Save up to 60% off",
             "promo_header_bg": "#fee2e2",
             "promo_header_color": "#991b1b",
             "bundle_1_title": "1 Pillow",
-            "bundle_1_subtitle": "Perfect for a solo traveler",
             "bundle_1_save_text": "SAVE 50%",
             "bundle_1_original_price": "$78.00",
             "bundle_2_title": "2 Pillows",
-            "bundle_2_subtitle": "Enjoy comfort together",
             "bundle_2_save_text": "SAVE 60%",
             "bundle_2_original_price": "$136.00",
             "bundle_2_discount": 10,
-            "bundle_2_tag": "MOST POPULAR",
-            "bundle_3_title": "3 Pillows",
-            "bundle_3_subtitle": "A perfect gift for family & friends",
-            "bundle_3_save_text": "SAVE 70%",
-            "bundle_3_original_price": "$179.40",
-            "bundle_3_discount": 27.3,
-            "bundle_3_tag": "BEST VALUE"
+            "bundle_2_tag": "MOST POPULAR"
           }
         },
         "buy_buttons": {
