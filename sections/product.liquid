@@ -2078,9 +2078,13 @@
       box-sizing: border-box !important;
     }
     .bundle-color-row.multi-selects {
-      display: grid !important;
-      grid-template-columns: 1fr !important;
+      flex-direction: column !important;
       gap: 12px !important;
+      align-items: stretch !important;
+    }
+    .bundle-select-column {
+      width: 100% !important;
+      flex: none !important;
     }
 
     /* Keep dropdown triggers wide on mobile */
