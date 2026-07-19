@@ -1295,12 +1295,14 @@
     font-weight: 700;
     padding: var(--discount-badge-padding-vertical, 4px) var(--discount-badge-padding-horizontal, 16px) !important;
     border-radius: var(--discount-badge-border-radius, 4px) !important;
-    display: inline-block !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     white-space: nowrap !important;
     flex-shrink: 0 !important;
     text-transform: uppercase;
     letter-spacing: 0.02em;
-    line-height: 1.2;
+    line-height: 1 !important;
     font-family: var(--font-body);
   }
   .bundle-subtitle {
@@ -1836,10 +1838,13 @@
     }
     .bundle-save-badge {
       font-size: 8px !important;
-      padding: 3px calc(var(--badge-padding-horizontal, 16) * 0.75 * 1px) !important;
-      display: inline-block !important;
+      padding: calc(var(--discount-badge-padding-vertical, 4px) * 0.75) calc(var(--discount-badge-padding-horizontal, 16px) * 0.75) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
       white-space: nowrap !important;
       flex-shrink: 0 !important;
+      line-height: 1 !important;
     }
     .bundle-subtitle {
       font-size: 11px !important;
