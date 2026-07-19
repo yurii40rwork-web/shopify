@@ -9,9 +9,9 @@
  */
 {
   "current": {
-    "enable_bogo": false,
     "heading_color": "#000000",
     "paragraph_color": "#111111",
+    "enable_bogo": true,
     "sections": {
       "cart-drawer": {
         "type": "cart-drawer",
@@ -26,12 +26,12 @@
           "trust_guarantee_text": "30 Day Money Back Guarantee",
           "pillow_qty1_price": 49.9,
           "pillow_qty1_original": 78,
-          "pillow_qty2_price": "19.50",
-          "pillow_qty2_info": "($19.50 each)",
-          "pillow_qty3_price": "26.00",
-          "pillow_qty3_info": "($26.00 each)",
-          "pillow_qty4_price": "17.00",
-          "pillow_qty4_info": "($17.00 each)",
+          "pillow_qty2_price": "49.9",
+          "pillow_qty2_info": "24.95",
+          "pillow_qty3_price": "44.9",
+          "pillow_qty3_info": "22.45",
+          "pillow_qty4_price": "44.9",
+          "pillow_qty4_info": "22.45",
           "cart_bg_color": "#ffffff",
           "progress_bar_empty_color": "#e5e5e5",
           "progress_bar_fill_color": "#2e6f40",
