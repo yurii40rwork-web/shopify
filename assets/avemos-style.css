@@ -1569,14 +1569,17 @@
   margin-left: 16px !important;
   margin-right: 16px !important;
   border: 2px solid #d8d8d8 !important;
-  background: #f0f0f0 !important;
+  background: #ffffff !important;
 }
 .Avemos-landing-wrapper .bundle-radio-checkmark::after {
-  display: none !important;
+  display: none;
 }
-.Avemos-landing-wrapper .bundle-card.active .bundle-radio-checkmark {
-  border-color: #3a3a3a !important;
-  background: #3a3a3a !important;
+.Avemos-landing-wrapper .bundle-card-new.active .bundle-radio-checkmark {
+  border-color: #ff5a3d !important;
+  background: #ffffff !important;
+}
+.Avemos-landing-wrapper .bundle-card-new.active .bundle-radio-checkmark::after {
+  display: block !important;
 }
 .Avemos-landing-wrapper .bundle-title-group {
   display: flex !important;
