@@ -78,6 +78,28 @@ Sections are made customizable by including a `{% schema %}` in the body. For mo
 
 Blocks are made customizable by including a `{% schema %}` in the body. For more information, refer to the [block schema documentation](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks/schema).
 
+---
+
+## 🧭 Navigation & Development Guide
+
+For a detailed walkthrough of styling guides, CSS variables, and the Shopify theme editor schemas, refer to:
+*   [Developer & Agent Guide](file:///E:/projects/shopify/agent.md) – architecture guidelines, styling setups, and schema patterns.
+*   [Workspace Navigation Rules](file:///E:/projects/shopify/.agents/rules/documentation_navigation.md) – step-by-step recipes mapping tasks (like modifying policy contents, headers, drawer carts, and reviews) to their exact source files.
+
+### Quick File Reference
+
+| Target Component | Source File Location | Styling Target |
+| :--- | :--- | :--- |
+| **Site Layout Wrapper** | [layout/theme.liquid](file:///E:/projects/shopify/layout/theme.liquid) | [assets/critical.css](file:///E:/projects/shopify/assets/critical.css) |
+| **Global CSS variables** | [snippets/css-variables.liquid](file:///E:/projects/shopify/snippets/css-variables.liquid) | `:root` selector variables |
+| **Theme Custom Settings** | [config/settings_schema.json](file:///E:/projects/shopify/config/settings_schema.json) | Admin customization dashboard |
+| **Global Theme Styles** | – | [assets/avemos-style.css](file:///E:/projects/shopify/assets/avemos-style.css) |
+| **Header Markup** | [snippets/avemos-header-markup.liquid](file:///E:/projects/shopify/snippets/avemos-header-markup.liquid) | `.header`, `.announcement-bar` |
+| **Shopping Cart Drawer** | [sections/cart-drawer.liquid](file:///E:/projects/shopify/sections/cart-drawer.liquid) | [assets/avemos-script.js](file:///E:/projects/shopify/assets/avemos-script.js) (interactions) |
+| **Page Policy Contents** | `snippets/*-content.liquid` | [sections/policy-page.liquid](file:///E:/projects/shopify/sections/policy-page.liquid) (renderer) |
+
+---
+
 ## Schemas
 
 When developing components defined by schema settings, we recommend these guidelines to simplify your code:
