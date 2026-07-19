@@ -1537,7 +1537,7 @@
   color: var(--primary);
 }
 
-@media (max-width: 1500px) {
+@media (max-width: 768px) {
   .Avemos-landing-wrapper .mobile-menu-btn {
     display: flex;
     z-index: 10;
@@ -1795,7 +1795,7 @@
 }
 
 /* Hide on tablet and mobile screens */
-@media (max-width: 1024px) {
+@media (max-width: 1500px) {
   .sections-sidebar-nav {
     display: none !important;
   }
