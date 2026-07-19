@@ -1,6 +1,8 @@
 {{ 'avemos-style.css' | asset_url | stylesheet_tag }}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+{%- assign bogo_enabled = section.settings.enable_bogo | default: settings.enable_bogo | default: false -%}
+
 {% style %}
   {%- assign section_bg_color = section.settings.section_bg_color | default: '#ffffff' -%}
   {%- assign product_title_color = section.settings.product_title_color | default: '#000000' -%}
@@ -363,7 +365,7 @@
                             </div>
                             
                             <div class="bundle-select-column">
-                              <span class="bundle-color-label">Pillow 2</span>
+                              <span class="bundle-color-label">Pillow 2{% if bogo_enabled %} <span style="background: #2e6f40; color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 3px; font-weight: 700; margin-left: 4px;">FREE</span>{% endif %}</span>
                               <div class="bundle-select-wrapper">
                                 <div class="custom-dropdown" id="bundle-1-pillow-2-select" data-value="{{ product.variants.first.id }}">
                                   <div class="custom-dropdown-trigger">
@@ -465,7 +467,7 @@
                             </div>
                             
                             <div class="bundle-select-column">
-                              <span class="bundle-color-label">Pillow 2</span>
+                              <span class="bundle-color-label">Pillow 2{% if bogo_enabled %} <span style="background: #2e6f40; color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 3px; font-weight: 700; margin-left: 4px;">FREE</span>{% endif %}</span>
                               <div class="bundle-select-wrapper">
                                 <div class="custom-dropdown" id="bundle-2-pillow-2-select" data-value="{{ product.variants.first.id }}">
                                   <div class="custom-dropdown-trigger">
@@ -523,7 +525,7 @@
                             </div>
 
                             <div class="bundle-select-column">
-                              <span class="bundle-color-label">Pillow 4</span>
+                              <span class="bundle-color-label">Pillow 4{% if bogo_enabled %} <span style="background: #2e6f40; color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 3px; font-weight: 700; margin-left: 4px;">FREE</span>{% endif %}</span>
                               <div class="bundle-select-wrapper">
                                 <div class="custom-dropdown" id="bundle-2-pillow-4-select" data-value="{{ product.variants.first.id }}">
                                   <div class="custom-dropdown-trigger">
@@ -729,7 +731,7 @@
                       </div>
                       
                       <div class="bundle-select-column">
-                        <span class="bundle-color-label">Pillow 2</span>
+                        <span class="bundle-color-label">Pillow 2{% if bogo_enabled %} <span style="background: #2e6f40; color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 3px; font-weight: 700; margin-left: 4px;">FREE</span>{% endif %}</span>
                         <div class="bundle-select-wrapper">
                           <div class="custom-dropdown" id="bundle-1-pillow-2-select" data-value="{{ product.variants.first.id }}">
                             <div class="custom-dropdown-trigger">
@@ -816,7 +818,7 @@
                       </div>
                       
                       <div class="bundle-select-column">
-                        <span class="bundle-color-label">Pillow 2</span>
+                        <span class="bundle-color-label">Pillow 2{% if bogo_enabled %} <span style="background: #2e6f40; color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 3px; font-weight: 700; margin-left: 4px;">FREE</span>{% endif %}</span>
                         <div class="bundle-select-wrapper">
                           <div class="custom-dropdown" id="bundle-2-pillow-2-select" data-value="{{ product.variants.first.id }}">
                             <div class="custom-dropdown-trigger">
@@ -870,7 +872,7 @@
                       </div>
 
                       <div class="bundle-select-column">
-                        <span class="bundle-color-label">Pillow 4</span>
+                        <span class="bundle-color-label">Pillow 4{% if bogo_enabled %} <span style="background: #2e6f40; color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 3px; font-weight: 700; margin-left: 4px;">FREE</span>{% endif %}</span>
                         <div class="bundle-select-wrapper">
                           <div class="custom-dropdown" id="bundle-2-pillow-4-select" data-value="{{ product.variants.first.id }}">
                             <div class="custom-dropdown-trigger">
@@ -2535,6 +2537,17 @@
           "label": "Portrait (2:3)"
         }
       ]
+    },
+    {
+      "type": "header",
+      "content": "BOGO Discount Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_bogo",
+      "label": "Enable BOGO Discount",
+      "default": true,
+      "info": "When enabled, Pillow 2 and Pillow 4 are marked as FREE and BOGO checkout rule is activated."
     },
     {
       "type": "header",
