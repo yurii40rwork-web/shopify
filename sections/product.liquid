@@ -866,34 +866,39 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(4px);
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.45);
     color: var(--text-primary);
+    opacity: 0.5;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     z-index: 10;
     outline: none;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .gallery-arrow-btn:hover {
-    background: #ffffff;
-    transform: translateY(-50%) scale(1.08);
+    background: rgba(255, 255, 255, 0.85);
+    opacity: 1;
+    border-color: rgba(255, 255, 255, 0.85);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
   }
   .gallery-arrow-btn:active {
     transform: translateY(-50%) scale(0.95);
   }
   .gallery-arrow-btn.prev-arrow {
-    left: 16px;
+    left: 12px;
   }
   .gallery-arrow-btn.next-arrow {
-    right: 16px;
+    right: 12px;
   }
 
   /* Thumbnails Slider */
