@@ -1364,22 +1364,16 @@
 
   /* Expandable Content for active card */
   .bundle-card-new .bundle-card-content {
-    max-height: 0;
-    opacity: 0;
-    margin-top: 0;
-    padding-bottom: 0;
-    overflow: hidden;
-    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
-                opacity 0.25s ease, 
-                margin-top 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
-                padding-bottom 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .bundle-card-new.active .bundle-card-content {
-    max-height: 150px;
-    opacity: 1;
-    overflow: visible;
+    opacity: 0.55;
     margin-top: 12px;
     padding-bottom: 8px;
+    overflow: visible;
+    pointer-events: none;
+    transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .bundle-card-new.active .bundle-card-content {
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .bundle-color-separator {
@@ -1944,27 +1938,41 @@
     // Bundle Radio click selection handler
     const bundleCards = document.querySelectorAll('.bundle-card-new');
     const variantIdInput = document.getElementById('main-product-variant-id');
+    const customDropdowns = document.querySelectorAll('.custom-dropdown');
 
     bundleCards.forEach(card => {
       card.addEventListener('click', (e) => {
-        // Prevent click trigger loop if clicking custom dropdown elements
-        if (e.target.closest('.custom-dropdown')) {
+        const dropdown = e.target.closest('.custom-dropdown');
+        
+        // If the card is not active yet, activate it first
+        if (!card.classList.contains('active')) {
+          const radio = card.querySelector('input[type="radio"]');
+          if (radio) {
+            radio.checked = true;
+          }
+
+          bundleCards.forEach(c => {
+            c.classList.remove('active');
+          });
+
+          card.classList.add('active');
+          updatePriceAndVariant();
+          
+          // If they clicked on a dropdown trigger, let it open the dropdown immediately!
+          if (dropdown) {
+            // Close other dropdowns first
+            customDropdowns.forEach(d => {
+              if (d !== dropdown) d.classList.remove('open');
+            });
+            dropdown.classList.add('open');
+          }
           return;
         }
 
-        const radio = card.querySelector('input[type="radio"]');
-        if (radio) {
-          radio.checked = true;
+        // If the card is already active and they click a dropdown, let the dropdown logic handle it
+        if (dropdown) {
+          return;
         }
-
-        // Toggle active status UI
-        bundleCards.forEach(c => {
-          c.classList.remove('active');
-        });
-
-        card.classList.add('active');
-
-        updatePriceAndVariant();
       });
     });
 
