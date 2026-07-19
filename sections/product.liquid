@@ -1144,12 +1144,15 @@
   /* New Bundle Card Layout */
   .Avemos-landing-wrapper .bundle-card-new,
   .bundle-card-new {
-    border: 1.5px solid #e2e8f0;
+    border: 2px solid #e2e8f0;
     border-radius: 12px;
     padding: 14px 20px 14px 16px !important;
     cursor: pointer;
     background-color: #ffffff;
-    transition: all 0.2s ease;
+    transition: border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+                background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+                box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     box-sizing: border-box;
     display: flex;
@@ -1164,11 +1167,13 @@
   }
   .bundle-card-new:hover {
     border-color: #cbd5e1;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
   }
   .bundle-card-new.active {
-    border: 2px solid var(--selected-border-color, #ff5a3d);
+    border-color: var(--selected-border-color, #ff5a3d);
     background-color: #fffbfa; /* light warm tint */
-    box-shadow: 0 4px 12px rgba(255, 90, 61, 0.05);
+    box-shadow: 0 6px 16px rgba(255, 90, 61, 0.08);
   }
   .bundle-card-new.has-badge {
     padding-top: var(--card-has-badge-padding-top, 24px) !important;
@@ -1237,22 +1242,28 @@
     flex-shrink: 0;
     box-sizing: border-box;
     background-color: #ffffff;
-    transition: all 0.2s ease;
+    transition: border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .bundle-card-new.active .bundle-radio-checkmark {
-    border-color: var(--selected-border-color, #ff5a3d);
-  }
-  .bundle-card-new.active .bundle-radio-checkmark::after {
+  .bundle-card-new .bundle-radio-checkmark::after {
     content: '';
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(0);
     width: 10px;
     height: 10px;
     background-color: var(--selected-pin-color, #ff5a3d);
     border-radius: 50%;
     display: block;
+    opacity: 0;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease;
+  }
+  .bundle-card-new.active .bundle-radio-checkmark {
+    border-color: var(--selected-border-color, #ff5a3d);
+  }
+  .bundle-card-new.active .bundle-radio-checkmark::after {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
   }
 
   /* Product Thumbnail inside Card */
@@ -1355,11 +1366,16 @@
   .bundle-card-new .bundle-card-content {
     max-height: 0;
     opacity: 0;
+    margin-top: 0;
+    padding-bottom: 0;
     overflow: hidden;
-    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.25s ease, 
+                margin-top 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
+                padding-bottom 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .bundle-card-new.active .bundle-card-content {
-    max-height: 300px;
+    max-height: 150px;
     opacity: 1;
     overflow: visible;
     margin-top: 12px;
