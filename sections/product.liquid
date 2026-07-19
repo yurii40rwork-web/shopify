@@ -315,7 +315,7 @@
                             </div>
                           </label>
                           
-                          <div class="bundle-price-group-new">
+                          <div class="bundle-price-group-new" style="margin-right: 16px !important;">
                             {%- if current_variant.compare_at_price > current_variant.price or block.settings.bundle_1_original_price != blank -%}
                               <span class="bundle-compare-price">
                                 {%- if block.settings.bundle_1_original_price != blank -%}
@@ -385,7 +385,7 @@
                             </div>
                           </label>
                           
-                          <div class="bundle-price-group-new">
+                          <div class="bundle-price-group-new" style="margin-right: 16px !important;">
                             {%- if current_variant.compare_at_price > current_variant.price or block.settings.bundle_2_original_price != blank -%}
                               <span class="bundle-compare-price">
                                 {%- if block.settings.bundle_2_original_price != blank -%}
@@ -596,7 +596,7 @@
                       </div>
                     </label>
                     
-                    <div class="bundle-price-group-new">
+                    <div class="bundle-price-group-new" style="margin-right: 16px !important;">
                       {%- if current_variant.compare_at_price > current_variant.price -%}
                         <span class="bundle-compare-price">{{ current_variant.compare_at_price | money }}</span>
                       {%- endif -%}
@@ -653,7 +653,7 @@
                       </div>
                     </label>
                     
-                    <div class="bundle-price-group-new">
+                    <div class="bundle-price-group-new" style="margin-right: 16px !important;">
                       {%- if current_variant.compare_at_price > current_variant.price -%}
                         <span class="bundle-compare-price">{{ current_variant.compare_at_price | times: 2 | money }}</span>
                       {%- endif -%}
@@ -1852,9 +1852,18 @@
       font-size: 11px !important;
     }
 
+    .Avemos-landing-wrapper .bundle-color-row,
+    .bundle-color-row {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      margin-left: 0 !important;
+      gap: 8px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
     .bundle-color-row.multi-selects {
       flex-direction: column !important;
-      gap: 10px !important;
+      gap: 12px !important;
       align-items: stretch !important;
     }
     .bundle-select-column {
