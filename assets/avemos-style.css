@@ -1537,7 +1537,7 @@
   color: var(--primary);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1500px) {
   .Avemos-landing-wrapper .mobile-menu-btn {
     display: flex;
     z-index: 10;
