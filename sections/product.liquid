@@ -1,4 +1,4 @@
-﻿{{ 'avemos-style.css' | asset_url | stylesheet_tag }}
+{{ 'avemos-style.css' | asset_url | stylesheet_tag }}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 {% style %}
@@ -1101,8 +1101,10 @@
     color: #ffffff;
     font-size: 10px;
     font-weight: 800;
-    padding: 6px 28x;
+    padding: 6px 24px;
     border-radius: 6px;
+    white-space: nowrap !important;
+    display: inline-block !important;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     line-height: 1;
@@ -1212,12 +1214,14 @@
     color: #ffffff;
     font-size: 10px;
     font-weight: 700;
-    padding: 4px 20px;
+    padding: 4px 16px;
     border-radius: 4px;
+    display: inline-block !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
     text-transform: uppercase;
     letter-spacing: 0.02em;
     line-height: 1.2;
-    display: inline-block;
     font-family: var(--font-body);
   }
   .bundle-subtitle {
@@ -1752,6 +1756,9 @@
     .bundle-save-badge {
       font-size: 8px !important;
       padding: 3px 12px !important;
+      display: inline-block !important;
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
     }
     .bundle-subtitle {
       font-size: 11px !important;
