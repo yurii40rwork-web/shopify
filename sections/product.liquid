@@ -1086,7 +1086,11 @@
     overflow-x: auto;
     scroll-behavior: smooth;
     gap: 16px;
-    padding-bottom: 8px;
+    padding-top: 8px;
+    padding-bottom: 12px;
+    padding-left: 4px;
+    padding-right: 4px;
+    margin-top: -4px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none; /* Hide scrollbar for Firefox */
     -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
@@ -1189,16 +1193,19 @@
     border: 2px solid transparent;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
+    z-index: 1;
     box-shadow: 0 4px 12px rgba(125, 139, 161, 0.08);
   }
   .thumb-card:hover {
     border-color: rgba(79, 93, 113, 0.2);
     transform: translateY(-2px);
+    z-index: 2;
   }
   .thumb-card.active {
     border-color: var(--primary);
     box-shadow: 0 8px 20px rgba(79, 93, 113, 0.15);
     transform: translateY(-2px) scale(1.02);
+    z-index: 3;
   }
   .thumb-card img {
     width: 100%;
