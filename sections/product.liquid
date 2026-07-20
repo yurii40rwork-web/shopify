@@ -1181,45 +1181,43 @@
   }
   .thumb-card {
     flex: 0 0 110px;
-    background-color: var(--bg-secondary);
-    border-radius: 12px;
+    background-color: var(--surface-container-low);
+    border-radius: 8px;
     overflow: hidden;
     aspect-ratio: 1 / 1;
     cursor: pointer;
-    border: 2px solid var(--surface-container-low);
-    padding: 3px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid transparent;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    box-shadow: 0 4px 12px rgba(125, 139, 161, 0.05);
+    box-shadow: 0 4px 12px rgba(125, 139, 161, 0.08);
   }
   .thumb-card:hover {
-    border-color: rgba(79, 93, 113, 0.3);
+    border-color: rgba(79, 93, 113, 0.2);
     transform: translateY(-2px);
   }
   .thumb-card.active {
     border-color: var(--primary);
-    box-shadow: 0 8px 24px rgba(79, 93, 113, 0.15);
+    box-shadow: 0 8px 20px rgba(79, 93, 113, 0.15);
     transform: translateY(-2px) scale(1.02);
   }
   .thumb-card img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 8px;
+    display: block;
     transition: inherit;
   }
   .video-play-overlay {
     position: absolute;
-    top: 5px;
-    left: 5px;
-    right: 5px;
-    bottom: 5px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.25);
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    border-radius: 8px;
   }
   .video-play-overlay .material-symbols-outlined {
     font-size: 36px;
