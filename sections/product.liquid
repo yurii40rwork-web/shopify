@@ -1085,12 +1085,8 @@
     display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
-    gap: 16px;
-    padding-top: 8px;
-    padding-bottom: 12px;
-    padding-left: 4px;
-    padding-right: 4px;
-    margin-top: -4px;
+    gap: 12px;
+    padding: 6px 4px 8px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none; /* Hide scrollbar for Firefox */
     -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
@@ -1190,22 +1186,19 @@
     overflow: hidden;
     aspect-ratio: 1 / 1;
     cursor: pointer;
-    border: 2px solid transparent;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: 2px solid transparent;
+    outline-offset: -2px;
+    border: none;
+    transition: outline-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
     position: relative;
-    z-index: 1;
-    box-shadow: 0 4px 12px rgba(125, 139, 161, 0.08);
+    box-shadow: 0 2px 8px rgba(125, 139, 161, 0.08);
   }
   .thumb-card:hover {
-    border-color: rgba(79, 93, 113, 0.2);
-    transform: translateY(-2px);
-    z-index: 2;
+    opacity: 0.85;
   }
   .thumb-card.active {
-    border-color: var(--primary);
-    box-shadow: 0 8px 20px rgba(79, 93, 113, 0.15);
-    transform: translateY(-2px) scale(1.02);
-    z-index: 3;
+    outline-color: var(--primary);
+    box-shadow: 0 2px 12px rgba(79, 93, 113, 0.18);
   }
   .thumb-card img {
     width: 100%;

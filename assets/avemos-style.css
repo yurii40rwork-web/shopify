@@ -265,7 +265,9 @@
   aspect-ratio: 1 / 1;
   background: var(--surface-container-low);
   border-radius: 8px;
-  border: 2px solid transparent;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -273,20 +275,19 @@
   font-size: 0.75rem;
   color: var(--text-secondary);
   text-align: center;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(125, 139, 161, 0.08);
+  overflow: hidden;
+  transition: outline-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+  box-shadow: 0 2px 8px rgba(125, 139, 161, 0.08);
 }
 
 .Avemos-landing-wrapper .thumbnail-placeholder:hover {
-  border-color: rgba(79, 93, 113, 0.2);
-  transform: translateY(-2px);
+  opacity: 0.85;
 }
 
 .Avemos-landing-wrapper .thumbnail-placeholder.active {
-  border-color: var(--primary);
+  outline-color: var(--primary);
   background-color: var(--surface-container-low);
-  box-shadow: 0 8px 20px rgba(79, 93, 113, 0.15);
-  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 2px 12px rgba(79, 93, 113, 0.18);
 }
 
 .Avemos-landing-wrapper .thumbnail-placeholder img {
@@ -294,7 +295,6 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: inherit;
 }
 
 .Avemos-landing-wrapper .product-details {
