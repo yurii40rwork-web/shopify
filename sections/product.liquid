@@ -90,11 +90,6 @@
         
         <!-- Left Column: Image Gallery (7 cols equivalent) -->
         <div class="product-gallery-col">
-          <!-- Best Seller Badge -->
-          {%- if section.settings.show_badge and section.settings.badge_text != blank -%}
-            <div class="best-seller-badge-overlay">{{ section.settings.badge_text | escape }}</div>
-          {%- endif -%}
-
           <div class="main-image-viewport" style="--image-ratio: {{ section.settings.image_ratio | default: '4/3' | replace: '/', ' / ' }};">
             <!-- Slides Track -->
             <div class="slider-track-container">
@@ -107,6 +102,11 @@
               <img class="gallery-slide-img" src="{{ 'hero-product-2.png' | asset_url }}" alt="{{ product.title | escape }}">
             {%- endif -%}
           </div>
+
+            <!-- Best Seller Badge -->
+            {%- if section.settings.show_badge and section.settings.badge_text != blank -%}
+              <div class="best-seller-badge-overlay">{{ section.settings.badge_text | escape }}</div>
+            {%- endif -%}
 
             <!-- Slider Arrows -->
             <button type="button" class="gallery-arrow-btn prev-arrow" aria-label="Previous image">
@@ -961,7 +961,6 @@
     flex-direction: column;
     gap: 16px;
     min-width: 0;
-    position: relative;
   }
   .product-details-col {
     flex: 5;
@@ -1039,15 +1038,6 @@
     white-space: nowrap;
     min-width: 110px;
     box-sizing: border-box;
-    pointer-events: none;
-  }
-
-  @media (max-width: 600px) {
-    .best-seller-badge-overlay {
-      position: static;
-      align-self: flex-start;
-      margin-bottom: -4px;
-    }
   }
 
   /* Arrow Buttons */

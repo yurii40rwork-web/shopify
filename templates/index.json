@@ -102,6 +102,7 @@
       "settings": {
         "product": "premium-avemos™-travel-neck-pillow",
         "image_ratio": "1/1",
+        "enable_bogo": true,
         "show_badge": true,
         "badge_text": "Best Seller",
         "section_font": "work_sans_n4",
@@ -525,7 +526,7 @@
         "badge_3": {
           "type": "badge",
           "settings": {
-            "icon": "fa-arrows-rotate",
+            "icon": "fa-undo",
             "custom_svg": "",
             "text": "30 Day money back guarantee"
           }
@@ -548,7 +549,7 @@
       "settings": {
         "heading": "30 Day Money Back Guaranteed",
         "description": "<p>Your satisfaction is our guarantee. If for any reason you need to send them back, we've got you covered.</p>",
-        "button_text": "👉 Get Your Avemos™ ",
+        "button_text": "👉 Get Your Avemos™",
         "button_link": "",
         "section_font": "work_sans_n4",
         "section_bg_color": "",
