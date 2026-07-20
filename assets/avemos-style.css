@@ -310,7 +310,8 @@
   margin-bottom: 8px;
 }
 
-.Avemos-landing-wrapper .rating-stars span {
+.Avemos-landing-wrapper .rating-stars > i,
+.Avemos-landing-wrapper .rating-stars > span:not(.star-wrapper) {
   color: #fbbf24; /* Yellow gold */
   font-size: 1.2rem;
 }

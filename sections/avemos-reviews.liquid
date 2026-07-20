@@ -76,19 +76,27 @@
       <!-- Rating Overview Block -->
       <div class="reviews-overview" style="margin-bottom: 50px; text-align: center; background-color: var(--bg-primary); padding: 40px 30px; border-radius: var(--radius-lg); border: 1px solid var(--border-light); width: 100%;">
         <div class="rating-summary">
-          {%- assign rating_score_val = section.settings.rating_score -%}
+          {%- assign rating_score_val = section.settings.rating_score | default: '4.9' -%}
           <div style="font-size: 3.5rem; font-weight: 700; color: var(--text-primary); line-height: 1;">{{ rating_score_val }}</div>
-          {%- assign rating_num = rating_score_val | plus: 0 -%}
+          {%- assign rating_clean = rating_score_val | split: '/' | first | strip -%}
+          {%- assign rating_num = rating_clean | plus: 0.0 -%}
           <div class="rating-stars" style="color: #ff9800; font-size: 1.6rem; margin: 12px 0; display: flex; justify-content: center; align-items: center; gap: 4px;">
             {%- for i in (1..5) -%}
-              {%- assign difference = rating_num | minus: i -%}
-              {%- if difference >= 0 -%}
-                <i class="fa-solid fa-star"></i>
-              {%- elsif difference > -1 -%}
-                <i class="fa-solid fa-star-half-stroke"></i>
+              {%- assign star_min = i | minus: 1 -%}
+              {%- assign diff = rating_num | minus: star_min -%}
+              {%- if diff >= 1 -%}
+                {%- assign fill_pct = 100 -%}
+              {%- elsif diff <= 0 -%}
+                {%- assign fill_pct = 0 -%}
               {%- else -%}
-                <i class="fa-regular fa-star"></i>
+                {%- assign fill_pct = diff | times: 100 | round -%}
               {%- endif -%}
+              <span class="star-wrapper">
+                <i class="fa-regular fa-star"></i>
+                <span class="star-fill" style="width: {{ fill_pct }}%;">
+                  <i class="fa-solid fa-star"></i>
+                </span>
+              </span>
             {%- endfor -%}
           </div>
           <div style="color: var(--text-light); font-size: 0.95rem; font-weight: 500;">Based on {{ section.settings.reviews_count }} reviews</div>
@@ -104,15 +112,24 @@
                 <!-- Stars and Date row -->
                 <div class="review-meta-row">
                   <div class="stars">
-                    {%- for i in (1..block.settings.stars) -%}
-                      <i class="fa-solid fa-star"></i>
-                    {%- endfor -%}
-                    {%- assign empty_stars = 5 | minus: block.settings.stars -%}
-                    {%- if empty_stars > 0 -%}
-                      {%- for i in (1..empty_stars) -%}
+                    {%- assign card_stars = block.settings.stars | plus: 0.0 -%}
+                    {%- for i in (1..5) -%}
+                      {%- assign star_min = i | minus: 1 -%}
+                      {%- assign diff = card_stars | minus: star_min -%}
+                      {%- if diff >= 1 -%}
+                        {%- assign fill_pct = 100 -%}
+                      {%- elsif diff <= 0 -%}
+                        {%- assign fill_pct = 0 -%}
+                      {%- else -%}
+                        {%- assign fill_pct = diff | times: 100 | round -%}
+                      {%- endif -%}
+                      <span class="star-wrapper">
                         <i class="fa-regular fa-star"></i>
-                      {%- endfor -%}
-                    {%- endif -%}
+                        <span class="star-fill" style="width: {{ fill_pct }}%;">
+                          <i class="fa-solid fa-star"></i>
+                        </span>
+                      </span>
+                    {%- endfor -%}
                   </div>
                   {%- if block.settings.date != blank -%}
                     <span class="review-date">{{ block.settings.date | escape }}</span>
@@ -377,10 +394,43 @@
     color: var(--text-light);
   }
   
+  .Avemos-landing-wrapper .star-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1em;
+    height: 1em;
+    line-height: 1;
+    font-size: inherit !important;
+    color: inherit !important;
+    flex-shrink: 0;
+  }
+  
+  .Avemos-landing-wrapper .star-wrapper i {
+    font-size: 1em;
+    line-height: 1;
+    display: block;
+    color: inherit !important;
+  }
+  
+  .Avemos-landing-wrapper .star-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+  }
+
   .Avemos-landing-wrapper .review-card .stars {
     color: #ff9800;
     font-size: 1.15rem;
-    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
   
   .Avemos-landing-wrapper .review-title {
