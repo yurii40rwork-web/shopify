@@ -320,7 +320,7 @@
                             </div>
                           </label>
                           
-                          <div class="bundle-price-group-new" style="margin-right: 16px !important;">
+                          <div class="bundle-price-group-new" style="margin-right: 0px !important;">
                             {%- if current_variant.compare_at_price > current_variant.price or block.settings.bundle_1_original_price != blank -%}
                               <span class="bundle-compare-price">
                                 {%- if block.settings.bundle_1_original_price != blank -%}
@@ -422,7 +422,7 @@
                             </div>
                           </label>
                           
-                          <div class="bundle-price-group-new" style="margin-right: 16px !important;">
+                          <div class="bundle-price-group-new" style="margin-right: 0px !important;">
                             {%- if current_variant.compare_at_price > current_variant.price or block.settings.bundle_2_original_price != blank -%}
                               <span class="bundle-compare-price">
                                 {%- if block.settings.bundle_2_original_price != blank -%}
@@ -692,7 +692,7 @@
                       </div>
                     </label>
                     
-                    <div class="bundle-price-group-new" style="margin-right: 16px !important;">
+                    <div class="bundle-price-group-new" style="margin-right: 0px !important;">
                       {%- if current_variant.compare_at_price > current_variant.price -%}
                         <span class="bundle-compare-price">{{ current_variant.compare_at_price | money }}</span>
                       {%- endif -%}
@@ -781,7 +781,7 @@
                       </div>
                     </label>
                     
-                    <div class="bundle-price-group-new" style="margin-right: 16px !important;">
+                    <div class="bundle-price-group-new" style="margin-right: 0px !important;">
                       {%- if current_variant.compare_at_price > current_variant.price -%}
                         <span class="bundle-compare-price">{{ current_variant.compare_at_price | times: 2 | money }}</span>
                       {%- endif -%}
@@ -1314,7 +1314,7 @@
     font-family: var(--font-body);
   }
   .bundles-list-wrapper {
-    padding: 16px;
+    padding: 10px 10px;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -1325,7 +1325,7 @@
   .bundle-card-new {
     border: 2px solid #e2e8f0;
     border-radius: 12px;
-    padding: 14px 20px 14px 16px !important;
+    padding: 14px 14px !important;
     cursor: pointer;
     background-color: #ffffff;
     transition: border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
@@ -1516,7 +1516,7 @@
     align-items: flex-end;
     flex-shrink: 0;
     text-align: right;
-    margin-right: 16px !important;
+    margin-right: 0 !important;
   }
   .bundle-price-group-new .bundle-compare-price {
     font-size: 12px;
@@ -2038,6 +2038,10 @@
   @media (max-width: 767px) {
     .gallery-arrow-btn {
       display: none !important;
+    }
+
+    .bundles-list-wrapper {
+      padding: 8px 6px !important;
     }
 
     .bundle-card-new {
