@@ -1567,21 +1567,25 @@
   flex-wrap: nowrap !important;
 }
 @media (max-width: 767px) {
-  .Avemos-landing-wrapper .bundle-color-row,
   .Avemos-landing-wrapper .bundle-color-row.multi-selects {
-    display: flex !important;
-    flex-direction: column !important;
-    grid-template-columns: 1fr !important;
-    align-items: stretch !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px 8px !important;
     margin-left: 0 !important;
-    gap: 12px !important;
     width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .Avemos-landing-wrapper .bundle-select-column {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
     box-sizing: border-box !important;
   }
   .Avemos-landing-wrapper .bundle-select-wrapper {
     width: 100% !important;
     min-width: 0 !important;
-    max-width: none !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 }
 .Avemos-landing-wrapper .bundle-radio-checkmark {

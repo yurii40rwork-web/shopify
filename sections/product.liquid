@@ -1570,10 +1570,10 @@
   }
   @media (max-width: 767px) {
     #bundle-card-1.active .bundle-card-content {
-      max-height: 260px !important;
+      max-height: 160px !important;
     }
     #bundle-card-2.active .bundle-card-content {
-      max-height: 520px !important;
+      max-height: 260px !important;
     }
   }
 
@@ -2075,36 +2075,76 @@
       font-size: 11px !important;
     }
 
-    .Avemos-landing-wrapper .bundle-color-row,
-    .bundle-color-row {
-      display: flex !important;
-      flex-direction: column !important;
-      align-items: stretch !important;
+    .Avemos-landing-wrapper .bundle-color-row.multi-selects,
+    .bundle-color-row.multi-selects {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 10px 8px !important;
       margin-left: 0 !important;
-      gap: 8px !important;
       width: 100% !important;
       box-sizing: border-box !important;
     }
-    .Avemos-landing-wrapper .bundle-color-row.multi-selects,
-    .bundle-color-row.multi-selects {
-      display: flex !important;
-      flex-direction: column !important;
-      grid-template-columns: 1fr !important;
-      gap: 12px !important;
-      align-items: stretch !important;
-      width: 100% !important;
-    }
+
     .bundle-select-column {
       width: 100% !important;
-      flex: none !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      flex: 1 1 0% !important;
     }
 
-    /* Keep dropdown triggers wide on mobile with no overflow */
     .bundle-select-wrapper {
       width: 100% !important;
       min-width: 0 !important;
-      max-width: none !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
       display: flex !important;
+    }
+
+    .custom-dropdown-trigger {
+      padding: 7px 22px 7px 8px !important;
+      font-size: 12px !important;
+      min-height: 34px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    .select-color-dot {
+      width: 16px !important;
+      height: 16px !important;
+      min-width: 16px !important;
+      margin-left: 0 !important;
+    }
+
+    .custom-dropdown-chevron {
+      right: 6px !important;
+    }
+
+    .bundle-card-new .bundle-color-label {
+      font-size: 10.5px !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+    }
+
+    .custom-dropdown-options {
+      width: 100% !important;
+      min-width: 100% !important;
+      box-sizing: border-box !important;
+      padding: 2px !important;
+    }
+
+    .custom-dropdown-option {
+      padding: 6px 8px !important;
+      font-size: 11.5px !important;
+      gap: 6px !important;
+    }
+
+    .option-color-dot {
+      width: 14px !important;
+      height: 14px !important;
+      min-width: 14px !important;
+      margin-left: 0 !important;
     }
 
     .bundles-promo-header {
