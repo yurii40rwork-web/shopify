@@ -980,6 +980,14 @@
     overflow: hidden;
     position: relative;
     box-shadow: 0 10px 30px rgba(125, 139, 161, 0.1);
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    touch-action: pan-y;
+  }
+  .main-image-viewport.is-dragging {
+    cursor: grabbing;
   }
   .slider-track-container {
     position: relative;
@@ -998,6 +1006,8 @@
     transition: opacity 0.4s ease, transform 0.4s ease;
     transform: scale(0.98);
     pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
     z-index: 1;
   }
   .gallery-slide-img.active {
@@ -2459,33 +2469,72 @@
       });
     });
 
-    // Mobile Swiping support
+    // Desktop & Mobile Drag/Swipe support
     const viewport = document.querySelector('.main-image-viewport');
     if (viewport) {
-      let touchStartX = 0;
-      let touchStartY = 0;
-      let touchEndX = 0;
-      let touchEndY = 0;
-      
+      let startX = 0;
+      let startY = 0;
+      let endX = 0;
+      let endY = 0;
+      let isDragging = false;
+
+      // Prevent default native image dragging
+      viewport.addEventListener('dragstart', (e) => e.preventDefault());
+
+      // Touch events (for mobile devices)
       viewport.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-        touchStartY = e.changedTouches[0].screenY;
+        if (e.touches && e.touches.length === 1) {
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+          isDragging = true;
+        }
       }, { passive: true });
-      
+
       viewport.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        touchEndY = e.changedTouches[0].screenY;
-        handleSwipe();
+        if (!isDragging) return;
+        isDragging = false;
+        if (e.changedTouches && e.changedTouches.length > 0) {
+          endX = e.changedTouches[0].clientX;
+          endY = e.changedTouches[0].clientY;
+          handleSwipe();
+        }
       }, { passive: true });
-      
+
+      // Mouse / Pointer events (for desktop dragging)
+      viewport.addEventListener('mousedown', (e) => {
+        if (e.target.closest('.gallery-arrow-btn')) return;
+        if (e.button !== 0) return; // Only left-click drag
+        startX = e.clientX;
+        startY = e.clientY;
+        endX = e.clientX;
+        endY = e.clientY;
+        isDragging = true;
+        viewport.classList.add('is-dragging');
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        endX = e.clientX;
+        endY = e.clientY;
+      });
+
+      window.addEventListener('mouseup', (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        viewport.classList.remove('is-dragging');
+        endX = e.clientX;
+        endY = e.clientY;
+        handleSwipe();
+      });
+
       function handleSwipe() {
-        const diffX = touchEndX - touchStartX;
-        const diffY = touchEndY - touchStartY;
-        
-        // Ensure it is horizontal swipe primarily
+        const diffX = endX - startX;
+        const diffY = endY - startY;
+
+        // Ensure horizontal swipe is dominant
         if (Math.abs(diffX) > Math.abs(diffY)) {
-          // Minimum swipe distance threshold of 40px
-          if (Math.abs(diffX) > 40) {
+          // Minimum swipe distance threshold of 35px
+          if (Math.abs(diffX) > 35) {
             if (diffX > 0) {
               // Swipe Right -> Show previous slide
               goToSlide(currentSlide - 1);
