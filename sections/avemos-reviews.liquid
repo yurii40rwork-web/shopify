@@ -76,15 +76,17 @@
       <!-- Rating Overview Block -->
       <div class="reviews-overview" style="margin-bottom: 50px; text-align: center; background-color: var(--bg-primary); padding: 40px 30px; border-radius: var(--radius-lg); border: 1px solid var(--border-light); width: 100%;">
         <div class="rating-summary">
-          {%- assign rating_score_val = section.settings.rating_score -%}
+          {%- assign rating_score_val = section.settings.rating_score | default: '4.9' -%}
           <div style="font-size: 3.5rem; font-weight: 700; color: var(--text-primary); line-height: 1;">{{ rating_score_val }}</div>
-          {%- assign rating_num = rating_score_val | plus: 0 -%}
+          {%- assign rating_clean = rating_score_val | split: '/' | first | strip -%}
+          {%- assign rating_num = rating_clean | plus: 0.0 -%}
           <div class="rating-stars" style="color: #ff9800; font-size: 1.6rem; margin: 12px 0; display: flex; justify-content: center; align-items: center; gap: 4px;">
             {%- for i in (1..5) -%}
-              {%- assign difference = rating_num | minus: i -%}
-              {%- if difference >= 0 -%}
+              {%- assign star_min = i | minus: 1 -%}
+              {%- assign diff = rating_num | minus: star_min -%}
+              {%- if diff >= 0.8 -%}
                 <i class="fa-solid fa-star"></i>
-              {%- elsif difference > -1 -%}
+              {%- elsif diff >= 0.25 -%}
                 <i class="fa-solid fa-star-half-stroke"></i>
               {%- else -%}
                 <i class="fa-regular fa-star"></i>
@@ -104,15 +106,18 @@
                 <!-- Stars and Date row -->
                 <div class="review-meta-row">
                   <div class="stars">
-                    {%- for i in (1..block.settings.stars) -%}
-                      <i class="fa-solid fa-star"></i>
-                    {%- endfor -%}
-                    {%- assign empty_stars = 5 | minus: block.settings.stars -%}
-                    {%- if empty_stars > 0 -%}
-                      {%- for i in (1..empty_stars) -%}
+                    {%- assign card_stars = block.settings.stars | plus: 0.0 -%}
+                    {%- for i in (1..5) -%}
+                      {%- assign star_min = i | minus: 1 -%}
+                      {%- assign diff = card_stars | minus: star_min -%}
+                      {%- if diff >= 0.8 -%}
+                        <i class="fa-solid fa-star"></i>
+                      {%- elsif diff >= 0.25 -%}
+                        <i class="fa-solid fa-star-half-stroke"></i>
+                      {%- else -%}
                         <i class="fa-regular fa-star"></i>
-                      {%- endfor -%}
-                    {%- endif -%}
+                      {%- endif -%}
+                    {%- endfor -%}
                   </div>
                   {%- if block.settings.date != blank -%}
                     <span class="review-date">{{ block.settings.date | escape }}</span>
@@ -380,7 +385,9 @@
   .Avemos-landing-wrapper .review-card .stars {
     color: #ff9800;
     font-size: 1.15rem;
-    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
   
   .Avemos-landing-wrapper .review-title {
