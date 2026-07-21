@@ -207,8 +207,35 @@ function initCartDrawer() {
       }
     });
 
+    // Consolidate line items by variant ID to prevent duplicate split cards
+    const consolidatedMap = {};
+    cart.items.forEach(item => {
+      const isProtection = item.handle === 'shipping-protection' || (item.product_title && item.product_title.toLowerCase().includes('shipping protection'));
+      if (isProtection) {
+        consolidatedMap['protection_' + item.key] = {
+          ...item,
+          keys: [item.key]
+        };
+        return;
+      }
+
+      const vId = item.variant_id || item.id || item.key;
+      if (!consolidatedMap[vId]) {
+        consolidatedMap[vId] = {
+          ...item,
+          quantity: item.quantity,
+          keys: [item.key]
+        };
+      } else {
+        consolidatedMap[vId].quantity += item.quantity;
+        if (!consolidatedMap[vId].keys.includes(item.key)) {
+          consolidatedMap[vId].keys.push(item.key);
+        }
+      }
+    });
+
     const displayCards = [];
-    const groupedItems = cart.items;
+    const groupedItems = Object.values(consolidatedMap);
 
     if (bogoEnabled) {
       let totalPillowsQty = 0;
@@ -250,7 +277,7 @@ function initCartDrawer() {
           const unitPriceVal = pillowQty1Price;
           const unitOrigVal = pillowQty1Original;
 
-          groupBogo[item.key] = {
+          groupBogo[item.variant_id || item.id || item.key] = {
             paidQty,
             freeQty,
             unitCurrentPrice: unitPriceVal,
@@ -260,7 +287,7 @@ function initCartDrawer() {
       });
 
       groupedItems.forEach(item => {
-        const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
+        const isProtection = item.handle === 'shipping-protection' || (item.product_title && item.product_title.toLowerCase().includes('shipping protection'));
         if (isProtection) {
           displayCards.push({
             ...item,
@@ -275,7 +302,7 @@ function initCartDrawer() {
           return;
         }
 
-        const bogoInfo = groupBogo[item.key];
+        const bogoInfo = groupBogo[item.variant_id || item.id || item.key];
         if (bogoInfo) {
           if (bogoInfo.paidQty > 0) {
             displayCards.push({
@@ -436,8 +463,18 @@ function initCartDrawer() {
     }
   }
 
-  function queueQtyUpdate(key, newQty) {
-    pendingUpdates[key] = newQty;
+  function queueQtyUpdate(key, newQty, keysArray = []) {
+    if (keysArray && keysArray.length > 0) {
+      keysArray.forEach(k => {
+        if (k === key) {
+          pendingUpdates[k] = newQty;
+        } else {
+          pendingUpdates[k] = 0;
+        }
+      });
+    } else {
+      pendingUpdates[key] = newQty;
+    }
     
     if (debounceTimer) {
       clearTimeout(debounceTimer);
@@ -483,35 +520,48 @@ function initCartDrawer() {
       const card = btn.closest('.cart-drawer-item');
       if (!card) return;
 
-      const input = card.querySelector('.item-qty-input');
-      const currentQty = input ? parseInt(input.value) : 1;
-      let newQty = currentQty;
+      const keysArray = JSON.parse(card.dataset.keys || '[]');
 
-      if (action === 'plus') {
-        newQty = currentQty + 1;
-      } else if (action === 'minus') {
-        newQty = Math.max(0, currentQty - 1);
-      } else if (action === 'delete') {
-        newQty = 0;
+      let totalCurrentQty = 0;
+      if (currentCart && currentCart.items) {
+        currentCart.items.forEach(item => {
+          if (keysArray.includes(item.key) || item.key === key) {
+            totalCurrentQty += item.quantity;
+          }
+        });
       }
 
-      if (input) {
-        input.value = newQty;
+      let newTotalQty = totalCurrentQty;
+
+      if (action === 'plus') {
+        newTotalQty = bogoEnabled ? (totalCurrentQty % 2 === 0 ? totalCurrentQty + 2 : totalCurrentQty + 1) : totalCurrentQty + 1;
+      } else if (action === 'minus') {
+        newTotalQty = bogoEnabled ? (totalCurrentQty % 2 === 0 ? Math.max(0, totalCurrentQty - 2) : Math.max(0, totalCurrentQty - 1)) : Math.max(0, totalCurrentQty - 1);
+      } else if (action === 'delete') {
+        newTotalQty = 0;
       }
 
       if (currentCart && currentCart.items) {
-        const itemIndex = currentCart.items.findIndex(item => item.key === key);
-        if (itemIndex > -1) {
-          if (newQty === 0) {
-            currentCart.items.splice(itemIndex, 1);
-          } else {
-            currentCart.items[itemIndex].quantity = newQty;
-          }
-          renderCart(currentCart);
+        if (newTotalQty === 0) {
+          currentCart.items = currentCart.items.filter(item => !keysArray.includes(item.key) && item.key !== key);
+        } else {
+          let primaryFound = false;
+          currentCart.items = currentCart.items.filter(item => {
+            if (keysArray.includes(item.key) || item.key === key) {
+              if (!primaryFound) {
+                item.quantity = newTotalQty;
+                primaryFound = true;
+                return true;
+              }
+              return false;
+            }
+            return true;
+          });
         }
+        renderCart(currentCart);
       }
 
-      queueQtyUpdate(key, newQty);
+      queueQtyUpdate(key, newTotalQty, keysArray);
     });
   }
 
