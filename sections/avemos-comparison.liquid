@@ -59,22 +59,22 @@
   #shopify-section-{{ section.id }} .comparison-switch-wrapper {
     display: flex;
     justify-content: center;
-    margin-bottom: 32px;
+    margin-bottom: 28px;
   }
 
   #shopify-section-{{ section.id }} .comparison-switch-toggle {
     display: inline-flex;
-    background: rgba(0, 0, 0, 0.06);
-    padding: 5px;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 4px;
     border-radius: 40px;
-    gap: 6px;
+    gap: 4px;
     border: 1px solid rgba(0, 0, 0, 0.08);
   }
 
   #shopify-section-{{ section.id }} .comparison-switch-btn {
     border: none;
     background: transparent;
-    padding: 10px 26px;
+    padding: 8px 22px;
     font-size: 0.95rem;
     font-weight: 600;
     color: #64748b;
@@ -90,14 +90,14 @@
   #shopify-section-{{ section.id }} .comparison-switch-btn.active {
     background: #ffffff;
     color: #0f172a;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   }
 
   /* Views Visibility */
   #shopify-section-{{ section.id }} .comparison-view {
     display: none;
     opacity: 0;
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.25s ease-in-out;
   }
 
   #shopify-section-{{ section.id }} .comparison-view.active {
@@ -109,29 +109,22 @@
   #shopify-section-{{ section.id }} .comparison-video-grid {
     display: flex;
     flex-direction: column;
-    gap: 32px;
-    max-width: 960px;
+    gap: 24px;
+    max-width: 900px;
     margin: 0 auto;
   }
 
   #shopify-section-{{ section.id }} .comparison-video-card {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 32px;
+    gap: 24px;
     align-items: center;
     background: #ffffff;
     border-radius: 16px;
-    padding: 32px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    padding: 24px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
     border: 1px solid rgba(0, 0, 0, 0.08);
-  }
-
-  #shopify-section-{{ section.id }} .comparison-card-our {
-    border-left: 5px solid #22c55e;
-  }
-
-  #shopify-section-{{ section.id }} .comparison-card-their {
-    border-left: 5px solid #ef4444;
+    border-left: none !important;
   }
 
   #shopify-section-{{ section.id }} .comparison-video-col {
@@ -141,7 +134,8 @@
   #shopify-section-{{ section.id }} .comparison-video-container {
     position: relative;
     width: 100%;
-    aspect-ratio: 4/3;
+    aspect-ratio: 16 / 9;
+    max-height: 250px;
     border-radius: 12px;
     overflow: hidden;
     background-color: #0f172a;
@@ -169,8 +163,8 @@
   }
 
   #shopify-section-{{ section.id }} .comparison-video-play-btn {
-    width: 64px;
-    height: 64px;
+    width: 56px;
+    height: 56px;
     background: rgba(255, 255, 255, 0.92);
     border-radius: 50%;
     display: flex;
@@ -183,21 +177,21 @@
   }
 
   #shopify-section-{{ section.id }} .comparison-video-play-btn svg {
-    width: 28px;
-    height: 28px;
-    margin-left: 4px;
+    width: 24px;
+    height: 24px;
+    margin-left: 3px;
   }
 
   #shopify-section-{{ section.id }} .comparison-points-col {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
   }
 
   #shopify-section-{{ section.id }} .comparison-card-title {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
     font-weight: 700;
-    margin: 0 0 8px 0;
+    margin: 0 0 4px 0;
   }
 
   #shopify-section-{{ section.id }} .comparison-points-list {
@@ -206,22 +200,22 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 10px;
   }
 
   #shopify-section-{{ section.id }} .comparison-points-list li {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
-    font-size: 1rem;
-    line-height: 1.4;
+    gap: 10px;
+    font-size: 0.95rem;
+    line-height: 1.35;
   }
 
   @media (max-width: 768px) {
     #shopify-section-{{ section.id }} .comparison-video-card {
       grid-template-columns: 1fr;
-      gap: 24px;
-      padding: 20px;
+      gap: 20px;
+      padding: 18px;
     }
     
     #shopify-section-{{ section.id }} .comparison-card-their .comparison-points-col {
@@ -240,21 +234,24 @@
       <h2 class="section-title">{{ section.settings.title }}</h2>
       <p class="section-subtitle">{{ section.settings.subtitle }}</p>
       
-      {%- if section.settings.show_switcher -%}
+      {%- assign display_mode = section.settings.display_mode | default: 'switcher' -%}
+      {%- assign default_view = section.settings.default_view | default: 'table' -%}
+
+      {%- if display_mode == 'switcher' -%}
         <div class="comparison-switch-wrapper">
           <div class="comparison-switch-toggle" role="tablist">
             <button type="button" 
-                    class="comparison-switch-btn {% if section.settings.default_view == 'table' or section.settings.default_view == blank %}active{% endif %}" 
+                    class="comparison-switch-btn {% if default_view == 'table' %}active{% endif %}" 
                     data-view="table"
                     role="tab"
-                    aria-selected="{% if section.settings.default_view == 'table' or section.settings.default_view == blank %}true{% else %}false{% endif %}">
+                    aria-selected="{% if default_view == 'table' %}true{% else %}false{% endif %}">
               <span>{{ section.settings.table_tab_label | default: "Table View" }}</span>
             </button>
             <button type="button" 
-                    class="comparison-switch-btn {% if section.settings.default_view == 'video' %}active{% endif %}" 
+                    class="comparison-switch-btn {% if default_view == 'video' %}active{% endif %}" 
                     data-view="video"
                     role="tab"
-                    aria-selected="{% if section.settings.default_view == 'video' %}true{% else %}false{% endif %}">
+                    aria-selected="{% if default_view == 'video' %}true{% else %}false{% endif %}">
               <span>{{ section.settings.video_tab_label | default: "Video View" }}</span>
             </button>
           </div>
@@ -262,7 +259,7 @@
       {%- endif -%}
 
       <!-- Table View -->
-      <div class="comparison-view comparison-table-view {% if section.settings.default_view == 'table' or section.settings.default_view == blank or section.settings.show_switcher == false %}active{% endif %}" id="comparison-view-table-{{ section.id }}">
+      <div class="comparison-view comparison-table-view {% if display_mode == 'table' or display_mode == 'switcher' and default_view == 'table' %}active{% endif %}" id="comparison-view-table-{{ section.id }}">
         <div class="comparison-wrapper">
           <table class="comparison-table">
             <thead>
@@ -421,7 +418,7 @@
       </div>
 
       <!-- Video View (Image 1 layout) -->
-      <div class="comparison-view comparison-video-view {% if section.settings.default_view == 'video' and section.settings.show_switcher %}active{% endif %}" id="comparison-view-video-{{ section.id }}">
+      <div class="comparison-view comparison-video-view {% if display_mode == 'video' or display_mode == 'switcher' and default_view == 'video' %}active{% endif %}" id="comparison-view-video-{{ section.id }}">
         <div class="comparison-video-grid">
           
           <!-- Card 1: Winner / Our Product (Video Left, Points Right) -->
@@ -688,23 +685,30 @@
     },
     {
       "type": "header",
-      "content": "View Switcher Settings"
+      "content": "Display & View Mode Settings"
     },
     {
-      "type": "checkbox",
-      "id": "show_switcher",
-      "label": "Show View Switcher",
-      "default": true
+      "type": "select",
+      "id": "display_mode",
+      "label": "Display Mode",
+      "options": [
+        { "value": "switcher", "label": "Tabs Switcher (Table & Video)" },
+        { "value": "table", "label": "Table View Only" },
+        { "value": "video", "label": "Video View Only" }
+      ],
+      "default": "switcher",
+      "info": "Switch between interactive tabs, table only, or video view only."
     },
     {
       "type": "select",
       "id": "default_view",
-      "label": "Default View Mode",
+      "label": "Default Active Tab",
       "options": [
         { "value": "table", "label": "Table View" },
         { "value": "video", "label": "Video View" }
       ],
-      "default": "table"
+      "default": "table",
+      "info": "Initial tab shown when Tabs Switcher is enabled."
     },
     {
       "type": "text",
