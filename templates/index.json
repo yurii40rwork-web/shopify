@@ -289,8 +289,12 @@
       "settings": {
         "title": "Comparison with Traditional Pillows",
         "subtitle": "Why traditional U-shaped travel pillows are no longer sufficient",
-        "our_product": "Avemos™  Pillow",
+        "our_product": "Avemos™  Pillow",
         "their_product": "Traditional U-Shape Pillows",
+        "show_switcher": true,
+        "default_view": "table",
+        "table_tab_label": "Table View",
+        "video_tab_label": "Video View",
         "section_font": "work_sans_n4",
         "section_bg_color": "",
         "section_bg_gradient": "",
