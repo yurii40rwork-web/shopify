@@ -64,17 +64,12 @@ function initCartDrawer() {
 
   // Hook into any click to cart links/icons
   function hookCartButtons() {
-    const cartButtons = document.querySelectorAll('a[href="/cart"], a[href*="cart_url"], .cart-icon-btn');
-    cartButtons.forEach(btn => {
-      // Clone to remove previous event listeners if any
-      const newBtn = btn.cloneNode(true);
-      if (btn.parentNode) {
-        btn.parentNode.replaceChild(newBtn, btn);
-      }
-      newBtn.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
+      const trigger = e.target.closest('a[href="/cart"], a[href*="cart_url"], .cart-icon-btn');
+      if (trigger) {
         e.preventDefault();
         openCartDrawer();
-      });
+      }
     });
   }
 
@@ -157,6 +152,18 @@ function initCartDrawer() {
     return pillowQty1Original;
   }
 
+  function isProtectionItem(item) {
+    if (!item) return false;
+    const title = (item.product_title || item.title || '').toLowerCase();
+    return item.handle === 'shipping-protection' || title.includes('shipping protection');
+  }
+
+  function isPillowItem(item) {
+    if (!item) return false;
+    const title = (item.product_title || item.title || '').toLowerCase();
+    return title.includes('pillow');
+  }
+
   function renderCart(cart) {
     const bodyEl = drawer.querySelector('.cart-drawer-body');
     const scrollTop = bodyEl ? bodyEl.scrollTop : 0;
@@ -182,7 +189,7 @@ function initCartDrawer() {
     }
     if (cartFooter) cartFooter.style.display = 'block';
 
-    const hasProtectionInCart = cart.items.some(i => i.handle === 'shipping-protection' || i.product_title.toLowerCase().includes('shipping protection'));
+    const hasProtectionInCart = cart.items.some(i => isProtectionItem(i));
     const isOptedOut = localStorage.getItem('shipping_protection_opt_out') === 'true';
 
     if (protectionToggle) {
@@ -202,7 +209,7 @@ function initCartDrawer() {
     let totalPillowsQty = 0;
 
     cart.items.forEach(item => {
-      if (item.product_title && item.product_title.toLowerCase().includes('pillow')) {
+      if (isPillowItem(item)) {
         totalPillowsQty += item.quantity;
       }
     });
@@ -211,8 +218,7 @@ function initCartDrawer() {
     // BUT don't consolidate items with _bogo_role properties — they must stay separate
     const consolidatedMap = {};
     cart.items.forEach(item => {
-      const isProtection = item.handle === 'shipping-protection' || (item.product_title && item.product_title.toLowerCase().includes('shipping protection'));
-      if (isProtection) {
+      if (isProtectionItem(item)) {
         consolidatedMap['protection_' + item.key] = {
           ...item,
           keys: [item.key]
@@ -451,17 +457,17 @@ function initCartDrawer() {
     });
 
     displayCards.forEach((card) => {
-      const isProtection = card.handle === 'shipping-protection' || card.product_title.toLowerCase().includes('shipping protection');
-      if (isProtection) return;
+      if (isProtectionItem(card)) return;
 
-      const itemTitle = card.product_title;
+      const itemTitle = card.product_title || card.title || 'Product';
       const itemElement = document.createElement('div');
       itemElement.className = 'cart-drawer-item';
       if (card.isFreeCard) {
         itemElement.classList.add('bogo-free-item-card');
         itemElement.style.border = '1.5px dashed #2e6f40';
         itemElement.style.backgroundColor = '#f4fbf6';
-            itemElement.dataset.key = card.key;
+      }
+      itemElement.dataset.key = card.key;
       itemElement.dataset.keys = JSON.stringify(card.keys || [card.key]);
       itemElement.dataset.pairIds = JSON.stringify(card.pairIds || []);
       itemElement.dataset.isFreeCard = card.isFreeCard ? 'true' : 'false';
