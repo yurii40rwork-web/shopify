@@ -136,27 +136,25 @@ function initProduct() {
       if (activeOption === 'buy_1') {
         const varId1 = getDropdownValue('bundle-1-pillow-1-select');
         const varId2 = getDropdownValue('bundle-1-pillow-2-select');
-        const counts = {};
-        [varId1, varId2].forEach(id => { if (id) counts[id] = (counts[id] || 0) + 1; });
-        for (let id in counts) {
-          items.push({
-            id: parseInt(id),
-            quantity: counts[id] * qtyMultiplier
-          });
+        
+        if (varId1) {
+          items.push({ id: parseInt(varId1), quantity: 1 * qtyMultiplier });
+        }
+        if (varId2) {
+          items.push({ id: parseInt(varId2), quantity: 1 * qtyMultiplier });
         }
       } else if (activeOption === 'buy_2') {
         const varId1 = getDropdownValue('bundle-2-pillow-1-select');
         const varId2 = getDropdownValue('bundle-2-pillow-2-select');
         const varId3 = getDropdownValue('bundle-2-pillow-3-select');
         const varId4 = getDropdownValue('bundle-2-pillow-4-select');
-        const counts = {};
-        [varId1, varId2, varId3, varId4].forEach(id => { if (id) counts[id] = (counts[id] || 0) + 1; });
-        for (let id in counts) {
-          items.push({
-            id: parseInt(id),
-            quantity: counts[id] * qtyMultiplier
-          });
-        }
+        
+        [varId1, varId3].forEach(id => {
+          if (id) items.push({ id: parseInt(id), quantity: 1 * qtyMultiplier });
+        });
+        [varId2, varId4].forEach(id => {
+          if (id) items.push({ id: parseInt(id), quantity: 1 * qtyMultiplier });
+        });
       }
 
       const buyBtn = addToCartForm.querySelector('.premium-buy-btn');
