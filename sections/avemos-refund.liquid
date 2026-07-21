@@ -39,14 +39,24 @@
   <section class="refund-section container" style="margin-top: 60px; margin-bottom: 60px;">
     
     <div class="refund-main-content">
-      <!-- Left Column: Image -->
+      <!-- Left Column: Media (Video or Image) -->
       <div class="refund-image-col">
-        {%- if section.settings.image != blank -%}
-          <img src="{{ section.settings.image | image_url: width: 800 }}" alt="{{ section.settings.heading | escape }}" class="refund-hero-image">
-        {%- else -%}
-          <!-- Fallback image -->
-          <img src="{{ 'hero-product.png' | asset_url }}" alt="Refund policy" class="refund-hero-image">
-        {%- endif -%}
+        <div class="refund-media-wrapper" data-ratio="{{ section.settings.video_ratio | default: 'adapt' }}">
+          {%- if section.settings.video != blank -%}
+            {{ section.settings.video | video_tag: autoplay: section.settings.video_autoplay, loop: section.settings.video_loop, muted: section.settings.video_muted, controls: section.settings.video_controls, playsinline: true, class: 'refund-hero-media' }}
+          {%- elsif section.settings.video_url != blank -%}
+            {%- if section.settings.video_url.type == 'youtube' -%}
+              <iframe src="https://www.youtube.com/embed/{{ section.settings.video_url.id }}?enablejsapi=1{% if section.settings.video_autoplay %}&autoplay=1&mute=1{% endif %}{% if section.settings.video_loop %}&loop=1&playlist={{ section.settings.video_url.id }}{% endif %}{% unless section.settings.video_controls %}&controls=0{% endunless %}" class="refund-hero-media" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            {%- elsif section.settings.video_url.type == 'vimeo' -%}
+              <iframe src="https://player.vimeo.com/video/{{ section.settings.video_url.id }}?{% if section.settings.video_autoplay %}autoplay=1&muted=1{% endif %}{% if section.settings.video_loop %}&loop=1{% endif %}{% unless section.settings.video_controls %}&controls=0{% endunless %}" class="refund-hero-media" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+            {%- endif -%}
+          {%- elsif section.settings.image != blank -%}
+            <img src="{{ section.settings.image | image_url: width: 800 }}" alt="{{ section.settings.heading | escape }}" class="refund-hero-media">
+          {%- else -%}
+            <!-- Fallback image -->
+            <img src="{{ 'hero-product.png' | asset_url }}" alt="Refund policy" class="refund-hero-media">
+          {%- endif -%}
+        </div>
       </div>
       
       <!-- Right Column: Text & CTA -->
@@ -107,12 +117,37 @@
     flex: 1;
     display: flex;
     justify-content: center;
+    width: 100%;
   }
-  .refund-hero-image {
+  .refund-media-wrapper {
+    position: relative;
+    width: 100%;
     max-width: 100%;
-    height: auto;
     border-radius: 16px;
+    overflow: hidden;
     box-shadow: 0 12px 36px rgba(125, 139, 161, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.03);
+  }
+  .refund-media-wrapper[data-ratio="1/1"] { aspect-ratio: 1 / 1; }
+  .refund-media-wrapper[data-ratio="4/3"] { aspect-ratio: 4 / 3; }
+  .refund-media-wrapper[data-ratio="16/9"] { aspect-ratio: 16 / 9; }
+  .refund-media-wrapper[data-ratio="4/5"] { aspect-ratio: 4 / 5; }
+  .refund-media-wrapper[data-ratio="9/16"] { aspect-ratio: 9 / 16; }
+  .refund-media-wrapper[data-ratio="adapt"] { aspect-ratio: auto; }
+
+  .refund-hero-media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 16px;
+    border: none;
+  }
+  .refund-media-wrapper[data-ratio="adapt"] .refund-hero-media {
+    height: auto;
   }
   .refund-text-col {
     flex: 1;
@@ -229,9 +264,87 @@
   "name": "Refund Policy & Trust",
   "settings": [
     {
+      "type": "header",
+      "content": "Media Settings"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Shopify-hosted Video"
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "label": "Video URL (YouTube or Vimeo)",
+      "accept": [
+        "youtube",
+        "vimeo"
+      ]
+    },
+    {
       "type": "image_picker",
       "id": "image",
-      "label": "Hero Image"
+      "label": "Hero Image (Used if video is not set)"
+    },
+    {
+      "type": "select",
+      "id": "video_ratio",
+      "label": "Media / Video Aspect Ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "Adapt to video/image (Original)"
+        },
+        {
+          "value": "1/1",
+          "label": "1:1 (Square)"
+        },
+        {
+          "value": "4/3",
+          "label": "4:3 (Standard)"
+        },
+        {
+          "value": "16/9",
+          "label": "16:9 (Widescreen)"
+        },
+        {
+          "value": "4/5",
+          "label": "4:5 (Portrait)"
+        },
+        {
+          "value": "9/16",
+          "label": "9:16 (Vertical)"
+        }
+      ],
+      "default": "adapt"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_autoplay",
+      "label": "Autoplay Video",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_loop",
+      "label": "Loop Video",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_muted",
+      "label": "Mute Video",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_controls",
+      "label": "Show Video Controls",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
     },
     {
       "type": "text",
@@ -340,3 +453,4 @@
   ]
 }
 {% endschema %}
+
