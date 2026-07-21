@@ -425,13 +425,18 @@
           <div class="comparison-video-card comparison-card-our">
             <div class="comparison-video-col">
               <div class="comparison-video-container">
+                {%- assign enable_loop = section.settings.enable_video_loop -%}
                 {%- if section.settings.our_video != blank -%}
-                  {{ section.settings.our_video | video_tag: autoplay: true, loop: true, muted: true, controls: true, playsinline: true, class: 'comparison-video-player' }}
+                  {%- if enable_loop -%}
+                    {{ section.settings.our_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'comparison-video-player' }}
+                  {%- else -%}
+                    {{ section.settings.our_video | video_tag: autoplay: true, loop: false, muted: true, controls: false, playsinline: true, class: 'comparison-video-player' }}
+                  {%- endif -%}
                 {%- elsif section.settings.our_video_url != blank -%}
                   {%- if section.settings.our_video_url.type == 'youtube' -%}
-                    <iframe src="https://www.youtube.com/embed/{{ section.settings.our_video_url.id }}?autoplay=1&muted=1&loop=1&playlist={{ section.settings.our_video_url.id }}&controls=1&playsinline=1" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.our_product_video_title | default: section.settings.our_product | escape }}"></iframe>
+                    <iframe src="https://www.youtube.com/embed/{{ section.settings.our_video_url.id }}?autoplay=1&muted=1&{% if enable_loop %}loop=1&playlist={{ section.settings.our_video_url.id }}&{% endif %}controls=0&playsinline=1" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.our_product_video_title | default: section.settings.our_product | escape }}"></iframe>
                   {%- elsif section.settings.our_video_url.type == 'vimeo' -%}
-                    <iframe src="https://player.vimeo.com/video/{{ section.settings.our_video_url.id }}?autoplay=1&muted=1&loop=1&background=0" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.our_product_video_title | default: section.settings.our_product | escape }}"></iframe>
+                    <iframe src="https://player.vimeo.com/video/{{ section.settings.our_video_url.id }}?autoplay=1&muted=1&{% if enable_loop %}loop=1&{% else %}loop=0&{% endif %}background=1" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.our_product_video_title | default: section.settings.our_product | escape }}"></iframe>
                   {%- endif -%}
                 {%- elsif section.settings.our_video_poster != blank -%}
                   <img src="{{ section.settings.our_video_poster | image_url: width: 800 }}" alt="{{ section.settings.our_product_video_title | default: section.settings.our_product | escape }}" loading="lazy" class="comparison-video-poster">
@@ -592,12 +597,16 @@
             <div class="comparison-video-col">
               <div class="comparison-video-container">
                 {%- if section.settings.their_video != blank -%}
-                  {{ section.settings.their_video | video_tag: autoplay: true, loop: true, muted: true, controls: true, playsinline: true, class: 'comparison-video-player' }}
+                  {%- if enable_loop -%}
+                    {{ section.settings.their_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'comparison-video-player' }}
+                  {%- else -%}
+                    {{ section.settings.their_video | video_tag: autoplay: true, loop: false, muted: true, controls: false, playsinline: true, class: 'comparison-video-player' }}
+                  {%- endif -%}
                 {%- elsif section.settings.their_video_url != blank -%}
                   {%- if section.settings.their_video_url.type == 'youtube' -%}
-                    <iframe src="https://www.youtube.com/embed/{{ section.settings.their_video_url.id }}?autoplay=1&muted=1&loop=1&playlist={{ section.settings.their_video_url.id }}&controls=1&playsinline=1" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.their_product_video_title | default: section.settings.their_product | escape }}"></iframe>
+                    <iframe src="https://www.youtube.com/embed/{{ section.settings.their_video_url.id }}?autoplay=1&muted=1&{% if enable_loop %}loop=1&playlist={{ section.settings.their_video_url.id }}&{% endif %}controls=0&playsinline=1" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.their_product_video_title | default: section.settings.their_product | escape }}"></iframe>
                   {%- elsif section.settings.their_video_url.type == 'vimeo' -%}
-                    <iframe src="https://player.vimeo.com/video/{{ section.settings.their_video_url.id }}?autoplay=1&muted=1&loop=1&background=0" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.their_product_video_title | default: section.settings.their_product | escape }}"></iframe>
+                    <iframe src="https://player.vimeo.com/video/{{ section.settings.their_video_url.id }}?autoplay=1&muted=1&{% if enable_loop %}loop=1&{% else %}loop=0&{% endif %}background=1" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.their_product_video_title | default: section.settings.their_product | escape }}"></iframe>
                   {%- endif -%}
                 {%- elsif section.settings.their_video_poster != blank -%}
                   <img src="{{ section.settings.their_video_poster | image_url: width: 800 }}" alt="{{ section.settings.their_product_video_title | default: section.settings.their_product | escape }}" loading="lazy" class="comparison-video-poster">
@@ -737,6 +746,13 @@
       "id": "their_product",
       "label": "Traditional Product Name",
       "default": "Traditional U-Shape Pillows"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_video_loop",
+      "label": "Loop Videos",
+      "default": true,
+      "info": "Uncheck to disable automatic video looping."
     },
     {
       "type": "header",
