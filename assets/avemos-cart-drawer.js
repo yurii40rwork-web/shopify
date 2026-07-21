@@ -208,11 +208,22 @@ function initCartDrawer() {
     });
 
     // Consolidate line items by variant ID to prevent duplicate split cards
+    // BUT don't consolidate items with _bogo_role properties — they must stay separate
     const consolidatedMap = {};
     cart.items.forEach(item => {
       const isProtection = item.handle === 'shipping-protection' || (item.product_title && item.product_title.toLowerCase().includes('shipping protection'));
       if (isProtection) {
         consolidatedMap['protection_' + item.key] = {
+          ...item,
+          keys: [item.key]
+        };
+        return;
+      }
+
+      // Items with _bogo_role stay as individual entries (unique keys due to properties)
+      const hasBogoRole = item.properties && item.properties._bogo_role;
+      if (hasBogoRole) {
+        consolidatedMap['bogo_' + item.key] = {
           ...item,
           keys: [item.key]
         };
@@ -238,109 +249,165 @@ function initCartDrawer() {
     const groupedItems = Object.values(consolidatedMap);
 
     if (bogoEnabled) {
+      // Count total pillows for pricing (still needed for non-BOGO pricing tiers)
       let totalPillowsQty = 0;
       groupedItems.forEach(item => {
         const isProtection = item.handle === 'shipping-protection' || (item.product_title && item.product_title.toLowerCase().includes('shipping protection'));
         if (isProtection) return;
-
         const isPillow = item.product_title && item.product_title.toLowerCase().includes('pillow');
         if (isPillow) {
           totalPillowsQty += item.quantity;
         }
       });
 
-      let paidTargetRemaining = Math.ceil(totalPillowsQty / 2);
-      let freeTargetRemaining = Math.floor(totalPillowsQty / 2);
+      // Check if items have _bogo_role properties (new approach)
+      const hasBogoProperties = groupedItems.some(item => item.properties && item.properties._bogo_role);
 
-      const groupBogo = {};
-      groupedItems.forEach(item => {
-        const isProtection = item.handle === 'shipping-protection' || (item.product_title && item.product_title.toLowerCase().includes('shipping protection'));
-        if (isProtection) return;
-
-        const isPillow = item.product_title && item.product_title.toLowerCase().includes('pillow');
-        if (isPillow) {
-          let paidQty = 0;
-          let freeQty = 0;
-
-          for (let q = 0; q < item.quantity; q++) {
-            if (paidTargetRemaining > 0) {
-              paidQty++;
-              paidTargetRemaining--;
-            } else if (freeTargetRemaining > 0) {
-              freeQty++;
-              freeTargetRemaining--;
-            } else {
-              paidQty++;
-            }
-          }
-
-          const unitPriceVal = pillowQty1Price;
-          const unitOrigVal = pillowQty1Original;
-
-          groupBogo[item.variant_id || item.id || item.key] = {
-            paidQty,
-            freeQty,
-            unitCurrentPrice: unitPriceVal,
-            unitOriginalPrice: unitOrigVal
-          };
-        }
-      });
-
-      groupedItems.forEach(item => {
-        const isProtection = item.handle === 'shipping-protection' || (item.product_title && item.product_title.toLowerCase().includes('shipping protection'));
-        if (isProtection) {
-          displayCards.push({
-            ...item,
-            isFreeCard: false,
-            cardQty: item.quantity,
-            totalItemQty: item.quantity,
-            cardPrice: (item.final_price || item.price) * item.quantity,
-            cardOriginalPrice: (item.original_price || item.price) * item.quantity,
-            unitCurrentPrice: item.final_price || item.price,
-            unitOriginalPrice: item.original_price || item.price
-          });
-          return;
-        }
-
-        const bogoInfo = groupBogo[item.variant_id || item.id || item.key];
-        if (bogoInfo) {
-          if (bogoInfo.paidQty > 0) {
+      if (hasBogoProperties) {
+        // New approach: use _bogo_role property to determine paid vs free
+        groupedItems.forEach(item => {
+          const isProtection = item.handle === 'shipping-protection' || (item.product_title && item.product_title.toLowerCase().includes('shipping protection'));
+          if (isProtection) {
             displayCards.push({
               ...item,
               isFreeCard: false,
-              cardQty: bogoInfo.paidQty,
+              cardQty: item.quantity,
               totalItemQty: item.quantity,
-              cardPrice: bogoInfo.paidQty * bogoInfo.unitCurrentPrice,
-              cardOriginalPrice: bogoInfo.paidQty * bogoInfo.unitOriginalPrice,
-              unitCurrentPrice: bogoInfo.unitCurrentPrice,
-              unitOriginalPrice: bogoInfo.unitOriginalPrice
+              cardPrice: (item.final_price || item.price) * item.quantity,
+              cardOriginalPrice: (item.original_price || item.price) * item.quantity,
+              unitCurrentPrice: item.final_price || item.price,
+              unitOriginalPrice: item.original_price || item.price
             });
+            return;
           }
-          if (bogoInfo.freeQty > 0) {
+
+          const isPillow = item.product_title && item.product_title.toLowerCase().includes('pillow');
+          const bogoRole = item.properties && item.properties._bogo_role;
+          const isFree = bogoRole === 'free';
+
+          if (isPillow) {
+            const unitPriceVal = isFree ? 0 : pillowQty1Price;
+            const unitOrigVal = pillowQty1Original;
+
             displayCards.push({
               ...item,
-              isFreeCard: true,
-              cardQty: bogoInfo.freeQty,
+              isFreeCard: isFree,
+              cardQty: item.quantity,
               totalItemQty: item.quantity,
-              cardPrice: 0,
-              cardOriginalPrice: bogoInfo.freeQty * bogoInfo.unitOriginalPrice,
-              unitCurrentPrice: bogoInfo.unitCurrentPrice,
-              unitOriginalPrice: bogoInfo.unitOriginalPrice
+              cardPrice: isFree ? 0 : unitPriceVal * item.quantity,
+              cardOriginalPrice: unitOrigVal * item.quantity,
+              unitCurrentPrice: unitPriceVal,
+              unitOriginalPrice: unitOrigVal
+            });
+          } else {
+            // Non-pillow item
+            displayCards.push({
+              ...item,
+              isFreeCard: false,
+              cardQty: item.quantity,
+              totalItemQty: item.quantity,
+              cardPrice: item.price * item.quantity,
+              cardOriginalPrice: (item.compare_at_price || item.price) * item.quantity,
+              unitCurrentPrice: item.price,
+              unitOriginalPrice: item.compare_at_price || item.price
             });
           }
-        } else {
-          displayCards.push({
-            ...item,
-            isFreeCard: false,
-            cardQty: item.quantity,
-            totalItemQty: item.quantity,
-            cardPrice: item.price * item.quantity,
-            cardOriginalPrice: (item.compare_at_price || item.price) * item.quantity,
-            unitCurrentPrice: item.price,
-            unitOriginalPrice: item.compare_at_price || item.price
-          });
-        }
-      });
+        });
+      } else {
+        // Fallback: old approach for items without _bogo_role properties (backward compat)
+        let paidTargetRemaining = Math.ceil(totalPillowsQty / 2);
+        let freeTargetRemaining = Math.floor(totalPillowsQty / 2);
+
+        const groupBogo = {};
+        groupedItems.forEach(item => {
+          const isProtection = item.handle === 'shipping-protection' || (item.product_title && item.product_title.toLowerCase().includes('shipping protection'));
+          if (isProtection) return;
+
+          const isPillow = item.product_title && item.product_title.toLowerCase().includes('pillow');
+          if (isPillow) {
+            let paidQty = 0;
+            let freeQty = 0;
+
+            for (let q = 0; q < item.quantity; q++) {
+              if (paidTargetRemaining > 0) {
+                paidQty++;
+                paidTargetRemaining--;
+              } else if (freeTargetRemaining > 0) {
+                freeQty++;
+                freeTargetRemaining--;
+              } else {
+                paidQty++;
+              }
+            }
+
+            const unitPriceVal = pillowQty1Price;
+            const unitOrigVal = pillowQty1Original;
+
+            groupBogo[item.variant_id || item.id || item.key] = {
+              paidQty,
+              freeQty,
+              unitCurrentPrice: unitPriceVal,
+              unitOriginalPrice: unitOrigVal
+            };
+          }
+        });
+
+        groupedItems.forEach(item => {
+          const isProtection = item.handle === 'shipping-protection' || (item.product_title && item.product_title.toLowerCase().includes('shipping protection'));
+          if (isProtection) {
+            displayCards.push({
+              ...item,
+              isFreeCard: false,
+              cardQty: item.quantity,
+              totalItemQty: item.quantity,
+              cardPrice: (item.final_price || item.price) * item.quantity,
+              cardOriginalPrice: (item.original_price || item.price) * item.quantity,
+              unitCurrentPrice: item.final_price || item.price,
+              unitOriginalPrice: item.original_price || item.price
+            });
+            return;
+          }
+
+          const bogoInfo = groupBogo[item.variant_id || item.id || item.key];
+          if (bogoInfo) {
+            if (bogoInfo.paidQty > 0) {
+              displayCards.push({
+                ...item,
+                isFreeCard: false,
+                cardQty: bogoInfo.paidQty,
+                totalItemQty: item.quantity,
+                cardPrice: bogoInfo.paidQty * bogoInfo.unitCurrentPrice,
+                cardOriginalPrice: bogoInfo.paidQty * bogoInfo.unitOriginalPrice,
+                unitCurrentPrice: bogoInfo.unitCurrentPrice,
+                unitOriginalPrice: bogoInfo.unitOriginalPrice
+              });
+            }
+            if (bogoInfo.freeQty > 0) {
+              displayCards.push({
+                ...item,
+                isFreeCard: true,
+                cardQty: bogoInfo.freeQty,
+                totalItemQty: item.quantity,
+                cardPrice: 0,
+                cardOriginalPrice: bogoInfo.freeQty * bogoInfo.unitOriginalPrice,
+                unitCurrentPrice: bogoInfo.unitCurrentPrice,
+                unitOriginalPrice: bogoInfo.unitOriginalPrice
+              });
+            }
+          } else {
+            displayCards.push({
+              ...item,
+              isFreeCard: false,
+              cardQty: item.quantity,
+              totalItemQty: item.quantity,
+              cardPrice: item.price * item.quantity,
+              cardOriginalPrice: (item.compare_at_price || item.price) * item.quantity,
+              unitCurrentPrice: item.price,
+              unitOriginalPrice: item.compare_at_price || item.price
+            });
+          }
+        });
+      }
     } else {
       groupedItems.forEach(item => {
         const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
@@ -520,7 +587,21 @@ function initCartDrawer() {
       const card = btn.closest('.cart-drawer-item');
       if (!card) return;
 
+      const isFreeCard = card.dataset.isFreeCard === 'true';
+
+      // Don't allow qty changes on free BOGO cards (only delete)
+      if (isFreeCard && action !== 'delete') return;
+
       const keysArray = JSON.parse(card.dataset.keys || '[]');
+
+      // Check if this item has _bogo_role properties (new approach)
+      let itemHasBogoRole = false;
+      if (currentCart && currentCart.items) {
+        const cartItem = currentCart.items.find(item => item.key === key);
+        if (cartItem && cartItem.properties && cartItem.properties._bogo_role) {
+          itemHasBogoRole = true;
+        }
+      }
 
       let totalCurrentQty = 0;
       if (currentCart && currentCart.items) {
@@ -534,9 +615,19 @@ function initCartDrawer() {
       let newTotalQty = totalCurrentQty;
 
       if (action === 'plus') {
-        newTotalQty = bogoEnabled ? (totalCurrentQty % 2 === 0 ? totalCurrentQty + 2 : totalCurrentQty + 1) : totalCurrentQty + 1;
+        // With BOGO properties, each card is independent — increment by 1
+        // Old fallback (no properties) uses paired +2 logic
+        if (bogoEnabled && !itemHasBogoRole) {
+          newTotalQty = totalCurrentQty % 2 === 0 ? totalCurrentQty + 2 : totalCurrentQty + 1;
+        } else {
+          newTotalQty = totalCurrentQty + 1;
+        }
       } else if (action === 'minus') {
-        newTotalQty = bogoEnabled ? (totalCurrentQty % 2 === 0 ? Math.max(0, totalCurrentQty - 2) : Math.max(0, totalCurrentQty - 1)) : Math.max(0, totalCurrentQty - 1);
+        if (bogoEnabled && !itemHasBogoRole) {
+          newTotalQty = totalCurrentQty % 2 === 0 ? Math.max(0, totalCurrentQty - 2) : Math.max(0, totalCurrentQty - 1);
+        } else {
+          newTotalQty = Math.max(0, totalCurrentQty - 1);
+        }
       } else if (action === 'delete') {
         newTotalQty = 0;
       }

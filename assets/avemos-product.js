@@ -138,10 +138,10 @@ function initProduct() {
         const varId2 = getDropdownValue('bundle-1-pillow-2-select');
         
         if (varId1) {
-          items.push({ id: parseInt(varId1), quantity: 1 * qtyMultiplier });
+          items.push({ id: parseInt(varId1), quantity: 1 * qtyMultiplier, properties: { _bogo_role: 'paid' } });
         }
         if (varId2) {
-          items.push({ id: parseInt(varId2), quantity: 1 * qtyMultiplier });
+          items.push({ id: parseInt(varId2), quantity: 1 * qtyMultiplier, properties: { _bogo_role: 'free' } });
         }
       } else if (activeOption === 'buy_2') {
         const varId1 = getDropdownValue('bundle-2-pillow-1-select');
@@ -149,12 +149,10 @@ function initProduct() {
         const varId3 = getDropdownValue('bundle-2-pillow-3-select');
         const varId4 = getDropdownValue('bundle-2-pillow-4-select');
         
-        [varId1, varId3].forEach(id => {
-          if (id) items.push({ id: parseInt(id), quantity: 1 * qtyMultiplier });
-        });
-        [varId2, varId4].forEach(id => {
-          if (id) items.push({ id: parseInt(id), quantity: 1 * qtyMultiplier });
-        });
+        if (varId1) items.push({ id: parseInt(varId1), quantity: 1 * qtyMultiplier, properties: { _bogo_role: 'paid' } });
+        if (varId2) items.push({ id: parseInt(varId2), quantity: 1 * qtyMultiplier, properties: { _bogo_role: 'free' } });
+        if (varId3) items.push({ id: parseInt(varId3), quantity: 1 * qtyMultiplier, properties: { _bogo_role: 'paid' } });
+        if (varId4) items.push({ id: parseInt(varId4), quantity: 1 * qtyMultiplier, properties: { _bogo_role: 'free' } });
       }
 
       const buyBtn = addToCartForm.querySelector('.premium-buy-btn');
