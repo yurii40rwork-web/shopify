@@ -119,11 +119,11 @@
     grid-template-columns: 1fr 1fr;
     gap: 24px;
     align-items: center;
-    background: #ffffff;
+    background: {{ section.settings.video_card_bg | default: '#ffffff' }};
     border-radius: 16px;
     padding: 24px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    border: 1px solid {{ section.settings.video_card_border | default: 'rgba(0, 0, 0, 0.08)' }};
     border-left: none !important;
   }
 
@@ -467,7 +467,17 @@
                             <polyline points="20 6 9 17 4 12"></polyline>
                           </svg>
                         </span>
-                        <span>{{ pt_clean }}</span>
+                        {%- if pt_clean contains '**' -%}
+                          {%- assign pt_formatted = pt_clean | replace_first: '**', '<strong>' | replace_first: '**', '</strong>' -%}
+                          <span>{{ pt_formatted }}</span>
+                        {%- elsif pt_clean contains ':' -%}
+                          {%- assign pt_split = pt_clean | split: ':' -%}
+                          {%- assign pt_title = pt_split[0] | strip -%}
+                          {%- assign pt_rest = pt_clean | remove_first: pt_split[0] | remove_first: ':' -%}
+                          <span><strong>{{ pt_title }}:</strong>{{ pt_rest }}</span>
+                        {%- else -%}
+                          <span>{{ pt_clean }}</span>
+                        {%- endif -%}
                       </li>
                     {%- endif -%}
                   {%- endfor -%}
@@ -537,7 +547,17 @@
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                           </svg>
                         </span>
-                        <span>{{ pt_clean }}</span>
+                        {%- if pt_clean contains '**' -%}
+                          {%- assign pt_formatted = pt_clean | replace_first: '**', '<strong>' | replace_first: '**', '</strong>' -%}
+                          <span>{{ pt_formatted }}</span>
+                        {%- elsif pt_clean contains ':' -%}
+                          {%- assign pt_split = pt_clean | split: ':' -%}
+                          {%- assign pt_title = pt_split[0] | strip -%}
+                          {%- assign pt_rest = pt_clean | remove_first: pt_split[0] | remove_first: ':' -%}
+                          <span><strong>{{ pt_title }}:</strong>{{ pt_rest }}</span>
+                        {%- else -%}
+                          <span>{{ pt_clean }}</span>
+                        {%- endif -%}
                       </li>
                     {%- endif -%}
                   {%- endfor -%}
@@ -823,6 +843,18 @@
     {
       "type": "header",
       "content": "Section Colors & Fonts"
+    },
+    {
+      "type": "color",
+      "id": "video_card_bg",
+      "label": "Video Card Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "video_card_border",
+      "label": "Video Card Border Color",
+      "default": "#e2e8f0"
     },
     {
       "type": "font_picker",
