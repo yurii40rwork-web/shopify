@@ -559,7 +559,17 @@ function initCartDrawer() {
     if (subtotalSave) subtotalSave.textContent = `Save ${savePercent}%`;
     const subtotalEachNote = document.getElementById('drawer-subtotal-each-note');
     if (subtotalEachNote) {
-      subtotalEachNote.textContent = drawer.dataset.subtotalEachNote || '($22.45 each)';
+      let rawNote = drawer.dataset.subtotalEachNote || '($22.45 each)';
+      if (totalPillowsQty > 0 && basePricesSubtotal > 0) {
+        const eachCents = Math.round(basePricesSubtotal / totalPillowsQty);
+        const eachFormatted = formatMoney(eachCents);
+        if (rawNote.includes('{price}')) {
+          rawNote = rawNote.replace(/{price}/g, eachFormatted);
+        } else if (/\$\d+(\.\d+)?/.test(rawNote)) {
+          rawNote = rawNote.replace(/\$\d+(\.\d+)?/, eachFormatted);
+        }
+      }
+      subtotalEachNote.textContent = rawNote;
     }
 
     const baseSubtotalNoProtection = basePricesSubtotal;

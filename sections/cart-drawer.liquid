@@ -54,6 +54,11 @@
     
     <!-- Footer Section (Fixed at bottom) -->
     <div class="cart-drawer-footer" id="cart-drawer-footer">
+      <!-- Price Per Product Banner (where pink line is) -->
+      <div class="cart-drawer-each-banner" style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+        <span class="subtotal-each-note" id="drawer-subtotal-each-note" style="color: #2e6f40; font-size: 13px; font-weight: 700; background: #f4fbf6; border: 1.5px dashed #2e6f40; padding: 4px 12px; border-radius: 6px; display: inline-block;">{{ section.settings.subtotal_each_pillow_note | escape }}</span>
+      </div>
+
       <!-- Shipping Protection -->
       {%- if section.settings.show_shipping_protection -%}
         <div class="shipping-protection-row">
@@ -81,7 +86,6 @@
         <span class="subtotal-label">Subtotal</span>
         <div class="subtotal-prices">
           <span class="subtotal-current" id="drawer-subtotal-current">$0.00</span>
-          <span class="subtotal-each-note" id="drawer-subtotal-each-note" style="color: #2e6f40; font-size: 13px; font-weight: 700; margin-left: 4px;">{{ section.settings.subtotal_each_pillow_note | escape }}</span>
           <span class="subtotal-original" id="drawer-subtotal-original">$0.00</span>
           <span class="subtotal-badge" id="drawer-subtotal-save">Save {{ section.settings.save_percent }}%</span>
         </div>
