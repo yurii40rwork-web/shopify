@@ -547,7 +547,7 @@ function initCartDrawer() {
     }
   }
 
-  function queueQtyUpdate(key, newQty, keysArray = []) {
+  function queueQtyUpdate(key, newQty, keysArray = [], additionalUpdates = {}) {
     if (keysArray && keysArray.length > 0) {
       keysArray.forEach(k => {
         if (k === key) {
@@ -556,8 +556,12 @@ function initCartDrawer() {
           pendingUpdates[k] = 0;
         }
       });
-    } else {
+    } else if (key) {
       pendingUpdates[key] = newQty;
+    }
+    
+    if (additionalUpdates && Object.keys(additionalUpdates).length > 0) {
+      Object.assign(pendingUpdates, additionalUpdates);
     }
     
     if (debounceTimer) {
@@ -632,8 +636,6 @@ function initCartDrawer() {
       let newTotalQty = totalCurrentQty;
 
       if (action === 'plus') {
-        // With BOGO properties, each card is independent — increment by 1
-        // Old fallback (no properties) uses paired +2 logic
         if (bogoEnabled && !itemHasBogoRole) {
           newTotalQty = totalCurrentQty % 2 === 0 ? totalCurrentQty + 2 : totalCurrentQty + 1;
         } else {
@@ -647,6 +649,31 @@ function initCartDrawer() {
         }
       } else if (action === 'delete') {
         newTotalQty = 0;
+      }
+
+      const delta = newTotalQty - totalCurrentQty;
+      const additionalUpdates = {};
+
+      if (bogoEnabled && itemHasBogoRole && delta !== 0 && currentCart && currentCart.items) {
+        const targetRole = isFreeCard ? 'paid' : 'free';
+        const partnerItems = currentCart.items.filter(i => i.properties && i.properties._bogo_role === targetRole);
+
+        let remainingDelta = delta;
+        partnerItems.forEach(partner => {
+          if (remainingDelta === 0) return;
+          const oldQty = partner.quantity;
+          let partnerNewQty = oldQty + remainingDelta;
+          if (partnerNewQty < 0) {
+            remainingDelta = partnerNewQty;
+            partnerNewQty = 0;
+          } else {
+            remainingDelta = 0;
+          }
+          partner.quantity = partnerNewQty;
+          additionalUpdates[partner.key] = partnerNewQty;
+        });
+
+        currentCart.items = currentCart.items.filter(i => i.quantity > 0);
       }
 
       if (currentCart && currentCart.items) {
@@ -669,7 +696,7 @@ function initCartDrawer() {
         renderCart(currentCart);
       }
 
-      queueQtyUpdate(key, newTotalQty, keysArray);
+      queueQtyUpdate(key, newTotalQty, keysArray, additionalUpdates);
     });
   }
 
