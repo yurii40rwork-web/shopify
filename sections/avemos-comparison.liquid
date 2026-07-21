@@ -131,11 +131,19 @@
     width: 100%;
   }
 
+  {%- assign video_aspect = section.settings.video_aspect_ratio | default: '16-9' -%}
   #shopify-section-{{ section.id }} .comparison-video-container {
     position: relative;
     width: 100%;
-    aspect-ratio: 16 / 9;
-    max-height: 250px;
+    {% if video_aspect == '4-3' %}
+      aspect-ratio: 4 / 3;
+    {% elsif video_aspect == '1-1' %}
+      aspect-ratio: 1 / 1;
+    {% elsif video_aspect == '9-16' %}
+      aspect-ratio: 9 / 16;
+    {% else %}
+      aspect-ratio: 16 / 9;
+    {% endif %}
     border-radius: 12px;
     overflow: hidden;
     background-color: #0f172a;
@@ -773,6 +781,19 @@
       "label": "Loop Videos",
       "default": true,
       "info": "Uncheck to disable automatic video looping."
+    },
+    {
+      "type": "select",
+      "id": "video_aspect_ratio",
+      "label": "Video Aspect Ratio",
+      "options": [
+        { "value": "16-9", "label": "16:9 (Widescreen)" },
+        { "value": "4-3", "label": "4:3 (Standard)" },
+        { "value": "1-1", "label": "1:1 (Square)" },
+        { "value": "9-16", "label": "9:16 (Vertical)" }
+      ],
+      "default": "16-9",
+      "info": "Aspect ratio for comparison video boxes."
     },
     {
       "type": "header",
