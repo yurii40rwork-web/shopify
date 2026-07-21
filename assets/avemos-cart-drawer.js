@@ -220,13 +220,22 @@ function initCartDrawer() {
         return;
       }
 
-      // Items with _bogo_role stay as individual entries (unique keys due to properties)
-      const hasBogoRole = item.properties && item.properties._bogo_role;
-      if (hasBogoRole) {
-        consolidatedMap['bogo_' + item.key] = {
-          ...item,
-          keys: [item.key]
-        };
+      // Group BOGO items by variant_id AND _bogo_role so identical paid (or free) items consolidate!
+      const bogoRole = item.properties && item.properties._bogo_role;
+      if (bogoRole) {
+        const bogoKey = `bogo_${item.variant_id || item.id}_${bogoRole}`;
+        if (!consolidatedMap[bogoKey]) {
+          consolidatedMap[bogoKey] = {
+            ...item,
+            quantity: item.quantity,
+            keys: [item.key]
+          };
+        } else {
+          consolidatedMap[bogoKey].quantity += item.quantity;
+          if (!consolidatedMap[bogoKey].keys.includes(item.key)) {
+            consolidatedMap[bogoKey].keys.push(item.key);
+          }
+        }
         return;
       }
 
@@ -427,6 +436,14 @@ function initCartDrawer() {
         });
       });
     }
+
+    // Sort display cards: Paid items on top, FREE BOGO GIFT items at bottom
+    displayCards.sort((a, b) => {
+      if (a.isFreeCard !== b.isFreeCard) {
+        return a.isFreeCard ? 1 : -1;
+      }
+      return 0;
+    });
 
     displayCards.forEach((card) => {
       const isProtection = card.handle === 'shipping-protection' || card.product_title.toLowerCase().includes('shipping protection');
