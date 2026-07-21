@@ -136,23 +136,26 @@ function initProduct() {
       if (activeOption === 'buy_1') {
         const varId1 = getDropdownValue('bundle-1-pillow-1-select');
         const varId2 = getDropdownValue('bundle-1-pillow-2-select');
+        const pairId = 'pair_' + Date.now() + '_' + Math.random().toString(36).substring(2,7);
         
         if (varId1) {
-          items.push({ id: parseInt(varId1), quantity: 1 * qtyMultiplier, properties: { _bogo_role: 'paid' } });
+          items.push({ id: parseInt(varId1), quantity: 1 * qtyMultiplier, properties: { _bogo_role: 'paid', _bogo_pair_id: pairId } });
         }
         if (varId2) {
-          items.push({ id: parseInt(varId2), quantity: 1 * qtyMultiplier, properties: { _bogo_role: 'free' } });
+          items.push({ id: parseInt(varId2), quantity: 1 * qtyMultiplier, properties: { _bogo_role: 'free', _bogo_pair_id: pairId } });
         }
       } else if (activeOption === 'buy_2') {
         const varId1 = getDropdownValue('bundle-2-pillow-1-select');
         const varId2 = getDropdownValue('bundle-2-pillow-2-select');
         const varId3 = getDropdownValue('bundle-2-pillow-3-select');
         const varId4 = getDropdownValue('bundle-2-pillow-4-select');
+        const pairId1 = 'pair_' + Date.now() + '_1_' + Math.random().toString(36).substring(2,7);
+        const pairId2 = 'pair_' + Date.now() + '_2_' + Math.random().toString(36).substring(2,7);
         
-        if (varId1) items.push({ id: parseInt(varId1), quantity: 1 * qtyMultiplier, properties: { _bogo_role: 'paid' } });
-        if (varId2) items.push({ id: parseInt(varId2), quantity: 1 * qtyMultiplier, properties: { _bogo_role: 'free' } });
-        if (varId3) items.push({ id: parseInt(varId3), quantity: 1 * qtyMultiplier, properties: { _bogo_role: 'paid' } });
-        if (varId4) items.push({ id: parseInt(varId4), quantity: 1 * qtyMultiplier, properties: { _bogo_role: 'free' } });
+        if (varId1) items.push({ id: parseInt(varId1), quantity: 1 * qtyMultiplier, properties: { _bogo_role: 'paid', _bogo_pair_id: pairId1 } });
+        if (varId2) items.push({ id: parseInt(varId2), quantity: 1 * qtyMultiplier, properties: { _bogo_role: 'free', _bogo_pair_id: pairId1 } });
+        if (varId3) items.push({ id: parseInt(varId3), quantity: 1 * qtyMultiplier, properties: { _bogo_role: 'paid', _bogo_pair_id: pairId2 } });
+        if (varId4) items.push({ id: parseInt(varId4), quantity: 1 * qtyMultiplier, properties: { _bogo_role: 'free', _bogo_pair_id: pairId2 } });
       }
 
       const buyBtn = addToCartForm.querySelector('.premium-buy-btn');

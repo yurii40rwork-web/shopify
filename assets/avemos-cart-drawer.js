@@ -224,16 +224,21 @@ function initCartDrawer() {
       const bogoRole = item.properties && item.properties._bogo_role;
       if (bogoRole) {
         const bogoKey = `bogo_${item.variant_id || item.id}_${bogoRole}`;
+        const pairId = item.properties && item.properties._bogo_pair_id;
         if (!consolidatedMap[bogoKey]) {
           consolidatedMap[bogoKey] = {
             ...item,
             quantity: item.quantity,
-            keys: [item.key]
+            keys: [item.key],
+            pairIds: pairId ? [pairId] : []
           };
         } else {
           consolidatedMap[bogoKey].quantity += item.quantity;
           if (!consolidatedMap[bogoKey].keys.includes(item.key)) {
             consolidatedMap[bogoKey].keys.push(item.key);
+          }
+          if (pairId && consolidatedMap[bogoKey].pairIds && !consolidatedMap[bogoKey].pairIds.includes(pairId)) {
+            consolidatedMap[bogoKey].pairIds.push(pairId);
           }
         }
         return;
@@ -456,9 +461,9 @@ function initCartDrawer() {
         itemElement.classList.add('bogo-free-item-card');
         itemElement.style.border = '1.5px dashed #2e6f40';
         itemElement.style.backgroundColor = '#f4fbf6';
-      }
-      itemElement.dataset.key = card.key;
+            itemElement.dataset.key = card.key;
       itemElement.dataset.keys = JSON.stringify(card.keys || [card.key]);
+      itemElement.dataset.pairIds = JSON.stringify(card.pairIds || []);
       itemElement.dataset.isFreeCard = card.isFreeCard ? 'true' : 'false';
 
       basePricesSubtotal += card.cardPrice;
@@ -486,6 +491,23 @@ function initCartDrawer() {
         priceEachHTML = `<span class="price-each" style="font-size: 11px; color: #2e6f40; margin-top: 1px; white-space: nowrap; font-weight:600;">$0.00 each</span>`;
       }
 
+      let qtySelectorHTML = '';
+      if (card.isFreeCard) {
+        qtySelectorHTML = `
+          <div class="item-qty-selector free-qty-selector" style="justify-content: center; width: auto; padding: 0 10px; background: #f4fbf6; border: 1px dashed #2e6f40; border-radius: 6px; height: 28px; display: inline-flex; align-items: center; margin-top: 6px;">
+            <span style="font-size: 12px; font-weight: 700; color: #2e6f40;">Qty: ${card.cardQty}</span>
+          </div>
+        `;
+      } else {
+        qtySelectorHTML = `
+          <div class="item-qty-selector">
+            <button type="button" class="item-qty-btn" data-action="minus" data-key="${card.key}" data-is-free="${card.isFreeCard}">-</button>
+            <input type="number" class="item-qty-input" value="${card.cardQty}" readonly>
+            <button type="button" class="item-qty-btn" data-action="plus" data-key="${card.key}" data-is-free="${card.isFreeCard}">+</button>
+          </div>
+        `;
+      }
+
       itemElement.innerHTML = `
         <div class="item-img-col">
           <img src="${card.image ? card.image : '//cdn.shopify.com/s/images/admin/no-image-large.gif'}" alt="${itemTitle}">
@@ -493,11 +515,7 @@ function initCartDrawer() {
         <div class="item-info-col">
           <a href="${card.url}" class="item-title">${itemTitle}</a>
           ${card.variant_title && !card.variant_title.includes('Default') ? `<div style="font-size: 12px; color: #75777d; margin-top: 1px;">${card.variant_title}</div>` : ''}
-          <div class="item-qty-selector">
-            <button type="button" class="item-qty-btn" data-action="minus" data-key="${card.key}" data-is-free="${card.isFreeCard}">-</button>
-            <input type="number" class="item-qty-input" value="${card.cardQty}" readonly>
-            <button type="button" class="item-qty-btn" data-action="plus" data-key="${card.key}" data-is-free="${card.isFreeCard}">+</button>
-          </div>
+          ${qtySelectorHTML}
         </div>
         <div class="item-price-col">
           <button type="button" class="item-delete-btn" data-action="delete" data-key="${card.key}">
@@ -656,7 +674,20 @@ function initCartDrawer() {
 
       if (bogoEnabled && itemHasBogoRole && delta !== 0 && currentCart && currentCart.items) {
         const targetRole = isFreeCard ? 'paid' : 'free';
-        const partnerItems = currentCart.items.filter(i => i.properties && i.properties._bogo_role === targetRole);
+        const cardPairIds = JSON.parse(card.dataset.pairIds || '[]');
+
+        // Find partner items sharing pairIds, or any partner items if legacy
+        let partnerItems = currentCart.items.filter(i => {
+          if (!i.properties || i.properties._bogo_role !== targetRole) return false;
+          if (cardPairIds.length > 0 && i.properties._bogo_pair_id) {
+            return cardPairIds.includes(i.properties._bogo_pair_id);
+          }
+          return true;
+        });
+
+        if (partnerItems.length === 0) {
+          partnerItems = currentCart.items.filter(i => i.properties && i.properties._bogo_role === targetRole);
+        }
 
         let remainingDelta = delta;
         partnerItems.forEach(partner => {
