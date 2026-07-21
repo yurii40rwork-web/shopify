@@ -211,17 +211,44 @@ function initCartDrawer() {
     const groupedItems = cart.items;
 
     if (bogoEnabled) {
-      const groupBogo = {};
+      let totalPillowsQty = 0;
       groupedItems.forEach(item => {
-        const isProtection = item.handle === 'shipping-protection' || item.product_title.toLowerCase().includes('shipping protection');
+        const isProtection = item.handle === 'shipping-protection' || (item.product_title && item.product_title.toLowerCase().includes('shipping protection'));
         if (isProtection) return;
 
-        const isPillow = item.product_title.toLowerCase().includes('pillow');
+        const isPillow = item.product_title && item.product_title.toLowerCase().includes('pillow');
         if (isPillow) {
-          const paidQty = Math.ceil(item.quantity / 2);
-          const freeQty = Math.floor(item.quantity / 2);
-          const unitPriceVal = getPillowUnitPriceCents(item.quantity);
-          const unitOrigVal = getPillowOriginalUnitPriceCents(item.quantity);
+          totalPillowsQty += item.quantity;
+        }
+      });
+
+      let paidTargetRemaining = Math.ceil(totalPillowsQty / 2);
+      let freeTargetRemaining = Math.floor(totalPillowsQty / 2);
+
+      const groupBogo = {};
+      groupedItems.forEach(item => {
+        const isProtection = item.handle === 'shipping-protection' || (item.product_title && item.product_title.toLowerCase().includes('shipping protection'));
+        if (isProtection) return;
+
+        const isPillow = item.product_title && item.product_title.toLowerCase().includes('pillow');
+        if (isPillow) {
+          let paidQty = 0;
+          let freeQty = 0;
+
+          for (let q = 0; q < item.quantity; q++) {
+            if (paidTargetRemaining > 0) {
+              paidQty++;
+              paidTargetRemaining--;
+            } else if (freeTargetRemaining > 0) {
+              freeQty++;
+              freeTargetRemaining--;
+            } else {
+              paidQty++;
+            }
+          }
+
+          const unitPriceVal = pillowQty1Price;
+          const unitOrigVal = pillowQty1Original;
 
           groupBogo[item.key] = {
             paidQty,
