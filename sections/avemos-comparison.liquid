@@ -54,6 +54,183 @@
   #shopify-section-{{ section.id }} .comparison-table td.our-product {
     background-color: {{ winner_column_bg }} !important;
   }
+
+  /* View Switcher Styles */
+  #shopify-section-{{ section.id }} .comparison-switch-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 32px;
+  }
+
+  #shopify-section-{{ section.id }} .comparison-switch-toggle {
+    display: inline-flex;
+    background: rgba(0, 0, 0, 0.06);
+    padding: 5px;
+    border-radius: 40px;
+    gap: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  #shopify-section-{{ section.id }} .comparison-switch-btn {
+    border: none;
+    background: transparent;
+    padding: 10px 26px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #64748b;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  #shopify-section-{{ section.id }} .comparison-switch-btn:hover {
+    color: #1e293b;
+  }
+
+  #shopify-section-{{ section.id }} .comparison-switch-btn.active {
+    background: #ffffff;
+    color: #0f172a;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+
+  /* Views Visibility */
+  #shopify-section-{{ section.id }} .comparison-view {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  #shopify-section-{{ section.id }} .comparison-view.active {
+    display: block;
+    opacity: 1;
+  }
+
+  /* Video View Grid (Image 1 reference layout) */
+  #shopify-section-{{ section.id }} .comparison-video-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  #shopify-section-{{ section.id }} .comparison-video-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  #shopify-section-{{ section.id }} .comparison-card-our {
+    border-left: 5px solid #22c55e;
+  }
+
+  #shopify-section-{{ section.id }} .comparison-card-their {
+    border-left: 5px solid #ef4444;
+  }
+
+  #shopify-section-{{ section.id }} .comparison-video-col {
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .comparison-video-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/3;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #0f172a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #shopify-section-{{ section.id }} .comparison-video-player, 
+  #shopify-section-{{ section.id }} .comparison-video-container iframe, 
+  #shopify-section-{{ section.id }} .comparison-video-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: none;
+  }
+
+  #shopify-section-{{ section.id }} .comparison-video-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  }
+
+  #shopify-section-{{ section.id }} .comparison-video-play-btn {
+    width: 64px;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0f172a;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .comparison-video-play-btn svg {
+    width: 28px;
+    height: 28px;
+    margin-left: 4px;
+  }
+
+  #shopify-section-{{ section.id }} .comparison-points-col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  #shopify-section-{{ section.id }} .comparison-card-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+  }
+
+  #shopify-section-{{ section.id }} .comparison-points-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  #shopify-section-{{ section.id }} .comparison-points-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 768px) {
+    #shopify-section-{{ section.id }} .comparison-video-card {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      padding: 20px;
+    }
+    
+    #shopify-section-{{ section.id }} .comparison-card-their .comparison-points-col {
+      order: 2;
+    }
+    #shopify-section-{{ section.id }} .comparison-card-their .comparison-video-col {
+      order: 1;
+    }
+  }
 {% endstyle %}
 
 <div class="Avemos-landing-wrapper" id="comparison">
@@ -63,164 +240,435 @@
       <h2 class="section-title">{{ section.settings.title }}</h2>
       <p class="section-subtitle">{{ section.settings.subtitle }}</p>
       
-      <div class="comparison-wrapper">
-        <table class="comparison-table">
-          <thead>
-            <tr>
-              <th>Features</th>
-              <th class="our-product">{{ section.settings.our_product }}</th>
-              <th>{{ section.settings.their_product }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {%- if section.blocks.size > 0 -%}
-              {%- for block in section.blocks -%}
-                <tr {{ block.shopify_attributes }}>
-                  <td>{{ block.settings.feature_name }}</td>
+      {%- if section.settings.show_switcher -%}
+        <div class="comparison-switch-wrapper">
+          <div class="comparison-switch-toggle" role="tablist">
+            <button type="button" 
+                    class="comparison-switch-btn {% if section.settings.default_view == 'table' or section.settings.default_view == blank %}active{% endif %}" 
+                    data-view="table"
+                    role="tab"
+                    aria-selected="{% if section.settings.default_view == 'table' or section.settings.default_view == blank %}true{% else %}false{% endif %}">
+              <span>{{ section.settings.table_tab_label | default: "Table View" }}</span>
+            </button>
+            <button type="button" 
+                    class="comparison-switch-btn {% if section.settings.default_view == 'video' %}active{% endif %}" 
+                    data-view="video"
+                    role="tab"
+                    aria-selected="{% if section.settings.default_view == 'video' %}true{% else %}false{% endif %}">
+              <span>{{ section.settings.video_tab_label | default: "Video View" }}</span>
+            </button>
+          </div>
+        </div>
+      {%- endif -%}
+
+      <!-- Table View -->
+      <div class="comparison-view comparison-table-view {% if section.settings.default_view == 'table' or section.settings.default_view == blank or section.settings.show_switcher == false %}active{% endif %}" id="comparison-view-table-{{ section.id }}">
+        <div class="comparison-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Features</th>
+                <th class="our-product">{{ section.settings.our_product }}</th>
+                <th>{{ section.settings.their_product }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- if section.blocks.size > 0 -%}
+                {%- for block in section.blocks -%}
+                  <tr {{ block.shopify_attributes }}>
+                    <td>{{ block.settings.feature_name }}</td>
+                    <td class="our-product">
+                      <div class="comparison-cell-value">
+                        {%- if block.settings.our_check -%}
+                          <span class="comparison-badge badge-success">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                          </span>
+                        {%- else -%}
+                          <span class="comparison-badge badge-danger">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                              <line x1="18" y1="6" x2="6" y2="18"></line>
+                              <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                          </span>
+                        {%- endif -%}
+                        <span class="comparison-text">{{ block.settings.our_desc }}</span>
+                      </div>
+                    </td>
+                    <td class="other-product">
+                      <div class="comparison-cell-value">
+                        {%- if block.settings.their_check -%}
+                          <span class="comparison-badge badge-success">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                          </span>
+                        {%- else -%}
+                          <span class="comparison-badge badge-danger">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                              <line x1="18" y1="6" x2="6" y2="18"></line>
+                              <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                          </span>
+                        {%- endif -%}
+                        <span class="comparison-text">{{ block.settings.their_desc }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                {%- endfor -%}
+              {%- else -%}
+                <tr>
+                  <td>Head Stabilization</td>
                   <td class="our-product">
                     <div class="comparison-cell-value">
-                      {%- if block.settings.our_check -%}
-                        <span class="comparison-badge badge-success">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                        </span>
-                      {%- else -%}
-                        <span class="comparison-badge badge-danger">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                          </svg>
-                        </span>
-                      {%- endif -%}
-                      <span class="comparison-text">{{ block.settings.our_desc }}</span>
+                      <span class="comparison-badge badge-success">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                      </span>
+                      <span class="comparison-text">360° support (no head drop)</span>
                     </div>
                   </td>
                   <td class="other-product">
                     <div class="comparison-cell-value">
-                      {%- if block.settings.their_check -%}
+                      <span class="comparison-badge badge-danger">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                      </span>
+                      <span class="comparison-text">Sides only (head falls forward)</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Filling</td>
+                  <td class="our-product">
+                    <div class="comparison-cell-value">
+                      <span class="comparison-badge badge-success">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                      </span>
+                      <span class="comparison-text">Premium orthopedic memory foam</span>
+                    </div>
+                  </td>
+                  <td class="other-product">
+                    <div class="comparison-cell-value">
+                      <span class="comparison-badge badge-danger">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                      </span>
+                      <span class="comparison-text">Air or cheap low-density foam</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Hygiene</td>
+                  <td class="our-product">
+                    <div class="comparison-cell-value">
+                      <span class="comparison-badge badge-success">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                      </span>
+                      <span class="comparison-text">Machine-washable cover</span>
+                    </div>
+                  </td>
+                  <td class="other-product">
+                    <div class="comparison-cell-value">
+                      <span class="comparison-badge badge-danger">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                      </span>
+                      <span class="comparison-text">Non-removable, hard to clean</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Size Adjustment</td>
+                  <td class="our-product">
+                    <div class="comparison-cell-value">
+                      <span class="comparison-badge badge-success">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                      </span>
+                      <span class="comparison-text">Adjustable Velcro strap</span>
+                    </div>
+                  </td>
+                  <td class="other-product">
+                    <div class="comparison-cell-value">
+                      <span class="comparison-badge badge-danger">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                      </span>
+                      <span class="comparison-text">One size fits all (no adjustment)</span>
+                    </div>
+                  </td>
+                </tr>
+              {%- endif -%}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Video View (Image 1 layout) -->
+      <div class="comparison-view comparison-video-view {% if section.settings.default_view == 'video' and section.settings.show_switcher %}active{% endif %}" id="comparison-view-video-{{ section.id }}">
+        <div class="comparison-video-grid">
+          
+          <!-- Card 1: Winner / Our Product (Video Left, Points Right) -->
+          <div class="comparison-video-card comparison-card-our">
+            <div class="comparison-video-col">
+              <div class="comparison-video-container">
+                {%- if section.settings.our_video != blank -%}
+                  {{ section.settings.our_video | video_tag: autoplay: true, loop: true, muted: true, controls: true, playsinline: true, class: 'comparison-video-player' }}
+                {%- elsif section.settings.our_video_url != blank -%}
+                  {%- if section.settings.our_video_url.type == 'youtube' -%}
+                    <iframe src="https://www.youtube.com/embed/{{ section.settings.our_video_url.id }}?autoplay=1&muted=1&loop=1&playlist={{ section.settings.our_video_url.id }}&controls=1&playsinline=1" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.our_product_video_title | default: section.settings.our_product | escape }}"></iframe>
+                  {%- elsif section.settings.our_video_url.type == 'vimeo' -%}
+                    <iframe src="https://player.vimeo.com/video/{{ section.settings.our_video_url.id }}?autoplay=1&muted=1&loop=1&background=0" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.our_product_video_title | default: section.settings.our_product | escape }}"></iframe>
+                  {%- endif -%}
+                {%- elsif section.settings.our_video_poster != blank -%}
+                  <img src="{{ section.settings.our_video_poster | image_url: width: 800 }}" alt="{{ section.settings.our_product_video_title | default: section.settings.our_product | escape }}" loading="lazy" class="comparison-video-poster">
+                  <div class="comparison-video-play-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  </div>
+                {%- else -%}
+                  <div class="comparison-video-placeholder">
+                    <div class="comparison-video-play-btn">
+                      <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    </div>
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+            
+            <div class="comparison-points-col">
+              <h3 class="comparison-card-title">{{ section.settings.our_product_video_title | default: section.settings.our_product }}</h3>
+              <ul class="comparison-points-list points-success">
+                {%- if section.settings.our_video_points != blank -%}
+                  {%- assign our_points = section.settings.our_video_points | newline_to_br | split: '<br />' -%}
+                  {%- for pt in our_points -%}
+                    {%- assign pt_clean = pt | strip -%}
+                    {%- if pt_clean != blank -%}
+                      <li>
                         <span class="comparison-badge badge-success">
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="20 6 9 17 4 12"></polyline>
                           </svg>
                         </span>
-                      {%- else -%}
+                        <span>{{ pt_clean }}</span>
+                      </li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- elsif section.blocks.size > 0 -%}
+                  {%- for block in section.blocks -%}
+                    <li>
+                      <span class="comparison-badge badge-success">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                      </span>
+                      <span><strong>{{ block.settings.feature_name }}:</strong> {{ block.settings.our_desc }}</span>
+                    </li>
+                  {%- endfor -%}
+                {%- else -%}
+                  <li>
+                    <span class="comparison-badge badge-success">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </span>
+                    <span>360° support (no head drop)</span>
+                  </li>
+                  <li>
+                    <span class="comparison-badge badge-success">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </span>
+                    <span>Premium orthopedic memory foam</span>
+                  </li>
+                  <li>
+                    <span class="comparison-badge badge-success">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </span>
+                    <span>Machine-washable cover</span>
+                  </li>
+                  <li>
+                    <span class="comparison-badge badge-success">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </span>
+                    <span>Adjustable Velcro strap</span>
+                  </li>
+                {%- endif -%}
+              </ul>
+            </div>
+          </div>
+
+          <!-- Card 2: Traditional / Their Product (Points Left, Video Right) -->
+          <div class="comparison-video-card comparison-card-their">
+            <div class="comparison-points-col">
+              <h3 class="comparison-card-title">{{ section.settings.their_product_video_title | default: section.settings.their_product }}</h3>
+              <ul class="comparison-points-list points-danger">
+                {%- if section.settings.their_video_points != blank -%}
+                  {%- assign their_points = section.settings.their_video_points | newline_to_br | split: '<br />' -%}
+                  {%- for pt in their_points -%}
+                    {%- assign pt_clean = pt | strip -%}
+                    {%- if pt_clean != blank -%}
+                      <li>
                         <span class="comparison-badge badge-danger">
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                           </svg>
                         </span>
-                      {%- endif -%}
-                      <span class="comparison-text">{{ block.settings.their_desc }}</span>
+                        <span>{{ pt_clean }}</span>
+                      </li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- elsif section.blocks.size > 0 -%}
+                  {%- for block in section.blocks -%}
+                    <li>
+                      <span class="comparison-badge badge-danger">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                      </span>
+                      <span><strong>{{ block.settings.feature_name }}:</strong> {{ block.settings.their_desc }}</span>
+                    </li>
+                  {%- endfor -%}
+                {%- else -%}
+                  <li>
+                    <span class="comparison-badge badge-danger">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </span>
+                    <span>Sides only (head falls forward)</span>
+                  </li>
+                  <li>
+                    <span class="comparison-badge badge-danger">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </span>
+                    <span>Air or cheap low-density foam</span>
+                  </li>
+                  <li>
+                    <span class="comparison-badge badge-danger">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </span>
+                    <span>Non-removable, hard to clean</span>
+                  </li>
+                  <li>
+                    <span class="comparison-badge badge-danger">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </span>
+                    <span>One size fits all (no adjustment)</span>
+                  </li>
+                {%- endif -%}
+              </ul>
+            </div>
+
+            <div class="comparison-video-col">
+              <div class="comparison-video-container">
+                {%- if section.settings.their_video != blank -%}
+                  {{ section.settings.their_video | video_tag: autoplay: true, loop: true, muted: true, controls: true, playsinline: true, class: 'comparison-video-player' }}
+                {%- elsif section.settings.their_video_url != blank -%}
+                  {%- if section.settings.their_video_url.type == 'youtube' -%}
+                    <iframe src="https://www.youtube.com/embed/{{ section.settings.their_video_url.id }}?autoplay=1&muted=1&loop=1&playlist={{ section.settings.their_video_url.id }}&controls=1&playsinline=1" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.their_product_video_title | default: section.settings.their_product | escape }}"></iframe>
+                  {%- elsif section.settings.their_video_url.type == 'vimeo' -%}
+                    <iframe src="https://player.vimeo.com/video/{{ section.settings.their_video_url.id }}?autoplay=1&muted=1&loop=1&background=0" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.their_product_video_title | default: section.settings.their_product | escape }}"></iframe>
+                  {%- endif -%}
+                {%- elsif section.settings.their_video_poster != blank -%}
+                  <img src="{{ section.settings.their_video_poster | image_url: width: 800 }}" alt="{{ section.settings.their_product_video_title | default: section.settings.their_product | escape }}" loading="lazy" class="comparison-video-poster">
+                  <div class="comparison-video-play-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  </div>
+                {%- else -%}
+                  <div class="comparison-video-placeholder">
+                    <div class="comparison-video-play-btn">
+                      <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                     </div>
-                  </td>
-                </tr>
-              {%- endfor -%}
-            {%- else -%}
-              <tr>
-                <td>Head Stabilization</td>
-                <td class="our-product">
-                  <div class="comparison-cell-value">
-                    <span class="comparison-badge badge-success">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                    </span>
-                    <span class="comparison-text">360° support (no head drop)</span>
                   </div>
-                </td>
-                <td class="other-product">
-                  <div class="comparison-cell-value">
-                    <span class="comparison-badge badge-danger">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                      </svg>
-                    </span>
-                    <span class="comparison-text">Sides only (head falls forward)</span>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>Filling</td>
-                <td class="our-product">
-                  <div class="comparison-cell-value">
-                    <span class="comparison-badge badge-success">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                    </span>
-                    <span class="comparison-text">Premium orthopedic memory foam</span>
-                  </div>
-                </td>
-                <td class="other-product">
-                  <div class="comparison-cell-value">
-                    <span class="comparison-badge badge-danger">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                      </svg>
-                    </span>
-                    <span class="comparison-text">Air or cheap low-density foam</span>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>Hygiene</td>
-                <td class="our-product">
-                  <div class="comparison-cell-value">
-                    <span class="comparison-badge badge-success">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                    </span>
-                    <span class="comparison-text">Machine-washable cover</span>
-                  </div>
-                </td>
-                <td class="other-product">
-                  <div class="comparison-cell-value">
-                    <span class="comparison-badge badge-danger">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                      </svg>
-                    </span>
-                    <span class="comparison-text">Non-removable, hard to clean</span>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>Size Adjustment</td>
-                <td class="our-product">
-                  <div class="comparison-cell-value">
-                    <span class="comparison-badge badge-success">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                    </span>
-                    <span class="comparison-text">Adjustable Velcro strap</span>
-                  </div>
-                </td>
-                <td class="other-product">
-                  <div class="comparison-cell-value">
-                    <span class="comparison-badge badge-danger">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                      </svg>
-                    </span>
-                    <span class="comparison-text">One size fits all (no adjustment)</span>
-                  </div>
-                </td>
-              </tr>
-            {%- endif -%}
-          </tbody>
-        </table>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
+
     </div>
   </section>
 </div>
+
+<script>
+  (function() {
+    function initComparisonSwitch() {
+      var section = document.getElementById('shopify-section-{{ section.id }}');
+      if (!section) return;
+
+      var btns = section.querySelectorAll('.comparison-switch-btn');
+      var views = section.querySelectorAll('.comparison-view');
+
+      btns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var viewName = this.getAttribute('data-view');
+          
+          btns.forEach(function(b) {
+            b.classList.remove('active');
+            b.setAttribute('aria-selected', 'false');
+          });
+          this.classList.add('active');
+          this.setAttribute('aria-selected', 'true');
+          
+          views.forEach(function(v) {
+            if (v.id === 'comparison-view-' + viewName + '-{{ section.id }}') {
+              v.classList.add('active');
+            } else {
+              v.classList.remove('active');
+            }
+          });
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initComparisonSwitch);
+    } else {
+      initComparisonSwitch();
+    }
+
+    document.addEventListener('shopify:section:load', function(e) {
+      if (e.detail && e.detail.sectionId === '{{ section.id }}') {
+        initComparisonSwitch();
+      }
+    });
+  })();
+</script>
 
 {% schema %}
 {
@@ -239,6 +687,42 @@
       "default": "Why traditional U-shaped travel pillows are no longer sufficient"
     },
     {
+      "type": "header",
+      "content": "View Switcher Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_switcher",
+      "label": "Show View Switcher",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "default_view",
+      "label": "Default View Mode",
+      "options": [
+        { "value": "table", "label": "Table View" },
+        { "value": "video", "label": "Video View" }
+      ],
+      "default": "table"
+    },
+    {
+      "type": "text",
+      "id": "table_tab_label",
+      "label": "Table Tab Label",
+      "default": "Table View"
+    },
+    {
+      "type": "text",
+      "id": "video_tab_label",
+      "label": "Video Tab Label",
+      "default": "Video View"
+    },
+    {
+      "type": "header",
+      "content": "Table Settings"
+    },
+    {
       "type": "text",
       "id": "our_product",
       "label": "Our Product Name",
@@ -252,7 +736,71 @@
     },
     {
       "type": "header",
-      "content": "Section Customization"
+      "content": "Video Version: Our Product"
+    },
+    {
+      "type": "text",
+      "id": "our_product_video_title",
+      "label": "Our Product Video Title",
+      "default": "Why Choose Avemos®"
+    },
+    {
+      "type": "video",
+      "id": "our_video",
+      "label": "Shopify-hosted Video (Our Product)"
+    },
+    {
+      "type": "video_url",
+      "id": "our_video_url",
+      "label": "External Video URL (YouTube / Vimeo)",
+      "accept": ["youtube", "vimeo"]
+    },
+    {
+      "type": "image_picker",
+      "id": "our_video_poster",
+      "label": "Video Poster Image (Our Product)"
+    },
+    {
+      "type": "textarea",
+      "id": "our_video_points",
+      "label": "Custom Bullet Points (One per line. If blank, uses feature blocks above)",
+      "placeholder": "360° support (no head drop)\nPremium orthopedic memory foam\nMachine-washable cover\nAdjustable Velcro strap"
+    },
+    {
+      "type": "header",
+      "content": "Video Version: Traditional Product"
+    },
+    {
+      "type": "text",
+      "id": "their_product_video_title",
+      "label": "Traditional Product Video Title",
+      "default": "Traditional U-Shape Pillows"
+    },
+    {
+      "type": "video",
+      "id": "their_video",
+      "label": "Shopify-hosted Video (Traditional Product)"
+    },
+    {
+      "type": "video_url",
+      "id": "their_video_url",
+      "label": "External Video URL (YouTube / Vimeo)",
+      "accept": ["youtube", "vimeo"]
+    },
+    {
+      "type": "image_picker",
+      "id": "their_video_poster",
+      "label": "Video Poster Image (Traditional Product)"
+    },
+    {
+      "type": "textarea",
+      "id": "their_video_points",
+      "label": "Custom Bullet Points (One per line. If blank, uses feature blocks above)",
+      "placeholder": "Sides only (head falls forward)\nAir or cheap low-density foam\nNon-removable, hard to clean\nOne size fits all (no adjustment)"
+    },
+    {
+      "type": "header",
+      "content": "Section Colors & Fonts"
     },
     {
       "type": "font_picker",
