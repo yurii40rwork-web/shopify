@@ -207,33 +207,22 @@ function initCartDrawer() {
       }
     });
 
-    function getBogoType(item) {
-      if (item.properties && item.properties['_bogo_type']) {
-        return item.properties['_bogo_type'];
-      }
-      return null;
-    }
-
-    // Consolidate line items by variant ID & bogoType to prevent duplicate split cards
+    // Consolidate line items by variant ID to prevent duplicate split cards
     const consolidatedMap = {};
     cart.items.forEach(item => {
       const isProtection = item.handle === 'shipping-protection' || (item.product_title && item.product_title.toLowerCase().includes('shipping protection'));
       if (isProtection) {
         consolidatedMap['protection_' + item.key] = {
           ...item,
-          bogoType: null,
           keys: [item.key]
         };
         return;
       }
 
-      const bogoType = getBogoType(item);
-      const vId = (item.variant_id || item.id || item.key) + '_' + (bogoType || 'gen');
-
+      const vId = item.variant_id || item.id || item.key;
       if (!consolidatedMap[vId]) {
         consolidatedMap[vId] = {
           ...item,
-          bogoType: bogoType,
           quantity: item.quantity,
           keys: [item.key]
         };
@@ -249,93 +238,53 @@ function initCartDrawer() {
     const groupedItems = Object.values(consolidatedMap);
 
     if (bogoEnabled) {
-      const hasExplicitBogoType = groupedItems.some(i => i.bogoType === 'paid' || i.bogoType === 'free');
+      let totalPillowsQty = 0;
+      groupedItems.forEach(item => {
+        const isProtection = item.handle === 'shipping-protection' || (item.product_title && item.product_title.toLowerCase().includes('shipping protection'));
+        if (isProtection) return;
+
+        const isPillow = item.product_title && item.product_title.toLowerCase().includes('pillow');
+        if (isPillow) {
+          totalPillowsQty += item.quantity;
+        }
+      });
+
+      let paidTargetRemaining = Math.ceil(totalPillowsQty / 2);
+      let freeTargetRemaining = Math.floor(totalPillowsQty / 2);
+
       const groupBogo = {};
+      groupedItems.forEach(item => {
+        const isProtection = item.handle === 'shipping-protection' || (item.product_title && item.product_title.toLowerCase().includes('shipping protection'));
+        if (isProtection) return;
 
-      if (hasExplicitBogoType) {
-        groupedItems.forEach(item => {
-          const isProtection = item.handle === 'shipping-protection' || (item.product_title && item.product_title.toLowerCase().includes('shipping protection'));
-          if (isProtection) return;
+        const isPillow = item.product_title && item.product_title.toLowerCase().includes('pillow');
+        if (isPillow) {
+          let paidQty = 0;
+          let freeQty = 0;
 
-          const isPillow = item.product_title && item.product_title.toLowerCase().includes('pillow');
-          if (isPillow) {
-            let paidQty = 0;
-            let freeQty = 0;
-
-            if (item.bogoType === 'paid') {
-              paidQty = item.quantity;
-              freeQty = 0;
-            } else if (item.bogoType === 'free') {
-              paidQty = 0;
-              freeQty = item.quantity;
+          for (let q = 0; q < item.quantity; q++) {
+            if (paidTargetRemaining > 0) {
+              paidQty++;
+              paidTargetRemaining--;
+            } else if (freeTargetRemaining > 0) {
+              freeQty++;
+              freeTargetRemaining--;
             } else {
-              paidQty = item.quantity;
-              freeQty = 0;
+              paidQty++;
             }
-
-            const unitPriceVal = pillowQty1Price;
-            const unitOrigVal = pillowQty1Original;
-
-            const uniqueGroupKey = (item.variant_id || item.id || item.key) + '_' + (item.bogoType || 'gen');
-
-            groupBogo[uniqueGroupKey] = {
-              paidQty,
-              freeQty,
-              unitCurrentPrice: unitPriceVal,
-              unitOriginalPrice: unitOrigVal
-            };
           }
-        });
-      } else {
-        let totalPillowsQty = 0;
-        groupedItems.forEach(item => {
-          const isProtection = item.handle === 'shipping-protection' || (item.product_title && item.product_title.toLowerCase().includes('shipping protection'));
-          if (isProtection) return;
 
-          const isPillow = item.product_title && item.product_title.toLowerCase().includes('pillow');
-          if (isPillow) {
-            totalPillowsQty += item.quantity;
-          }
-        });
+          const unitPriceVal = pillowQty1Price;
+          const unitOrigVal = pillowQty1Original;
 
-        let paidTargetRemaining = Math.ceil(totalPillowsQty / 2);
-        let freeTargetRemaining = Math.floor(totalPillowsQty / 2);
-
-        groupedItems.forEach(item => {
-          const isProtection = item.handle === 'shipping-protection' || (item.product_title && item.product_title.toLowerCase().includes('shipping protection'));
-          if (isProtection) return;
-
-          const isPillow = item.product_title && item.product_title.toLowerCase().includes('pillow');
-          if (isPillow) {
-            let paidQty = 0;
-            let freeQty = 0;
-
-            for (let q = 0; q < item.quantity; q++) {
-              if (paidTargetRemaining > 0) {
-                paidQty++;
-                paidTargetRemaining--;
-              } else if (freeTargetRemaining > 0) {
-                freeQty++;
-                freeTargetRemaining--;
-              } else {
-                paidQty++;
-              }
-            }
-
-            const unitPriceVal = pillowQty1Price;
-            const unitOrigVal = pillowQty1Original;
-
-            const uniqueGroupKey = (item.variant_id || item.id || item.key) + '_' + (item.bogoType || 'gen');
-
-            groupBogo[uniqueGroupKey] = {
-              paidQty,
-              freeQty,
-              unitCurrentPrice: unitPriceVal,
-              unitOriginalPrice: unitOrigVal
-            };
-          }
-        });
-      }
+          groupBogo[item.variant_id || item.id || item.key] = {
+            paidQty,
+            freeQty,
+            unitCurrentPrice: unitPriceVal,
+            unitOriginalPrice: unitOrigVal
+          };
+        }
+      });
 
       groupedItems.forEach(item => {
         const isProtection = item.handle === 'shipping-protection' || (item.product_title && item.product_title.toLowerCase().includes('shipping protection'));
@@ -353,9 +302,7 @@ function initCartDrawer() {
           return;
         }
 
-        const uniqueGroupKey = (item.variant_id || item.id || item.key) + '_' + (item.bogoType || 'gen');
-        const bogoInfo = groupBogo[uniqueGroupKey];
-
+        const bogoInfo = groupBogo[item.variant_id || item.id || item.key];
         if (bogoInfo) {
           if (bogoInfo.paidQty > 0) {
             displayCards.push({
