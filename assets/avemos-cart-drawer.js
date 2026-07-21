@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+function initCartDrawer() {
   const drawer = document.getElementById('cart-drawer');
   if (!drawer) return;
 
@@ -560,4 +560,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.location.search.includes('open-cart=1')) {
     openCartDrawer();
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initCartDrawer);
+} else {
+  initCartDrawer();
+}

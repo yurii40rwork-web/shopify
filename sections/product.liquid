@@ -71,11 +71,7 @@
 {%- assign product = section.settings.product | default: product -%}
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 
-{%- if template == 'product' and product != blank -%}
-  <script>
-    window.location.href = "/cart/{{ product.selected_or_first_available_variant.id }}:1";
-  </script>
-{%- endif -%}
+
 
 <div class="Avemos-landing-wrapper" id="product">
   <div class="container product-container-wrapper" style="padding-top: 40px; padding-bottom: 60px;">

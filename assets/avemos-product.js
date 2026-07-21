@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+function initProduct() {
   // Quantity adjustments
   const qtyMinusBtn = document.getElementById('qty-minus-btn');
   const qtyPlusBtn = document.getElementById('qty-plus-btn');
@@ -408,4 +408,10 @@ document.addEventListener('DOMContentLoaded', () => {
       li.innerHTML = '<span class="bullet-icon">' + icon + '</span><span class="bullet-text">' + remainingText + '</span>';
     }
   });
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initProduct);
+} else {
+  initProduct();
+}

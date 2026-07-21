@@ -27,9 +27,7 @@
 
     {% # Modular Theme Scripts %}
     <script src="{{ 'avemos-cart-drawer.js' | asset_url }}" defer></script>
-    {% if template contains 'product' %}
-      <script src="{{ 'avemos-product.js' | asset_url }}" defer></script>
-    {% endif %}
+    <script src="{{ 'avemos-product.js' | asset_url }}" defer></script>
 
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}
