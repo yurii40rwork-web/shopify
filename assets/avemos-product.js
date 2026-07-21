@@ -166,14 +166,10 @@ function initProduct() {
         buyBtn.innerHTML = '<span class="material-symbols-outlined">sync</span> Loading...';
       }
 
-      fetch('/cart/clear.js', {
-        method: 'POST'
-      }).then(() => {
-        return fetch('/cart/add.js', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ items: items })
-        });
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: items })
       }).then(res => res.json())
         .then(data => {
           if (buyBtn) {

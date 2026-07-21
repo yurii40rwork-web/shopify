@@ -493,39 +493,47 @@ function initCartDrawer() {
       const card = btn.closest('.cart-drawer-item');
       if (!card) return;
 
-      const keysArray = JSON.parse(card.dataset.keys || '[]');
       const input = card.querySelector('.item-qty-input');
-      const currentCardQty = input ? parseInt(input.value) : 1;
-      let newCardQty = currentCardQty;
 
-      if (action === 'plus') {
-        newCardQty = currentCardQty + 1;
-      } else if (action === 'minus') {
-        newCardQty = Math.max(0, currentCardQty - 1);
-      } else if (action === 'delete') {
-        newCardQty = 0;
+      let currentItem = null;
+      if (currentCart && currentCart.items) {
+        currentItem = currentCart.items.find(item => item.key === key);
       }
 
-      const newTotalQty = bogoEnabled && newCardQty > 0 ? (newCardQty * 2) : newCardQty;
+      const currentQty = currentItem ? currentItem.quantity : (input ? parseInt(input.value) : 1);
+      let newTotalQty = currentQty;
 
-      if (input) {
-        input.value = newCardQty;
+      const isPillow = currentItem && currentItem.product_title && currentItem.product_title.toLowerCase().includes('pillow');
+
+      if (action === 'plus') {
+        if (bogoEnabled && isPillow) {
+          newTotalQty = currentQty % 2 === 0 ? currentQty + 2 : currentQty + 1;
+        } else {
+          newTotalQty = currentQty + 1;
+        }
+      } else if (action === 'minus') {
+        if (bogoEnabled && isPillow) {
+          newTotalQty = currentQty % 2 === 0 ? Math.max(0, currentQty - 2) : Math.max(0, currentQty - 1);
+        } else {
+          newTotalQty = Math.max(0, currentQty - 1);
+        }
+      } else if (action === 'delete') {
+        newTotalQty = 0;
       }
 
       if (currentCart && currentCart.items) {
-        const itemIndex = currentCart.items.findIndex(item => item.key === key);
-        if (itemIndex > -1) {
-          if (newTotalQty === 0) {
-            currentCart.items = currentCart.items.filter(item => !keysArray.includes(item.key));
-          } else {
-            currentCart.items[itemIndex].quantity = newTotalQty;
-            currentCart.items = currentCart.items.filter(item => item.key === key || !keysArray.includes(item.key));
+        if (newTotalQty === 0) {
+          currentCart.items = currentCart.items.filter(item => item.key !== key);
+        } else {
+          const idx = currentCart.items.findIndex(item => item.key === key);
+          if (idx > -1) {
+            currentCart.items[idx].quantity = newTotalQty;
           }
-          renderCart(currentCart);
         }
+        renderCart(currentCart);
       }
 
-      queueQtyUpdate(key, newTotalQty, keysArray);
+      queueQtyUpdate(key, newTotalQty);
     });
   }
 
