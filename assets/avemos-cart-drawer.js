@@ -493,47 +493,39 @@ function initCartDrawer() {
       const card = btn.closest('.cart-drawer-item');
       if (!card) return;
 
+      const keysArray = JSON.parse(card.dataset.keys || '[]');
       const input = card.querySelector('.item-qty-input');
-
-      let currentItem = null;
-      if (currentCart && currentCart.items) {
-        currentItem = currentCart.items.find(item => item.key === key);
-      }
-
-      const currentQty = currentItem ? currentItem.quantity : (input ? parseInt(input.value) : 1);
-      let newTotalQty = currentQty;
-
-      const isPillow = currentItem && currentItem.product_title && currentItem.product_title.toLowerCase().includes('pillow');
+      const currentCardQty = input ? parseInt(input.value) : 1;
+      let newCardQty = currentCardQty;
 
       if (action === 'plus') {
-        if (bogoEnabled && isPillow) {
-          newTotalQty = currentQty % 2 === 0 ? currentQty + 2 : currentQty + 1;
-        } else {
-          newTotalQty = currentQty + 1;
-        }
+        newCardQty = currentCardQty + 1;
       } else if (action === 'minus') {
-        if (bogoEnabled && isPillow) {
-          newTotalQty = currentQty % 2 === 0 ? Math.max(0, currentQty - 2) : Math.max(0, currentQty - 1);
-        } else {
-          newTotalQty = Math.max(0, currentQty - 1);
-        }
+        newCardQty = Math.max(0, currentCardQty - 1);
       } else if (action === 'delete') {
-        newTotalQty = 0;
+        newCardQty = 0;
+      }
+
+      const newTotalQty = bogoEnabled && newCardQty > 0 ? (newCardQty * 2) : newCardQty;
+
+      if (input) {
+        input.value = newCardQty;
       }
 
       if (currentCart && currentCart.items) {
-        if (newTotalQty === 0) {
-          currentCart.items = currentCart.items.filter(item => item.key !== key);
-        } else {
-          const idx = currentCart.items.findIndex(item => item.key === key);
-          if (idx > -1) {
-            currentCart.items[idx].quantity = newTotalQty;
+        const itemIndex = currentCart.items.findIndex(item => item.key === key);
+        if (itemIndex > -1) {
+          if (newTotalQty === 0) {
+            currentCart.items = currentCart.items.filter(item => !keysArray.includes(item.key));
+          } else {
+            currentCart.items[itemIndex].quantity = newTotalQty;
+            currentCart.items = currentCart.items.filter(item => item.key === key || !keysArray.includes(item.key));
           }
+          renderCart(currentCart);
         }
-        renderCart(currentCart);
       }
 
-      queueQtyUpdate(key, newTotalQty);
+      queueQtyUpdate(key, newTotalQty, keysArray);
     });
   }
 
