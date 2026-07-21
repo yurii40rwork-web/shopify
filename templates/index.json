@@ -177,6 +177,8 @@
         "benefit_1": {
           "type": "benefit",
           "settings": {
+            "video": "shopify://files/videos/1.mp4",
+            "video_url": "",
             "icon": "fa-arrows-to-dot",
             "title": "360° Neck Support",
             "text": "Complete head stabilization at any angle. Prevents head drop and neck pain."
@@ -185,6 +187,8 @@
         "benefit_2": {
           "type": "benefit",
           "settings": {
+            "video": "shopify://files/videos/2.mp4",
+            "video_url": "",
             "icon": "fa-brain",
             "title": "Memory Foam Core",
             "text": "Premium orthopedic memory foam adapts to the unique contours of your body."
@@ -193,6 +197,8 @@
         "benefit_3": {
           "type": "benefit",
           "settings": {
+            "video": "shopify://files/videos/3.mp4",
+            "video_url": "",
             "icon": "fa-wind",
             "title": "Breathable Hypoallergenic Fabric",
             "text": "Material regulates body temperature and protects against sweat."
@@ -201,6 +207,8 @@
         "benefit_4": {
           "type": "benefit",
           "settings": {
+            "video": "shopify://files/videos/4.mp4",
+            "video_url": "",
             "icon": "fa-compress",
             "title": "Compact Design",
             "text": "Easily compresses to 1/3 of its size. Includes a waterproof travel carry bag."
@@ -216,6 +224,7 @@
       "settings": {
         "title": "Why Travelers Choose Avemos™ ",
         "subtitle": "Innovative technology for your comfortable sleep on the road",
+        "media_aspect_ratio": "1-1",
         "section_font": "work_sans_n4",
         "section_bg_color": "",
         "section_bg_gradient": "",
