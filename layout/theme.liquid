@@ -17,8 +17,17 @@
       {{ settings.type_primary_font | font_url | preload_tag: as: 'font', crossorigin: 'anonymous' }}
     {% endunless %}
 
-    {% # Load and preload the critical CSS %}
+    {% # Load and preload the critical CSS & global theme CSS %}
     {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'avemos-style.css' | asset_url | stylesheet_tag }}
+
+    {% # External CDN Icons & Fonts %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap">
+
+    {% # Modular Theme Scripts %}
+    <script src="{{ 'avemos-cart-drawer.js' | asset_url }}" defer></script>
+    <script src="{{ 'avemos-product.js' | asset_url }}" defer></script>
 
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}
@@ -37,7 +46,7 @@
     {{ content_for_header }}
   </head>
   <body>
-    {% section 'avemos-header' %}
+    {% sections 'header-group' %}
 
     {% if request.path contains '/apps/track123' %}
       <div class="Avemos-landing-wrapper" style="min-height: 70vh; background-color: var(--bg-secondary); padding: 40px 0;">

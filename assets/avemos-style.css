@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --font-heading: 'Quicksand', sans-serif;
   --font-body: 'Plus Jakarta Sans', sans-serif;
@@ -637,7 +641,7 @@
 .Avemos-landing-wrapper .benefit-card {
   background-color: var(--bg-secondary);
   border-radius: var(--radius-md);
-  padding: 32px;
+  padding: 16px;
   text-align: center;
   box-shadow: var(--card-shadow);
   border: 1px solid var(--border-color);
@@ -646,6 +650,50 @@
 
 .Avemos-landing-wrapper .benefit-card:hover {
   transform: translateY(-5px);
+}
+
+.Avemos-landing-wrapper .benefit-media {
+  width: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 20px;
+  position: relative;
+  background-color: var(--surface-container-low);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Avemos-landing-wrapper .benefit-media.aspect-16-9 {
+  aspect-ratio: 16 / 9;
+}
+
+.Avemos-landing-wrapper .benefit-media.aspect-4-3 {
+  aspect-ratio: 4 / 3;
+}
+
+.Avemos-landing-wrapper .benefit-media.aspect-1-1 {
+  aspect-ratio: 1 / 1;
+}
+
+.Avemos-landing-wrapper .benefit-media.aspect-auto {
+  aspect-ratio: auto;
+}
+
+.Avemos-landing-wrapper .benefit-media img,
+.Avemos-landing-wrapper .benefit-media video,
+.Avemos-landing-wrapper .benefit-media .benefit-video-player {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.Avemos-landing-wrapper .benefit-media iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  pointer-events: none;
 }
 
 .Avemos-landing-wrapper .benefit-icon-placeholder {

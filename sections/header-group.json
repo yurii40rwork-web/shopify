@@ -12,11 +12,21 @@
   "name": "t:general.header",
   "sections": {
     "header": {
-      "type": "header",
-      "disabled": true,
+      "type": "avemos-header",
       "settings": {
-        "menu": "customer-account-main-menu",
-        "customer_account_menu": "customer-account-main-menu"
+        "logo": "shopify://shop_images/logo-no-background111.png",
+        "logo_height": 50,
+        "announcement_1": "🔥BUY ONE GET ONE FREE!",
+        "announcement_2": "Free Express Shipping",
+        "mobile_announcement": "🌸 Memorial Day Sale | 50% Off",
+        "menu": "",
+        "header_font": "work_sans_n4",
+        "header_bg_color": "#ffffff",
+        "header_text_color": "#14171d",
+        "header_hover_text_color": "#C85A32",
+        "announcement_font": "work_sans_n8",
+        "announcement_bg_color": "#000000",
+        "announcement_text_color": "#FFFFFF"
       }
     }
   },

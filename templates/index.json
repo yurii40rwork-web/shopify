@@ -114,7 +114,7 @@
         "benefit_checkmark_color": "#2e6f40",
         "cta_button_bg": "#1e40af",
         "cta_button_text": "#ffffff",
-        "cta_button_whitespace": 24
+        "cta_button_whitespace": 8
       }
     },
     "as_seen_on": {
@@ -177,6 +177,8 @@
         "benefit_1": {
           "type": "benefit",
           "settings": {
+            "video": "shopify://files/videos/1.mp4",
+            "video_url": "",
             "icon": "fa-arrows-to-dot",
             "title": "360° Neck Support",
             "text": "Complete head stabilization at any angle. Prevents head drop and neck pain."
@@ -185,6 +187,8 @@
         "benefit_2": {
           "type": "benefit",
           "settings": {
+            "video": "shopify://files/videos/2.mp4",
+            "video_url": "",
             "icon": "fa-brain",
             "title": "Memory Foam Core",
             "text": "Premium orthopedic memory foam adapts to the unique contours of your body."
@@ -193,6 +197,8 @@
         "benefit_3": {
           "type": "benefit",
           "settings": {
+            "video": "shopify://files/videos/3.mp4",
+            "video_url": "",
             "icon": "fa-wind",
             "title": "Breathable Hypoallergenic Fabric",
             "text": "Material regulates body temperature and protects against sweat."
@@ -201,6 +207,8 @@
         "benefit_4": {
           "type": "benefit",
           "settings": {
+            "video": "shopify://files/videos/4.mp4",
+            "video_url": "",
             "icon": "fa-compress",
             "title": "Compact Design",
             "text": "Easily compresses to 1/3 of its size. Includes a waterproof travel carry bag."
@@ -216,11 +224,13 @@
       "settings": {
         "title": "Why Travelers Choose Avemos™ ",
         "subtitle": "Innovative technology for your comfortable sleep on the road",
+        "media_aspect_ratio": "1-1",
         "section_font": "work_sans_n4",
         "section_bg_color": "",
         "section_bg_gradient": "",
         "section_text_color": "",
         "card_bg_color": "#f5f5f7",
+        "card_padding": 16,
         "icon_color": "#000000",
         "icon_bg_color": "rgba(0,0,0,0)",
         "icon_border_color": "#000000"
@@ -279,8 +289,24 @@
       "settings": {
         "title": "Comparison with Traditional Pillows",
         "subtitle": "Why traditional U-shaped travel pillows are no longer sufficient",
-        "our_product": "Avemos™  Pillow",
+        "display_mode": "video",
+        "default_view": "video",
+        "table_tab_label": "Table View",
+        "video_tab_label": "Video View",
+        "our_product": "Avemos™  Pillow",
         "their_product": "Traditional U-Shape Pillows",
+        "enable_video_loop": true,
+        "video_aspect_ratio": "1-1",
+        "our_product_video_title": "Why Choose Avemos®",
+        "our_video": "shopify://files/videos/комперісон відео (good).mp4",
+        "our_video_url": "",
+        "our_video_points": "",
+        "their_product_video_title": "Traditional U-Shape Pillows",
+        "their_video": "shopify://files/videos/Комперісон відео (bad).mp4",
+        "their_video_url": "",
+        "their_video_points": "",
+        "video_card_bg": "#FFFFFF",
+        "video_card_border": "#C5C6CD",
         "section_font": "work_sans_n4",
         "section_bg_color": "",
         "section_bg_gradient": "",
@@ -550,7 +576,7 @@
         "heading": "30 Day Money Back Guaranteed",
         "description": "<p>Your satisfaction is our guarantee. If for any reason you need to send them back, we've got you covered.</p>",
         "button_text": "👉 Get Your Avemos™",
-        "button_link": "",
+        "button_link": "#product",
         "section_font": "work_sans_n4",
         "section_bg_color": "",
         "section_text_color": ""

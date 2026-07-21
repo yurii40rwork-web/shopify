@@ -1,6 +1,3 @@
-{{ 'avemos-style.css' | asset_url | stylesheet_tag }}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
 {% style %}
   {%- assign section_bg_color = section.settings.section_bg_color | default: '#ffffff' -%}
   {%- assign card_bg_color = section.settings.card_bg_color | default: '#f5f5f7' -%}
@@ -40,12 +37,57 @@
 
   #shopify-section-{{ section.id }} .benefit-card {
     background-color: {{ card_bg_color }} !important;
+    padding: {{ section.settings.card_padding | default: 16 }}px !important;
   }
 
   #shopify-section-{{ section.id }} .benefit-icon-placeholder {
     color: {{ icon_color }} !important;
     background-color: {{ icon_bg_color }} !important;
     border-color: {{ icon_border_color }} !important;
+  }
+
+  #shopify-section-{{ section.id }} .benefit-media {
+    width: 100%;
+    border-radius: var(--radius-md, 8px);
+    overflow: hidden;
+    margin-bottom: 14px;
+    position: relative;
+    background-color: var(--surface-container-low, #f1f4fb);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #shopify-section-{{ section.id }} .benefit-media.aspect-16-9 {
+    aspect-ratio: 16 / 9;
+  }
+
+  #shopify-section-{{ section.id }} .benefit-media.aspect-4-3 {
+    aspect-ratio: 4 / 3;
+  }
+
+  #shopify-section-{{ section.id }} .benefit-media.aspect-1-1 {
+    aspect-ratio: 1 / 1;
+  }
+
+  #shopify-section-{{ section.id }} .benefit-media.aspect-auto {
+    aspect-ratio: auto;
+  }
+
+  #shopify-section-{{ section.id }} .benefit-media img,
+  #shopify-section-{{ section.id }} .benefit-media video,
+  #shopify-section-{{ section.id }} .benefit-media .benefit-video-player {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .benefit-media iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    pointer-events: none;
   }
 {% endstyle %}
 
@@ -58,10 +100,30 @@
     <div class="benefits-grid">
       {%- if section.blocks.size > 0 -%}
         {%- for block in section.blocks -%}
+          {%- assign has_media = false -%}
+          {%- if block.settings.video != blank or block.settings.video_url != blank or block.settings.image != blank -%}
+            {%- assign has_media = true -%}
+          {%- endif -%}
           <div class="benefit-card" {{ block.shopify_attributes }}>
-            <div class="benefit-icon-placeholder">
-              <i class="fa-solid {{ block.settings.icon | default: 'fa-arrows-to-dot' }}"></i>
-            </div>
+            {%- if has_media -%}
+              <div class="benefit-media aspect-{{ section.settings.media_aspect_ratio | default: '16-9' }}">
+                {%- if block.settings.video != blank -%}
+                  {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'benefit-video-player' }}
+                {%- elsif block.settings.video_url != blank -%}
+                  {%- if block.settings.video_url.type == 'youtube' -%}
+                    <iframe src="https://www.youtube.com/embed/{{ block.settings.video_url.id }}?autoplay=1&muted=1&loop=1&playlist={{ block.settings.video_url.id }}&controls=0&playsinline=1" allow="autoplay; encrypted-media" allowfullscreen title="{{ block.settings.title | escape }}"></iframe>
+                  {%- elsif block.settings.video_url.type == 'vimeo' -%}
+                    <iframe src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}?autoplay=1&muted=1&loop=1&background=1" allow="autoplay; encrypted-media" allowfullscreen title="{{ block.settings.title | escape }}"></iframe>
+                  {%- endif -%}
+                {%- elsif block.settings.image != blank -%}
+                  <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.image.alt | default: block.settings.title | escape }}" loading="lazy" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}">
+                {%- endif -%}
+              </div>
+            {%- else -%}
+              <div class="benefit-icon-placeholder">
+                <i class="fa-solid {{ block.settings.icon | default: 'fa-arrows-to-dot' }}"></i>
+              </div>
+            {%- endif -%}
             <h3>{{ block.settings.title }}</h3>
             <p>{{ block.settings.text }}</p>
           </div>
@@ -120,6 +182,30 @@
       "default": "Innovative technology for your comfortable sleep on the road"
     },
     {
+      "type": "select",
+      "id": "media_aspect_ratio",
+      "label": "Media Aspect Ratio",
+      "options": [
+        {
+          "value": "16-9",
+          "label": "16:9 Landscape"
+        },
+        {
+          "value": "4-3",
+          "label": "4:3 Standard"
+        },
+        {
+          "value": "1-1",
+          "label": "1:1 Square"
+        },
+        {
+          "value": "auto",
+          "label": "Adapt to Media"
+        }
+      ],
+      "default": "16-9"
+    },
+    {
       "type": "header",
       "content": "Section Customization"
     },
@@ -152,6 +238,16 @@
       "default": "#f5f5f7"
     },
     {
+      "type": "range",
+      "id": "card_padding",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Inner Padding",
+      "default": 16
+    },
+    {
       "type": "color",
       "id": "icon_color",
       "label": "Icon Color",
@@ -175,6 +271,33 @@
       "type": "benefit",
       "name": "Benefit",
       "settings": [
+        {
+          "type": "header",
+          "content": "Media Options (Picture or Video)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Benefit Image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Shopify-hosted Video"
+        },
+        {
+          "type": "video_url",
+          "id": "video_url",
+          "label": "External Video URL (YouTube / Vimeo)",
+          "accept": [
+            "youtube",
+            "vimeo"
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Icon Options"
+        },
         {
           "type": "text",
           "id": "icon",
