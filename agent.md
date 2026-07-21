@@ -168,18 +168,18 @@ shopify theme check
 To make changes to specific theme components, use the file mapping below:
 
 ### 1. Header & Navigation Menu
-*   **Main Section**: [sections/avemos-header.liquid](file:///E:/projects/shopify/sections/avemos-header.liquid) - sets announcement bar, logo selection, heights, margins, and header menus.
-*   **Inner Markup**: [snippets/avemos-header-markup.liquid](file:///E:/projects/shopify/snippets/avemos-header-markup.liquid) - houses the HTML layout for the logo, navigation links, and shopping cart badge.
-*   **Styling**: Look for `.header`, `.announcement-bar`, and `.header-nav` classes in [assets/avemos-style.css](file:///E:/projects/shopify/assets/avemos-style.css).
+*   **Main Section**: [sections/avemos-header.liquid](sections/avemos-header.liquid) - sets announcement bar, logo selection, heights, margins, and header menus.
+*   **Inner Markup**: [snippets/avemos-header-markup.liquid](snippets/avemos-header-markup.liquid) - houses the HTML layout for the logo, navigation links, and shopping cart badge.
+*   **Styling**: Look for `.header`, `.announcement-bar`, and `.header-nav` classes in [assets/avemos-style.css](assets/avemos-style.css).
 
 ### 2. Cart & Cart Drawer
-*   **Slide-out Cart Drawer**: [sections/cart-drawer.liquid](file:///E:/projects/shopify/sections/cart-drawer.liquid) - handles checkout summaries, product lines, quantities, and drawer animations.
-*   **Main Cart Page**: [sections/cart.liquid](file:///E:/projects/shopify/sections/cart.liquid) - template for the `/cart` path checkout.
-*   **Javascript Actions**: [assets/avemos-script.js](file:///E:/projects/shopify/assets/avemos-script.js) controls state, opening/closing event listeners (`drawer-open`), and quantities.
+*   **Slide-out Cart Drawer**: [sections/cart-drawer.liquid](sections/cart-drawer.liquid) - handles checkout summaries, product lines, quantities, and drawer animations.
+*   **Main Cart Page**: [sections/cart.liquid](sections/cart.liquid) - redirect fallback wrapper for Cart Drawer.
+*   **Javascript Actions**: [assets/avemos-cart-drawer.js](assets/avemos-cart-drawer.js) controls drawer state, fetch API sync, quantity changes, and shipping protection.
 
 ### 3. Policy & Static Pages
-Avemos policy templates use the reusable [sections/policy-page.liquid](file:///E:/projects/shopify/sections/policy-page.liquid) wrapper which dynamically renders raw HTML/rich-text. The policy texts are loaded from:
-*   **Shipping Policy**: [snippets/shipping-policy-content.liquid](file:///E:/projects/shopify/snippets/shipping-policy-content.liquid) (template: `page.shipping-policy.json`)
-*   **Refund Policy**: [snippets/refund-policy-content.liquid](file:///E:/projects/shopify/snippets/refund-policy-content.liquid) (template: `page.refund-policy.json`)
-*   **Terms of Service**: [snippets/terms-of-service-content.liquid](file:///E:/projects/shopify/snippets/terms-of-service-content.liquid) (template: `page.terms-of-service.json`)
-*   **User Agreement**: [snippets/user-agreement-content.liquid](file:///E:/projects/shopify/snippets/user-agreement-content.liquid) (template: `page.user-agreement.json`)
+Avemos policy templates use the reusable [sections/policy-page.liquid](sections/policy-page.liquid) wrapper which dynamically renders raw HTML/rich-text. The policy texts are loaded from:
+*   **Shipping Policy**: [snippets/shipping-policy-content.liquid](snippets/shipping-policy-content.liquid) (template: `page.shipping-policy.json`)
+*   **Refund Policy**: [snippets/refund-policy-content.liquid](snippets/refund-policy-content.liquid) (template: `page.refund-policy.json`)
+*   **Terms of Service**: [snippets/terms-of-service-content.liquid](snippets/terms-of-service-content.liquid) (template: `page.terms-of-service.json`)
+*   **User Agreement**: [snippets/user-agreement-content.liquid](snippets/user-agreement-content.liquid) (template: `page.user-agreement.json`)

@@ -1,5 +1,3 @@
-{{ 'avemos-style.css' | asset_url | stylesheet_tag }}
-
 {% style %}
   {% if section.settings.section_font != blank %}
     {{ section.settings.section_font | font_face: font_display: 'swap' }}

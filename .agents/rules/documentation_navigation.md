@@ -13,9 +13,9 @@ This rule guides AI agents on how to navigate the Shopify theme directory layout
 
 You MUST read the following files before performing coding or design actions:
 
-*   **At Task Initialization / Before Coding**: Read [agent.md](file:///E:/projects/shopify/agent.md) to understand the Shopify theme directory layout, global CSS variables, and theme customization guidelines.
+*   **At Task Initialization / Before Coding**: Read [agent.md](agent.md) to understand the Shopify theme directory layout, global CSS variables, and theme customization guidelines.
 *   **When modifying Theme Layouts & Templates**: Read the base wrappers in [layout/theme.liquid](file:///E:/projects/shopify/layout/theme.liquid) and template JSON structures in `templates/*.json` to maintain structural integrity.
-*   **When creating or modifying Sections & Blocks**: Refer to the **Settings Schema Guidelines** in [agent.md](file:///E:/projects/shopify/agent.md) to decide between inline style properties or class properties for customizable options.
+*   **When creating or modifying Sections & Blocks**: Refer to the **Settings Schema Guidelines** in [agent.md](agent.md) to decide between inline style properties or class properties for customizable options.
 *   **When editing styles and stylesheets**: Check [snippets/css-variables.liquid](file:///E:/projects/shopify/snippets/css-variables.liquid) and align styles with the defined theme variables. Avoid introducing raw inline styling rules.
 
 ---

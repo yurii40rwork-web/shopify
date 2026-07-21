@@ -83,20 +83,20 @@ Blocks are made customizable by including a `{% schema %}` in the body. For more
 ## 🧭 Navigation & Development Guide
 
 For a detailed walkthrough of styling guides, CSS variables, and the Shopify theme editor schemas, refer to:
-*   [Developer & Agent Guide](file:///E:/projects/shopify/agent.md) – architecture guidelines, styling setups, and schema patterns.
-*   [Workspace Navigation Rules](file:///E:/projects/shopify/.agents/rules/documentation_navigation.md) – step-by-step recipes mapping tasks (like modifying policy contents, headers, drawer carts, and reviews) to their exact source files.
+*   [Developer & Agent Guide](agent.md) – architecture guidelines, styling setups, and schema patterns.
+*   [Workspace Navigation Rules](.agents/rules/documentation_navigation.md) – step-by-step recipes mapping tasks (like modifying policy contents, headers, drawer carts, and reviews) to their exact source files.
 
 ### Quick File Reference
 
 | Target Component | Source File Location | Styling Target |
 | :--- | :--- | :--- |
-| **Site Layout Wrapper** | [layout/theme.liquid](file:///E:/projects/shopify/layout/theme.liquid) | [assets/critical.css](file:///E:/projects/shopify/assets/critical.css) |
-| **Global CSS variables** | [snippets/css-variables.liquid](file:///E:/projects/shopify/snippets/css-variables.liquid) | `:root` selector variables |
-| **Theme Custom Settings** | [config/settings_schema.json](file:///E:/projects/shopify/config/settings_schema.json) | Admin customization dashboard |
-| **Global Theme Styles** | – | [assets/avemos-style.css](file:///E:/projects/shopify/assets/avemos-style.css) |
-| **Header Markup** | [snippets/avemos-header-markup.liquid](file:///E:/projects/shopify/snippets/avemos-header-markup.liquid) | `.header`, `.announcement-bar` |
-| **Shopping Cart Drawer** | [sections/cart-drawer.liquid](file:///E:/projects/shopify/sections/cart-drawer.liquid) | [assets/avemos-script.js](file:///E:/projects/shopify/assets/avemos-script.js) (interactions) |
-| **Page Policy Contents** | `snippets/*-content.liquid` | [sections/policy-page.liquid](file:///E:/projects/shopify/sections/policy-page.liquid) (renderer) |
+| **Site Layout Wrapper** | [layout/theme.liquid](layout/theme.liquid) | [assets/critical.css](assets/critical.css) |
+| **Global CSS variables** | [snippets/css-variables.liquid](snippets/css-variables.liquid) | `:root` selector variables |
+| **Theme Custom Settings** | [config/settings_schema.json](config/settings_schema.json) | Admin customization dashboard |
+| **Global Theme Styles** | – | [assets/avemos-style.css](assets/avemos-style.css) |
+| **Header Markup** | [snippets/avemos-header-markup.liquid](snippets/avemos-header-markup.liquid) | `.header`, `.announcement-bar` |
+| **Shopping Cart Drawer** | [sections/cart-drawer.liquid](sections/cart-drawer.liquid) | [assets/avemos-cart-drawer.js](assets/avemos-cart-drawer.js) (interactions) |
+| **Page Policy Contents** | `snippets/*-content.liquid` | [sections/policy-page.liquid](sections/policy-page.liquid) (renderer) |
 
 ---
 
