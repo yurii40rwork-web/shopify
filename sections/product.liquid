@@ -982,6 +982,8 @@
     position: relative;
     width: 100%;
     height: 100%;
+    border-radius: 12px;
+    overflow: hidden;
   }
   .gallery-slide-img {
     position: absolute;
@@ -1038,6 +1040,17 @@
     white-space: nowrap;
     min-width: 110px;
     box-sizing: border-box;
+  }
+
+  @media (max-width: 1000px) {
+    .main-image-viewport {
+      overflow: visible !important;
+      margin-top: 28px !important;
+    }
+    .best-seller-badge-overlay {
+      top: -28px !important;
+      left: 0px !important;
+    }
   }
 
   /* Arrow Buttons */
