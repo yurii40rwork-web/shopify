@@ -37,6 +37,7 @@
 
   #shopify-section-{{ section.id }} .benefit-card {
     background-color: {{ card_bg_color }} !important;
+    padding: {{ section.settings.card_padding | default: 16 }}px !important;
   }
 
   #shopify-section-{{ section.id }} .benefit-icon-placeholder {
@@ -49,7 +50,7 @@
     width: 100%;
     border-radius: var(--radius-md, 8px);
     overflow: hidden;
-    margin-bottom: 20px;
+    margin-bottom: 14px;
     position: relative;
     background-color: var(--surface-container-low, #f1f4fb);
     display: flex;
@@ -235,6 +236,16 @@
       "id": "card_bg_color",
       "label": "Card Background Color",
       "default": "#f5f5f7"
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Inner Padding",
+      "default": 16
     },
     {
       "type": "color",

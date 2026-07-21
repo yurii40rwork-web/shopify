@@ -637,7 +637,7 @@
 .Avemos-landing-wrapper .benefit-card {
   background-color: var(--bg-secondary);
   border-radius: var(--radius-md);
-  padding: 32px;
+  padding: 16px;
   text-align: center;
   box-shadow: var(--card-shadow);
   border: 1px solid var(--border-color);
