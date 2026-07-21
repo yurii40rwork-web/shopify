@@ -436,18 +436,8 @@ function initCartDrawer() {
     }
   }
 
-  function queueQtyUpdate(key, newQty, keysArray = []) {
-    if (keysArray.length > 1) {
-      keysArray.forEach(k => {
-        if (k === key) {
-          pendingUpdates[k] = newQty;
-        } else {
-          pendingUpdates[k] = 0;
-        }
-      });
-    } else {
-      pendingUpdates[key] = newQty;
-    }
+  function queueQtyUpdate(key, newQty) {
+    pendingUpdates[key] = newQty;
     
     if (debounceTimer) {
       clearTimeout(debounceTimer);
@@ -493,39 +483,35 @@ function initCartDrawer() {
       const card = btn.closest('.cart-drawer-item');
       if (!card) return;
 
-      const keysArray = JSON.parse(card.dataset.keys || '[]');
       const input = card.querySelector('.item-qty-input');
-      const currentCardQty = input ? parseInt(input.value) : 1;
-      let newCardQty = currentCardQty;
+      const currentQty = input ? parseInt(input.value) : 1;
+      let newQty = currentQty;
 
       if (action === 'plus') {
-        newCardQty = currentCardQty + 1;
+        newQty = currentQty + 1;
       } else if (action === 'minus') {
-        newCardQty = Math.max(0, currentCardQty - 1);
+        newQty = Math.max(0, currentQty - 1);
       } else if (action === 'delete') {
-        newCardQty = 0;
+        newQty = 0;
       }
 
-      const newTotalQty = bogoEnabled && newCardQty > 0 ? (newCardQty * 2) : newCardQty;
-
       if (input) {
-        input.value = newCardQty;
+        input.value = newQty;
       }
 
       if (currentCart && currentCart.items) {
         const itemIndex = currentCart.items.findIndex(item => item.key === key);
         if (itemIndex > -1) {
-          if (newTotalQty === 0) {
-            currentCart.items = currentCart.items.filter(item => !keysArray.includes(item.key));
+          if (newQty === 0) {
+            currentCart.items.splice(itemIndex, 1);
           } else {
-            currentCart.items[itemIndex].quantity = newTotalQty;
-            currentCart.items = currentCart.items.filter(item => item.key === key || !keysArray.includes(item.key));
+            currentCart.items[itemIndex].quantity = newQty;
           }
           renderCart(currentCart);
         }
       }
 
-      queueQtyUpdate(key, newTotalQty, keysArray);
+      queueQtyUpdate(key, newQty);
     });
   }
 
