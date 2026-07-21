@@ -52,7 +52,11 @@
         <div class="refund-description">{{ section.settings.description }}</div>
         
         {%- if section.settings.button_text != blank -%}
-          <a href="{{ section.settings.button_link | default: '#' }}" class="refund-cta-btn">
+          {%- assign button_target = section.settings.button_link -%}
+          {%- if button_target == blank or button_target == '#' -%}
+            {%- assign button_target = '#product' -%}
+          {%- endif -%}
+          <a href="{{ button_target }}" class="refund-cta-btn">
             {{ section.settings.button_text }}
           </a>
         {%- endif -%}
@@ -220,6 +224,27 @@
     }
   }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const refundCtaBtns = document.querySelectorAll('.refund-cta-btn');
+    refundCtaBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const href = btn.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          const targetEl = document.querySelector(href);
+          if (targetEl) {
+            e.preventDefault();
+            targetEl.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        }
+      });
+    });
+  });
+</script>
 
 {% schema %}
 {
