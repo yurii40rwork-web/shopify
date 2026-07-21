@@ -4,6 +4,7 @@
      data-shipping-threshold="{{ section.settings.free_shipping_threshold | default: 50 }}"
      data-protection-price="{{ section.settings.shipping_protection_price | default: 5.00 }}"
      data-save-percent="{{ section.settings.save_percent | default: 57 }}"
+     data-subtotal-each-note="{{ section.settings.subtotal_each_pillow_note | default: '($22.45 each)' | escape }}"
      data-pillow-qty1-price="{{ section.settings.pillow_qty1_price | default: 39.00 }}"
      data-pillow-qty1-original="{{ section.settings.pillow_qty1_original | default: 78.00 }}"
      data-pillow-qty2-price="{{ section.settings.pillow_qty2_price | default: 19.50 }}"
@@ -80,6 +81,7 @@
         <span class="subtotal-label">Subtotal</span>
         <div class="subtotal-prices">
           <span class="subtotal-current" id="drawer-subtotal-current">$0.00</span>
+          <span class="subtotal-each-note" id="drawer-subtotal-each-note" style="color: #2e6f40; font-size: 13px; font-weight: 700; margin-left: 4px;">{{ section.settings.subtotal_each_pillow_note | escape }}</span>
           <span class="subtotal-original" id="drawer-subtotal-original">$0.00</span>
           <span class="subtotal-badge" id="drawer-subtotal-save">Save {{ section.settings.save_percent }}%</span>
         </div>
@@ -721,6 +723,12 @@ body.cart-drawer-open iframe[id*="inbox"] {
     {
       "type": "header",
       "content": "Pillow Pricing Customization"
+    },
+    {
+      "type": "text",
+      "id": "subtotal_each_pillow_note",
+      "label": "Subtotal Each Pillow Note (e.g. $22.45 each)",
+      "default": "($22.45 each)"
     },
     {
       "type": "number",

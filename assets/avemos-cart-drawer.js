@@ -141,15 +141,22 @@ function initCartDrawer() {
     }
   }
 
+  function parseCents(val, fallbackCents) {
+    if (val === undefined || val === null || val === '') return fallbackCents;
+    const str = String(val).replace(',', '.').replace(/[^0-9.]/g, '');
+    const num = parseFloat(str);
+    return isNaN(num) ? fallbackCents : Math.round(num * 100);
+  }
+
   function getPillowUnitPriceCents(qty) {
-    if (qty <= 1) return pillowQty1Price;
-    if (qty === 2) return pillowQty2Price;
-    if (qty === 3) return pillowQty3Price;
-    return pillowQty4Price;
+    if (qty <= 1) return parseCents(drawer.dataset.pillowQty1Price, 4990);
+    if (qty === 2) return parseCents(drawer.dataset.pillowQty2Price, 4490);
+    if (qty === 3) return parseCents(drawer.dataset.pillowQty3Price, 4490);
+    return parseCents(drawer.dataset.pillowQty4Price, 4490);
   }
 
   function getPillowOriginalUnitPriceCents(qty) {
-    return pillowQty1Original;
+    return parseCents(drawer.dataset.pillowQty1Original, 9900);
   }
 
   function isProtectionItem(item) {
@@ -306,8 +313,8 @@ function initCartDrawer() {
           const isFree = bogoRole === 'free';
 
           if (isPillow) {
-            const unitPriceVal = isFree ? 0 : pillowQty1Price;
-            const unitOrigVal = pillowQty1Original;
+            const unitPriceVal = isFree ? 0 : getPillowUnitPriceCents(item.quantity);
+            const unitOrigVal = getPillowOriginalUnitPriceCents(item.quantity);
 
             displayCards.push({
               ...item,
@@ -550,6 +557,10 @@ function initCartDrawer() {
     if (subtotalCurrent) subtotalCurrent.textContent = formatMoney(finalSubtotal);
     if (subtotalOriginal) subtotalOriginal.textContent = formatMoney(finalOriginal);
     if (subtotalSave) subtotalSave.textContent = `Save ${savePercent}%`;
+    const subtotalEachNote = document.getElementById('drawer-subtotal-each-note');
+    if (subtotalEachNote) {
+      subtotalEachNote.textContent = drawer.dataset.subtotalEachNote || '($22.45 each)';
+    }
 
     const baseSubtotalNoProtection = basePricesSubtotal;
     if (progressBar && truckIcon && progressText) {
