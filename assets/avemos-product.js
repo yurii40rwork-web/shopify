@@ -136,12 +136,24 @@ function initProduct() {
       if (activeOption === 'buy_1') {
         const varId1 = getDropdownValue('bundle-1-pillow-1-select');
         const varId2 = getDropdownValue('bundle-1-pillow-2-select');
-        const counts = {};
-        [varId1, varId2].forEach(id => { if (id) counts[id] = (counts[id] || 0) + 1; });
-        for (let id in counts) {
+        
+        const paidCounts = {};
+        const freeCounts = {};
+        if (varId1) paidCounts[varId1] = (paidCounts[varId1] || 0) + 1;
+        if (varId2) freeCounts[varId2] = (freeCounts[varId2] || 0) + 1;
+
+        for (let id in paidCounts) {
           items.push({
             id: parseInt(id),
-            quantity: counts[id] * qtyMultiplier
+            quantity: paidCounts[id] * qtyMultiplier,
+            properties: { '_bogo_type': 'paid' }
+          });
+        }
+        for (let id in freeCounts) {
+          items.push({
+            id: parseInt(id),
+            quantity: freeCounts[id] * qtyMultiplier,
+            properties: { '_bogo_type': 'free' }
           });
         }
       } else if (activeOption === 'buy_2') {
@@ -149,12 +161,24 @@ function initProduct() {
         const varId2 = getDropdownValue('bundle-2-pillow-2-select');
         const varId3 = getDropdownValue('bundle-2-pillow-3-select');
         const varId4 = getDropdownValue('bundle-2-pillow-4-select');
-        const counts = {};
-        [varId1, varId2, varId3, varId4].forEach(id => { if (id) counts[id] = (counts[id] || 0) + 1; });
-        for (let id in counts) {
+        
+        const paidCounts = {};
+        const freeCounts = {};
+        [varId1, varId3].forEach(id => { if (id) paidCounts[id] = (paidCounts[id] || 0) + 1; });
+        [varId2, varId4].forEach(id => { if (id) freeCounts[id] = (freeCounts[id] || 0) + 1; });
+
+        for (let id in paidCounts) {
           items.push({
             id: parseInt(id),
-            quantity: counts[id] * qtyMultiplier
+            quantity: paidCounts[id] * qtyMultiplier,
+            properties: { '_bogo_type': 'paid' }
+          });
+        }
+        for (let id in freeCounts) {
+          items.push({
+            id: parseInt(id),
+            quantity: freeCounts[id] * qtyMultiplier,
+            properties: { '_bogo_type': 'free' }
           });
         }
       }
